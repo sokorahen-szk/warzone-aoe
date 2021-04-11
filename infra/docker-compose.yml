@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+  web:
+    container_name: web
+    ports:
+      - 80:80
+      - 443:443
+    privileged: true
+    volumes:
+      - ../backend:/var/www/html
+    depends_on:
+      - db
+    build: ./docker/web
+    tty: true
+    restart: always
+    networks:
+      app_net:
+        ipv4_address: 172.26.0.3
+
+  db:
+    container_name: mysql
+    ports:
+      - 3306:3306
+    privileged: true
+    volumes:
+      - db-store:/var/lib/mysql
+      - ./docker/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    build: ./docker/mysql
+    command: docker-entrypoint.sh mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    tty: true
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=warzone_local_db
+      - MYSQL_USER=owner
+      - MYSQL_PASSWORD=password
+      - TZ='Asia/Tokyo'
+    networks:
+      app_net:
+        ipv4_address: 172.26.0.4
+
+volumes:
+  db-store:
+
+networks:
+  app_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      -
+        subnet: 172.26.0.0/28
