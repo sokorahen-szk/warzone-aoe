@@ -9,6 +9,7 @@ services:
     privileged: true
     volumes:
       - ../backend:/var/www/html
+#      - ./docker/web/var/log/apache2:/var/log/apache2
     depends_on:
       - db
     build: ./docker/web

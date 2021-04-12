@@ -44,8 +44,10 @@ RUN mkdir -p /etc/apache2/ssl/
 COPY ./etc/apache2/apache2.conf /etc/apache2/
 COPY ./etc/php/php.ini /usr/local/etc/php/
 COPY ./etc/apache2/conf.d/http.conf /etc/apache2/sites-enabled/000-default.conf
-# COPY ./etc/apache2/conf.d/ssl.conf /etc/apache2/sites-enabled/ssl.conf
-# COPY ./etc/apache2/ssl/server.* /etc/apache2/ssl/
+COPY ./etc/apache2/conf.d/ssl.conf /etc/apache2/sites-enabled/ssl.conf
+COPY ./etc/apache2/ssl/server.* /etc/apache2/ssl/
+
+COPY ./usr/share/apache2/ask-for-passphrase /usr/share/apache2/
 
 #issue
 #apache2: Could not reliab122ly determine the server's fully qualified domain name,
@@ -105,7 +107,7 @@ RUN mv composer.phar /usr/local/bin/composer
 # apache a2enmod rewrite for setting
 RUN sudo docker-php-entrypoint a2enmod rewrite
 
-# RUN a2enmod ssl
+RUN a2enmod ssl
 
 #current directory change
 WORKDIR /var/www/html
