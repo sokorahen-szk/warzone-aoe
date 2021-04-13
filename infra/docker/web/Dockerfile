@@ -47,8 +47,6 @@ COPY ./etc/apache2/conf.d/http.conf /etc/apache2/sites-enabled/000-default.conf
 COPY ./etc/apache2/conf.d/ssl.conf /etc/apache2/sites-enabled/ssl.conf
 COPY ./etc/apache2/ssl/server.* /etc/apache2/ssl/
 
-COPY ./usr/share/apache2/ask-for-passphrase /usr/share/apache2/
-
 #issue
 #apache2: Could not reliab122ly determine the server's fully qualified domain name,
 #using ***.***.*.*. Set the 'ServerName' directive globally to suppress this message
