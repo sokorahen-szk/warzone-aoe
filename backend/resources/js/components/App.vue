@@ -9,6 +9,8 @@
 
 <script>
 import Header from '@/components/organisms/Header';
+import { headerConfig } from '@/config/global'
+
 export default {
   name: "App",
   components: {
@@ -16,19 +18,7 @@ export default {
   },
   data() {
     return {
-      header: {
-        site: {
-          name: "warzone-aoe",
-          home: '/',
-        },
-        links: [
-          {label: "ホーム", uri: "/"},
-          {label: "対戦履歴", uri: "/test"},
-          {label: "レーティング", uri: "/test"},
-          {label: "Discord", uri: "/test"},
-          {label: "問い合わせ", uri: "/test"},
-        ]
-      }
+      header: headerConfig
     }
   },
   mounted() {

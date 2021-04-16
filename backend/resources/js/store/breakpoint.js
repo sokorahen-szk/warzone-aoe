@@ -7,7 +7,6 @@ const state = {
 }
 const getters ={
   getDeviceType: (state) => {
-    console.log(state.v.breakpoint.name)
     switch(state.v.breakpoint.name) {
       case 'lg':
       case 'md':
