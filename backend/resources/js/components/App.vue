@@ -22,11 +22,17 @@ export default {
           home: '/',
         },
         links: [
-          {label: "Home", uri: "/"},
-          {label: "Test", uri: "/test"},
+          {label: "ホーム", uri: "/"},
+          {label: "対戦履歴", uri: "/test"},
+          {label: "レーティング", uri: "/test"},
+          {label: "Discord", uri: "/test"},
+          {label: "問い合わせ", uri: "/test"},
         ]
       }
     }
+  },
+  mounted() {
+    this.$store.dispatch('breakpointStore/updateBreakpoint', {$vuetify: this.$vuetify})
   }
 }
 </script>
