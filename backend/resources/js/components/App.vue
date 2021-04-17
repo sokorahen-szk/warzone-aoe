@@ -1,9 +1,11 @@
 <template>
-  <v-app>
-    <Header :header="header"/>
-    <v-container>
-     <router-view />
-    </v-container>
+  <v-app id="inspire">
+    <Header :header="header" />
+    <v-main>
+      <v-container>
+      <router-view />
+      </v-container>
+    </v-main>
   </v-app>
 </template>
 
@@ -18,7 +20,7 @@ export default {
   },
   data() {
     return {
-      header: headerConfig
+      header: headerConfig,
     }
   },
   mounted() {
