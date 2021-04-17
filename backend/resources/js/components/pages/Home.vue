@@ -5,7 +5,10 @@
 				aaa
 			</template>
 			<template slot="left">
-				<ColumnBox />
+				<RankingColumn
+					icon="mdi-format-list-bulleted"
+					title="ゲーム数ランキング"
+				/>
 			</template>
 		</CommonWithLeftColumnTemplate>
 	</v-container>
@@ -13,12 +16,12 @@
 
 <script>
 import CommonWithLeftColumnTemplate from '@/components/templates/CommonWithLeftColumnTemplate'
-import ColumnBox from '@/components/organisms/ColumnBox'
+import RankingColumn from '@/components/organisms/RankingColumn'
 export default {
 	name: 'Home',
 	components: {
 		CommonWithLeftColumnTemplate,
-		ColumnBox
+		RankingColumn
 	},
 	data() {
 		return {
