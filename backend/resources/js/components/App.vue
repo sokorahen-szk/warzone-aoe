@@ -2,9 +2,7 @@
   <v-app id="inspire">
     <Header :header="header" />
     <v-main>
-      <v-container>
       <router-view />
-      </v-container>
     </v-main>
   </v-app>
 </template>
@@ -28,3 +26,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#inspire {
+  background: #eee;
+}
+</style>
