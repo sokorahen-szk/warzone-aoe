@@ -25,7 +25,7 @@
       >
         {{ link.label }}
       </v-btn>
-      <Avatar class="ml-2" :src="user.image" :alt="user.name" :size="36" />
+      <Avatar class="ml-4" :src="user.image" :alt="user.name" :size="34" />
       </template>
       <template v-else>
       <v-app-bar-nav-icon
