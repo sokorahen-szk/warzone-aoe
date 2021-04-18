@@ -3,6 +3,7 @@
     :block="block"
     :depressed="depressed"
     @click="clickButton"
+    :color="color"
   >
     {{label}}
   </v-btn>
@@ -16,6 +17,7 @@ export default {
     block: {type: Boolean, default: false},
     path: {type: String},
     depressed: {type: Boolean, default: false},
+    color: {type: String, default: ''},
   },
   data() {
     return {

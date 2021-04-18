@@ -4,6 +4,7 @@ import Router from 'vue-router'
 // Components...
 import Home from '@/components/pages/Home.vue'
 import Test from '@/components/pages/Test.vue'
+import Login from '@/components/pages/Login.vue'
 
 Vue.use(Router)
 
@@ -20,6 +21,11 @@ export default new Router({
       path: '/test',
       name: 'Test',
       component: Test
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
     },
   ]
 })
