@@ -2,9 +2,12 @@
   <router-link :to="path" class="link"><slot></slot></router-link>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 .link {
-
+}
+.link:hover {
+  color: #87cefa;
+  text-decoration: none;
 }
 </style>
 

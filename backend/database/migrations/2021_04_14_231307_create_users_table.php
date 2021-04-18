@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('avator_image')->comment('ユーザ画像');
             $table->string('email')->unique()->comment('メールアドレス');
             $table->string('password')->comment('パスワード');
+            $table->rememberToken();
             $table->timestamps();
 
             $table->foreign('player_id')->references('id')->on('players');
