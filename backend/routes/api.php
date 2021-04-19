@@ -16,4 +16,8 @@ use App\Http\Controllers\Auth\LoginController;
 |
 */
 
-Route::post('/login', [LoginController::class, 'login'])->name('login');
+
+
+Route::group(['middleware' => 'api'], function() {
+  Route::post('login', [LoginController::class, 'login'])->name('login');
+});
