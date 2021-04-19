@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Auth\AuthController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,6 +16,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+
+
+Route::group(['middleware' => 'api'], function() {
+  Route::prefix('auth')->group(function() {
+    /**
+     * POST /auth/login
+     */
+    Route::post('login', [AuthController::class, 'login'])->name('auth.login');
+    /**
+     * POST /auth/logout
+     */
+    Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
+  });
 });

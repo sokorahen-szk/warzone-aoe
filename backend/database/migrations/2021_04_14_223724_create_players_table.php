@@ -16,14 +16,14 @@ class CreatePlayersTable extends Migration
         Schema::create('players', function (Blueprint $table) {
             $table->id()->comment('プレイヤーID');
             $table->string('name', 30)->comment('プレイヤー名');
-            $table->float('mu')->comment('μ値');
-            $table->float('sigma')->comment('σ値');
-            $table->integer('rate')->comment('レート');
-            $table->integer('min_rate')->comment('最小レート');
-            $table->integer('max_rate')->comment('最大レート');
-            $table->integer('win')->comment('勝利数');
-            $table->integer('defeat')->comment('敗北数');
-            $table->integer('games')->comment('試合数');
+            $table->float('mu')->default(0)->comment('μ値');
+            $table->float('sigma')->default(0)->comment('σ値');
+            $table->integer('rate')->default(0)->comment('レート');
+            $table->integer('min_rate')->default(0)->comment('最小レート');
+            $table->integer('max_rate')->default(0)->comment('最大レート');
+            $table->integer('win')->default(0)->comment('勝利数');
+            $table->integer('defeat')->default(0)->comment('敗北数');
+            $table->integer('games')->default(0)->comment('試合数');
             $table->dateTime('joined_at')->comment('参加日');
             $table->dateTime('last_game_at')->comment('最終ゲーム日');
             $table->boolean('enabled');
