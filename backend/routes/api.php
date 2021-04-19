@@ -25,8 +25,8 @@ Route::group(['middleware' => 'api'], function() {
      */
     Route::post('login', [AuthController::class, 'login'])->name('auth.login');
     /**
-     * POST /auth/logout
+     * GET /auth/logout
      */
-    Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
+    Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
   });
 });
