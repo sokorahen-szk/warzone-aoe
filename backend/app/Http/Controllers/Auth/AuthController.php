@@ -9,7 +9,7 @@ use Illuminate\Http\Response;
 
 use App\Http\Requests\Auth\LoginRequest;
 
-class LoginController extends Controller
+class AuthController extends Controller
 {
     public function username()
     {

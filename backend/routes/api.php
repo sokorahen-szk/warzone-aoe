@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,10 +23,10 @@ Route::group(['middleware' => 'api'], function() {
     /**
      * POST /auth/login
      */
-    Route::post('login', [LoginController::class, 'login'])->name('auth.login');
+    Route::post('login', [AuthController::class, 'login'])->name('auth.login');
     /**
      * POST /auth/logout
      */
-    Route::post('logout', [LoginController::class, 'logout'])->name('auth.logout');
+    Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
   });
 });
