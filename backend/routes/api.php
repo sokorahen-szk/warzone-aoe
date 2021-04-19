@@ -19,5 +19,14 @@ use App\Http\Controllers\Auth\LoginController;
 
 
 Route::group(['middleware' => 'api'], function() {
-  Route::post('login', [LoginController::class, 'login'])->name('login');
+  Route::prefix('auth')->group(function() {
+    /**
+     * POST /auth/login
+     */
+    Route::post('login', [LoginController::class, 'login'])->name('auth.login');
+    /**
+     * POST /auth/logout
+     */
+    Route::post('logout', [LoginController::class, 'logout'])->name('auth.logout');
+  });
 });

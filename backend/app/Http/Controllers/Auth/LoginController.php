@@ -68,15 +68,17 @@ class LoginController extends Controller
 
     public function logout()
     {
+        $response = $this->response(null, 200);
+
         try {
-            auth()->logout();
-
-            $response = $this->response(null, 200);
-
-            return response()->json($response);
+            if (Auth::check()) {
+                auth()->logout();
+            }
         } catch (\Exception $e) {
             return response()->json($this->response(null, 500));
         }
+
+        return response()->json($response);
     }
 
     protected function respondWithToken($token): array
