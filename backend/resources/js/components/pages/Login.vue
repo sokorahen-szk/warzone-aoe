@@ -28,6 +28,8 @@
                           @update="userName = $event"
                           placeholder="username"
                           outlined
+                          required
+                          :rules="{label:'ユーザ名', types:'required,min:4,max:10'}"
                         />
                       </v-col>
                       <v-col cols="12" class="py-0 ma-0">
@@ -37,10 +39,17 @@
                           @update="passowrd = $event"
                           placeholder="password"
                           outlined
+                          required
+                          :rules="{label:'パスワード', types:'required,min:8'}"
                         />
                       </v-col>
                       <v-col cols="12" class="text-center mt-2">
-                        <Button label="ログイン" color="success" @click="loginEvent" />
+                        <Button
+                          label="ログイン"
+                          color="success"
+                          @click="loginEvent"
+                          :disabled="!valid"
+                        />
                       </v-col>
 
                       <v-col cols="12 text-center">
@@ -85,7 +94,7 @@ export default {
   },
   methods: {
     loginEvent() {
-      console.log('login event...')
+      this.$refs.form.validate()
     }
   }
 }

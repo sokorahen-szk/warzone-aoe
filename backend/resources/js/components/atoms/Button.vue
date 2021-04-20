@@ -4,6 +4,7 @@
     :depressed="depressed"
     @click="clickButton"
     :color="color"
+    :disabled="disabled"
   >
     {{label}}
   </v-btn>
@@ -18,6 +19,7 @@ export default {
     path: {type: String},
     depressed: {type: Boolean, default: false},
     color: {type: String, default: ''},
+    disabled: {type: Boolean, default: false},
   },
   data() {
     return {
