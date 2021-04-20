@@ -94,7 +94,8 @@ export default {
   },
   methods: {
     loginEvent() {
-      this.$refs.form.validate()
+      if(!this.$refs.form.validate())return;
+      
     }
   }
 }
