@@ -5,8 +5,8 @@ export const headerConfig = {
   },
   links: [
     {label: "ホーム", uri: "/"},
-    {label: "対戦履歴", uri: "/test"},
-    {label: "レーティング", uri: "/test"},
-    {label: "問い合わせ", uri: "/test"},
+    {label: "対戦履歴", uri: "/wars"},
+    {label: "レーティング", uri: "/raiting"},
+    {label: "問い合わせ", uri: "/contact"},
   ]
 }

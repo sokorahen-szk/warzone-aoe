@@ -31,6 +31,7 @@ class AuthController extends Controller
             $response = $this->response($this->respondWithToken($token), 200);
             return response()->json($response);
         } catch (\Exception $e) {
+            // ロギング...
             return response()->json($this->response(null, 500));
         }
     }
@@ -38,6 +39,32 @@ class AuthController extends Controller
     protected function guard()
     {
         return Auth::guard('api');
+    }
+
+    public function logout()
+    {
+        $response = $this->response(null, 200);
+
+        try {
+            if (Auth::check()) {
+                auth()->logout();
+            } else {
+                $response = $this->response(null, 406);
+            }
+        } catch (\Exception $e) {
+            // ロギング...
+            return response()->json($this->response(null, 500));
+        }
+
+        return response()->json($response);
+    }
+
+    protected function respondWithToken($token): array
+    {
+        return [
+            'token'         => $token,
+            'expires_in'    => auth()->factory()->getTTL() * 60,
+        ];
     }
 
     private function response($body, $code = Response::HTTP_INTERNAL_SERVER_ERROR)
@@ -54,38 +81,19 @@ class AuthController extends Controller
                 break;
             case Response::HTTP_UNAUTHORIZED:
                 $response->isSuccess = false;
-                $response->errorMessages = 'ログインに失敗しました。';
+                $response->errorMessages[] = 'ログインに失敗しました。';
+                break;
+            case Response::HTTP_NOT_ACCEPTABLE:
+                $response->isSuccess = false;
+                $response->errorMessages[] = '既にログアウトされています。';
                 break;
             case Response::HTTP_INTERNAL_SERVER_ERROR:
             default:
                 $response->isSuccess = false;
-                $response->errorMessages = 'サーバエラーが発生しました。';
+                $response->errorMessages[] = 'サーバエラーが発生しました。';
                 break;
         }
 
         return $response;
-    }
-
-    public function logout()
-    {
-        $response = $this->response(null, 200);
-
-        try {
-            if (Auth::check()) {
-                auth()->logout();
-            }
-        } catch (\Exception $e) {
-            return response()->json($this->response(null, 500));
-        }
-
-        return response()->json($response);
-    }
-
-    protected function respondWithToken($token): array
-    {
-        return [
-            'access_token' => $token,
-            'expires_in' => auth()->factory()->getTTL() * 60,
-        ];
     }
 }

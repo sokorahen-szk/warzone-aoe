@@ -15,17 +15,25 @@
       <v-spacer />
 
       <template v-if="device == 'pc'">
-      <v-btn
-        v-for="link in header.links"
-        :key="link.label"
-        :to="link.uri"
-        text
-        plain
-        color="#ffffff"
-      >
-        {{ link.label }}
-      </v-btn>
-      <Avatar class="ml-4" :src="user.image" :alt="user.name" :size="34" />
+        <v-btn
+          v-for="link in header.links"
+          :key="link.label"
+          :to="link.uri"
+          text
+          plain
+          color="#ffffff"
+        >
+          {{ link.label }}
+        </v-btn>
+
+        <template v-if="isLogin">
+        <Avatar class="ml-4" :src="user.image" :alt="user.name" :size="34" />
+        </template>
+        <template v-else>
+        <Button class="mr-2" label="ログイン" path="/login" color="primary" icon-type="mdi-login" icon />
+        <Button label="新規登録" path="/passowrd/reset" color="success" icon-type="mdi-account" icon />
+        </template>
+
       </template>
       <template v-else>
       <v-app-bar-nav-icon
@@ -61,17 +69,19 @@
 <script>
 import { mapGetters } from 'vuex'
 import Avatar from '@/components/molecules/Avatar'
-
+import Button from '@/components/atoms/Button'
 export default {
   name: "Header",
   props: {
     header: {type: Object, required: true},
   },
   components: {
-    Avatar
+    Avatar,
+    Button
   },
   computed: {
     ...mapGetters('breakpointStore', ['getDeviceType']),
+    ...mapGetters('authStore', ['isLogin']),
     device() {
       return this.getDeviceType;
     }
