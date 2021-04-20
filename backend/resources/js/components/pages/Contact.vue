@@ -1,5 +1,5 @@
 <template>
   <div>
-    <h1>Testaa</h1>
+    <h1>問い合わせ</h1>
   </div>
 </template>

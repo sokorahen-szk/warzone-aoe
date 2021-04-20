@@ -10,6 +10,7 @@
     :placeholder="placeholder"
     flat
     :rules="setRule"
+    :background-color="color"
   ></v-text-field>
 </template>
 
@@ -25,6 +26,7 @@ export default {
     filled: {type: Boolean, default: false},
     outlined: {type: Boolean, default: false},
     rules: {type: Object, default: null},
+    color: {type: String, default: null},
   },
   data() {
     return {

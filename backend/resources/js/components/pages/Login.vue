@@ -29,17 +29,19 @@
                           placeholder="username"
                           outlined
                           required
+                          color="#eee"
                           :rules="{label:'ユーザ名', types:'required,min:4,max:10'}"
                         />
                       </v-col>
                       <v-col cols="12" class="py-0 ma-0">
                         <div class="py-2">パスワード</div>
                         <PasswordTextInput
-                          :value="passowrd"
-                          @update="passowrd = $event"
+                          :value="password"
+                          @update="password = $event"
                           placeholder="password"
                           outlined
                           required
+                          color="#eee"
                           :rules="{label:'パスワード', types:'required,min:8'}"
                         />
                       </v-col>
@@ -76,6 +78,7 @@ import TextInput from '@/components/atoms/TextInput'
 import Button from '@/components/atoms/Button'
 import PasswordTextInput from '@/components/atoms/PasswordTextInput'
 import Link from '@/components/atoms/Link'
+import { mapActions } from 'vuex'
 export default {
   name: 'Login',
   components: {
@@ -89,13 +92,14 @@ export default {
     return {
       valid: true,
       userName: null,
-      passowrd: null,
+      password: null,
     }
   },
   methods: {
+    ...mapActions('authStore', ['login']),
     loginEvent() {
-      if(!this.$refs.form.validate())return;
-      
+      if(!this.$refs.form.validate()) return;
+      this.login({name: this.userName, password: this.password})
     }
   }
 }
