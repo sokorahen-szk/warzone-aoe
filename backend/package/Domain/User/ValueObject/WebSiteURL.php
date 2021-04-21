@@ -2,7 +2,7 @@
 
 namespace Package\Domain\User\ValueObject;
 
-class WebSiteURL {
+class WebSiteUrl {
   private $value;
 
   public function __construct($value)

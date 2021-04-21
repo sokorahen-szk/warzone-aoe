@@ -5,10 +5,10 @@ namespace Package\Domain\User\ValueObject;
 use Package\Domain\User\Exceptions\UserArgumentNullException;
 use Package\Domain\User\Exceptions\UserArgumentException;
 
-const LABEL = 'ユーザID';
-
 class UserId {
   private $value;
+
+  const LABEL = 'ユーザID';
 
   public function __construct($value)
   {
