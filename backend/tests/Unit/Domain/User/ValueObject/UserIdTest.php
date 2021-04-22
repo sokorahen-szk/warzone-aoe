@@ -18,7 +18,7 @@ class UserIdTest extends TestCase {
     foreach ($tests as $test) {
       $instance = new UserId($test);
       $this->assertInstanceOf(UserId::class, $instance);
-      $this->assertEquals($test, $instance->getValue());
+      $this->assertSame($test, $instance->getValue());
     }
   }
 
