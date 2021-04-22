@@ -13,7 +13,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(
+            \Package\Usecase\Account\GetInfo\AccountGetInfoServiceInterface::class,
+            \Package\Application\Account\GetInfo\AccountGetInfoService::class
+        );
+
+        $this->app->singleton(
+            \Package\Domain\User\Repository\UserRepositoryInterface::class,
+            \Package\Infrastructure\Eloquent\User\UserRepository::class
+        );
     }
 
     /**

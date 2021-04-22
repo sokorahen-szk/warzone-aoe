@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\AccountController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -33,11 +33,12 @@ Route::group(['middleware' => 'api'], function() {
  * ログイン済ユーザ向けAPI
  */
 Route::group(['middleware' => 'auth:api'], function () {
-  Route::prefix('user')->group(function() {
+  Route::prefix('account')->group(function() {
     /**
-     * GET /api/user/profile
+     * アカウント情報を取得する
+     * GET /api/account/profile
      */
-    Route::get('profile', [UserController::class, 'getProfile'])->name('user.profile');
+    Route::get('profile', [AccountController::class, 'show'])->name('account.profile');
   });
 
   Route::prefix('auth')->group(function() {
