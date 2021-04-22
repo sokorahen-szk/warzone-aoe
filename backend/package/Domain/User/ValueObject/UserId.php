@@ -20,7 +20,7 @@ class UserId {
       throw new UserArgumentException(sprintf("%sの値の範囲を満たしていません。", self::LABEL));
     }
 
-    $this->value = $value;
+    $this->value = (int) $value;
   }
 
   public function getValue(): int

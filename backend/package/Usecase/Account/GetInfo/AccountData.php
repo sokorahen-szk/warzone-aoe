@@ -1,6 +1,6 @@
 <?php
 
-namespace Package\Usecase\User\GetInfo;
+namespace Package\Usecase\Account\GetInfo;
 
 use Package\Domain\User\Entity\User;
 
@@ -8,7 +8,7 @@ use Package\Domain\User\Entity\User;
  * Data Transfer Object
  */
 
-class UserData {
+class AccountData {
   public $id;
   public $playerId;
   public $roleId;
