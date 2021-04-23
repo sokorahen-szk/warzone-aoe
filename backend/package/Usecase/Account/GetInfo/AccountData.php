@@ -21,7 +21,7 @@ class AccountData {
   {
     $this->id = $source->getId()->getValue();
     $this->playerId = $source->getPlayerId()->getValue();
-    $this->roleId = $source->getRoleId()->getValue();
+    $this->roleId = $source->getRole()->getRoleId();
     $this->name = $source->getName()->getValue();
     $this->twitterId = $source->getTwitterId()->getValue();
     $this->avatorImage = $source->getAvatorImage()->getValue();

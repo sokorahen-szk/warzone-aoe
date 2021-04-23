@@ -2,6 +2,7 @@
 
 namespace Package\Domain\User\Entity;
 
+// ValueObjects
 use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\User\ValueObject\PlayerId;
 use Package\Domain\User\ValueObject\RoleId;
@@ -12,10 +13,13 @@ use Package\Domain\User\ValueObject\AvatorImage;
 use Package\Domain\User\ValueObject\Email;
 use Package\Domain\User\ValueObject\Password;
 
+// Entities
+use Package\Domain\User\Entity\Role;
+
 class User {
   private $id;
   private $playerId;
-  private $roleId;
+  private $role;
   private $name;
   private $twitterId;
   private $webSiteUrl;
@@ -26,7 +30,7 @@ class User {
   public function __construct(
     ?UserId $id,
     PlayerId $playerId,
-    RoleId $roleId,
+    Role $role,
     Name $name,
     TwitterId $twitterId,
     WebSiteUrl $webSiteUrl,
@@ -37,7 +41,7 @@ class User {
   {
     $this->id = $id;
     $this->playerId = $playerId;
-    $this->roleId = $roleId;
+    $this->role = $role;
     $this->name = $name;
     $this->twitterId = $twitterId;
     $this->webSiteUrl = $webSiteUrl;
@@ -63,11 +67,11 @@ class User {
   }
 
   /**
-   * @return RoleId
+   * @return Role
    */
-  public function getRoleId(): RoleId
+  public function getRole(): Role
   {
-    return $this->roleId;
+    return $this->role;
   }
 
   /**

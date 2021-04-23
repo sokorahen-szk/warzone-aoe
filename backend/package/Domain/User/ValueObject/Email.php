@@ -16,7 +16,7 @@ class Email {
       throw new UserArgumentNullException(sprintf("%sが設定されていません。", self::LABEL));
     }
 
-    if(!preg_match('/^[0-9]{3}-[0-9]{4}$/', $value)) {
+    if(!preg_match("/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/", $value)) {
       throw new UserArgumentException(sprintf("%sの形式でありません。", self::LABEL));
     }
 
