@@ -8,6 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+use App\Models\PlayerModel;
+use App\Models\RoleModel;
+
 class UserModel extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
@@ -50,4 +53,20 @@ class UserModel extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    /**
+     * リレーション
+     */
+
+     // プレイヤー情報
+    public function player()
+    {
+        return $this->hasOne(PlayerModel::class, 'id', 'player_id');
+    }
+
+     // 権限情報
+     public function role()
+     {
+         return $this->hasOne(RoleModel::class, 'id', 'role_id');
+     }
 }
