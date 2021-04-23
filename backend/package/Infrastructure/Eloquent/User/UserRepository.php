@@ -37,7 +37,7 @@ class UserRepository implements UserRepositoryInterface {
       new TwitterId($user->twitter_id),
       new WebSiteUrl($user->website_url),
       new AvatorImage($user->avator_image),
-      new Email($user->password),
+      new Email($user->email),
       null
     );
   }

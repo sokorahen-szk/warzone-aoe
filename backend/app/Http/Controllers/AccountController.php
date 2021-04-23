@@ -13,5 +13,7 @@ class AccountController extends Controller
     {
         $command = new AccountGetInfoCommand(\Auth::user()->id);
         $result = $interactor->handle($command);
+
+        //$result ResponseGeneratorかなにかで？
     }
 }

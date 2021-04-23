@@ -4,6 +4,7 @@ namespace Package\Application\Account\GetInfo;
 
 use Package\Usecase\Account\GetInfo\AccountGetInfoServiceInterface;
 use Package\Usecase\Account\GetInfo\AccountGetInfoCommand;
+use Package\Usecase\Account\GetInfo\AccountData;
 use Package\Domain\User\Repository\UserRepositoryInterface;
 use Package\Domain\User\ValueObject\UserId;
 
@@ -15,9 +16,14 @@ class AccountGetInfoService implements AccountGetInfoServiceInterface {
     $this->userRepository = $userRepository;
   }
 
-  public function handle(AccountGetInfoCommand $command)
+  public function handle(AccountGetInfoCommand $command): AccountData
   {
     $userId = new UserId($command->userId);
-    var_dump($userId->getValue());
+    $user = $this->userRepository->findUserById($userId);
+    if (is_null($user)) {
+        return null;
+    }
+
+    return new AccountData($user);
   }
 }
