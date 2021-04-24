@@ -28,6 +28,12 @@ class AuthController extends Controller
                 return response()->json($this->response(null, 401));
             }
 
+            // 退会、アカウント停止
+            if (Auth::user()->status == 'withdrawal' || Auth::user()->status == 'banned') {
+                auth()->logout();
+                return response()->json($this->response(null, 403));
+            }
+
             $response = $this->response($this->respondWithToken($token), 200);
             return response()->json($response);
         } catch (\Exception $e) {
@@ -81,16 +87,20 @@ class AuthController extends Controller
                 break;
             case Response::HTTP_UNAUTHORIZED:
                 $response->isSuccess = false;
-                $response->errorMessages[] = 'ログインに失敗しました。';
+                $response->errorMessages[] = $body ?: 'ログインに失敗しました。';
                 break;
             case Response::HTTP_NOT_ACCEPTABLE:
                 $response->isSuccess = false;
-                $response->errorMessages[] = '既にログアウトされています。';
+                $response->errorMessages[] = $body ?: '既にログアウトされています。';
+                break;
+            case Response::HTTP_FORBIDDEN:
+                $response->isSuccess = false;
+                $response->errorMessages[] = $body ?: 'ログイン権限がありません。';
                 break;
             case Response::HTTP_INTERNAL_SERVER_ERROR:
             default:
                 $response->isSuccess = false;
-                $response->errorMessages[] = 'サーバエラーが発生しました。';
+                $response->errorMessages[] = $body ?: 'サーバエラーが発生しました。';
                 break;
         }
 

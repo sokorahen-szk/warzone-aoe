@@ -11,6 +11,7 @@ use Package\Domain\User\ValueObject\TwitterId;
 use Package\Domain\User\ValueObject\WebSiteUrl;
 use Package\Domain\User\ValueObject\AvatorImage;
 use Package\Domain\User\ValueObject\Email;
+use Package\Domain\User\ValueObject\Status;
 use Package\Domain\User\ValueObject\Password;
 
 // Entities
@@ -26,6 +27,7 @@ class User {
   private $webSiteUrl;
   private $avatorImage;
   private $email;
+  private $status;
   private $password;
 
   public function __construct(
@@ -37,6 +39,7 @@ class User {
     WebSiteUrl $webSiteUrl,
     AvatorImage $avatorImage,
     Email $email,
+    Status $status,
     ?Password $password
   )
   {
@@ -48,6 +51,7 @@ class User {
     $this->webSiteUrl = $webSiteUrl;
     $this->avatorImage = $avatorImage;
     $this->email = $email;
+    $this->status = $status;
     $this->password = $password;
   }
 
@@ -113,6 +117,14 @@ class User {
   public function getEmail(): Email
   {
     return $this->email;
+  }
+
+  /**
+   * @return Status
+   */
+  public function getStatus(): Status
+  {
+    return $this->status;
   }
 
   /**

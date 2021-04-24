@@ -27,6 +27,7 @@ class UserSeeder extends Seeder
             'name'              => 'titan',
             'steam_id'          => "4242424242424242",
             'twitter_id'        => "sokorahen-szk",
+            'status'            => 1,
             'password'          => bcrypt('password'),
         ]);
 
@@ -38,6 +39,7 @@ class UserSeeder extends Seeder
                 'player_id'         => $i + 1,
                 'role_id'           => mt_rand(1, 3),
                 'name'              => strtolower($faker->firstNameFemale) . $i,
+                'status'            => mt_rand(0, 3),
                 'password'          => bcrypt('password'),
             ]);
         }

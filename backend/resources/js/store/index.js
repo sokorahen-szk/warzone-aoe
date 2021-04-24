@@ -5,13 +5,15 @@ import createPersistedState from 'vuex-persistedstate'
 // Vuex modules...
 import breakpointStore from '@/store/breakpoint'
 import authStore from '@/store/auth'
+import accountStore from '@/store/account'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   modules: {
-    breakpointStore,
-    authStore
+    breakpointStore: breakpointStore,
+    authStore: authStore,
+    accountStore: accountStore
   },
 
   plugins: [createPersistedState(
@@ -19,6 +21,8 @@ const store = new Vuex.Store({
       key: 'wzn',
 
       paths: [
+        'authStore.token',
+        'accountStore.user',
       ],
 
       storage: window.sessionStorage

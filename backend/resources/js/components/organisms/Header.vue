@@ -27,7 +27,9 @@
         </v-btn>
 
         <template v-if="isLogin">
-        <Avatar class="ml-4" :src="user.image" :alt="user.name" :size="34" />
+        <Link path="/account/dashboard">
+          <Avatar class="ml-4" :src="user.avatorImage" :alt="user.name" :size="34" />
+        </Link>
         </template>
         <template v-else>
         <Button class="mr-2" label="ログイン" path="/login" color="primary" icon-type="mdi-login" icon />
@@ -57,7 +59,7 @@
         color="grey lighten-4"
         class="pa-3"
       >
-        <Avatar class="mb-2" :src="user.image" :alt="user.name" />
+        <Avatar class="mb-2" :src="user.avatorImage" :alt="user.name" />
         <div>{{user.name}}</div>
       </v-sheet>
 
@@ -70,14 +72,17 @@
 import { mapGetters } from 'vuex'
 import Avatar from '@/components/molecules/Avatar'
 import Button from '@/components/atoms/Button'
+import Link from '@/components/atoms/Link'
 export default {
   name: "Header",
   props: {
     header: {type: Object, required: true},
+    user: {type: Object},
   },
   components: {
     Avatar,
-    Button
+    Button,
+    Link
   },
   computed: {
     ...mapGetters('breakpointStore', ['getDeviceType']),
@@ -89,10 +94,6 @@ export default {
   data() {
     return {
       drawer: false,
-      user: {
-        name: "たろう",
-        image: 'https://p4.wallpaperbetter.com/wallpaper/905/958/530/touwa-erio-anime-wallpaper-preview.jpg',
-      }
     }
   }
 }

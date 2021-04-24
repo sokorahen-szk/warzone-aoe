@@ -21,8 +21,9 @@ class CreateUsersTable extends Migration
             $table->string('steam_id', 30)->nullable()->comment('SteamID');
             $table->string('twitter_id', 50)->nullable()->comment('TwitterID');
             $table->string('website_url')->nullable()->comment('WebサイトURL');
-            $table->string('avator_image')->default('profile/0')->comment('ユーザ画像');
+            $table->string('avator_image')->default('/storage/profile/0.png')->comment('ユーザ画像');
             $table->string('email')->default('sample@example.com')->comment('メールアドレス');
+            $table->tinyInteger('status')->comment('ユーザステータス');
             $table->string('password')->comment('パスワード');
             $table->rememberToken();
             $table->timestamps();

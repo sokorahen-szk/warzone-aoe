@@ -9,6 +9,7 @@ use Package\Domain\User\ValueObject\TwitterId;
 use Package\Domain\User\ValueObject\WebSiteUrl;
 use Package\Domain\User\ValueObject\AvatorImage;
 use Package\Domain\User\ValueObject\Email;
+use Package\Domain\User\ValueObject\Status;
 use Package\Domain\User\ValueObject\Password;
 use Package\Domain\User\ValueObject\Role\RoleId;
 use Package\Domain\User\ValueObject\Role\RoleName;
@@ -80,6 +81,7 @@ class UserRepository implements UserRepositoryInterface {
       new WebSiteUrl($user->website_url),
       new AvatorImage($user->avator_image),
       new Email($user->email),
+      new Status($user->status),
       null
     );
   }

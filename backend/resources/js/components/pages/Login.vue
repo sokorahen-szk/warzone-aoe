@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Alert :properties="getAlert" dense />
     <CommonOneColumnTemplate>
 			<template slot="container">
         <v-form
@@ -78,7 +79,8 @@ import TextInput from '@/components/atoms/TextInput'
 import Button from '@/components/atoms/Button'
 import PasswordTextInput from '@/components/atoms/PasswordTextInput'
 import Link from '@/components/atoms/Link'
-import { mapActions } from 'vuex'
+import Alert from '@/components/atoms/Alert'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'Login',
   components: {
@@ -87,6 +89,7 @@ export default {
     PasswordTextInput,
     Button,
     Link,
+    Alert,
   },
   data() {
     return {
@@ -94,6 +97,10 @@ export default {
       userName: null,
       password: null,
     }
+  },
+  computed: {
+    ...mapGetters('authStore', ['getAlert']),
+    ...mapGetters('authStore', ['isLogin']),
   },
   methods: {
     ...mapActions('authStore', ['login']),

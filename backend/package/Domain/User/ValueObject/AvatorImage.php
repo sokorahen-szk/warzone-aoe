@@ -14,4 +14,9 @@ class AvatorImage {
   {
     return $this->value;
   }
+
+  public function getImageFullPath()
+  {
+    return url($this->value);
+  }
 }

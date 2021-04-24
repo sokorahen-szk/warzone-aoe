@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <Header :header="header" />
+    <Header :header="header" :user="user" />
     <v-main>
       <router-view />
     </v-main>
@@ -8,8 +8,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Header from '@/components/organisms/Header';
 import { headerConfig } from '@/config/global'
+import { userTemplate } from '@/config/user'
 
 export default {
   name: "App",
@@ -19,11 +21,26 @@ export default {
   data() {
     return {
       header: headerConfig,
+      user: userTemplate,
     }
+  },
+  created() {
+    if (this.isLogin) { this.$set(this, 'user', this.getProfile) }
   },
   mounted() {
     this.$store.dispatch('breakpointStore/updateBreakpoint', {$vuetify: this.$vuetify})
-  }
+
+    this.$store.subscribe((mutation) => {
+      if (mutation.type === 'accountStore/setProfile') {
+        this.$set(this, 'user', this.getProfile)
+      }
+    })
+
+  },
+  computed: {
+        ...mapGetters('accountStore', ['getProfile']),
+        ...mapGetters('authStore', ['isLogin']),
+  },
 }
 </script>
 

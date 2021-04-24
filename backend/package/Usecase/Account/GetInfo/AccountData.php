@@ -17,14 +17,16 @@ class AccountData extends Data {
   public $avatorImage;
   public $email;
   public $role;
+  public $status;
 
   public function __construct(User $source)
   {
     $this->id = $source->getId()->getValue();
     $this->name = $source->getName()->getValue();
     $this->twitterId = $source->getTwitterId()->getValue();
-    $this->avatorImage = $source->getAvatorImage()->getValue();
+    $this->avatorImage = $source->getAvatorImage()->getImageFullPath();
     $this->email = $source->getEmail()->getValidEmail();
+    $this->status = $source->getStatus()->getEnumName();
 
     $this->player = [
       'id' => $source->getPlayer()->getPlayerId()->getValue(),

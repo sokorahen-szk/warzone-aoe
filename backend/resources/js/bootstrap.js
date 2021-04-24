@@ -10,7 +10,17 @@ window.axios = require('axios');
 
 window.axios.defaults.headers.common = {
   'X-Requested-With': 'XMLHttpRequest',
-  'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]'),
+  'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]')
+}
+
+let apiAccessToken = null
+const storage = JSON.parse(window.sessionStorage['wzn'])
+if (storage) {
+  apiAccessToken = storage.authStore.token
+}
+
+if (apiAccessToken) {
+  window.axios.defaults.headers.common['Authorization'] = `Bearer ${apiAccessToken}`
 }
 
 //window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
