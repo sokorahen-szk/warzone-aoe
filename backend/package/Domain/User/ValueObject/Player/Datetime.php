@@ -16,4 +16,9 @@ class Datetime {
   {
     return $this->value;
   }
+
+  public function getDatetime(): string
+  {
+    return $this->value->format('Y-m-d H:i:s');
+  }
 }

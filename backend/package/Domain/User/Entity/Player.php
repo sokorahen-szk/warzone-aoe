@@ -190,7 +190,7 @@ class Player {
    */
   public function getGameWinningPercentage(): float
   {
-    return $this->win->getValue() / ($this->games->getValue() - $this->getGameDraw());
+    return round(($this->win->getValue() / ($this->games->getValue() - $this->getGameDraw())) * 100, 2);
   }
 
 }
