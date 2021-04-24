@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('twitter_id', 50)->nullable()->comment('TwitterID');
             $table->string('website_url')->nullable()->comment('WebサイトURL');
             $table->string('avator_image')->default('profile/0')->comment('ユーザ画像');
-            $table->string('email')->unique()->default('sample@example.com')->comment('メールアドレス');
+            $table->string('email')->default('sample@example.com')->comment('メールアドレス');
             $table->string('password')->comment('パスワード');
             $table->rememberToken();
             $table->timestamps();

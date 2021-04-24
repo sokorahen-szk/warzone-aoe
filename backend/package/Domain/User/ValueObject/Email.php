@@ -27,4 +27,10 @@ class Email {
   {
     return $this->value;
   }
+
+  public function getValidEmail(): ?string
+  {
+    if ($this->value == "sample@example.com") return null;
+    return $this->getValue();
+  }
 }

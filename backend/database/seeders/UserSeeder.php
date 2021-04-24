@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 
 use App\Models\UserModel;
+use Faker\Factory as FakerFactory;
 
 class UserSeeder extends Seeder
 {
@@ -28,5 +29,17 @@ class UserSeeder extends Seeder
             'twitter_id'        => "sokorahen-szk",
             'password'          => bcrypt('password'),
         ]);
+
+        $faker = FakerFactory::create();
+
+        // ここからダミーデータ
+        for ($i = 1; $i <= 100; $i++) {
+            UserModel::create([
+                'player_id'         => $i + 1,
+                'role_id'           => mt_rand(1, 3),
+                'name'              => strtolower($faker->firstNameFemale) . $i,
+                'password'          => bcrypt('password'),
+            ]);
+        }
     }
 }

@@ -15,10 +15,11 @@ use Package\Domain\User\ValueObject\Password;
 
 // Entities
 use Package\Domain\User\Entity\Role;
+use Package\Domain\User\Entity\Player;
 
 class User {
   private $id;
-  private $playerId;
+  private $player;
   private $role;
   private $name;
   private $twitterId;
@@ -29,7 +30,7 @@ class User {
 
   public function __construct(
     ?UserId $id,
-    PlayerId $playerId,
+    Player $player,
     Role $role,
     Name $name,
     TwitterId $twitterId,
@@ -40,7 +41,7 @@ class User {
   )
   {
     $this->id = $id;
-    $this->playerId = $playerId;
+    $this->player = $player;
     $this->role = $role;
     $this->name = $name;
     $this->twitterId = $twitterId;
@@ -59,11 +60,11 @@ class User {
   }
 
   /**
-   * @return PlayerId
+   * @return Player
    */
-  public function getPlayerId(): PlayerId
+  public function getPlayer(): Player
   {
-    return $this->playerId;
+    return $this->player;
   }
 
   /**
