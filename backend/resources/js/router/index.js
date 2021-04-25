@@ -7,6 +7,7 @@ import store from '@/store/index'
 import Home from '@/components/pages/Home.vue'
 import Login from '@/components/pages/Login.vue'
 import Contact from '@/components/pages/Contact.vue'
+import Register from '@/components/pages/Register.vue'
 
 // Raiting
 import RaitingIndex from '@/components/pages/raiting/Index.vue'
@@ -33,6 +34,12 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
+    meta: { complitedAuthRedirect: true }
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register,
     meta: { complitedAuthRedirect: true }
   },
   {
