@@ -80,7 +80,7 @@
                           :rules="{label:'メールアドレス', types:''}"
                         />
                       </v-col>
-                      <v-col cols="12" class="py-0 ma-0">
+                      <v-col cols="12" class="py-0 mb-4">
                         <div class="py-2">
                           プレイ経験
                         </div>
@@ -91,9 +91,12 @@
                       </v-col>
                       <v-col cols="12" class="py-0 ma-0">
                         <div class="py-2">
-                          テスト
+                          アラビアマップ 8人戦 4 vs 4の経験がありますか？
                         </div>
-                        <!--RadioBox /-->
+                        <RadioBox
+                          :items="questionnaires1"
+                          @update="questionnaire = $event"
+                        />
                       </v-col>
                       <v-col cols="12" class="text-center mt-2">
                         <Button
@@ -147,6 +150,7 @@ export default {
       passwordConfirm: null,
       email: null,
       gamePackage: [],
+      questionnaire: null,
       gamePackages: [
         {
           id: 1,
@@ -163,6 +167,11 @@ export default {
           image: 'https://lh5.googleusercontent.com/Q8B15eV8jA8D6SpowwWxMKr_3ZcDe4CmWXegUVIM2UYwQSUhXPIDq244TNGlLs6LTDbpAVw-2ZxgGkY1b2v4BYXibeU4fhVmHT7hp43mWHQ8NytQVbf5toNnnwN2=w260',
           title: 'Age of Empires II DE (steam版)',
         },
+      ],
+      questionnaires1: [
+        {label: '10戦以上', value: 0},
+        {label: '5戦以上', value: 1},
+        {label: 'なし', value: 2},
       ],
     }
   },
