@@ -51,6 +51,7 @@ class Player {
     $this->playerName = $playerName;
     $this->mu = $mu;
     $this->sigma = $sigma;
+    $this->rate = $rate;
     $this->minRate = $minRate;
     $this->maxRate = $maxRate;
     $this->win = $win;
@@ -191,6 +192,15 @@ class Player {
   public function getGameWinningPercentage(): float
   {
     return round(($this->win->getValue() / ($this->games->getValue() - $this->getGameDraw())) * 100, 2);
+  }
+
+  /**
+   * 勝率を%をつけて返す
+   * @return string
+   */
+  public function getGameWinningPercentageWithPer(): string
+  {
+    return $this->getGameWinningPercentage() . '%';
   }
 
 }

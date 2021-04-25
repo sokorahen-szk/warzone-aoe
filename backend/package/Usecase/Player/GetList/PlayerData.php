@@ -19,18 +19,15 @@ class PlayerData extends Data {
       $response[] = [
         'id' => $source->getPlayerId()->getValue(),
         'name' => $source->getPlayerName()->getValue(),
-        'mu' => $source->getMu()->getValue(),
+        'rate' => $source->getRate()->getValue(),
+        'rank' => $source->getMu()->getRank(),
         'sigma' => $source->getSigma()->getValue(),
-        'minRate' => $source->getMinRate()->getValue(),
-        'maxRate' => $source->getMaxRate()->getValue(),
         'win' => $source->getWin()->getValue(),
         'defeat' => $source->getDefeat()->getValue(),
         'draw' => $source->getGameDraw(),
         'games' => $source->getGames()->getValue(),
-        'wp' => $source->getGameWinningPercentage(),
+        'wp' => $source->getGameWinningPercentageWithPer(),
         'gamePackages' => $source->getGamePackages()->getList(),
-        'joinedAt' => $source->getJoinedAt()->getDatetime(),
-        'lastGameAt' => $source->getLastGameAt()->getDatetime(),
         'enabled' => $source->getEnabled()->getValue(),
       ];
     }
