@@ -41,8 +41,8 @@ class AccountData extends Data {
       'games' => $source->getPlayer()->getGames()->getValue(),
       'wp' => $source->getPlayer()->getGameWinningPercentage(),
       'gamePackages' => $source->getPlayer()->getGamePackages()->getList(),
-      'joinedAt' => $source->getPlayer()->getJoinedAt()->getValue(),
-      'lastGameAt' => $source->getPlayer()->getLastGameAt()->getValue(),
+      'joinedAt' => $source->getPlayer()->getJoinedAt()->getDatetime(),
+      'lastGameAt' => $source->getPlayer()->getLastGameAt()->getDatetime(),
       'enabled' => $source->getPlayer()->getEnabled()->getValue(),
     ];
 

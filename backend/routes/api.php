@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\PlayerController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,9 +25,18 @@ use App\Http\Controllers\AccountController;
 Route::group(['middleware' => 'api'], function() {
   Route::prefix('auth')->group(function() {
     /**
+     * ログイン
      * POST /api/auth/login
      */
     Route::post('login', [AuthController::class, 'login'])->name('auth.login');
+  });
+
+  Route::prefix('player')->group(function() {
+    /**
+     * プレイヤー一覧取得する
+     * GET /api/player/list
+     */
+    Route::get('list', [PlayerController::class, 'list'])->name('player.list');
   });
 });
 
@@ -43,6 +54,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
   Route::prefix('auth')->group(function() {
     /**
+     * ログアウト
      * POST /api/auth/logout
      */
     Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');

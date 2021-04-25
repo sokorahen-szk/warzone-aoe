@@ -6,6 +6,7 @@ import createPersistedState from 'vuex-persistedstate'
 import breakpointStore from '@/store/breakpoint'
 import authStore from '@/store/auth'
 import accountStore from '@/store/account'
+import playerStore from '@/store/player'
 
 Vue.use(Vuex)
 
@@ -13,7 +14,8 @@ const store = new Vuex.Store({
   modules: {
     breakpointStore: breakpointStore,
     authStore: authStore,
-    accountStore: accountStore
+    accountStore: accountStore,
+    playerStore: playerStore,
   },
 
   plugins: [createPersistedState(

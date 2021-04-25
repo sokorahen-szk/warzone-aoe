@@ -19,6 +19,10 @@ class PlayerSeeder extends Seeder
             return;
         }
 
+        $gamePackages = [
+            '1', '2', '1,2', null,
+        ];
+
         // テストアカウント
         PlayerModel::create([
             'name'              => 'titan',
@@ -30,6 +34,7 @@ class PlayerSeeder extends Seeder
             'win'               => 20,
             'defeat'            => 30,
             'games'             => 55,
+            'game_packages'     => '1',
             'joined_at'         => '2019-02-10',
             'last_game_at'      => '2020-10-22',
             'enabled'           => true,
@@ -54,6 +59,7 @@ class PlayerSeeder extends Seeder
                 'win'               => $win,
                 'defeat'            => $defeat,
                 'games'             => $games,
+                'game_packages'     => $gamePackages[mt_rand(0, 3)],
                 'joined_at'         => '2019-02-10',
                 'last_game_at'      => '2020-10-22',
                 'enabled'           => $enabled[mt_rand(0, 1)],
