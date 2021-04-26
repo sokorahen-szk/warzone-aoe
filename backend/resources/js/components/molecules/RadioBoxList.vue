@@ -1,5 +1,5 @@
 <template>
-  <v-radio-group v-model="selectedRadio" class="ma-0 pa-0" @change="changeEvent">
+  <v-radio-group v-model="selectedRadio" @change="changeEvent">
     <v-radio
       v-for="item in items"
       :key="item.label"
@@ -9,9 +9,15 @@
   </v-radio-group>
 </template>
 
+<style scoped>
+* >>> .v-messages {
+  min-height: 0px !important;
+}
+</style>
+
 <script>
 export default {
-  name: 'RadioBox',
+  name: 'RadioBoxList',
   props: {
     selected: {type: Number, default: 0},
     items: {type: Array, default: []},

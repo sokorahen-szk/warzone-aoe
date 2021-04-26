@@ -89,13 +89,31 @@
                           @update="gamePackage = $event"
                         />
                       </v-col>
-                      <v-col cols="12" class="py-0 ma-0">
+                      <v-col cols="12" class="pt-0 pb-0 px-3 ma-0">
                         <div class="py-2">
                           アラビアマップ 8人戦 4 vs 4の経験がありますか？
                         </div>
-                        <RadioBox
-                          :items="questionnaires1"
-                          @update="questionnaire = $event"
+                        <RadioBoxList
+                          :items="question1"
+                          @update="answer1 = $event"
+                        />
+                      </v-col>
+                      <v-col cols="12" class="py-0 ma-0">
+                        <div class="py-2">
+                          戦術で実践可能な戦術があれば選択してください。
+                        </div>
+                        <CheckBoxList
+                          :items="question2"
+                          @update="answers2 = $event"
+                        />
+                      </v-col>
+                      <v-col cols="12" class="py-0 ma-0">
+                        <div class="py-2">
+                          過去に以下のコミュニティーに参加していた場合選択してください。
+                        </div>
+                        <CheckBoxList
+                          :items="question3"
+                          @update="answers3 = $event"
                         />
                       </v-col>
                       <v-col cols="12" class="text-center mt-2">
@@ -129,7 +147,10 @@ import TextInput from '@/components/atoms/TextInput'
 import PasswordTextInput from '@/components/atoms/PasswordTextInput'
 import Button from '@/components/atoms/Button'
 import GamePackage from '@/components/organisms/GamePackage'
-import RadioBox from '@/components/molecules/RadioBox'
+import RadioBoxList from '@/components/molecules/RadioBoxList'
+import CheckBoxList from '@/components/molecules/CheckBoxList'
+import { gamePackages, question1, question2, question3 } from '@/config/register'
+
 export default {
   name: 'Register',
   components: {
@@ -139,7 +160,8 @@ export default {
     PasswordTextInput,
     Button,
     GamePackage,
-    RadioBox
+    RadioBoxList,
+    CheckBoxList,
   },
   data() {
     return {
@@ -150,29 +172,13 @@ export default {
       passwordConfirm: null,
       email: null,
       gamePackage: [],
-      questionnaire: null,
-      gamePackages: [
-        {
-          id: 1,
-          image: 'https://lh6.googleusercontent.com/cLcyfKRL-JGGGCVBs5f1wRBqb2PE2bCCKzXZgID-SPlhjfh2wKUbGNijRoBeZPRDWrZq0MiAxdj0HsCAMJN9vnU2GTuGjQTi1sm3uo7DhjVZHiLbak_diMFSUcDV=w146',
-          title: 'Age of Empires II (パッケージ版)',
-        },
-        {
-          id: 2,
-          image: 'https://lh5.googleusercontent.com/KKp8UpamlYDrvpWsqWw67KhXLyh6S7GWTo9hpiSbzJi-sMQjYwJVz9DCs4JCafELJ2Qc7d_E1qEpO18YXKUJYWqSYNzKKa9KJhSZvbslzjVdGuZ0Gkna1sjExhom=w260',
-          title: 'Age of Empires II HD (steam版)',
-        },
-        {
-          id: 3,
-          image: 'https://lh5.googleusercontent.com/Q8B15eV8jA8D6SpowwWxMKr_3ZcDe4CmWXegUVIM2UYwQSUhXPIDq244TNGlLs6LTDbpAVw-2ZxgGkY1b2v4BYXibeU4fhVmHT7hp43mWHQ8NytQVbf5toNnnwN2=w260',
-          title: 'Age of Empires II DE (steam版)',
-        },
-      ],
-      questionnaires1: [
-        {label: '10戦以上', value: 0},
-        {label: '5戦以上', value: 1},
-        {label: 'なし', value: 2},
-      ],
+      answer1: null,
+      answers2: null,
+      // config bind...
+      gamePackages: gamePackages,
+      question1: question1,
+      question2: question2,
+      question3: question3,
     }
   },
   methods: {
