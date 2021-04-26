@@ -33,7 +33,7 @@
         </template>
         <template v-else>
         <Button class="mr-2" label="ログイン" path="/login" color="primary" icon-type="mdi-login" icon />
-        <Button label="新規登録" path="/passowrd/reset" color="success" icon-type="mdi-account" icon />
+        <Button label="新規登録" path="/register" color="success" icon-type="mdi-account" icon />
         </template>
 
       </template>

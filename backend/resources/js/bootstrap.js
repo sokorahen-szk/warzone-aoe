@@ -14,13 +14,15 @@ window.axios.defaults.headers.common = {
 }
 
 let apiAccessToken = null
-const storage = JSON.parse(window.sessionStorage['wzn'])
-if (storage) {
-  apiAccessToken = storage.authStore.token
-}
+if (window.sessionStorage['wzn']) {
+  const storage = JSON.parse(window.sessionStorage['wzn'])
+  if (storage) {
+    apiAccessToken = storage.authStore.token
+  }
 
-if (apiAccessToken) {
-  window.axios.defaults.headers.common['Authorization'] = `Bearer ${apiAccessToken}`
+  if (apiAccessToken) {
+    window.axios.defaults.headers.common['Authorization'] = `Bearer ${apiAccessToken}`
+  }
 }
 
 //window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

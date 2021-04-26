@@ -26,6 +26,8 @@ const test = function(label, value) {
       return v => (v && v.length >= a[1]) || `${label}は${a[1]}以上で入力して下さい。`
     case 'max':
       return v => (v && v.length <= a[1]) || `${label}は${a[1]}以下で入力して下さい。`
+    case 'confirm':
+      return v => (v && v === a[1]) || `${label}が一致しません。`
   }
 }
 
