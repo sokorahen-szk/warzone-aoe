@@ -21,7 +21,9 @@ use Package\Domain\User\Entity\Player;
 class User {
   private $id;
   private $player;
+  private $playerId;
   private $role;
+  private $roleId;
   private $name;
   private $twitterId;
   private $webSiteUrl;
@@ -32,20 +34,24 @@ class User {
 
   public function __construct(
     ?UserId $id,
-    Player $player,
-    Role $role,
-    Name $name,
-    TwitterId $twitterId,
-    WebSiteUrl $webSiteUrl,
-    AvatorImage $avatorImage,
-    Email $email,
-    Status $status,
+    ?Player $player,
+    ?PlayerId $playerId,
+    ?Role $role,
+    ?RoleId $roleId,
+    ?Name $name,
+    ?TwitterId $twitterId,
+    ?WebSiteUrl $webSiteUrl,
+    ?AvatorImage $avatorImage,
+    ?Email $email,
+    ?Status $status,
     ?Password $password
   )
   {
     $this->id = $id;
     $this->player = $player;
+    $this->playerId = $playerId;
     $this->role = $role;
+    $this->roleId = $roleId;
     $this->name = $name;
     $this->twitterId = $twitterId;
     $this->webSiteUrl = $webSiteUrl;
@@ -64,6 +70,14 @@ class User {
   }
 
   /**
+   * @return PlayerId
+   */
+  public function getPlayerId(): PlayerId
+  {
+    return $this->playerId;
+  }
+
+  /**
    * @return Player
    */
   public function getPlayer(): Player
@@ -77,6 +91,14 @@ class User {
   public function getRole(): Role
   {
     return $this->role;
+  }
+
+  /**
+   * @return RoleId
+   */
+  public function getRoleId(): RoleId
+  {
+    return $this->roleId;
   }
 
   /**

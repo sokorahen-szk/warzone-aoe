@@ -10,20 +10,22 @@ class Email {
 
   const LABEL = 'メールアドレス';
 
-  public function __construct($value)
+  public function __construct(?string $value)
   {
-    if (!$value) {
-      throw new UserArgumentNullException(sprintf("%sが設定されていません。", self::LABEL));
-    }
+    if ($value) {
+      if ($value == '') {
+        throw new UserArgumentNullException(sprintf("%sが設定されていません。", self::LABEL));
+      }
 
-    if(!preg_match("/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/", $value)) {
-      throw new UserArgumentException(sprintf("%sの形式でありません。", self::LABEL));
+      if(!preg_match("/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/", $value)) {
+        throw new UserArgumentException(sprintf("%sの形式でありません。", self::LABEL));
+      }
     }
 
     $this->value = $value;
   }
 
-  public function getValue(): string
+  public function getValue(): ?string
   {
     return $this->value;
   }

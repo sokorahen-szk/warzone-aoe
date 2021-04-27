@@ -38,7 +38,7 @@ class AccountRegistrationRequest extends FormRequest
                                                 'same:password_confirmation'
                                         ],
             'password_confirmation'     => ['required', 'string'],
-            'email'                     => ['required', 'email'],
+            'email'                     => ['sometimes', 'email'],
             'game_package'              => ['sometimes', 'string'],
             'answer1'                   => ['sometimes', 'string'],
             'answers2'                  => ['sometimes', 'string'],
