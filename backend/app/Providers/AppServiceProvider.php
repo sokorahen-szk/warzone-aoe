@@ -21,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
             \Package\Application\Account\GetInfo\AccountGetInfoService::class
         );
         $this->app->bind(
+            \Package\Usecase\Account\Register\AccountRegisterServiceInterface::class,
+            \Package\Application\Account\Register\AccountRegisterService::class
+        );
+        $this->app->bind(
             \Package\Usecase\Player\GetList\PlayerGetListServiceInterface::class,
             \Package\Application\Player\GetList\PlayerGetListService::class
         );
@@ -35,6 +39,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             \Package\Domain\User\Repository\PlayerRepositoryInterface::class,
             \Package\Infrastructure\Eloquent\Player\PlayerRepository::class
+        );
+
+        /**
+         * Services...
+         */
+        $this->app->bind(
+            \Package\Domain\User\Service\UserServiceInterface::class,
+            \Package\Domain\User\Service\UserService::class
         );
     }
 

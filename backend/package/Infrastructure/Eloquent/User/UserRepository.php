@@ -11,6 +11,8 @@ use Package\Domain\User\ValueObject\AvatorImage;
 use Package\Domain\User\ValueObject\Email;
 use Package\Domain\User\ValueObject\Status;
 use Package\Domain\User\ValueObject\Password;
+use Package\Domain\User\ValueObject\RoleId as UserRoleId;
+use Package\Domain\User\ValueObject\PlayerId as UserPlayerId;
 use Package\Domain\User\ValueObject\Role\RoleId;
 use Package\Domain\User\ValueObject\Role\RoleName;
 use Package\Domain\User\ValueObject\Role\RoleLevel;
@@ -75,7 +77,9 @@ class UserRepository implements UserRepositoryInterface {
     return new User(
       new UserId($user->id),
       $player,
+      new UserPlayerId($user->player_id),
       $role,
+      new UserRoleId($user->role_id),
       new Name($user->name),
       new TwitterId($user->twitter_id),
       new WebSiteUrl($user->website_url),
@@ -84,5 +88,73 @@ class UserRepository implements UserRepositoryInterface {
       new Status($user->status),
       null
     );
+  }
+
+  /**
+   * @param Name $name
+   * @return User|null
+   */
+  public function findByName(Name $name): ?User
+  {
+    $user = EloquentUser::where('name', $name->getValue())
+    ->with(['player', 'role'])
+    ->first();
+
+    if (!$user) {
+      return null;
+    }
+
+    $role = new Role(
+      new RoleId($user->role->id),
+      new RoleName($user->role->name),
+      new RoleLevel($user->role->level),
+    );
+
+    $player = new Player(
+      new PlayerId($user->player->id),
+      new PlayerName($user->player->name),
+      new Mu($user->player->mu),
+      new Sigma($user->player->sigma),
+      new Rate($user->player->rate),
+      new MinRate($user->player->min_rate),
+      new MaxRate($user->player->max_rate),
+      new Win($user->player->win),
+      new Defeat($user->player->defeat),
+      new Games($user->player->games),
+      new GamePackages($user->player->game_packages),
+      new Datetime($user->player->joined_at),
+      new Datetime($user->player->last_game_at),
+      new Enabled($user->player->enabled)
+    );
+
+    return new User(
+      new UserId($user->id),
+      $player,
+      new UserPlayerId($user->player_id),
+      $role,
+      new UserRoleId($user->role_id),
+      new Name($user->name),
+      new TwitterId($user->twitter_id),
+      new WebSiteUrl($user->website_url),
+      new AvatorImage($user->avator_image),
+      new Email($user->email),
+      new Status($user->status),
+      null
+    );
+  }
+
+  /**
+   * @param User $user
+   * @return void
+   */
+  public function register(User $user): void
+  {
+    EloquentUser::create([
+      'player_id'   => $user->getPlayerId()->getValue(),
+      'role_id'     => $user->getRoleId()->getValue(),
+      'name'        => $user->getName()->getValue(),
+      'email'       => $user->getEmail()->getValidEmail(),
+      'password'    => $user->getPassword()->getEncrypted(),
+    ]);
   }
 }

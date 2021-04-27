@@ -1,5 +1,5 @@
 <template>
-  <v-radio-group v-model="selectedRadio" @change="changeEvent">
+  <v-radio-group v-model="selectedRadio" @change="changeEvent" class="ma-0 pa-0">
     <v-radio
       v-for="item in items"
       :key="item.label"

@@ -171,9 +171,10 @@ export default {
       password: null,
       passwordConfirm: null,
       email: null,
-      gamePackage: [],
+      gamePackage: null,
       answer1: null,
       answers2: null,
+      answers3: null,
       // config bind...
       gamePackages: gamePackages,
       question1: question1,
