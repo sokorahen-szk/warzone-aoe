@@ -19,16 +19,19 @@ class MapSeeder extends Seeder
             return;
         }
 
+        //
+        // imageのpathは
+        // /storage/maps/<game_paclage_id>/<image name>
         $data = [
             (object) [
                 'game_package_id'   => 1,
                 'name'              => 'アラビア',
-                'image'             => 'map/1/arabia.jpg',
+                'image'             => '/storage/maps/1/arabia.jpg',
             ],
             (object) [
                 'game_package_id'   => 2,
                 'name'              => 'アラビア',
-                'image'             => 'map/2/arabia.jpg',
+                'image'             => '/storage/maps/2/arabia.jpg',
             ],
         ];
 

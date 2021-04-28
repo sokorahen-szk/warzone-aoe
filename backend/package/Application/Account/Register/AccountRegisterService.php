@@ -51,7 +51,7 @@ class AccountRegisterService implements AccountRegisterServiceInterface {
 
     $user = new User([
       'playerId'    => $playerId,
-      'roleId'      => new RoleId(3),
+      'roleId'      => new RoleId(4),
       'name'        => new Name($command->userName),
       'email'       => new Email($command->email),
       'password'    => new Password($command->password),
