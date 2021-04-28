@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Package\Domain\Register\Entity;
+namespace Package\Domain\User\Entity;
 
 use Package\Domain\Resource;
 use Package\Domain\User\ValueObject\Register\RegisterId;

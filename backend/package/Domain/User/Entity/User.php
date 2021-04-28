@@ -7,7 +7,7 @@ use Package\Domain\Resource;
 // ValueObjects
 use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\User\ValueObject\Player\PlayerId;
-use Package\Domain\User\ValueObject\RoleId;
+use Package\Domain\User\ValueObject\Role\RoleId;
 use Package\Domain\User\ValueObject\Name;
 use Package\Domain\User\ValueObject\TwitterId;
 use Package\Domain\User\ValueObject\WebSiteUrl;

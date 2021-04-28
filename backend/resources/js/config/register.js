@@ -28,17 +28,17 @@ export const question3 = [
 export const gamePackages = [
   {
     id: 1,
-    image: 'https://lh6.googleusercontent.com/cLcyfKRL-JGGGCVBs5f1wRBqb2PE2bCCKzXZgID-SPlhjfh2wKUbGNijRoBeZPRDWrZq0MiAxdj0HsCAMJN9vnU2GTuGjQTi1sm3uo7DhjVZHiLbak_diMFSUcDV=w146',
-    title: 'Age of Empires II (パッケージ版)',
-  },
-  {
-    id: 2,
     image: 'https://lh5.googleusercontent.com/KKp8UpamlYDrvpWsqWw67KhXLyh6S7GWTo9hpiSbzJi-sMQjYwJVz9DCs4JCafELJ2Qc7d_E1qEpO18YXKUJYWqSYNzKKa9KJhSZvbslzjVdGuZ0Gkna1sjExhom=w260',
     title: 'Age of Empires II HD (steam版)',
   },
   {
-    id: 3,
+    id: 2,
     image: 'https://lh5.googleusercontent.com/Q8B15eV8jA8D6SpowwWxMKr_3ZcDe4CmWXegUVIM2UYwQSUhXPIDq244TNGlLs6LTDbpAVw-2ZxgGkY1b2v4BYXibeU4fhVmHT7hp43mWHQ8NytQVbf5toNnnwN2=w260',
     title: 'Age of Empires II DE (steam版)',
+  },
+  {
+    id: 3,
+    image: 'https://lh6.googleusercontent.com/cLcyfKRL-JGGGCVBs5f1wRBqb2PE2bCCKzXZgID-SPlhjfh2wKUbGNijRoBeZPRDWrZq0MiAxdj0HsCAMJN9vnU2GTuGjQTi1sm3uo7DhjVZHiLbak_diMFSUcDV=w146',
+    title: 'Age of Empires II (パッケージ版)',
   },
 ]

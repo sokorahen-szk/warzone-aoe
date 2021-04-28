@@ -29,7 +29,7 @@ class AuthController extends Controller
             }
 
             // 退会、アカウント停止
-            if (Auth::user()->status == 'withdrawal' || Auth::user()->status == 'banned') {
+            if (Auth::user()->status == 3 || Auth::user()->status == 4) {
                 auth()->logout();
                 return response()->json($this->response(null, 403));
             }

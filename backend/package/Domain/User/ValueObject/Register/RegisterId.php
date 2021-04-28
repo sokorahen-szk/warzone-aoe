@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Package\Domain\Register\ValueObject;
+namespace Package\Domain\User\ValueObject\Register;
 
 class RegisterId {
   private $value;

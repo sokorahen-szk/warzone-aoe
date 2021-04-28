@@ -40,6 +40,10 @@ class AppServiceProvider extends ServiceProvider
             \Package\Domain\User\Repository\PlayerRepositoryInterface::class,
             \Package\Infrastructure\Eloquent\Player\PlayerRepository::class
         );
+        $this->app->singleton(
+            \Package\Domain\User\Repository\RegisterRequestRepositoryInterface::class,
+            \Package\Infrastructure\Eloquent\User\RegisterRequestRepository::class
+        );
 
         /**
          * Services...

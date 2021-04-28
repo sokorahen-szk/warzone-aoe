@@ -10,7 +10,7 @@ class WebSiteUrl {
     $this->value = $value;
   }
 
-  public function getValue(): string
+  public function getValue(): ?string
   {
     return $this->value;
   }
