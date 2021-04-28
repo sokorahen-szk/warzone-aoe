@@ -2,9 +2,11 @@
 
 namespace Package\Domain\User\Entity;
 
+use Package\Domain\Resource;
+
 // ValueObjects
 use Package\Domain\User\ValueObject\UserId;
-use Package\Domain\User\ValueObject\PlayerId;
+use Package\Domain\User\ValueObject\Player\PlayerId;
 use Package\Domain\User\ValueObject\RoleId;
 use Package\Domain\User\ValueObject\Name;
 use Package\Domain\User\ValueObject\TwitterId;
@@ -18,47 +20,23 @@ use Package\Domain\User\ValueObject\Password;
 use Package\Domain\User\Entity\Role;
 use Package\Domain\User\Entity\Player;
 
-class User {
-  private $id;
-  private $player;
-  private $playerId;
-  private $role;
-  private $roleId;
-  private $name;
-  private $twitterId;
-  private $webSiteUrl;
-  private $avatorImage;
-  private $email;
-  private $status;
-  private $password;
+class User extends Resource {
+  protected $id;
+  protected $player;
+  protected $playerId;
+  protected $role;
+  protected $roleId;
+  protected $name;
+  protected $twitterId;
+  protected $webSiteUrl;
+  protected $avatorImage;
+  protected $email;
+  protected $status;
+  protected $password;
 
-  public function __construct(
-    ?UserId $id,
-    ?Player $player,
-    ?PlayerId $playerId,
-    ?Role $role,
-    ?RoleId $roleId,
-    ?Name $name,
-    ?TwitterId $twitterId,
-    ?WebSiteUrl $webSiteUrl,
-    ?AvatorImage $avatorImage,
-    ?Email $email,
-    ?Status $status,
-    ?Password $password
-  )
+  public function __construct($data)
   {
-    $this->id = $id;
-    $this->player = $player;
-    $this->playerId = $playerId;
-    $this->role = $role;
-    $this->roleId = $roleId;
-    $this->name = $name;
-    $this->twitterId = $twitterId;
-    $this->webSiteUrl = $webSiteUrl;
-    $this->avatorImage = $avatorImage;
-    $this->email = $email;
-    $this->status = $status;
-    $this->password = $password;
+    parent::__construct($data);
   }
 
   /**
@@ -70,81 +48,81 @@ class User {
   }
 
   /**
-   * @return PlayerId
+   * @return PlayerId|null
    */
-  public function getPlayerId(): PlayerId
+  public function getPlayerId(): ?PlayerId
   {
     return $this->playerId;
   }
 
   /**
-   * @return Player
+   * @return Player|null
    */
-  public function getPlayer(): Player
+  public function getPlayer(): ?Player
   {
     return $this->player;
   }
 
   /**
-   * @return Role
+   * @return Role|null
    */
-  public function getRole(): Role
+  public function getRole(): ?Role
   {
     return $this->role;
   }
 
   /**
-   * @return RoleId
+   * @return RoleId|null
    */
-  public function getRoleId(): RoleId
+  public function getRoleId(): ?RoleId
   {
     return $this->roleId;
   }
 
   /**
-   * @return Name
+   * @return Name|null
    */
-  public function getName(): Name
+  public function getName(): ?Name
   {
     return $this->name;
   }
 
   /**
-   * @return TwitterId
+   * @return TwitterId|null
    */
-  public function getTwitterId(): TwitterId
+  public function getTwitterId(): ?TwitterId
   {
     return $this->twitterId;
   }
 
   /**
-   * @return WebSiteURL
+   * @return WebSiteURL|null
    */
-  public function getWebSiteUrl(): WebSiteUrl
+  public function getWebSiteUrl(): ?WebSiteUrl
   {
     return $this->webSiteUrl;
   }
 
   /**
-   * @return AvatorImage
+   * @return AvatorImage|null
    */
-  public function getAvatorImage(): AvatorImage
+  public function getAvatorImage(): ?AvatorImage
   {
     return $this->avatorImage;
   }
 
   /**
-   * @return Email
+   * @return Email|null
    */
-  public function getEmail(): Email
+  public function getEmail(): ?Email
   {
     return $this->email;
   }
 
   /**
-   * @return Status
+   * @return Status|null
    */
-  public function getStatus(): Status
+  public function getStatus(): ?Status
   {
     return $this->status;
   }

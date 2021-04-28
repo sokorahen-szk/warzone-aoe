@@ -12,7 +12,6 @@ use Package\Domain\User\ValueObject\Email;
 use Package\Domain\User\ValueObject\Status;
 use Package\Domain\User\ValueObject\Password;
 use Package\Domain\User\ValueObject\RoleId as UserRoleId;
-use Package\Domain\User\ValueObject\PlayerId as UserPlayerId;
 use Package\Domain\User\ValueObject\Role\RoleId;
 use Package\Domain\User\ValueObject\Role\RoleName;
 use Package\Domain\User\ValueObject\Role\RoleLevel;
@@ -51,43 +50,42 @@ class UserRepository implements UserRepositoryInterface {
       return null;
     }
 
-    $role = new Role(
-      new RoleId($user->role->id),
-      new RoleName($user->role->name),
-      new RoleLevel($user->role->level),
-    );
+    $role = new Role([
+      'roleId'        => new RoleId($user->role->id),
+      'roleName'      => new RoleName($user->role->name),
+      'roleLevel'     => new RoleLevel($user->role->level),
+    ]);
 
-    $player = new Player(
-      new PlayerId($user->player->id),
-      new PlayerName($user->player->name),
-      new Mu($user->player->mu),
-      new Sigma($user->player->sigma),
-      new Rate($user->player->rate),
-      new MinRate($user->player->min_rate),
-      new MaxRate($user->player->max_rate),
-      new Win($user->player->win),
-      new Defeat($user->player->defeat),
-      new Games($user->player->games),
-      new GamePackages($user->player->game_packages),
-      new Datetime($user->player->joined_at),
-      new Datetime($user->player->last_game_at),
-      new Enabled($user->player->enabled)
-    );
+    $player = new Player([
+      'playerId'      => new PlayerId($user->player->id),
+      'playerName'    => new PlayerName($user->player->name),
+      'mu'            => new Mu($user->player->mu),
+      'sigma'         => new Sigma($user->player->sigma),
+      'rate'          => new Rate($user->player->rate),
+      'minRate'       => new MinRate($user->player->min_rate),
+      'maxRate'       => new MaxRate($user->player->max_rate),
+      'win'           => new Win($user->player->win),
+      'defeat'        => new Defeat($user->player->defeat),
+      'games'         => new Games($user->player->games),
+      'gamePackages'  => new GamePackages($user->player->game_packages),
+      'joinedAt'      => new Datetime($user->player->joined_at),
+      'lastGameAt'    => new Datetime($user->player->last_game_at),
+      'enabled'       => new Enabled($user->player->enabled)
+    ]);
 
-    return new User(
-      new UserId($user->id),
-      $player,
-      new UserPlayerId($user->player_id),
-      $role,
-      new UserRoleId($user->role_id),
-      new Name($user->name),
-      new TwitterId($user->twitter_id),
-      new WebSiteUrl($user->website_url),
-      new AvatorImage($user->avator_image),
-      new Email($user->email),
-      new Status($user->status),
-      null
-    );
+    return new User([
+      'id'            => new UserId($user->id),
+      'player'        => $player,
+      'playerId'      => new layerId($user->player_id),
+      'role'          => $role,
+      'roleId'        => new UserRoleId($user->role_id),
+      'name'          =>  new Name($user->name),
+      'twitterId'     => new TwitterId($user->twitter_id),
+      'webSiteUrl'    => new WebSiteUrl($user->website_url),
+      'avatorImage'   => new AvatorImage($user->avator_image),
+      'email'         => new Email($user->email),
+      'status'        => new Status($user->status),
+    ]);
   }
 
   /**
@@ -104,43 +102,42 @@ class UserRepository implements UserRepositoryInterface {
       return null;
     }
 
-    $role = new Role(
-      new RoleId($user->role->id),
-      new RoleName($user->role->name),
-      new RoleLevel($user->role->level),
-    );
+    $role = new Role([
+      'roleId'        => new RoleId($user->role->id),
+      'roleName'      => new RoleName($user->role->name),
+      'roleLevel'     => new RoleLevel($user->role->level),
+    ]);
 
-    $player = new Player(
-      new PlayerId($user->player->id),
-      new PlayerName($user->player->name),
-      new Mu($user->player->mu),
-      new Sigma($user->player->sigma),
-      new Rate($user->player->rate),
-      new MinRate($user->player->min_rate),
-      new MaxRate($user->player->max_rate),
-      new Win($user->player->win),
-      new Defeat($user->player->defeat),
-      new Games($user->player->games),
-      new GamePackages($user->player->game_packages),
-      new Datetime($user->player->joined_at),
-      new Datetime($user->player->last_game_at),
-      new Enabled($user->player->enabled)
-    );
+    $player = new Player([
+      'playerId'      => new PlayerId($user->player->id),
+      'playerName'    => new PlayerName($user->player->name),
+      'mu'            => new Mu($user->player->mu),
+      'sigma'         => new Sigma($user->player->sigma),
+      'rate'          => new Rate($user->player->rate),
+      'minRate'       => new MinRate($user->player->min_rate),
+      'maxRate'       => new MaxRate($user->player->max_rate),
+      'win'           => new Win($user->player->win),
+      'defeat'        => new Defeat($user->player->defeat),
+      'games'         => new Games($user->player->games),
+      'gamePackages'  => new GamePackages($user->player->game_packages),
+      'joinedAt'      => new Datetime($user->player->joined_at),
+      'lastGameAt'    => new Datetime($user->player->last_game_at),
+      'enabled'       => new Enabled($user->player->enabled)
+    ]);
 
-    return new User(
-      new UserId($user->id),
-      $player,
-      new UserPlayerId($user->player_id),
-      $role,
-      new UserRoleId($user->role_id),
-      new Name($user->name),
-      new TwitterId($user->twitter_id),
-      new WebSiteUrl($user->website_url),
-      new AvatorImage($user->avator_image),
-      new Email($user->email),
-      new Status($user->status),
-      null
-    );
+    return new User([
+      'id'            => new UserId($user->id),
+      'player'        => $player,
+      'playerId'      => new PlayerId($user->player_id),
+      'role'          => $role,
+      'roleId'        => new UserRoleId($user->role_id),
+      'name'          =>  new Name($user->name),
+      'twitterId'     => new TwitterId($user->twitter_id),
+      'webSiteUrl'    => new WebSiteUrl($user->website_url),
+      'avatorImage'   => new AvatorImage($user->avator_image),
+      'email'         => new Email($user->email),
+      'status'        => new Status($user->status),
+    ]);
   }
 
   /**
