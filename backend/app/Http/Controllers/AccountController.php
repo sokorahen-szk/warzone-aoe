@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use App\Http\Requests\Account\AccountRegistrationRequest;
 use Package\Usecase\Account\GetInfo\AccountGetInfoCommand;
@@ -12,6 +13,8 @@ use Exception;
 
 class AccountController extends Controller
 {
+    use ApiResponser;
+
     public function registration(AccountRegistrationRequest $request, AccountRegisterServiceInterface $interactor)
     {
         $command = new AccountRegisterCommand(
@@ -31,9 +34,10 @@ class AccountController extends Controller
             \DB::commit();
         } catch (Exception $e) {
             \DB::rollback();
+            throw $e;
         }
 
-        return response()->json($result);
+        return $this->validResponse($result);
     }
 
     public function show(AccountGetInfoServiceInterface $interactor)
