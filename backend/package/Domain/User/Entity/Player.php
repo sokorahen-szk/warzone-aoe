@@ -2,6 +2,8 @@
 
 namespace Package\Domain\User\Entity;
 
+use Package\Domain\Resource;
+
 use Package\Domain\User\ValueObject\Player\PlayerId;
 use Package\Domain\User\ValueObject\Player\PlayerName;
 use Package\Domain\User\ValueObject\Player\Mu;
@@ -16,51 +18,23 @@ use Package\Domain\User\ValueObject\Player\GamePackages;
 use Package\Domain\User\ValueObject\Player\Datetime;
 use Package\Domain\User\ValueObject\Player\Enabled;
 
-class Player {
-  private $playerId;
-  private $playerName;
-  private $mu;
-  private $sigma;
-  private $rate;
-  private $minRate;
-  private $maxRate;
-  private $win;
-  private $defeat;
-  private $games;
-  private $gamePackages;
-  private $joinedAt;
-  private $lastGameAt;
-  private $enabled;
-  public function __construct(
-    ?PlayerId $playerId,
-    PlayerName $playerName,
-    Mu $mu,
-    Sigma $sigma,
-    Rate $rate,
-    MinRate $minRate,
-    MaxRate $maxRate,
-    Win $win,
-    Defeat $defeat,
-    Games $games,
-    ?GamePackages $gamePackages,
-    Datetime $joinedAt,
-    ?Datetime $lastGameAt,
-    Enabled $enabled
-  ) {
-    $this->playerId = $playerId;
-    $this->playerName = $playerName;
-    $this->mu = $mu;
-    $this->sigma = $sigma;
-    $this->rate = $rate;
-    $this->minRate = $minRate;
-    $this->maxRate = $maxRate;
-    $this->win = $win;
-    $this->defeat = $defeat;
-    $this->games = $games;
-    $this->gamePackages = $gamePackages;
-    $this->joinedAt = $joinedAt;
-    $this->lastGameAt = $lastGameAt;
-    $this->enabled = $enabled;
+class Player extends Resource {
+  protected $playerId;
+  protected $playerName;
+  protected $mu;
+  protected $sigma;
+  protected $rate;
+  protected $minRate;
+  protected $maxRate;
+  protected $win;
+  protected $defeat;
+  protected $games;
+  protected $gamePackages;
+  protected $joinedAt;
+  protected $lastGameAt;
+  protected $enabled;
+  public function __construct($data) {
+    parent::__construct($data);
   }
 
 
@@ -73,73 +47,73 @@ class Player {
   }
 
   /**
-   * @return PlayerName
+   * @return PlayerName|null
    */
-  public function getPlayerName(): PlayerName
+  public function getPlayerName(): ?PlayerName
   {
     return $this->playerName;
   }
 
   /**
-   * @return Mu
+   * @return Mu|null
    */
-  public function getMu(): Mu
+  public function getMu(): ?Mu
   {
     return $this->mu;
   }
 
   /**
-   * @return Sigma
+   * @return Sigma|null
    */
-  public function getSigma(): Sigma
+  public function getSigma(): ?Sigma
   {
     return $this->sigma;
   }
 
   /**
-   * @return Rate
+   * @return Rate|null
    */
-  public function getRate(): Rate
+  public function getRate(): ?Rate
   {
     return $this->rate;
   }
 
   /**
-   * @return MinRate
+   * @return MinRate|null
    */
-  public function getMinRate(): MinRate
+  public function getMinRate(): ?MinRate
   {
     return $this->minRate;
   }
 
   /**
-   * @return MaxRate
+   * @return MaxRate|null
    */
-  public function getMaxRate(): MaxRate
+  public function getMaxRate(): ?MaxRate
   {
     return $this->maxRate;
   }
 
   /**
-   * @return Win
+   * @return Win|null
    */
-  public function getWin(): Win
+  public function getWin(): ?Win
   {
     return $this->win;
   }
 
   /**
-   * @return Defeat
+   * @return Defeat|null
    */
-  public function getDefeat(): Defeat
+  public function getDefeat(): ?Defeat
   {
     return $this->defeat;
   }
 
   /**
-   * @return Games
+   * @return Games|null
    */
-  public function getGames(): Games
+  public function getGames(): ?Games
   {
     return $this->games;
   }
@@ -153,9 +127,9 @@ class Player {
   }
 
   /**
-   * @return Datetime
+   * @return Datetime|null
    */
-  public function getJoinedAt(): Datetime
+  public function getJoinedAt(): ?Datetime
   {
     return $this->joinedAt;
   }
@@ -169,9 +143,9 @@ class Player {
   }
 
   /**
-   * @return Enabled
+   * @return Enabled|null
    */
-  public function getEnabled(): Enabled
+  public function getEnabled(): ?Enabled
   {
     return $this->enabled;
   }
@@ -191,6 +165,8 @@ class Player {
    */
   public function getGameWinningPercentage(): float
   {
+    if ($this->win->getValue() < 1) return 0;
+
     return round(($this->win->getValue() / ($this->games->getValue() - $this->getGameDraw())) * 100, 2);
   }
 

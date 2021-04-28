@@ -8,6 +8,7 @@ use Package\Usecase\Account\GetInfo\AccountGetInfoCommand;
 use Package\Usecase\Account\GetInfo\AccountGetInfoServiceInterface;
 use Package\Usecase\Account\Register\AccountRegisterCommand;
 use Package\Usecase\Account\Register\AccountRegisterServiceInterface;
+use Exception;
 
 class AccountController extends Controller
 {
@@ -23,7 +24,14 @@ class AccountController extends Controller
             $request->input('answers2', null),
             $request->input('answers3', null)
         );
-        $result = $interactor->handle($command);
+
+        try {
+            \DB::beginTransaction();
+            $result = $interactor->handle($command);
+            \DB::commit();
+        } catch (Exception $e) {
+            \DB::rollback();
+        }
 
         return response()->json($result);
     }

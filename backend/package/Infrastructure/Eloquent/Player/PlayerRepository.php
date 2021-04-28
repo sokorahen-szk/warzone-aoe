@@ -34,23 +34,39 @@ class PlayerRepository implements PlayerRepositoryInterface {
     $results = [];
 
     foreach ($players as $player) {
-      $results[] = new Player(
-        new PlayerId($player->id),
-        new PlayerName($player->name),
-        new Mu($player->mu),
-        new Sigma($player->sigma),
-        new Rate($player->rate),
-        new MinRate($player->min_rate),
-        new MaxRate($player->max_rate),
-        new Win($player->win),
-        new Defeat($player->defeat),
-        new Games($player->games),
-        new GamePackages($player->game_packages),
-        new Datetime($player->joined_at),
-        new Datetime($player->last_game_at),
-        new Enabled($player->enabled)
-      );
+      $results[] = new Player([
+        'playerId'      => new PlayerId($player->id),
+        'playerName'    => new PlayerName($player->name),
+        'mu'            => new Mu($player->mu),
+        'sigma'         => new Sigma($player->sigma),
+        'rate'          => new Rate($player->rate),
+        'minRate'       => new MinRate($player->min_rate),
+        'maxRate'       => new MaxRate($player->max_rate),
+        'win'           => new Win($player->win),
+        'defeat'        => new Defeat($player->defeat),
+        'games'         => new Games($player->games),
+        'gamePackages'  => new GamePackages($player->game_packages),
+        'joinedAt'      => new Datetime($player->joined_at),
+        'lastGameAt'    => new Datetime($player->last_game_at),
+        'enabled'       => new Enabled($player->enabled),
+      ]);
     }
     return $results;
+  }
+
+  /**
+   * プレイヤー新規作成
+   * @param Player $player
+   * @return PlayerId|null
+   * @
+   */
+  public function register(Player $player): ?PlayerId
+  {
+    $player = EloquentPlayer::create([
+      'name'            => $player->getPlayerName()->getValue(),
+      'game_packages'   => $player->getGamePackages()->getValue(),
+    ]);
+
+    return new PlayerId($player->id);
   }
 }

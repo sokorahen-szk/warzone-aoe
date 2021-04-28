@@ -2,23 +2,19 @@
 
 namespace Package\Domain\User\Entity;
 
+use Package\Domain\Resource;
+
 use Package\Domain\User\ValueObject\Role\RoleId;
 use Package\Domain\User\ValueObject\Role\RoleName;
 use Package\Domain\User\ValueObject\Role\RoleLevel;
 
-class Role {
-  private $roleId;
-  private $roleName;
-  private $roleLevel;
+class Role extends Resource {
+  protected $roleId;
+  protected $roleName;
+  protected $roleLevel;
 
-  public function __construct(
-    ?RoleId $roleId,
-    RoleName $roleName,
-    ?RoleLevel $roleLevel
-  ) {
-    $this->roleId = $roleId;
-    $this->roleName = $roleName;
-    $this->roleLevel = $roleLevel;
+  public function __construct($data) {
+    parent::__construct($data);
   }
 
   /**
