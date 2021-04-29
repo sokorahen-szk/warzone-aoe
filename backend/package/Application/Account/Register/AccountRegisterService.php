@@ -62,7 +62,7 @@ class AccountRegisterService implements AccountRegisterServiceInterface {
     ]);
 
     if ($this->userService->exists($user)) {
-      throw new CanNotRegisterUserException( "既に存在しています");
+      throw new CanNotRegisterUserException("ユーザ名が既に存在しています。");
     }
 
     $this->userRepository->register($user);

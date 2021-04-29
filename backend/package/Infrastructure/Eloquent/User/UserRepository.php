@@ -5,6 +5,7 @@ namespace Package\Infrastructure\Eloquent\User;
 use Package\Domain\User\Repository\UserRepositoryInterface;
 use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\User\ValueObject\Name;
+use Package\Domain\User\ValueObject\SteamId;
 use Package\Domain\User\ValueObject\TwitterId;
 use Package\Domain\User\ValueObject\WebSiteUrl;
 use Package\Domain\User\ValueObject\AvatorImage;
@@ -79,6 +80,7 @@ class UserRepository implements UserRepositoryInterface {
       'role'          => $role,
       'roleId'        => new RoleId($user->role_id),
       'name'          => new Name($user->name),
+      'steamId'       => new SteamId($user->steam_id),
       'twitterId'     => new TwitterId($user->twitter_id),
       'webSiteUrl'    => new WebSiteUrl($user->website_url),
       'avatorImage'   => new AvatorImage($user->avator_image),
@@ -131,6 +133,7 @@ class UserRepository implements UserRepositoryInterface {
       'role'          => $role,
       'roleId'        => new RoleId($user->role_id),
       'name'          =>  new Name($user->name),
+      'steamId'       => new SteamId($user->steam_id),
       'twitterId'     => new TwitterId($user->twitter_id),
       'webSiteUrl'    => new WebSiteUrl($user->website_url),
       'avatorImage'   => new AvatorImage($user->avator_image),
