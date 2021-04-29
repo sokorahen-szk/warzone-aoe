@@ -27,7 +27,7 @@
         </v-btn>
 
         <template v-if="isLogin">
-        <Link path="/account/dashboard">
+        <Link path="/account/mypage">
           <Avatar class="ml-4" :src="user.avatorImage" :alt="user.name" :size="34" />
         </Link>
         </template>

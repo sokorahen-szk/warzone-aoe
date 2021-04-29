@@ -16,7 +16,7 @@ import RaitingIndex from '@/components/pages/raiting/Index.vue'
 import WarsIndex from '@/components/pages/wars/Index.vue'
 
 // Account...
-import Dashboard from '@/components/pages/account/Dashboard.vue'
+import Mypage from '@/components/pages/account/Mypage.vue'
 Vue.use(Router)
 
 const routes = [
@@ -53,9 +53,9 @@ const routes = [
     component: WarsIndex,
   },
   {
-    path: '/account/dashboard',
-    name: 'Dashboard',
-    component: Dashboard,
+    path: '/account/mypage',
+    name: 'Mypage',
+    component: Mypage,
     meta: { requiresAuth: true }
   },
 ]

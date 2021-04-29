@@ -40,7 +40,7 @@ const actions = {
         // ユーザ情報取得
         dispatch("accountStore/profile", null , {root: true})
 
-        router.push({path: '/account/dashboard'})
+        router.push({path: '/account/mypage'})
       } else {
         commit('alert', {show: true, type: 'error', message: res.data.errorMessages})
       }
