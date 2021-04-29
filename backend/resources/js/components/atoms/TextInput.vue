@@ -11,6 +11,7 @@
     flat
     :rules="setRule"
     :background-color="color"
+    :disabled="disabled"
   ></v-text-field>
 </template>
 
@@ -27,6 +28,7 @@ export default {
     outlined: {type: Boolean, default: false},
     rules: {type: Object, default: null},
     color: {type: String, default: null},
+    disabled: {type: Boolean, default: false},
   },
   data() {
     return {

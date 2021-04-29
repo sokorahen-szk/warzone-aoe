@@ -4,7 +4,15 @@
       <slot name="right"></slot>
     </v-col>
     <v-col cols="12" sm="12" md="7" lg="8" xl="9">
-      <slot name="container"></slot>
+      <v-container>
+        <v-card
+          class="pa-3"
+          tile
+          :outlined="outlined"
+        >
+          <slot name="container"></slot>
+        </v-card>
+      </v-container>
     </v-col>
   </v-row>
 </template>
@@ -12,6 +20,10 @@
 <script>
 export default {
   name: 'CommonWithRightColumnTemplate',
+  props: {
+    color: {type: String, default: 'grey lighten-4'},
+    outlined: {type: Boolean, default: false},
+  },
   data() {
     return {
       //

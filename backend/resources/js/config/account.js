@@ -29,3 +29,16 @@ export const rightMenuOtherList = {
     },
   ]
 }
+
+export const profileTemplate = {
+  name: null,
+  steamId: null,
+  twitterId: null,
+  email: null,
+  webSiteUrl: null,
+  password: null,
+  passwordConfirmation: null,
+  player: {
+    gamePackages: null,
+  }
+}

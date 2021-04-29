@@ -1,6 +1,7 @@
 export const userTemplate = {
   id: null,
   name: null,
+  steamId: null,
   twitterId: null,
   avatorImage: null,
   email: null,
