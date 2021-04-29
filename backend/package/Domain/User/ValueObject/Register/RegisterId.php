@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Package\Domain\User\ValueObject;
+namespace Package\Domain\User\ValueObject\Register;
 
-class RoleId {
+class RegisterId {
   private $value;
 
   public function __construct($value)
@@ -14,4 +14,5 @@ class RoleId {
   {
     return $this->value;
   }
+
 }

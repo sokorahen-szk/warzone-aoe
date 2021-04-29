@@ -13,7 +13,9 @@ class AccountData extends Data {
   public $id;
   public $player;
   public $name;
+  public $steamId;
   public $twitterId;
+  public $webSiteUrl;
   public $avatorImage;
   public $email;
   public $role;
@@ -23,7 +25,9 @@ class AccountData extends Data {
   {
     $this->id = $source->getId()->getValue();
     $this->name = $source->getName()->getValue();
+    $this->steamId = $source->getSteamId()->getValue();
     $this->twitterId = $source->getTwitterId()->getValue();
+    $this->webSiteUrl = $source->getWebSiteUrl()->getValue();
     $this->avatorImage = $source->getAvatorImage()->getImageFullPath();
     $this->email = $source->getEmail()->getValidEmail();
     $this->status = $source->getStatus()->getEnumName();

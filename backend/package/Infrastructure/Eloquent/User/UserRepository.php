@@ -5,13 +5,13 @@ namespace Package\Infrastructure\Eloquent\User;
 use Package\Domain\User\Repository\UserRepositoryInterface;
 use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\User\ValueObject\Name;
+use Package\Domain\User\ValueObject\SteamId;
 use Package\Domain\User\ValueObject\TwitterId;
 use Package\Domain\User\ValueObject\WebSiteUrl;
 use Package\Domain\User\ValueObject\AvatorImage;
 use Package\Domain\User\ValueObject\Email;
 use Package\Domain\User\ValueObject\Status;
 use Package\Domain\User\ValueObject\Password;
-use Package\Domain\User\ValueObject\RoleId as UserRoleId;
 use Package\Domain\User\ValueObject\Role\RoleId;
 use Package\Domain\User\ValueObject\Role\RoleName;
 use Package\Domain\User\ValueObject\Role\RoleLevel;
@@ -42,7 +42,7 @@ class UserRepository implements UserRepositoryInterface {
    */
   public function findUserById(UserId $userId): ?User
   {
-    $user = EloquentUser::find($userId->getValue())
+    $user = EloquentUser::where('id', $userId->getValue())
       ->with(['player', 'role'])
       ->first();
 
@@ -76,10 +76,11 @@ class UserRepository implements UserRepositoryInterface {
     return new User([
       'id'            => new UserId($user->id),
       'player'        => $player,
-      'playerId'      => new layerId($user->player_id),
+      'playerId'      => new PlayerId($user->player_id),
       'role'          => $role,
-      'roleId'        => new UserRoleId($user->role_id),
-      'name'          =>  new Name($user->name),
+      'roleId'        => new RoleId($user->role_id),
+      'name'          => new Name($user->name),
+      'steamId'       => new SteamId($user->steam_id),
       'twitterId'     => new TwitterId($user->twitter_id),
       'webSiteUrl'    => new WebSiteUrl($user->website_url),
       'avatorImage'   => new AvatorImage($user->avator_image),
@@ -130,8 +131,9 @@ class UserRepository implements UserRepositoryInterface {
       'player'        => $player,
       'playerId'      => new PlayerId($user->player_id),
       'role'          => $role,
-      'roleId'        => new UserRoleId($user->role_id),
+      'roleId'        => new RoleId($user->role_id),
       'name'          =>  new Name($user->name),
+      'steamId'       => new SteamId($user->steam_id),
       'twitterId'     => new TwitterId($user->twitter_id),
       'webSiteUrl'    => new WebSiteUrl($user->website_url),
       'avatorImage'   => new AvatorImage($user->avator_image),
@@ -142,7 +144,6 @@ class UserRepository implements UserRepositoryInterface {
 
   /**
    * @param User $user
-   * @return void
    */
   public function register(User $user): void
   {

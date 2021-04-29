@@ -116,6 +116,9 @@
                           @update="answers3 = $event"
                         />
                       </v-col>
+                      <v-col cols="12">
+                        <Alert :properties="getAlert" dense />
+                      </v-col>
                       <v-col cols="12" class="text-center mt-2">
                         <Button
                           label="新規登録"
@@ -149,7 +152,10 @@ import Button from '@/components/atoms/Button'
 import GamePackage from '@/components/organisms/GamePackage'
 import RadioBoxList from '@/components/molecules/RadioBoxList'
 import CheckBoxList from '@/components/molecules/CheckBoxList'
+import Alert from '@/components/atoms/Alert'
 import { gamePackages, question1, question2, question3 } from '@/config/register'
+import { mapActions, mapGetters } from 'vuex'
+import { toString } from '@/services/api_helper';
 
 export default {
   name: 'Register',
@@ -162,6 +168,7 @@ export default {
     GamePackage,
     RadioBoxList,
     CheckBoxList,
+    Alert,
   },
   data() {
     return {
@@ -173,8 +180,8 @@ export default {
       email: null,
       gamePackage: null,
       answer1: null,
-      answers2: null,
-      answers3: null,
+      answers2: [],
+      answers3: [],
       // config bind...
       gamePackages: gamePackages,
       question1: question1,
@@ -182,10 +189,25 @@ export default {
       question3: question3,
     }
   },
+  computed: {
+    ...mapGetters('accountStore', ['getAlert']),
+  },
   methods: {
+    ...mapActions('accountStore', ['register']),
     registerEvent() {
       if(!this.$refs.form.validate()) return;
-      console.log("新規作成処理")
+
+      this.register({
+        user_name: this.userName,
+        player_name: this.playerName,
+        password: this.password,
+        password_confirmation: this.passwordConfirm,
+        email: this.email,
+        game_package: toString(this.gamePackage),
+        answer1: this.answer1,
+        answers2: toString(this.answers2),
+        answers3: toString(this.answers3)
+      })
     }
   }
 }

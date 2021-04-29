@@ -6,10 +6,10 @@ class Status {
   private $value;
 
   private $enums = [
-    0 => 'waiting',
-    1 => 'active',
-    2 => 'withdrawal',
-    3 => 'banned',
+    1 => 'waiting',
+    2 => 'active',
+    3 => 'withdrawal',
+    4 => 'banned',
   ];
 
   public function __construct($value)

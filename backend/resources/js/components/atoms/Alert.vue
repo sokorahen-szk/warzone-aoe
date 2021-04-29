@@ -4,6 +4,7 @@
   dismissible
   :type="type"
   :dense="dense"
+  @input="closed"
 >{{ message }}</v-alert>
 </template>
 
@@ -20,16 +21,22 @@ export default {
   },
   watch: {
     properties: {
-      handler(value) {
-        this.$set(this, 'show', value.show)
-        this.$set(this, 'type', value.type)
-        this.$set(this, 'message', value.message)
-
-        setInterval(() => {
-          this.$set(this, 'show', false)
-        }, 10000)
+      handler(newValue, oldValue) {
+        this.$set(this, 'show', newValue.show)
+        this.$set(this, 'type', newValue.type)
+        this.$set(this, 'message', newValue.message)
       },
       deep: true
+    },
+    show(val) {
+      if (!this.show) {
+        // ここにvuex actions呼び出してalertの内容を空にしたい
+      }
+    }
+  },
+  methods: {
+    closed() {
+      this.$set(this, 'show', false)
     }
   },
   data() {

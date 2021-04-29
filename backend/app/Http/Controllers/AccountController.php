@@ -37,7 +37,7 @@ class AccountController extends Controller
             throw $e;
         }
 
-        return $this->validResponse($result);
+        return $this->validResponse($result, '登録が完了しました。');
     }
 
     public function show(AccountGetInfoServiceInterface $interactor)

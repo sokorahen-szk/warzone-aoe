@@ -18,7 +18,10 @@ class CreateGameRecordsTable extends Migration
             $table->unsignedBigInteger('game_package_id')->comment('ゲーム種別ID');
             $table->unsignedBigInteger('user_id')->comment('ユーザID');
             $table->integer('winning_team')->nullable()->comment('勝利チーム');
-            $table->enum('status', ['matching', 'drew', 'canceled', 'finished']);
+            //
+            // status
+            // 1 = matching, 2 = draw, 3 = canceled, 4 = finished
+            $table->tinyInteger('status')->default(0)->comment('試合ステータス');
             $table->dateTime('started_at')->comment('試合開始時間');
             $table->dateTime('finished_at')->nullable()->comment('試合終了時間');
 

@@ -23,7 +23,10 @@ class CreateUsersTable extends Migration
             $table->string('website_url')->nullable()->comment('WebサイトURL');
             $table->string('avator_image')->default('/storage/profile/0.png')->comment('ユーザ画像');
             $table->string('email')->nullable()->default('sample@example.com')->comment('メールアドレス');
-            $table->tinyInteger('status')->default(0)->comment('ユーザステータス');
+            //
+            // status
+            // 1 = waiting, 2 = active, 3 = withdrawal, 4 = banned
+            $table->tinyInteger('status')->default(2)->comment('ユーザステータス');
             $table->string('password')->comment('パスワード');
             $table->rememberToken();
             $table->timestamps();

@@ -17,7 +17,10 @@ class CreateRegisterRequestsTable extends Migration
             $table->id()->comment('新規登録リクエストID');
             $table->unsignedBigInteger('player_id')->unique()->comment('プレイヤーID');
             $table->unsignedBigInteger('user_id')->nullable()->comment('ユーザID');
-            $table->tinyInteger('status')->default(0)->comment('新規登録リクエストステータス');
+            //
+            // status
+            // 1 = waiting, 2 = done, 3 = canceled
+            $table->tinyInteger('status')->default(1)->comment('新規登録リクエストステータス');
             $table->text('remarks')->nullable()->comment('備考');
 
             $table->foreign('player_id')->references('id')->on('players')->onDelete('cascade');

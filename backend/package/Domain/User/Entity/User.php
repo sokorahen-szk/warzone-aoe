@@ -7,8 +7,9 @@ use Package\Domain\Resource;
 // ValueObjects
 use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\User\ValueObject\Player\PlayerId;
-use Package\Domain\User\ValueObject\RoleId;
+use Package\Domain\User\ValueObject\Role\RoleId;
 use Package\Domain\User\ValueObject\Name;
+use Package\Domain\User\ValueObject\SteamId;
 use Package\Domain\User\ValueObject\TwitterId;
 use Package\Domain\User\ValueObject\WebSiteUrl;
 use Package\Domain\User\ValueObject\AvatorImage;
@@ -27,6 +28,7 @@ class User extends Resource {
   protected $role;
   protected $roleId;
   protected $name;
+  protected $steamId;
   protected $twitterId;
   protected $webSiteUrl;
   protected $avatorImage;
@@ -86,6 +88,15 @@ class User extends Resource {
   {
     return $this->name;
   }
+
+  /**
+   * @return SteamId|null
+   */
+  public function getSteamId(): ?SteamId
+  {
+    return $this->steamId;
+  }
+
 
   /**
    * @return TwitterId|null

@@ -19,8 +19,12 @@ class RoleSeeder extends Seeder
             return;
         }
         RoleModel::create([
+            'name'      => 'オーナー',
+            'level'     => 100,
+        ]);
+        RoleModel::create([
             'name'      => '管理者',
-            'level'     => 99,
+            'level'     => 50,
         ]);
         RoleModel::create([
             'name'      => '編集者',

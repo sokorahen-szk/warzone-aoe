@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Package\Domain\User\ValueObject;
+namespace Package\Domain\User\ValueObject\Register;
 
-class WebSiteUrl {
+class RegisterStatus {
   private $value;
 
   public function __construct($value)
@@ -10,8 +10,9 @@ class WebSiteUrl {
     $this->value = $value;
   }
 
-  public function getValue(): ?string
+  public function getValue(): int
   {
     return $this->value;
   }
+
 }

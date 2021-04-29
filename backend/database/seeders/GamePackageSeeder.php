@@ -25,5 +25,9 @@ class GamePackageSeeder extends Seeder
             'name'          => 'AoE2DE',
             'description'   => 'Age Of Empires 2 Definitive Edition',
         ]);
+        GamePackageModel::create([
+            'name'          => 'AoE2',
+            'description'   => 'Age of Empires II (パッケージ版)',
+        ]);
     }
 }

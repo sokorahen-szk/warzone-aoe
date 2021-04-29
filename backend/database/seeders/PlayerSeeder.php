@@ -20,10 +20,10 @@ class PlayerSeeder extends Seeder
         }
 
         $gamePackages = [
-            '1', '2', '1,2', null,
+            '1', '2', '1,2', '1,2,3', null,
         ];
 
-        // テストアカウント
+        // (オーナー）テストアカウント
         PlayerModel::create([
             'name'              => 'titan',
             'mu'                => 3600.01,
@@ -40,12 +40,63 @@ class PlayerSeeder extends Seeder
             'enabled'           => true,
         ]);
 
+        // (管理者）テストアカウント
+        PlayerModel::create([
+            'name'              => 'titan2',
+            'mu'                => 3600.01,
+            'sigma'             => 3600.01,
+            'rate'              => 2000,
+            'min_rate'          => 1200,
+            'max_rate'          => 2500,
+            'win'               => 20,
+            'defeat'            => 30,
+            'games'             => 55,
+            'game_packages'     => '1,2',
+            'joined_at'         => '2019-02-10',
+            'last_game_at'      => '2020-10-22',
+            'enabled'           => true,
+        ]);
+
+        // (編集者）テストアカウント
+        PlayerModel::create([
+            'name'              => 'titan3',
+            'mu'                => 3600.01,
+            'sigma'             => 3600.01,
+            'rate'              => 2000,
+            'min_rate'          => 1200,
+            'max_rate'          => 2500,
+            'win'               => 20,
+            'defeat'            => 30,
+            'games'             => 55,
+            'game_packages'     => '1,2,3',
+            'joined_at'         => '2019-02-10',
+            'last_game_at'      => '2020-10-22',
+            'enabled'           => true,
+        ]);
+
+        // (一般ユーザ）テストアカウント
+        PlayerModel::create([
+            'name'              => 'titan4',
+            'mu'                => 3600.01,
+            'sigma'             => 3600.01,
+            'rate'              => 2000,
+            'min_rate'          => 1200,
+            'max_rate'          => 2500,
+            'win'               => 20,
+            'defeat'            => 30,
+            'games'             => 55,
+            'game_packages'     => '1,2,3',
+            'joined_at'         => '2019-02-10',
+            'last_game_at'      => '2020-10-22',
+            'enabled'           => true,
+        ]);
+
         $faker = FakerFactory::create();
 
         $enabled = [true, false];
 
         // ここからダミーデータ
-        for ($i = 1; $i <= 100; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $win = mt_rand(1, 100);
             $defeat = mt_rand(1, 100);
             $games = $win + $defeat + mt_rand(0, 10);
