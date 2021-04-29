@@ -3,7 +3,7 @@ export const rightMenuCommonList = {
   lists: [
     {
       icon: 'mdi-account-edit-outline',
-      label: 'プロフィール情報',
+      label: 'プロフィール',
       path: '/account/profile',
     },
     {

@@ -9,11 +9,10 @@
           <v-col cols="12" sm="12" md="8" lg="6">
             <v-col cols="12" class="py-0 ma-0">
               <div class="py-2">ユーザ名</div>
-              {{test}}
               <TextInput
                 v-model="profile.name"
                 @update="profile.name = $event"
-                placeholder="username"
+                placeholder=""
                 outlined
                 required
                 color="#eee"
@@ -23,16 +22,41 @@
             </v-col>
 
             <v-col cols="12" class="py-0 ma-0">
+              <div class="py-2">メールアドレス</div>
+              <TextInput
+                v-model="profile.email"
+                @update="profile.email = $event"
+                placeholder=""
+                outlined
+                color="#eee"
+                :disabled="!editMode"
+                :rules="{label:'email', types:''}"
+              />
+            </v-col>
+
+            <v-col cols="12" class="py-0 ma-0">
               <div class="py-2">SteamID</div>
               <TextInput
                 v-model="profile.steamId"
                 @update="profile.steamId = $event"
-                placeholder="steamId"
+                placeholder=""
                 outlined
-                required
                 color="#eee"
                 :disabled="!editMode"
-                :rules="{label:'steamId', types:'required,min:4,max:10'}"
+                :rules="{label:'steamID', types:''}"
+              />
+            </v-col>
+
+            <v-col cols="12" class="py-0 ma-0">
+              <div class="py-2">My Webサイト</div>
+              <TextInput
+                v-model="profile.webSiteUrl"
+                @update="profile.webSiteUrl = $event"
+                placeholder=""
+                outlined
+                color="#eee"
+                :disabled="!editMode"
+                :rules="{label:'webSiteUrl', types:''}"
               />
             </v-col>
 
@@ -61,14 +85,12 @@ export default {
     return {
       profile: profileTemplate,
       editMode: false,
-      test: null,
     }
   },
   watch: {
   },
   mounted() {
     this.$set(this, 'profile', objCopy(this.profile, this.getProfile))
-    // TODO: どう実装するか
   },
   computed: {
     ...mapGetters('accountStore', ['getProfile']),

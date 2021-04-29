@@ -41,6 +41,9 @@ export default {
   watch: {
     t: function(value) {
       return this.$emit('update', value)
+    },
+    value: function (newValue) {
+      this.t = newValue
     }
   },
   computed: {
