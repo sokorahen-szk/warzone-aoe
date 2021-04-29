@@ -16,7 +16,7 @@ import { mapGetters } from 'vuex'
 import CommonWithRightColumnTemplate from '@/components/templates/CommonWithRightColumnTemplate'
 import AccountRightMenu from '@/components/organisms/AccountRightMenu'
 export default {
-  name: 'Mypage',
+  name: 'AccountMypage',
   components: {
     CommonWithRightColumnTemplate,
     AccountRightMenu

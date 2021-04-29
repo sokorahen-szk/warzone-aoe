@@ -9,12 +9,12 @@ export const rightMenuCommonList = {
     {
       icon: 'mdi-view-list-outline',
       label: '個人レーティング',
-      path: '/account/raiting',
+      path: '/account/rating',
     },
     {
       icon: 'mdi-format-list-numbered',
       label: '対戦履歴',
-      path: '/account/wars',
+      path: '/account/history',
     },
   ]
 }
