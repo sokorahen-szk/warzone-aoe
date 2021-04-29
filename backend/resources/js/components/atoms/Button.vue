@@ -5,6 +5,7 @@
     @click="clickButton"
     :color="color"
     :disabled="disabled"
+    :text="text"
   >
     <v-icon
       v-if="icon"
@@ -27,6 +28,7 @@ export default {
     depressed: {type: Boolean, default: false},
     color: {type: String, default: ''},
     disabled: {type: Boolean, default: false},
+    text: {type: Boolean, default: false},
     icon: {type: Boolean, default: false},
     iconType: {type: String, default: 'mdi-checkbox-marked-circle'},
   },

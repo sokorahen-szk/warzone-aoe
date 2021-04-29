@@ -17,6 +17,8 @@ import WarsIndex from '@/components/pages/wars/Index.vue'
 
 // Account...
 import Mypage from '@/components/pages/account/Mypage.vue'
+import Profile from '@/components/pages/account/Profile.vue'
+
 Vue.use(Router)
 
 const routes = [
@@ -56,6 +58,12 @@ const routes = [
     path: '/account/mypage',
     name: 'Mypage',
     component: Mypage,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/account/profile',
+    name: 'Profile',
+    component: Profile,
     meta: { requiresAuth: true }
   },
 ]
