@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <v-container>
     <CommonWithRightColumnTemplate outlined>
 			<template slot="right">
         <AccountRightMenu />
 			</template>
 			<template slot="container">
         <v-row no-gutters>
-          <v-col cols="12" sm="12" md="8" lg="6">
+          <v-col cols="12" sm="12" md="12" lg="6">
             <v-col cols="12" class="py-0 ma-0">
               <div class="py-2">ユーザ名</div>
               <TextInput
@@ -56,29 +56,39 @@
               />
             </v-col>
 
-            <v-col cols="12" class="py-0 ma-0">
-              <Button
-                v-if="!editMode"
-                color="secondary"
-                label="編集する"
-                iconType="mdi-pencil"
-                icon
-                @click="editMode = !editMode"
-              />
-              <Button
-                v-if="editMode"
-                color="info"
-                label="保存"
-                iconType="mdi-content-save"
-                icon
-              />
-            </v-col>
-
+          </v-col>
+          <v-col cols="12" sm="12" md="12" lg="6" class="pa-2">
+            <div>プロフィール画像</div>
+            <ImageUpload />
+          </v-col>
+          <v-col cols="12" class="py-2 ma-0 text-center">
+            <Button
+              v-if="!editMode"
+              color="secondary"
+              label="編集する"
+              iconType="mdi-pencil"
+              icon
+              :width="200"
+              :height="45"
+              @click="editMode = !editMode"
+            />
+            <Button
+              v-if="editMode"
+              color="info"
+              label="保存"
+              :width="200"
+              :height="45"
+              iconType="mdi-content-save"
+              icon
+            />
           </v-col>
         </v-row>
+        <div class="py-2 text-right">
+          <Link :path="`/player/${getUserId}`">公開されたページを見る</Link>
+        </div>
 			</template>
     </CommonWithRightColumnTemplate>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -87,6 +97,8 @@ import CommonWithRightColumnTemplate from '@/components/templates/CommonWithRigh
 import AccountRightMenu from '@/components/organisms/AccountRightMenu'
 import Button from '@/components/atoms/Button'
 import TextInput from '@/components/atoms/TextInput'
+import ImageUpload from '@/components/molecules/ImageUpload'
+import Link from '@/components/atoms/Link'
 import {profileTemplate} from '@/config/account'
 import {objCopy} from '@/services/helper'
 export default {
@@ -95,7 +107,9 @@ export default {
     CommonWithRightColumnTemplate,
     AccountRightMenu,
     TextInput,
-    Button
+    Button,
+    ImageUpload,
+    Link
   },
   data() {
     return {
@@ -103,13 +117,11 @@ export default {
       editMode: false,
     }
   },
-  watch: {
-  },
   mounted() {
     this.$set(this, 'profile', objCopy(this.profile, this.getProfile))
   },
   computed: {
-    ...mapGetters('accountStore', ['getProfile']),
+    ...mapGetters('accountStore', ['getProfile', 'getUserId']),
   },
 }
 </script>

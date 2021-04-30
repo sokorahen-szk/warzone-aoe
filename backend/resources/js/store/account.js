@@ -6,8 +6,11 @@ const state = {
 }
 const getters ={
   getProfile: (state) => {
-    return state.user;
+    return state.user
   },
+  getUserId: (state) => {
+    return state.user.id
+  }
 }
 const mutations = {
   setProfile (state, val) {

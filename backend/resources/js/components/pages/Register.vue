@@ -150,7 +150,7 @@ import CheckBoxList from '@/components/molecules/CheckBoxList'
 import Alert from '@/components/atoms/Alert'
 import router from '@/router/index'
 import { gamePackages, question1, question2, question3 } from '@/config/register'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import { toString } from '@/services/api_helper';
 import { alertTemplate } from '@/config/global'
 

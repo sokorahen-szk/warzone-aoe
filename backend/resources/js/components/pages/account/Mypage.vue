@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <CommonWithRightColumnTemplate>
 			<template slot="right">
         <AccountRightMenu />
@@ -8,7 +8,7 @@
 				a
 			</template>
     </CommonWithRightColumnTemplate>
-  </div>
+  </v-container>
 </template>
 
 <script>
