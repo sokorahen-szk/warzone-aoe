@@ -15,7 +15,6 @@
                 placeholder=""
                 outlined
                 required
-                color="#eee"
                 :disabled="!editMode"
                 :rules="{label:'ユーザ名', types:'required,min:4,max:10'}"
               />
@@ -28,7 +27,6 @@
                 @update="profile.email = $event"
                 placeholder=""
                 outlined
-                color="#eee"
                 :disabled="!editMode"
                 :rules="{label:'email', types:''}"
               />
@@ -41,7 +39,6 @@
                 @update="profile.steamId = $event"
                 placeholder=""
                 outlined
-                color="#eee"
                 :disabled="!editMode"
                 :rules="{label:'steamID', types:''}"
               />
@@ -54,9 +51,26 @@
                 @update="profile.webSiteUrl = $event"
                 placeholder=""
                 outlined
-                color="#eee"
                 :disabled="!editMode"
                 :rules="{label:'webSiteUrl', types:''}"
+              />
+            </v-col>
+
+            <v-col cols="12" class="py-0 ma-0">
+              <Button
+                v-if="!editMode"
+                color="secondary"
+                label="編集する"
+                iconType="mdi-pencil"
+                icon
+                @click="editMode = !editMode"
+              />
+              <Button
+                v-if="editMode"
+                color="info"
+                label="保存"
+                iconType="mdi-content-save"
+                icon
               />
             </v-col>
 
@@ -71,6 +85,7 @@
 import { mapGetters } from 'vuex'
 import CommonWithRightColumnTemplate from '@/components/templates/CommonWithRightColumnTemplate'
 import AccountRightMenu from '@/components/organisms/AccountRightMenu'
+import Button from '@/components/atoms/Button'
 import TextInput from '@/components/atoms/TextInput'
 import {profileTemplate} from '@/config/account'
 import {objCopy} from '@/services/helper'
@@ -79,7 +94,8 @@ export default {
   components: {
     CommonWithRightColumnTemplate,
     AccountRightMenu,
-    TextInput
+    TextInput,
+    Button
   },
   data() {
     return {

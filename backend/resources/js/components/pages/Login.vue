@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Alert :properties="getAlert" dense />
+    <Alert :properties="alert" dense />
     <CommonOneColumnTemplate>
 			<template slot="container">
         <v-form
@@ -30,7 +30,6 @@
                           placeholder="username"
                           outlined
                           required
-                          color="#eee"
                           :rules="{label:'ユーザ名', types:'required,min:4,max:10'}"
                         />
                       </v-col>
@@ -42,7 +41,6 @@
                           placeholder="password"
                           outlined
                           required
-                          color="#eee"
                           :rules="{label:'パスワード', types:'required,min:8'}"
                         />
                       </v-col>
@@ -80,7 +78,9 @@ import Button from '@/components/atoms/Button'
 import PasswordTextInput from '@/components/atoms/PasswordTextInput'
 import Link from '@/components/atoms/Link'
 import Alert from '@/components/atoms/Alert'
+import router from '@/router/index'
 import { mapActions, mapGetters } from 'vuex'
+import { alertTemplate } from '@/config/global'
 export default {
   name: 'Login',
   components: {
@@ -96,17 +96,29 @@ export default {
       valid: true,
       userName: null,
       password: null,
+      alert: alertTemplate,
     }
   },
   computed: {
-    ...mapGetters('authStore', ['getAlert']),
     ...mapGetters('authStore', ['isLogin']),
   },
   methods: {
     ...mapActions('authStore', ['login']),
     loginEvent() {
       if(!this.$refs.form.validate()) return;
-      this.login({name: this.userName, password: this.password})
+      new Promise((resolve) => {
+        resolve(this.login({name: this.userName, password: this.password}))
+      })
+      .then( () => {
+        router.push({path: '/account/mypage'})
+      })
+      .catch( (err) => {
+        this.alert = Object.assign(alertTemplate, {
+          show: true,
+          type: 'error',
+          message: err,
+        })
+      })
     }
   }
 }

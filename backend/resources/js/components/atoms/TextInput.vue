@@ -6,11 +6,11 @@
     :filled="filled"
     :outlined="outlined"
     dense
-    class="pa-0 ma-0"
+    class="pa-0 ma-0 text"
     :placeholder="placeholder"
     flat
     :rules="setRule"
-    :background-color="color"
+    :background-color="setColor"
     :disabled="disabled"
   ></v-text-field>
 </template>
@@ -27,7 +27,7 @@ export default {
     filled: {type: Boolean, default: false},
     outlined: {type: Boolean, default: false},
     rules: {type: Object, default: null},
-    color: {type: String, default: null},
+    color: {type: String, default: '#fffffe'},
     disabled: {type: Boolean, default: false},
   },
   data() {
@@ -49,6 +49,9 @@ export default {
   computed: {
     setRule() {
       return validator(this.rules);
+    },
+    setColor() {
+      return this.disabled ? '#eee' : '#fffffe'
     }
   }
 }

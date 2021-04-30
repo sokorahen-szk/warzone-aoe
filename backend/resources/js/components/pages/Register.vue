@@ -29,7 +29,6 @@
                           placeholder="ユーザ名はログインに使用します"
                           outlined
                           required
-                          color="#eee"
                           :rules="{label:'ユーザ名', types:'required,min:4,max:10'}"
                         />
                       </v-col>
@@ -41,7 +40,6 @@
                           placeholder="プレイヤー名はWarzoneのレートページで使用します"
                           outlined
                           required
-                          color="#eee"
                           :rules="{label:'プレイヤー名', types:'required,min:2,max:10'}"
                         />
                       </v-col>
@@ -53,7 +51,6 @@
                           placeholder="password"
                           outlined
                           required
-                          color="#eee"
                           :rules="{label:'パスワード', types:'required,min:8'}"
                         />
                       </v-col>
@@ -65,7 +62,6 @@
                           placeholder="passwordConfirm"
                           outlined
                           required
-                          color="#eee"
                           :rules="{label:'パスワード再入力', types:`required,min:8,confirm:${password}`}"
                         />
                       </v-col>
@@ -76,7 +72,6 @@
                           @update="email = $event"
                           placeholder="email"
                           outlined
-                          color="#eee"
                           :rules="{label:'メールアドレス', types:''}"
                         />
                       </v-col>
@@ -117,7 +112,7 @@
                         />
                       </v-col>
                       <v-col cols="12">
-                        <Alert :properties="getAlert" dense />
+                        <Alert :properties="alert" dense />
                       </v-col>
                       <v-col cols="12" class="text-center mt-2">
                         <Button
@@ -153,9 +148,11 @@ import GamePackage from '@/components/organisms/GamePackage'
 import RadioBoxList from '@/components/molecules/RadioBoxList'
 import CheckBoxList from '@/components/molecules/CheckBoxList'
 import Alert from '@/components/atoms/Alert'
+import router from '@/router/index'
 import { gamePackages, question1, question2, question3 } from '@/config/register'
 import { mapActions, mapGetters } from 'vuex'
 import { toString } from '@/services/api_helper';
+import { alertTemplate } from '@/config/global'
 
 export default {
   name: 'Register',
@@ -173,6 +170,7 @@ export default {
   data() {
     return {
       valid: true,
+      alert: alertTemplate,
       userName: null,
       playerName: null,
       password: null,
@@ -189,25 +187,38 @@ export default {
       question3: question3,
     }
   },
-  computed: {
-    ...mapGetters('accountStore', ['getAlert']),
-  },
   methods: {
     ...mapActions('accountStore', ['register']),
     registerEvent() {
       if(!this.$refs.form.validate()) return;
 
-      this.register({
-        user_name: this.userName,
-        player_name: this.playerName,
-        password: this.password,
-        password_confirmation: this.passwordConfirm,
-        email: this.email,
-        game_package: toString(this.gamePackage),
-        answer1: this.answer1,
-        answers2: toString(this.answers2),
-        answers3: toString(this.answers3)
+      new Promise ( reslve => {
+        reslve(this.register({
+          user_name: this.userName,
+          player_name: this.playerName,
+          password: this.password,
+          password_confirmation: this.passwordConfirm,
+          email: this.email,
+          game_package: toString(this.gamePackage),
+          answer1: this.answer1,
+          answers2: toString(this.answers2),
+          answers3: toString(this.answers3)
+        }))
       })
+      .then( () => {
+        // TODO: モーダルをだすまではAlertで
+        alert("アカウント登録しました。")
+
+        router.push({path: '/login'})
+      })
+      .catch( (err) => {
+        this.alert = Object.assign(alertTemplate, {
+          show: true,
+          type: 'error',
+          message: err,
+        })
+      })
+
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <header>
-    <v-app-bar flat dense color="#424242" app>
+    <v-app-bar dense color="#424242" app>
       <v-container class="py-0 fill-height">
       <v-toolbar-title>
         <v-btn

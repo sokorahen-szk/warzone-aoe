@@ -10,3 +10,9 @@ export const headerConfig = {
     {label: "問い合わせ", uri: "/contact"},
   ]
 }
+
+export const alertTemplate = {
+  show: false,
+  type: 'info',
+  message: null,
+}
