@@ -12,7 +12,7 @@ class AvatorImage {
     $this->value = $value;
   }
 
-  public function getValue(): string
+  public function getValue(): ?string
   {
     return $this->value;
   }

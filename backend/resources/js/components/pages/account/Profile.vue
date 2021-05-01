@@ -45,6 +45,18 @@
             </v-col>
 
             <v-col cols="12" class="py-0 ma-0">
+              <div class="py-2">Twitter</div>
+              <TextInput
+                v-model="profile.twitterId"
+                @update="profile.twitterId = $event"
+                placeholder=""
+                outlined
+                :disabled="!editMode"
+                :rules="{label:'twitterId', types:''}"
+              />
+            </v-col>
+
+            <v-col cols="12" class="py-0 ma-0">
               <div class="py-2">My Webサイト</div>
               <TextInput
                 v-model="profile.webSiteUrl"

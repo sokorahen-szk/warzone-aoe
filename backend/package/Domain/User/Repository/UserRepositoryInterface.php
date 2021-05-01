@@ -29,4 +29,9 @@ interface UserRepositoryInterface {
    * @param UserAvator $userAvator
    */
   public function updateAvator(UserAvator $userAvator): void;
+
+  /**
+   * @param UserId $userId
+   */
+  public function deleteAvator(UserId $userId): void;
 }

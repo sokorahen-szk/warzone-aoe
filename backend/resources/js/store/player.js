@@ -16,8 +16,8 @@ const actions = {
   playerList ({ commit }) {
     axios.get('/api/player/list')
     .then( (res) => {
-      if(res.data && res.data.players) {
-        commit('setPlayers', {$players: res.data.players})
+      if(res.data && res.data.isSuccess) {
+        commit('setPlayers', {$players: res.data.body.players})
       }
     })
   },

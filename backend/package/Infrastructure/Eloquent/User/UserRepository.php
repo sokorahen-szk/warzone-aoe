@@ -164,7 +164,18 @@ class UserRepository implements UserRepositoryInterface {
   {
     EloquentUser::where('id', $userAvator->getUserId()->getValue())
     ->update([
-      'avator_image'  => $userAvator->getUserAvatorImageFilePath()
+      'avator_image'  => $userAvator->getUserAvatorImageFilePath(),
+    ]);
+  }
+
+  /**
+   * @param UserId $userId
+   */
+  public function deleteAvator(UserId $userId): void
+  {
+    EloquentUser::where('id', $userId->getValue())
+    ->update([
+      'avator_image'  => null,
     ]);
   }
 }

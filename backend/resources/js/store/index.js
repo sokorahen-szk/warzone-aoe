@@ -18,6 +18,12 @@ const store = new Vuex.Store({
     playerStore: playerStore,
   },
 
+  actions: {
+    test() {
+      console.log("A")
+    }
+  },
+
   plugins: [createPersistedState(
     {
       key: 'wzn',

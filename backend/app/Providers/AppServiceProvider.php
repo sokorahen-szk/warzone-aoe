@@ -32,6 +32,10 @@ class AppServiceProvider extends ServiceProvider
             \Package\Usecase\Account\UpdateAvator\AccountUpdateAvatorServiceInterface::class,
             \Package\Application\Account\UpdateAvator\AccountUpdateAvatorService::class
         );
+        $this->app->bind(
+            \Package\Usecase\Account\DeleteAvator\AccountDeleteAvatorServiceInterface::class,
+            \Package\Application\Account\DeleteAvator\AccountDeleteAvatorService::class
+        );
 
         /**
          * Repositories...

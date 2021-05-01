@@ -62,6 +62,12 @@ Route::group(['middleware' => 'auth:api'], function () {
      * POST /api/account/avator/edit
      */
     Route::post('avator/edit', [AccountController::class, 'updateAvator'])->name('account.avator.edit');
+
+    /**
+     * アバター削除
+     * POST /api/account/avator/delete
+     */
+    Route::post('avator/delete', [AccountController::class, 'deleteAvator'])->name('account.avator.delete');
   });
 
   Route::prefix('auth')->group(function() {

@@ -1,5 +1,3 @@
-import router from '@/router/index'
-
 const state = {
   token: null,
 }
@@ -37,12 +35,15 @@ const actions = {
       })
     })
   },
-  logout ({ commit }) {
+  logout ({ commit, dispatch }) {
     return new Promise( resolve => {
       axios.post('/api/auth/logout')
       .then( (res) => {
         if (res.data) {
           commit('logout')
+
+          // accountStoreリセット
+          dispatch("accountStore/stateReset", null, {root: true})
           resolve();
         }
       })

@@ -16,13 +16,17 @@ const mutations = {
   setProfile (state, val) {
     state.user = Object.assign(state.user, val.$user)
   },
+
+  reset( state ) {
+    state.user = userTemplate;
+  }
 }
 const actions = {
   profile ({ commit }) {
     axios.get('/api/account/profile')
     .then( (res) => {
-      if(res.data) {
-        commit('setProfile', {$user: res.data})
+      if(res.data && res.data.isSuccess) {
+        commit('setProfile', {$user: res.data.body})
       }
     })
   },
@@ -36,6 +40,10 @@ const actions = {
         }
       })
     })
+  },
+
+  stateReset ({commit}) {
+    commit('reset')
   }
 }
 const accountStore = {

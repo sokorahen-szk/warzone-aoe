@@ -12,6 +12,8 @@ use Package\Usecase\Account\Register\AccountRegisterCommand;
 use Package\Usecase\Account\Register\AccountRegisterServiceInterface;
 use Package\Usecase\Account\UpdateAvator\AccountUpdateAvatorCommand;
 use Package\Usecase\Account\UpdateAvator\AccountUpdateAvatorServiceInterface;
+use Package\Usecase\Account\DeleteAvator\AccountDeleteAvatorServiceInterface;
+use Package\Usecase\Account\DeleteAvator\AccountDeleteAvatorCommand;
 use Exception;
 
 class AccountController extends Controller
@@ -79,8 +81,13 @@ class AccountController extends Controller
         return $this->validResponse($result, 'プロフィール画像更新しました。');
     }
 
-    public function deleteAvator()
+    public function deleteAvator(AccountDeleteAvatorServiceInterface $interactor)
     {
-        // TODO: 削除の処理
+        $command = new AccountDeleteAvatorCommand(
+            \Auth::user()->id
+        );
+        $result = $interactor->handle($command);
+
+        return $this->validResponse($result, 'プロフィール画像を削除しました。');
     }
 }
