@@ -16,3 +16,17 @@ export const alertTemplate = {
   type: 'info',
   message: null,
 }
+
+export const breadcrumbs = {
+  mypage: {
+    text: 'マイページ',
+    disabled: false,
+    href: '/account/mypage',
+
+    profile: {
+      text: 'プロフィール',
+      disabled: true,
+      href: '/account/mypage',
+    }
+  }
+}

@@ -38,6 +38,7 @@ export const profileTemplate = {
   webSiteUrl: null,
   password: null,
   passwordConfirmation: null,
+  avatorImage: null,
   player: {
     gamePackages: null,
   }

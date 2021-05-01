@@ -1,18 +1,18 @@
 <template>
   <div>
-    <FileUpload :accept="setAccept" @update="upload">
-      <v-card outlined tile>
+    <FileUpload :accept="setAccept" @update="view" :disabled="disabled">
+      <v-card outlined tile :color="setColor">
         <v-row justify="center" align-content="center" style="height: 200px;">
-          <v-icon size="32" v-if="!image">mdi-camera-plus-outline</v-icon>
+          <v-icon size="32" v-if="!setImage">mdi-camera-plus-outline</v-icon>
           <div class="pa-2">
             <Img
-                v-if="image"
+                v-if="setImage"
                 :styles="{
                   'max-height': '200px',
                   'min-height': '200px',
                   'min-width': '60px'
                 }"
-                :src="image"
+                :src="setImage"
                 thumbnail
             />
           </div>
@@ -21,7 +21,7 @@
     </FileUpload>
     <div class="py-2 text-center">
       <Button
-        v-if="image"
+        v-if="setImage && !disabled"
         color="error"
         label="削除"
         @click="deleteImage"
@@ -38,6 +38,8 @@ export default {
   name: 'ImageUpload',
   props: {
     maxFileSize: {type: [String, Number], default: 5},
+    imagePath: {type: String, default: null},
+    disabled: {type: Boolean, default: false},
   },
   components: {
     FileUpload,
@@ -47,31 +49,41 @@ export default {
   data() {
     return {
       image: null,
+      tmpImagePath: this.imagePath,
+    }
+  },
+  watch: {
+    imagePath(value) {
+      this.tmpImagePath = value;
     }
   },
   computed: {
     setAccept() {
       return "image/jpeg, image/png"
-    }
-  },
-  watch: {
-    uploadedImage(e) {
-      this.$emit('change', {event: e})
+    },
+    setImage() {
+      return this.image || this.tmpImagePath
+    },
+    setColor() {
+      return this.disabled ? '#ddd' : ''
     }
   },
   methods: {
-    upload(file) {
+    view(file) {
       if (!file || file.size > parseInt(this.maxFileSize) * 1048576) {
         return;
       }
       const reader = new FileReader();
       reader.onload = e => {
         this.image = e.target.result;
+
+        this.$emit('upload', file)
       };
       reader.readAsDataURL(file);
     },
     deleteImage() {
       this.image = null;
+      this.tmpImagePath = null;
       return this.$emit('delete')
     }
   }

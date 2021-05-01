@@ -59,7 +59,12 @@
           </v-col>
           <v-col cols="12" sm="12" md="12" lg="6" class="pa-2">
             <div>プロフィール画像</div>
-            <ImageUpload />
+            <ImageUpload
+              :imagePath="profile.avatorImage"
+              @upload="uploadImage"
+              @delete="deleteImage"
+              :disabled="!editMode"
+            />
           </v-col>
           <v-col cols="12" class="py-2 ma-0 text-center">
             <Button
@@ -99,6 +104,7 @@ import Button from '@/components/atoms/Button'
 import TextInput from '@/components/atoms/TextInput'
 import ImageUpload from '@/components/molecules/ImageUpload'
 import Link from '@/components/atoms/Link'
+import Breadcrumbs from '@/components/molecules/Breadcrumbs'
 import {profileTemplate} from '@/config/account'
 import {objCopy} from '@/services/helper'
 export default {
@@ -109,7 +115,8 @@ export default {
     TextInput,
     Button,
     ImageUpload,
-    Link
+    Link,
+    Breadcrumbs
   },
   data() {
     return {
@@ -123,5 +130,13 @@ export default {
   computed: {
     ...mapGetters('accountStore', ['getProfile', 'getUserId']),
   },
+  methods: {
+    uploadImage(e) {
+      console.log(e)
+    },
+    deleteImage() {
+      console.log("delete")
+    }
+  }
 }
 </script>
