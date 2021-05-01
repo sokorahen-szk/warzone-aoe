@@ -15,3 +15,14 @@ export const objCopy = (o, c) => {
   })
   return obj
 }
+
+export const addStyleParser = styles => {
+  let obj = []
+  if (!styles || Object.keys(styles).length < 1) return ''
+
+  Object.keys(styles).forEach( (attrName) => {
+    obj.push(`${attrName}: ${styles[attrName]}`)
+  })
+
+  return obj.join(';')
+}

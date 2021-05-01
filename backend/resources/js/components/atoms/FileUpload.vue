@@ -42,7 +42,7 @@ export default {
   methods: {
     fileUpload(e) {
       const files = e.target.files || e.dataTransfer.files;
-      return this.$emit('update', files)
+      return this.$emit('update', files[0])
     }
   }
 }
