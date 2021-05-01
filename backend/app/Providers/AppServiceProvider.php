@@ -28,6 +28,10 @@ class AppServiceProvider extends ServiceProvider
             \Package\Usecase\Player\GetList\PlayerGetListServiceInterface::class,
             \Package\Application\Player\GetList\PlayerGetListService::class
         );
+        $this->app->bind(
+            \Package\Usecase\Account\UpdateAvator\AccountUpdateAvatorServiceInterface::class,
+            \Package\Application\Account\UpdateAvator\AccountUpdateAvatorService::class
+        );
 
         /**
          * Repositories...

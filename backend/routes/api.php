@@ -53,9 +53,15 @@ Route::group(['middleware' => 'auth:api'], function () {
   Route::prefix('account')->group(function() {
     /**
      * アカウント情報を取得する
-     * GET /api/account/profile
+     * POST /api/account/profile
      */
     Route::get('profile', [AccountController::class, 'show'])->name('account.profile');
+
+    /**
+     * アバター更新
+     * POST /api/account/avator/edit
+     */
+    Route::post('avator/edit', [AccountController::class, 'updateAvator'])->name('account.avator.edit');
   });
 
   Route::prefix('auth')->group(function() {

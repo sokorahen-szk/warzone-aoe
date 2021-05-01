@@ -5,16 +5,25 @@ namespace App\Http\Controllers;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use App\Http\Requests\Account\AccountRegistrationRequest;
+use App\Http\Requests\Account\AccountUpdateAvatorRequest;
 use Package\Usecase\Account\GetInfo\AccountGetInfoCommand;
 use Package\Usecase\Account\GetInfo\AccountGetInfoServiceInterface;
 use Package\Usecase\Account\Register\AccountRegisterCommand;
 use Package\Usecase\Account\Register\AccountRegisterServiceInterface;
+use Package\Usecase\Account\UpdateAvator\AccountUpdateAvatorCommand;
+use Package\Usecase\Account\UpdateAvator\AccountUpdateAvatorServiceInterface;
 use Exception;
 
 class AccountController extends Controller
 {
     use ApiResponser;
 
+    /**
+     * アカウント新規作成
+     * @param AccountRegistrationRequest $request
+     * @param AccountRegisterServiceInterface $interactor
+     * @return json(...)
+     */
     public function registration(AccountRegistrationRequest $request, AccountRegisterServiceInterface $interactor)
     {
         $command = new AccountRegisterCommand(
@@ -40,11 +49,38 @@ class AccountController extends Controller
         return $this->validResponse($result, '登録が完了しました。');
     }
 
+    /**
+     * アカウント詳細
+     * @param AccountGetInfoServiceInterface $interactor
+     * @return json(...)
+     */
     public function show(AccountGetInfoServiceInterface $interactor)
     {
         $command = new AccountGetInfoCommand(\Auth::user()->id);
         $result = $interactor->handle($command);
 
-        return response()->json($result->getVars());
+        return $this->validResponse($result->getVars(), 'アカウント詳細を取得しました。');
+    }
+
+    /**
+     * アバター更新
+     * @param AccountUpdateAvatorRequest $request
+     * @param AccountUpdateAvatorServiceInterface $interactor
+     * @return json(...)
+     */
+    public function updateAvator(AccountUpdateAvatorRequest $request, AccountUpdateAvatorServiceInterface $interactor)
+    {
+        $command = new AccountUpdateAvatorCommand(
+            \Auth::user()->id,
+            $request->file('file')
+        );
+        $result = $interactor->handle($command);
+
+        return $this->validResponse($result, 'プロフィール画像更新しました。');
+    }
+
+    public function deleteAvator()
+    {
+        // TODO: 削除の処理
     }
 }

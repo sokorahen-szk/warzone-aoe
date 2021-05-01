@@ -32,6 +32,7 @@ use Package\Domain\User\ValueObject\Player\Enabled;
 use Package\Domain\User\Entity\User;
 use Package\Domain\User\Entity\Role;
 use Package\Domain\User\Entity\Player;
+use Package\Domain\User\Entity\UserAvator;
 
 use App\Models\UserModel as EloquentUser;
 
@@ -153,6 +154,17 @@ class UserRepository implements UserRepositoryInterface {
       'name'        => $user->getName()->getValue(),
       'email'       => $user->getEmail()->getValidEmail(),
       'password'    => $user->getPassword()->getEncrypted(),
+    ]);
+  }
+
+  /**
+   * @param UserAvator $userAvator
+   */
+  public function updateAvator(UserAvator $userAvator): void
+  {
+    EloquentUser::where('id', $userAvator->getUserId()->getValue())
+    ->update([
+      'avator_image'  => $userAvator->getUserAvatorImageFilePath()
     ]);
   }
 }

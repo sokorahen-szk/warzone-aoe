@@ -23,6 +23,6 @@ class AvatorImage {
       return url(self::DEFAULT_IMAGE_PATH);
     }
 
-    return url($this->getValue);
+    return url($this->value);
   }
 }

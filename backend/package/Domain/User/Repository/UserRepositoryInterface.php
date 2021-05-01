@@ -5,6 +5,7 @@ namespace Package\Domain\User\Repository;
 use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\User\ValueObject\Name;
 use Package\Domain\User\Entity\User;
+use Package\Domain\User\Entity\UserAvator;
 
 interface UserRepositoryInterface {
   /**
@@ -23,4 +24,9 @@ interface UserRepositoryInterface {
    * @param User $user
    */
   public function register(User $user): void;
+
+  /**
+   * @param UserAvator $userAvator
+   */
+  public function updateAvator(UserAvator $userAvator): void;
 }
