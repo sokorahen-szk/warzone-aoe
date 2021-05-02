@@ -41,11 +41,42 @@ const actions = {
       })
     })
   },
+  avatorUpdate ({ commit, dispatch }, payload) {
+    const params = new FormData();
+    params.append('file', payload.file)
+    return new Promise( (resolve, reject) => {
+      axios.post('/api/account/avator/edit', params).then( (res) => {
+        if(res.data && res.data.isSuccess) {
+
+          dispatch("accountStore/profile", null , {root: true})
+
+          resolve(res.data.messages)
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
+    })
+  },
+  avatorDelete ({ commit, dispatch }, payload) {
+    return new Promise( (resolve, reject) => {
+      axios.post('/api/account/avator/delete').then( (res) => {
+        if(res.data && res.data.isSuccess) {
+
+          dispatch("accountStore/profile", null , {root: true})
+
+          resolve(res.data.messages)
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
+    })
+  },
 
   stateReset ({commit}) {
     commit('reset')
   }
 }
+
 const accountStore = {
   namespaced: true,
   state,

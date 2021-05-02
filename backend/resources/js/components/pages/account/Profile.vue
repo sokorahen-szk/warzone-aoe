@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Alert :properties="alert" dense />
     <CommonWithRightColumnTemplate outlined>
 			<template slot="right">
         <AccountRightMenu />
@@ -109,7 +110,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+import { alertTemplate } from '@/config/global'
 import CommonWithRightColumnTemplate from '@/components/templates/CommonWithRightColumnTemplate'
 import AccountRightMenu from '@/components/organisms/AccountRightMenu'
 import Button from '@/components/atoms/Button'
@@ -117,6 +119,7 @@ import TextInput from '@/components/atoms/TextInput'
 import ImageUpload from '@/components/molecules/ImageUpload'
 import Link from '@/components/atoms/Link'
 import Breadcrumbs from '@/components/molecules/Breadcrumbs'
+import Alert from '@/components/atoms/Alert'
 import {profileTemplate} from '@/config/account'
 import {objCopy} from '@/services/helper'
 export default {
@@ -128,12 +131,14 @@ export default {
     Button,
     ImageUpload,
     Link,
-    Breadcrumbs
+    Breadcrumbs,
+    Alert
   },
   data() {
     return {
       profile: profileTemplate,
       editMode: false,
+      alert: alertTemplate,
     }
   },
   mounted() {
@@ -143,11 +148,44 @@ export default {
     ...mapGetters('accountStore', ['getProfile', 'getUserId']),
   },
   methods: {
+    ...mapActions('accountStore', ['avatorUpdate', 'avatorDelete']),
     uploadImage(e) {
-      console.log(e)
+      new Promise((resolve) => {
+        resolve(this.avatorUpdate({file: e}))
+      })
+      .then( (res) => {
+        this.alert = Object.assign(alertTemplate, {
+          show: true,
+          type: 'info',
+          message: res,
+        })
+      })
+      .catch( (err) => {
+        this.alert = Object.assign(alertTemplate, {
+          show: true,
+          type: 'error',
+          message: err,
+        })
+      })
     },
     deleteImage() {
-      console.log("delete")
+      new Promise((resolve) => {
+        resolve(this.avatorDelete())
+      })
+      .then( (res) => {
+        this.alert = Object.assign(alertTemplate, {
+          show: true,
+          type: 'info',
+          message: res,
+        })
+      })
+      .catch( (err) => {
+        this.alert = Object.assign(alertTemplate, {
+          show: true,
+          type: 'error',
+          message: err,
+        })
+      })
     }
   }
 }
