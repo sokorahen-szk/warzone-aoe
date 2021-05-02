@@ -30,6 +30,14 @@ export const rightMenuOtherList = {
   ]
 }
 
+export const profileViewTemplate = {
+  id: null,
+  status: null,
+  player: {
+    joinedAt: null,
+  }
+}
+
 export const profileTemplate = {
   name: null,
   steamId: null,

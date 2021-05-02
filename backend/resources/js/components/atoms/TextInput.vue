@@ -20,7 +20,7 @@ import { validator } from '@/services/validator'
 export default {
   name: 'TextInput',
   props: {
-    value: {type: String},
+    value: {type: [String, Number]},
     required: {type: Boolean, default: false},
     placeholder: {type: String, default: null},
     rounded: {type: Boolean, default: false},

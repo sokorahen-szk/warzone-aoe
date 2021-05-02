@@ -9,7 +9,12 @@
         <v-row no-gutters>
           <v-col cols="12" sm="12" md="12" lg="6">
             <v-col cols="12" class="py-0 ma-0">
-              <div class="py-2">ユーザ名</div>
+              <div class="py-2">ユーザID</div>
+              <div class="mb-4">{{ profileView.id }}</div>
+            </v-col>
+
+            <v-col cols="12" class="py-0 ma-0">
+              <div class="py-2">ユーザ名<RequireLabel /></div>
               <TextInput
                 v-model="profile.name"
                 @update="profile.name = $event"
@@ -18,6 +23,38 @@
                 required
                 :disabled="!editMode"
                 :rules="{label:'ユーザ名', types:'required,min:4,max:10'}"
+              />
+            </v-col>
+
+            <v-col cols="12" class="py-0 mb-4" v-show="!editPassword">
+              <div class="py-2">パスワード</div>
+              <Button
+                label="パスワードを変更する"
+                color="info"
+                tile
+                @click="editPassword = !editPassword"
+              />
+            </v-col>
+
+            <v-col cols="12" class="py-0 mb-4" v-show="editPassword">
+              <div class="py-2">パスワード<RequireLabel /></div>
+              <PasswordTextInput
+                @update="profile.password = $event"
+                placeholder="password"
+                outlined
+                required
+                :rules="{label:'パスワード', types:'required,min:8'}"
+              />
+            </v-col>
+
+            <v-col cols="12" class="py-0 mb-4" v-show="editPassword">
+              <div class="py-2">パスワード再入力<RequireLabel /></div>
+              <PasswordTextInput
+                @update="profile.passwordConfirmation = $event"
+                placeholder="passwordConfirm"
+                outlined
+                required
+                :rules="{label:'パスワード再入力', types:`required,min:8,confirm:${profile.password}`}"
               />
             </v-col>
 
@@ -58,7 +95,7 @@
             </v-col>
 
             <v-col cols="12" class="py-0 ma-0">
-              <div class="py-2">My Webサイト</div>
+              <div class="py-2">Webサイト</div>
               <TextInput
                 v-model="profile.webSiteUrl"
                 @update="profile.webSiteUrl = $event"
@@ -79,6 +116,7 @@
               :disabled="!editMode"
             />
           </v-col>
+
           <v-col cols="12" class="py-2 ma-0 text-center">
             <Button
               v-if="!editMode"
@@ -116,11 +154,13 @@ import CommonWithRightColumnTemplate from '@/components/templates/CommonWithRigh
 import AccountRightMenu from '@/components/organisms/AccountRightMenu'
 import Button from '@/components/atoms/Button'
 import TextInput from '@/components/atoms/TextInput'
+import PasswordTextInput from '@/components/atoms/PasswordTextInput'
+import RequireLabel from '@/components/atoms/RequireLabel'
 import ImageUpload from '@/components/molecules/ImageUpload'
 import Link from '@/components/atoms/Link'
 import Breadcrumbs from '@/components/molecules/Breadcrumbs'
 import Alert from '@/components/atoms/Alert'
-import {profileTemplate} from '@/config/account'
+import { profileTemplate, profileViewTemplate } from '@/config/account'
 import {objCopy} from '@/services/helper'
 export default {
   name: 'AccountProfile',
@@ -132,17 +172,22 @@ export default {
     ImageUpload,
     Link,
     Breadcrumbs,
-    Alert
+    Alert,
+    PasswordTextInput,
+    RequireLabel
   },
   data() {
     return {
+      profileView: profileViewTemplate,
       profile: profileTemplate,
       editMode: false,
+      editPassword: false,
       alert: alertTemplate,
     }
   },
   mounted() {
     this.$set(this, 'profile', objCopy(this.profile, this.getProfile))
+    this.$set(this, 'profileView', objCopy(this.profileView, this.getProfile))
   },
   computed: {
     ...mapGetters('accountStore', ['getProfile', 'getUserId']),

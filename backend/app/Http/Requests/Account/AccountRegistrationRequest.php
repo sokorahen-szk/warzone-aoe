@@ -40,7 +40,7 @@ class AccountRegistrationRequest extends FormRequest
             'password_confirmation'     => ['required', 'string'],
             'email'                     => ['sometimes', 'email'],
             'game_package'              => ['sometimes', 'string'],
-            'answer1'                   => ['sometimes', 'string'],
+            'answer1'                   => ['sometimes', 'integer'],
             'answers2'                  => ['sometimes', 'string'],
             'answers3'                  => ['sometimes', 'string'],
         ];
