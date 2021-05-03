@@ -1,6 +1,6 @@
 <template>
   <header>
-    <v-app-bar flat dense color="#424242" app>
+    <v-app-bar dense color="#424242" app>
       <v-container class="py-0 fill-height">
       <v-toolbar-title>
         <v-btn
@@ -27,7 +27,7 @@
         </v-btn>
 
         <template v-if="isLogin">
-        <Link path="/account/dashboard">
+        <Link path="/account/mypage">
           <Avatar class="ml-4" :src="user.avatorImage" :alt="user.name" :size="34" />
         </Link>
         </template>

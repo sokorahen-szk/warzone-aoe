@@ -4,9 +4,8 @@ namespace App\Http\Requests\Account;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Traits\FailedValidationTrait;
-use Illuminate\Validation\Rule;
 
-class AccountRegistrationRequest extends FormRequest
+class AccountProfileEditRequest extends FormRequest
 {
     use FailedValidationTrait;
 
@@ -29,20 +28,18 @@ class AccountRegistrationRequest extends FormRequest
     {
         return [
             'user_name'                 => ['required', 'string'],
-            'player_name'               => ['required', 'string'],
+            'email'                     => ['sometimes', 'email'],
             'password'                  => [
-                                                'required',
+                                                'sometimes',
                                                 'string',
                                                 'min:8',
                                                 'required_with:password_confirmation',
                                                 'same:password_confirmation'
                                         ],
-            'password_confirmation'     => ['required', 'string'],
-            'email'                     => ['sometimes', 'email'],
-            'game_package'              => ['sometimes', 'string'],
-            'answer1'                   => ['sometimes', 'integer'],
-            'answers2'                  => ['sometimes', 'string'],
-            'answers3'                  => ['sometimes', 'string'],
+            'password_confirmation'     => ['sometimes', 'string'],
+            'steam_id'                  => ['sometimes', 'string'],
+            'twitter_id'                => ['sometimes', 'string'],
+            'web_site_url'              => ['sometimes', 'url', 'active_url'],
         ];
     }
 }

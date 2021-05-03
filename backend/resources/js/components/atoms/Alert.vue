@@ -28,11 +28,6 @@ export default {
       },
       deep: true
     },
-    show(val) {
-      if (!this.show) {
-        // ここにvuex actions呼び出してalertの内容を空にしたい
-      }
-    }
   },
   methods: {
     closed() {

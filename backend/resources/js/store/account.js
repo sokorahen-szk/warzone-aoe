@@ -1,52 +1,96 @@
 import { userTemplate } from '@/config/user'
 import { excludeNullParams } from '@/services/api_helper';
-import router from '@/router/index'
 
 const state = {
   user: userTemplate,
-  alert: {
-    show: false,
-    type: 'info',
-    message: null,
-  }
 }
 const getters ={
   getProfile: (state) => {
-    return state.user;
+    return state.user
   },
-  getAlert (state) {
-    return state.alert
+  getUserId: (state) => {
+    return state.user.id
   }
 }
 const mutations = {
   setProfile (state, val) {
     state.user = Object.assign(state.user, val.$user)
   },
-  alert(state, payload) {
-    state.alert = Object.assign(state.alert, payload)
+
+  reset( state ) {
+    state.user = userTemplate;
   }
 }
 const actions = {
   profile ({ commit }) {
     axios.get('/api/account/profile')
     .then( (res) => {
-      if(res.data) {
-        commit('setProfile', {$user: res.data})
+      if(res.data && res.data.isSuccess) {
+        commit('setProfile', {$user: res.data.body})
       }
     })
   },
   register ({commit}, payload) {
-    axios.post('/api/auth/register', excludeNullParams(payload)).then( (res) => {
-      if(res.data && res.data.isSuccess) {
-        alert(res.data.messages)
-
-        router.push({path: '/login'})
-      } else {
-        commit('alert', {show: true, type: 'error', message: res.data.errorMessages})
-      }
+    return new Promise( (resolve, reject) => {
+      axios.post('/api/auth/register', excludeNullParams(payload)).then( (res) => {
+        if(res.data && res.data.isSuccess) {
+          resolve()
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
     })
+  },
+  avatorUpdate ({ commit, dispatch }, payload) {
+    const params = new FormData();
+    params.append('file', payload.file)
+    return new Promise( (resolve, reject) => {
+      axios.post('/api/account/avator/edit', params).then( (res) => {
+        if(res.data && res.data.isSuccess) {
+
+          dispatch("accountStore/profile", null , {root: true})
+
+          resolve(res.data.messages)
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
+    })
+  },
+  avatorDelete ({ commit, dispatch }, payload) {
+    return new Promise( (resolve, reject) => {
+      axios.post('/api/account/avator/delete').then( (res) => {
+        if(res.data && res.data.isSuccess) {
+
+          dispatch("accountStore/profile", null , {root: true})
+
+          resolve(res.data.messages)
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
+    })
+  },
+  changeProfile ({ commit, dispatch }, payload) {
+    return new Promise( (resolve, reject) => {
+      axios.post('/api/account/profile/edit', excludeNullParams(payload)).then( (res) => {
+        if(res.data && res.data.isSuccess) {
+
+          dispatch("accountStore/profile", null , {root: true})
+
+          resolve(res.data.messages)
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
+    })
+  },
+
+  stateReset ({commit}) {
+    commit('reset')
   }
 }
+
 const accountStore = {
   namespaced: true,
   state,

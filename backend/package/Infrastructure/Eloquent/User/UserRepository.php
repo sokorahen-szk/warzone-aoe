@@ -32,6 +32,7 @@ use Package\Domain\User\ValueObject\Player\Enabled;
 use Package\Domain\User\Entity\User;
 use Package\Domain\User\Entity\Role;
 use Package\Domain\User\Entity\Player;
+use Package\Domain\User\Entity\UserAvator;
 
 use App\Models\UserModel as EloquentUser;
 
@@ -154,5 +155,54 @@ class UserRepository implements UserRepositoryInterface {
       'email'       => $user->getEmail()->getValidEmail(),
       'password'    => $user->getPassword()->getEncrypted(),
     ]);
+  }
+
+  /**
+   * @param UserAvator $userAvator
+   */
+  public function updateAvator(UserAvator $userAvator): void
+  {
+    EloquentUser::where('id', $userAvator->getUserId()->getValue())
+    ->update([
+      'avator_image'  => $userAvator->getUserAvatorImageFilePath(),
+    ]);
+  }
+
+  /**
+   * @param UserId $userId
+   */
+  public function deleteAvator(UserId $userId): void
+  {
+    EloquentUser::where('id', $userId->getValue())
+    ->update([
+      'avator_image'  => null,
+    ]);
+  }
+
+  /**
+   * @param User $user
+   */
+  public function changeProfile(User $user): void
+  {
+    if ($user->getPassword()) {
+      EloquentUser::where('id', $user->getId()->getValue())
+      ->update([
+        'name'          => $user->getName()->getValue(),
+        'email'         => $user->getEmail()->getValidEmail(),
+        'password'      => $user->getPassword()->getEncrypted(),
+        'steam_id'      => $user->getSteamId()->getValue(),
+        'twitter_id'    => $user->getTwitterId()->getValue(),
+        'website_url'   => $user->getWebSiteUrl()->getValue(),
+      ]);
+    } else {
+      EloquentUser::where('id', $user->getId()->getValue())
+      ->update([
+        'name'          => $user->getName()->getValue(),
+        'email'         => $user->getEmail()->getValidEmail(),
+        'steam_id'      => $user->getSteamId()->getValue(),
+        'twitter_id'    => $user->getTwitterId()->getValue(),
+        'website_url'   => $user->getWebSiteUrl()->getValue(),
+      ]);
+    }
   }
 }

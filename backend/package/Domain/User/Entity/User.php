@@ -90,6 +90,14 @@ class User extends Resource {
   }
 
   /**
+   * @param Name $name
+   */
+  public function changeName(Name $name): void
+  {
+    $this->name = $name;
+  }
+
+  /**
    * @return SteamId|null
    */
   public function getSteamId(): ?SteamId
@@ -97,6 +105,13 @@ class User extends Resource {
     return $this->steamId;
   }
 
+  /**
+   * @param SteamId $steamId
+   */
+  public function changeSteamId(SteamId $steamId): void
+  {
+    $this->steamId = $steamId;
+  }
 
   /**
    * @return TwitterId|null
@@ -107,11 +122,27 @@ class User extends Resource {
   }
 
   /**
+   * @param TwitterId $twitterId
+   */
+  public function changeTwitterId(TwitterId $twitterId): void
+  {
+    $this->twitterId = $twitterId;
+  }
+
+  /**
    * @return WebSiteURL|null
    */
   public function getWebSiteUrl(): ?WebSiteUrl
   {
     return $this->webSiteUrl;
+  }
+
+  /**
+   * @param WebSiteURL $webSiteURL
+   */
+  public function changeWebSiteURL(WebSiteURL $webSiteUrl): void
+  {
+    $this->webSiteUrl = $webSiteUrl;
   }
 
   /**
@@ -131,6 +162,14 @@ class User extends Resource {
   }
 
   /**
+   * @param Email $email
+   */
+  public function changeEmail(Email $email): void
+  {
+    $this->email = $email;
+  }
+
+  /**
    * @return Status|null
    */
   public function getStatus(): ?Status
@@ -144,6 +183,14 @@ class User extends Resource {
   public function getPassword(): ?Password
   {
     return $this->password;
+  }
+
+  /**
+   * @param Password $password
+   */
+  public function changePassword(Password $password): void
+  {
+    $this->password = $password;
   }
 
 }

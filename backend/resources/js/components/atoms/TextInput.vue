@@ -6,11 +6,12 @@
     :filled="filled"
     :outlined="outlined"
     dense
-    class="pa-0 ma-0"
+    class="pa-0 ma-0 text"
     :placeholder="placeholder"
     flat
     :rules="setRule"
-    :background-color="color"
+    :background-color="setColor"
+    :disabled="disabled"
   ></v-text-field>
 </template>
 
@@ -19,14 +20,15 @@ import { validator } from '@/services/validator'
 export default {
   name: 'TextInput',
   props: {
-    value: {type: String},
+    value: {type: [String, Number]},
     required: {type: Boolean, default: false},
     placeholder: {type: String, default: null},
     rounded: {type: Boolean, default: false},
     filled: {type: Boolean, default: false},
     outlined: {type: Boolean, default: false},
     rules: {type: Object, default: null},
-    color: {type: String, default: null},
+    color: {type: String, default: '#fffffe'},
+    disabled: {type: Boolean, default: false},
   },
   data() {
     return {
@@ -39,11 +41,17 @@ export default {
   watch: {
     t: function(value) {
       return this.$emit('update', value)
+    },
+    value: function (newValue) {
+      this.t = newValue
     }
   },
   computed: {
     setRule() {
       return validator(this.rules);
+    },
+    setColor() {
+      return this.disabled ? '#eee' : '#fffffe'
     }
   }
 }
