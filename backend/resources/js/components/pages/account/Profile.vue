@@ -166,6 +166,7 @@ import Breadcrumbs from '@/components/molecules/Breadcrumbs'
 import Alert from '@/components/atoms/Alert'
 import { profileTemplate, profileViewTemplate } from '@/config/account'
 import {objCopy} from '@/services/helper'
+
 export default {
   name: 'AccountProfile',
   components: {

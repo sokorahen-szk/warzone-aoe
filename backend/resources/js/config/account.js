@@ -35,6 +35,7 @@ export const profileViewTemplate = {
   status: null,
   player: {
     joinedAt: null,
+    enabled: null,
   }
 }
 
