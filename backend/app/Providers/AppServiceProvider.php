@@ -40,6 +40,10 @@ class AppServiceProvider extends ServiceProvider
             \Package\Usecase\Account\ChangeProfile\AccountChangeProfileServiceInterface::class,
             \Package\Application\Account\ChangeProfile\AccountChangeProfileService::class
         );
+        $this->app->bind(
+            \Package\Usecase\Account\Withdrawal\AccountWithdrawalServiceInterface::class,
+            \Package\Application\Account\Withdrawal\AccountWithdrawalService::class
+        );
 
         /**
          * Repositories...

@@ -39,4 +39,9 @@ interface UserRepositoryInterface {
    * @param UserId $userId
    */
   public function deleteAvator(UserId $userId): void;
+
+  /**
+   * @param User $user
+   */
+  public function withdrawal(User $user): void;
 }

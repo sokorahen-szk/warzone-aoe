@@ -42,6 +42,8 @@ import CommonWithRightColumnTemplate from '@/components/templates/CommonWithRigh
 import AccountRightMenu from '@/components/organisms/AccountRightMenu'
 import Button from '@/components/atoms/Button'
 import CheckBoxList from '@/components/molecules/CheckBoxList'
+import { mapActions } from 'vuex'
+import router from '@/router/index'
 export default {
   name: 'Withdrawal',
   components: {
@@ -57,8 +59,20 @@ export default {
     }
   },
   methods: {
+    ...mapActions('accountStore', ['withdrawal']),
     withdrawalEvent() {
-      // ここに退会処理
+      new Promise((resolve) => {
+        resolve(this.withdrawal())
+      })
+      .then( (res) => {
+        // TODO: ここはモーダルにするはず
+        alert(res);
+        router.push({path: '/'})
+      })
+      .catch( (err) => {
+        // TODO: ここはモーダルにするはず
+        alert(err);
+      })
     }
   }
 }

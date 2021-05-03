@@ -48,6 +48,10 @@ const actions = {
         }
       })
     })
+  },
+
+  stateReset ({commit}) {
+    commit('logout')
   }
 }
 const authStore = {

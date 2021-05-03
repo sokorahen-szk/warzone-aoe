@@ -74,6 +74,12 @@ Route::group(['middleware' => 'auth:api'], function () {
      * POST /api/account/avator/delete
      */
     Route::post('avator/delete', [AccountController::class, 'deleteAvator'])->name('account.avator.delete');
+
+    /**
+     * ユーザ退会
+     * POST /api/account/withdrawal
+     */
+    Route::post('withdrawal', [AccountController::class, 'withdrawal'])->name('account.withdrawal');
   });
 
   Route::prefix('auth')->group(function() {
