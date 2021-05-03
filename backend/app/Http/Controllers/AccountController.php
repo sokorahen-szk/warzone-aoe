@@ -18,6 +18,8 @@ use Package\Usecase\Account\DeleteAvator\AccountDeleteAvatorServiceInterface;
 use Package\Usecase\Account\DeleteAvator\AccountDeleteAvatorCommand;
 use Package\Usecase\Account\ChangeProfile\AccountChangeProfileServiceInterface;
 use Package\Usecase\Account\ChangeProfile\AccountChangeProfileCommand;
+use Package\Usecase\Account\Withdrawal\AccountWithdrawalServiceInterface;
+use Package\Usecase\Account\Withdrawal\AccountWithdrawalCommand;
 use Exception;
 
 class AccountController extends Controller
@@ -121,5 +123,20 @@ class AccountController extends Controller
         $result = $interactor->handle($command);
 
         return $this->validResponse($result, 'プロフィールを更新しました。');
+    }
+
+    /**
+     * 退会
+     * @param AccountWithdrawalServiceInterface $interactor
+     * @return json(...)
+     */
+    public function withdrawal(AccountWithdrawalServiceInterface $interactor)
+    {
+        $command = new AccountWithdrawalCommand(
+            \Auth::user()->id
+        );
+        $result = $interactor->handle($command);
+
+        return $this->validResponse($result, '退会処理が完了しました。');
     }
 }

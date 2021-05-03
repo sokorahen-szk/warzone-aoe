@@ -205,4 +205,15 @@ class UserRepository implements UserRepositoryInterface {
       ]);
     }
   }
+
+  /**
+   * @param User $user
+   */
+  public function withdrawal(User $user): void
+  {
+    EloquentUser::where('id', $user->getId()->getValue())
+    ->update([
+      'status'  => $user->getStatus()->getValue(),
+    ]);
+  }
 }

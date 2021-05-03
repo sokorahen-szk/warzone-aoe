@@ -5,11 +5,16 @@ namespace Package\Domain\User\ValueObject;
 class Status {
   private $value;
 
+  const USER_STATUS_WAITING = 1;
+  const USER_STATUS_ACTIVE = 2;
+  const USER_STATUS_WITHDRAWAL = 3;
+  const USER_STATUS_BANNED = 4;
+
   private $enums = [
-    1 => 'waiting',
-    2 => 'active',
-    3 => 'withdrawal',
-    4 => 'banned',
+    self::USER_STATUS_WAITING     => 'waiting',
+    self::USER_STATUS_ACTIVE      => 'active',
+    self::USER_STATUS_WITHDRAWAL  => 'withdrawal',
+    self::USER_STATUS_BANNED      => 'banned',
   ];
 
   public function __construct($value)
@@ -26,5 +31,25 @@ class Status {
   {
     if (!array_key_exists($this->value, $this->enums)) return null;
     return $this->enums[$this->value];
+  }
+
+  public function changeWaiting()
+  {
+    $this->value = self::USER_STATUS_WAITING;
+  }
+
+  public function changeActive()
+  {
+    $this->value = self::USER_STATUS_ACTIVE;
+  }
+
+  public function changeWithdrawal()
+  {
+    $this->value = self::USER_STATUS_WITHDRAWAL;
+  }
+
+  public function changeBanned()
+  {
+    $this->value = self::USER_STATUS_BANNED;
   }
 }

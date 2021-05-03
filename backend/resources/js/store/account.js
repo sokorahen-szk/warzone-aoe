@@ -86,6 +86,22 @@ const actions = {
     })
   },
 
+  withdrawal ({ commit, dispatch }) {
+    return new Promise( (resolve, reject) => {
+      axios.post('/api/account/withdrawal').then( (res) => {
+        if(res.data && res.data.isSuccess) {
+
+          dispatch("authStore/stateReset", null , {root: true})
+          commit('reset')
+
+          resolve(res.data.messages)
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
+    })
+  },
+
   stateReset ({commit}) {
     commit('reset')
   }

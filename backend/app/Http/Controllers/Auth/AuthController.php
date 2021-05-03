@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Response;
 
 use App\Http\Requests\Auth\LoginRequest;
+use Package\Domain\User\ValueObject\Status;
 
 class AuthController extends Controller
 {
@@ -29,7 +30,9 @@ class AuthController extends Controller
             }
 
             // 退会、アカウント停止
-            if (Auth::user()->status == 3 || Auth::user()->status == 4) {
+            if (Auth::user()->status == Status::USER_STATUS_WITHDRAWAL
+                || Auth::user()->status == Status::USER_STATUS_BANNED
+            ) {
                 auth()->logout();
                 return response()->json($this->response(null, 403));
             }
