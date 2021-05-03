@@ -32,6 +32,7 @@
                 label="パスワードを変更する"
                 color="info"
                 tile
+                :disabled="!editMode"
                 @click="editPassword = !editPassword"
               />
             </v-col>
@@ -39,6 +40,7 @@
             <v-col cols="12" class="py-0 mb-4" v-show="editPassword">
               <div class="py-2">パスワード<RequireLabel /></div>
               <PasswordTextInput
+                v-model="profile.password"
                 @update="profile.password = $event"
                 placeholder="password"
                 outlined
@@ -50,6 +52,7 @@
             <v-col cols="12" class="py-0 mb-4" v-show="editPassword">
               <div class="py-2">パスワード再入力<RequireLabel /></div>
               <PasswordTextInput
+                v-model="profile.passwordConfirmation"
                 @update="profile.passwordConfirmation = $event"
                 placeholder="passwordConfirm"
                 outlined
@@ -136,6 +139,7 @@
               :height="45"
               iconType="mdi-content-save"
               icon
+              @click="updateProfile"
             />
           </v-col>
         </v-row>
@@ -193,7 +197,34 @@ export default {
     ...mapGetters('accountStore', ['getProfile', 'getUserId']),
   },
   methods: {
-    ...mapActions('accountStore', ['avatorUpdate', 'avatorDelete']),
+    ...mapActions('accountStore', ['avatorUpdate', 'avatorDelete', 'changeProfile']),
+    updateProfile() {
+      new Promise((resolve) => {
+        resolve(this.changeProfile({
+          user_name: this.profile.name,
+          email: this.profile.email,
+          password: this.profile.password,
+          password_confirmation: this.profile.passwordConfirmation,
+          steam_id: this.profile.steamId,
+          twitter_id: this.profile.twitterId,
+          web_site_url: this.profile.webSiteUrl,
+        }))
+      })
+      .then( (res) => {
+        this.alert = Object.assign(alertTemplate, {
+          show: true,
+          type: 'info',
+          message: res,
+        })
+      })
+      .catch( (err) => {
+        this.alert = Object.assign(alertTemplate, {
+          show: true,
+          type: 'error',
+          message: err,
+        })
+      })
+    },
     uploadImage(e) {
       new Promise((resolve) => {
         resolve(this.avatorUpdate({file: e}))

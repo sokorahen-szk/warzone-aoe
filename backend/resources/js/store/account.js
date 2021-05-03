@@ -71,6 +71,20 @@ const actions = {
       })
     })
   },
+  changeProfile ({ commit, dispatch }, payload) {
+    return new Promise( (resolve, reject) => {
+      axios.post('/api/account/profile/edit', excludeNullParams(payload)).then( (res) => {
+        if(res.data && res.data.isSuccess) {
+
+          dispatch("accountStore/profile", null , {root: true})
+
+          resolve(res.data.messages)
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
+    })
+  },
 
   stateReset ({commit}) {
     commit('reset')

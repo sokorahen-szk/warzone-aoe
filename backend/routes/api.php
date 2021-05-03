@@ -58,6 +58,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('profile', [AccountController::class, 'show'])->name('account.profile');
 
     /**
+     * プロフィール更新
+     * POST /api/account/profile/edit
+     */
+    Route::post('profile/edit', [AccountController::class, 'changeProfile'])->name('account.profile.edit');
+
+    /**
      * アバター更新
      * POST /api/account/avator/edit
      */

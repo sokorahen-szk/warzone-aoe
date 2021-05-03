@@ -26,6 +26,11 @@ interface UserRepositoryInterface {
   public function register(User $user): void;
 
   /**
+   * @param User $user
+   */
+  public function changeProfile(User $user): void;
+
+  /**
    * @param UserAvator $userAvator
    */
   public function updateAvator(UserAvator $userAvator): void;

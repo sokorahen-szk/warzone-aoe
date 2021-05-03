@@ -11,6 +11,8 @@ export const objCopy = (o, c) => {
       } else {
         obj[key] = c[key]
       }
+    } else {
+      obj[key] = null;
     }
   })
   return obj

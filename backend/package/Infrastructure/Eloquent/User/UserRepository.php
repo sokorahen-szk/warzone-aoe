@@ -178,4 +178,31 @@ class UserRepository implements UserRepositoryInterface {
       'avator_image'  => null,
     ]);
   }
+
+  /**
+   * @param User $user
+   */
+  public function changeProfile(User $user): void
+  {
+    if ($user->getPassword()) {
+      EloquentUser::where('id', $user->getId()->getValue())
+      ->update([
+        'name'          => $user->getName()->getValue(),
+        'email'         => $user->getEmail()->getValidEmail(),
+        'password'      => $user->getPassword()->getEncrypted(),
+        'steam_id'      => $user->getSteamId()->getValue(),
+        'twitter_id'    => $user->getTwitterId()->getValue(),
+        'website_url'   => $user->getWebSiteUrl()->getValue(),
+      ]);
+    } else {
+      EloquentUser::where('id', $user->getId()->getValue())
+      ->update([
+        'name'          => $user->getName()->getValue(),
+        'email'         => $user->getEmail()->getValidEmail(),
+        'steam_id'      => $user->getSteamId()->getValue(),
+        'twitter_id'    => $user->getTwitterId()->getValue(),
+        'website_url'   => $user->getWebSiteUrl()->getValue(),
+      ]);
+    }
+  }
 }
