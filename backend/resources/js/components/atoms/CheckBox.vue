@@ -14,7 +14,7 @@ export default {
   props: {
     selected: {type: Boolean, default: false},
     label: {type: String, default: ''},
-    value: {type: [String, Number], default: ''},
+    value: {type: [String, Number, Boolean], default: ''},
   },
   data() {
     return {
