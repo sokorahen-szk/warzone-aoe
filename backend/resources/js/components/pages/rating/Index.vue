@@ -1,11 +1,9 @@
 <template>
-  <v-container>
-    <CommonOneColumnTemplate>
-    <template slot="container">
-      <PlayerTable :players="players" />
-    </template>
-    </CommonOneColumnTemplate>
-  </v-container>
+  <CommonOneColumnTemplate>
+  <template slot="container">
+    <PlayerTable :players="players" />
+  </template>
+  </CommonOneColumnTemplate>
 </template>
 
 <script>

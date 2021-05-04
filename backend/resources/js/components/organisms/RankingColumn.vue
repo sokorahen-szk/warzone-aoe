@@ -56,9 +56,9 @@ export default {
   data() {
     return {
       items : [
-        {id: 1, name: 'AAAA', image: 'https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-600w-1389188327.jpg'},
-        {id: 2, name: 'AAAA', image: 'https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-600w-1389188327.jpg'},
-        {id: 3, name: 'AAAA', image: 'https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-600w-1389188327.jpg'},
+        {id: 1, rank: 20, name: 'AAAA', image: 'https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-600w-1389188327.jpg', linkEnabled: true},
+        {id: 2, rank: 20, name: 'AAAA', image: 'https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-600w-1389188327.jpg', linkEnabled: true},
+        {id: 3, rank: 20, name: 'AAAA', image: 'https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-600w-1389188327.jpg', linkEnabled: true},
       ]
     }
   },
