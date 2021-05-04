@@ -175,7 +175,6 @@ export default {
     Button,
     ImageUpload,
     Link,
-    Breadcrumbs,
     Alert,
     PasswordTextInput,
     RequireLabel
