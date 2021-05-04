@@ -1,6 +1,6 @@
 <template>
   <label>
-    <select @change="updateValue" :disabled="disabled" :class="[{'disabled': disabled}]" :style="[addStyle]">
+    <select @change="updateValue" :disabled="disabled" :class="[{disabled: disabled}]" :style="addStyle">
       <option>{{ label }}</option>
       <template v-for="(item, index) in items">
         <option :value="item.value" :key="item['id'] ? item['id'] : index" :selected="item['id'] == selectedIndex">
@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import {addStyleParser} from '@/services/helper'
 export default {
   name: 'Select',
   props: {
@@ -21,6 +22,7 @@ export default {
     label: {type: String, default: '' },
     width: {type: String, default: '100%' },
     height: {type: String, default: '35px' },
+    background: {type: String, default: '#fff' },
   },
   data() {
     return {
@@ -34,7 +36,9 @@ export default {
   },
   computed: {
     addStyle() {
-      return {width: this.width, height: this.height};
+      return addStyleParser({
+        background: `${this.background}`,
+      })
     }
   },
 }
@@ -43,9 +47,8 @@ export default {
 <style scoped>
 select {
   outline: none;
-  text-indent: 0.01px;
+  text-indent: 4px;
   text-overflow: '';
-  background: none transparent;
   vertical-align: middle;
   font-size: inherit;
   color: inherit;
@@ -57,7 +60,11 @@ select {
   width: 100%;
   height: 100%;
   max-height: 55px;
+  min-height: 40px;
   font-size: 12px;
+}
+.white {
+  background: #fff;
 }
 select option {
   background-color: #fff;

@@ -1,4 +1,8 @@
 <template>
+  <v-sheet
+    class="overflow-y-auto"
+    max-height="300"
+  >
   <v-list flat class="pa-0 ma-0">
     <v-list-item v-for="(player, index) in players" :key="index" @click="link(player)">
       <v-list-item-avatar v-show="player.image">
@@ -14,6 +18,7 @@
       </v-list-item-content>
     </v-list-item>
   </v-list>
+  </v-sheet>
 </template>
 
 <script>

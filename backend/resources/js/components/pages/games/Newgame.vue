@@ -3,13 +3,13 @@
   <template slot="container">
 
     <v-row no-gutters>
-      <v-col cols="4">
+      <v-col cols="12" lg="4">
         <PlayerSearchBox
           :players="players"
           @update="updatePlayer"
         />
       </v-col>
-      <v-col cols="8" class="px-2">
+      <v-col cols="12" lg="8" class="px-2">
         <div class="text-center">
           選択プレイヤー ({{selectedPlayers.length}}/8) 人
         </div>
@@ -23,13 +23,46 @@
             </v-col>
           </v-row>
         </v-card>
-        <v-row no-gutters class="mt-4">
+        <v-row no-gutters>
+          <v-col cols="12" lg="12" class="mb-2">
+            <Select
+              label="ゲームパッケージを選択する"
+              :items="items"
+            />
+          </v-col>
+          <v-col cols="12" class="mb-2">
+            <Select
+              label="ルールを選択する"
+              :items="items"
+            />
+          </v-col>
           <v-col cols="12">
             <Select
+              label="マップを選択する"
               :items="items"
             />
           </v-col>
         </v-row>
+        <v-col cols="12" class="mt-2">
+          <v-row no-gutters justify="center" align-content="center">
+          <Button
+            class="mr-2"
+            color="info"
+            label="チーム分け"
+            height="55"
+            width="150"
+            tile
+          />
+          <Button
+            class="ml-2"
+            color="warning"
+            label="キャンセル"
+            width="150"
+            height="55"
+            tile
+          />
+          </v-row>
+        </v-col>
       </v-col>
     </v-row>
 
@@ -41,6 +74,7 @@
 import CommonOneColumnTemplate from '@/components/templates/CommonOneColumnTemplate'
 import PlayerSearchBox from '@/components/organisms/PlayerSearchBox'
 import Select from '@/components/atoms/Select'
+import Button from '@/components/atoms/Button'
 import { playerListTemplate } from '@/config/player'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -50,6 +84,7 @@ export default {
     CommonOneColumnTemplate,
     PlayerSearchBox,
     Select,
+    Button
   },
   mounted() {
     this.playerList();
