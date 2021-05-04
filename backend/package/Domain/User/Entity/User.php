@@ -130,7 +130,7 @@ class User extends Resource {
   }
 
   /**
-   * @return WebSiteURL|null
+   * @return WebSiteUrl|null
    */
   public function getWebSiteUrl(): ?WebSiteUrl
   {
@@ -138,9 +138,9 @@ class User extends Resource {
   }
 
   /**
-   * @param WebSiteURL $webSiteURL
+   * @param WebSiteUrl $webSiteUrl
    */
-  public function changeWebSiteURL(WebSiteURL $webSiteUrl): void
+  public function changeWebSiteUrl(WebSiteUrl $webSiteUrl): void
   {
     $this->webSiteUrl = $webSiteUrl;
   }

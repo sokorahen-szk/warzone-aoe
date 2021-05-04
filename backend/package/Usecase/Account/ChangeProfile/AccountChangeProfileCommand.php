@@ -9,7 +9,7 @@ class AccountChangeProfileCommand {
   public $password;
   public $steamId;
   public $twitterId;
-  public $webSiteURL;
+  public $webSiteUrl;
 
   public function __construct(
     int $userId,
@@ -18,7 +18,7 @@ class AccountChangeProfileCommand {
     ?string $password,
     ?string $steamId,
     ?string $twitterId,
-    ?string $webSiteURL
+    ?string $webSiteUrl
   )
   {
     $this->userId = $userId;
@@ -27,6 +27,6 @@ class AccountChangeProfileCommand {
     $this->password = $password;
     $this->steamId = $steamId;
     $this->twitterId = $twitterId;
-    $this->webSiteURL = $webSiteURL;
+    $this->webSiteUrl = $webSiteUrl;
   }
 }

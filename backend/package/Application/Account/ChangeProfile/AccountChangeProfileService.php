@@ -11,7 +11,7 @@ use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\User\ValueObject\Name;
 use Package\Domain\User\ValueObject\SteamId;
 use Package\Domain\User\ValueObject\TwitterId;
-use Package\Domain\User\ValueObject\WebSiteURL;
+use Package\Domain\User\ValueObject\WebSiteUrl;
 use Package\Domain\User\ValueObject\Email;
 use Package\Domain\User\ValueObject\Password;
 
@@ -46,7 +46,7 @@ class AccountChangeProfileService implements AccountChangeProfileServiceInterfac
 
     $user->changeSteamId(new SteamId($command->steamId));
     $user->changeTwitterId(new TwitterId($command->twitterId));
-    $user->changeWebSiteURL(new WebSiteURL($command->webSiteURL));
+    $user->changeWebSiteUrl(new WebSiteUrl($command->webSiteUrl));
     $user->changeEmail(new Email($command->email));
 
     if ($command->password) {
