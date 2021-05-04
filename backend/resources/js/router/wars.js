@@ -6,5 +6,5 @@ export const warsRoute = [
     path: '/wars',
     name: 'WarsIndex',
     component: WarsIndex,
-  },
+  }
 ]

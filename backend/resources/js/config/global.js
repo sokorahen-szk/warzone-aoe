@@ -7,7 +7,7 @@ export const headerConfig = {
     {label: "ホーム", uri: "/"},
     {label: "対戦履歴", uri: "/wars"},
     {label: "レーティング", uri: "/rating"},
-    {label: "問い合わせ", uri: "/contact"},
+    {label: "ゲーム作成", uri: "/games/newgame"},
   ]
 }
 
