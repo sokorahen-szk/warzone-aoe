@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Tests\Unit\Domain\User\Entity;
+namespace Tests\Unit\Domain\User\ValueObject;
 
 use PHPUnit\Framework\TestCase;
 use Package\Domain\User\ValueObject\UserId;
