@@ -14,9 +14,8 @@ class GamePackageSeeder extends Seeder
      */
     public function run()
     {
-        if (!SeederHelper::truncate('game_packages')) {
-            return;
-        }
+        SeederHelper::truncate('game_packages');
+
         GamePackageModel::create([
             'name'          => 'AoE2HD',
             'description'   => 'Age Of Empires 2 Home Edition',

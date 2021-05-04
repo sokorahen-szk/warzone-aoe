@@ -15,9 +15,7 @@ class PlayerSeeder extends Seeder
      */
     public function run()
     {
-        if (!SeederHelper::truncate('players')) {
-            return;
-        }
+        SeederHelper::truncate('players');
 
         $gamePackages = [
             '1', '2', '1,2', '1,2,3', null,
@@ -96,7 +94,7 @@ class PlayerSeeder extends Seeder
         $enabled = [true, false];
 
         // ここからダミーデータ
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $win = mt_rand(1, 100);
             $defeat = mt_rand(1, 100);
             $games = $win + $defeat + mt_rand(0, 10);

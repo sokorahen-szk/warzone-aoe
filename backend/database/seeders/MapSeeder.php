@@ -15,9 +15,7 @@ class MapSeeder extends Seeder
      */
     public function run()
     {
-        if (!SeederHelper::truncate('maps')) {
-            return;
-        }
+        SeederHelper::truncate('maps');
 
         //
         // imageのpathは

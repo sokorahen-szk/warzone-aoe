@@ -15,9 +15,8 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        if (!SeederHelper::truncate('roles')) {
-            return;
-        }
+        SeederHelper::truncate('roles');
+
         RoleModel::create([
             'name'      => 'オーナー',
             'level'     => 100,

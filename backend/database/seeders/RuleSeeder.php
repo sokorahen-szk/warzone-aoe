@@ -15,9 +15,7 @@ class RuleSeeder extends Seeder
      */
     public function run()
     {
-        if (!SeederHelper::truncate('rules')) {
-            return;
-        }
+        SeederHelper::truncate('rules');
 
         $data = [
             (object) [
