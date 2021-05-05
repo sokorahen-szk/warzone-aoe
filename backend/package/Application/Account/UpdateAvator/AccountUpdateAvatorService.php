@@ -25,12 +25,17 @@ class AccountUpdateAvatorService implements AccountUpdateAvatorServiceInterface 
     ]);
 
     // TODO: ここは別にインフラ層のレイヤーでやるように書き直す予定。
-    \Storage::putFileAs(
+    \Storage::disk('local')->putFileAs(
       '/public/profile',
       $userAvator->getFileImage()->getValue(),
       $userAvator->getUserAvatorImageName()
     );
-
+/*
+    $t = \Storage::disk('dropbox')->putFileAs('public/profile', $userAvator->getFileImage()->getValue(), $userAvator->getUserAvatorImageName());
+    \Log::info(json_encode($t));
+    \Log::info(\Storage::disk('dropbox')->url('public/profile/1.png'));
+    \Log::info(json_encode(\Storage::disk('dropbox')->get('public/profile/1.png')));
+*/
     $this->userRepository->updateAvator($userAvator);
   }
 }
