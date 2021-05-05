@@ -3,28 +3,16 @@
   <template slot="container">
 
     <v-row no-gutters>
-      <v-col cols="12" lg="4">
+      <v-col cols="12" sm="12" md="5" lg="4" class="px-2" style="border-right: 1px #ddd solid;">
+        <div class="py-2">プレイヤー選択</div>
         <PlayerSearchBox
           :players="players"
           @update="updatePlayer"
         />
-      </v-col>
-      <v-col cols="12" lg="8" class="px-2">
-        <div class="text-center">
-          選択プレイヤー ({{selectedPlayers.length}}/8) 人
-        </div>
-        <v-card v-for="player in selectedPlayers" :key="player.id" class="py-4 mb-2 headline">
-          <v-row no-gutters>
-            <v-col class="pl-2">{{player.name}}</v-col>
-            <v-col>rank:{{player.rank}}</v-col>
-            <v-spacer />
-            <v-col cols="1" class="text-center">
-              <v-icon color="red" @click="deletePlayer(player.id)">mdi-delete</v-icon>
-            </v-col>
-          </v-row>
-        </v-card>
+
+        <div class="py-2">ゲーム設定</div>
         <v-row no-gutters>
-          <v-col cols="12" lg="12" class="mb-2">
+          <v-col cols="12" class="mb-2">
             <Select
               label="ゲームパッケージを選択する"
               :items="items"
@@ -43,26 +31,46 @@
             />
           </v-col>
         </v-row>
-        <v-col cols="12" class="mt-2">
-          <v-row no-gutters justify="center" align-content="center">
-          <Button
-            class="mr-2"
-            color="info"
-            label="チーム分け"
-            height="55"
-            width="150"
-            tile
-          />
-          <Button
-            class="ml-2"
-            color="warning"
-            label="キャンセル"
-            width="150"
-            height="55"
-            tile
-          />
-          </v-row>
-        </v-col>
+
+      </v-col>
+      <v-col cols="12" sm="12" md="7" lg="8">
+
+        <v-row no-gutters>
+          <v-col cols="12" style="min-height: 450px;" class="pa-2">
+            <div class="text-center mb-2">
+              選択プレイヤー ({{selectedPlayers.length}}/8) 人
+            </div>
+            <v-card v-for="player in selectedPlayers" :key="player.id" class="headline py-4 mb-2">
+              <v-row no-gutters>
+                <v-col class="pl-2">{{player.name}}</v-col>
+                <v-col>rank:{{player.rank}}</v-col>
+                <v-spacer />
+                <v-col cols="1" class="text-center">
+                  <v-icon color="red" @click="deletePlayer(player.id)">mdi-delete</v-icon>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
+          <v-col cols="12">
+            <v-row no-gutters justify="center" align-content="center">
+              <Button
+                class="mr-2"
+                color="info"
+                label="チーム分け"
+                height="55"
+                width="150"
+              />
+              <Button
+                class="ml-2"
+                color="warning"
+                label="キャンセル"
+                width="150"
+                height="55"
+              />
+            </v-row>
+          </v-col>
+        </v-row>
+
       </v-col>
     </v-row>
 

@@ -7,12 +7,22 @@
       outlined
       required
     />
-    <PlayerList
-      :players="setPlayers"
-      @click="update"
-    />
+    <div class="suggestion">
+      <PlayerList
+        v-show="setPlayers.length > 0"
+        :players="setPlayers"
+        @click="update"
+      />
+    </div>
   </div>
 </template>
+
+<style scoped>
+.suggestion {
+  position: relative;
+  top: -30px;
+}
+</style>
 
 <script>
 import TextInput from '@/components/atoms/TextInput'
@@ -22,7 +32,7 @@ export default {
   name: 'PlayerSearchBox',
   components: {
     TextInput,
-    PlayerList
+    PlayerList,
   },
   props: {
     players: {type: Array, default: []}
