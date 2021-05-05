@@ -12,6 +12,7 @@
     :rules="setRule"
     :background-color="setColor"
     :disabled="disabled"
+    :autocomplete="autocomplete"
   ></v-text-field>
 </template>
 
@@ -29,6 +30,7 @@ export default {
     rules: {type: Object, default: null},
     color: {type: String, default: '#fffffe'},
     disabled: {type: Boolean, default: false},
+    autocomplete: {type: String, default: 'off'},
   },
   data() {
     return {

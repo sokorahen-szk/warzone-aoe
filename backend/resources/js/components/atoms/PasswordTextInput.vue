@@ -15,6 +15,7 @@
     :rules="setRule"
     :background-color="color"
     :disabled="disabled"
+    autocomplete="off"
   ></v-text-field>
 </template>
 
