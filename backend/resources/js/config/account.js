@@ -30,12 +30,47 @@ export const rightMenuOtherList = {
   ]
 }
 
+export const rightMenuModeleterList = {
+  subHeader: '編集者メニュー',
+  lists: [
+    {
+      icon: 'mdi-account-plus',
+      label: '新規登録リクエスト',
+      path: '/admin/request',
+    },
+    {
+      icon: 'mdi-clipboard-edit-outline',
+      label: 'レート管理',
+      path: '/admin/rate',
+    },
+    {
+      icon: 'mdi-gamepad-variant-outline',
+      label: 'ゲーム管理',
+      path: '/admin/game',
+    },
+  ]
+}
+
+export const rightMenuAdminList = {
+  subHeader: '管理者メニュー',
+  lists: [
+    {
+      icon: 'mdi-account-supervisor',
+      label: 'ユーザ管理',
+      path: '/admin/user',
+    },
+  ]
+}
+
 export const profileViewTemplate = {
   id: null,
   status: null,
   player: {
     joinedAt: null,
     enabled: null,
+  },
+  role: {
+    name: null
   }
 }
 

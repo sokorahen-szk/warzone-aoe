@@ -8,6 +8,14 @@
       :sub-header="rightMenuOther.subHeader"
       :lists="rightMenuOther.lists"
     />
+    <ListWithSubHeader
+      :sub-header="rightMenuModeleter.subHeader"
+      :lists="rightMenuModeleter.lists"
+    />
+    <ListWithSubHeader
+      :sub-header="rightMenuAdmin.subHeader"
+      :lists="rightMenuAdmin.lists"
+    />
     <Button
       class="my-2"
       label="ログアウト"
@@ -21,7 +29,12 @@
 import { mapActions } from 'vuex'
 import ListWithSubHeader from '@/components/molecules/ListWithSubHeader'
 import Button from '@/components/atoms/Button'
-import { rightMenuCommonList, rightMenuOtherList } from '@/config/account'
+import {
+  rightMenuCommonList,
+  rightMenuOtherList,
+  rightMenuModeleterList,
+  rightMenuAdminList
+} from '@/config/account'
 import router from '@/router/index'
 export default {
   name: 'AccountRightMenu',
@@ -33,6 +46,8 @@ export default {
     return {
       rightMenuCommon: rightMenuCommonList,
       rightMenuOther: rightMenuOtherList,
+      rightMenuModeleter: rightMenuModeleterList,
+      rightMenuAdmin: rightMenuAdminList,
     }
   },
   methods: {

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <CommonWithRightColumnTemplate>
+    <CommonWithRightColumnTemplate outlined>
 			<template slot="right">
         <AccountRightMenu />
 			</template>
