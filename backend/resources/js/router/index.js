@@ -7,6 +7,7 @@ import {commonRoute} from '@/router/common'
 import {ratingRoute} from '@/router/rating'
 import {warsRoute} from '@/router/wars'
 import {gamesRoute} from '@/router/games'
+import {adminRoute} from '@/router/admin'
 
 Vue.use(Router)
 
@@ -16,6 +17,7 @@ const routes = [
   ...commonRoute,
   ...accountRoute,
   ...gamesRoute,
+  ...adminRoute,
 ]
 
 const router = new Router({

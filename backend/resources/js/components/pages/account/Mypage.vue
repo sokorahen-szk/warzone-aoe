@@ -26,6 +26,10 @@
                 <div>プレイヤー状態</div>
                 <Status :value="profileView.player.enabled" />
               </v-col>
+              <v-col cols="6">
+                <div>ロール</div>
+                {{ profileView.role.name }}
+              </v-col>
             </v-row>
           </v-col>
         </v-row>

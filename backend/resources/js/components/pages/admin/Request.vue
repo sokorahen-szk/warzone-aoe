@@ -6,7 +6,7 @@
 			</template>
 			<template slot="container">
 				<v-container>
-          個人レーティングページ
+          あ
         </v-container>
 			</template>
     </CommonWithRightColumnTemplate>
@@ -17,7 +17,7 @@
 import CommonWithRightColumnTemplate from '@/components/templates/CommonWithRightColumnTemplate'
 import AccountRightMenu from '@/components/organisms/AccountRightMenu'
 export default {
-  name: 'AccountRating',
+  name: 'Request',
   components: {
     CommonWithRightColumnTemplate,
     AccountRightMenu

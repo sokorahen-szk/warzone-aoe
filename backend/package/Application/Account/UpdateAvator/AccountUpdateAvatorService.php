@@ -25,7 +25,7 @@ class AccountUpdateAvatorService implements AccountUpdateAvatorServiceInterface 
     ]);
 
     // TODO: ここは別にインフラ層のレイヤーでやるように書き直す予定。
-    \Storage::putFileAs(
+    \Storage::disk('local')->putFileAs(
       '/public/profile',
       $userAvator->getFileImage()->getValue(),
       $userAvator->getUserAvatorImageName()
