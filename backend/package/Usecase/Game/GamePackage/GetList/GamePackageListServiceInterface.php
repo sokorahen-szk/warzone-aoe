@@ -2,6 +2,8 @@
 
 namespace Package\Usecase\Game\GamePackage\GetList;
 
+use Package\Usecase\Game\GamePackage\GetList\GamePackageData;
+
 interface GamePackageListServiceInterface {
-  public function handle(): PlayerData;
+  public function handle(): ?GamePackageData;
 }

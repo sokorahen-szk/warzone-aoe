@@ -165,10 +165,6 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 
         /*
-         * Package Service Providers...
-         */
-
-        /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
@@ -177,6 +173,14 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        // ApplicationServiceProviders...
+        App\Providers\ApplicationProvider::class,
+
+        // DomainServiceProviders...
+        App\Providers\DomainServiceProvider::class,
+
+        // RepositoryProviders...
+        App\Providers\RepositoryProvider::class,
     ],
 
     /*

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Package\Domain\User\Repository;
+namespace Package\Domain\Game\Repository;
 
 interface GamePackageRepositoryInterface {
   /**
