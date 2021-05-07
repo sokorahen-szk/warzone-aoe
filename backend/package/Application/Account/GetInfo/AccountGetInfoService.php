@@ -16,12 +16,12 @@ class AccountGetInfoService implements AccountGetInfoServiceInterface {
     $this->userRepository = $userRepository;
   }
 
-  public function handle(AccountGetInfoCommand $command): AccountData
+  public function handle(AccountGetInfoCommand $command): ?AccountData
   {
     $userId = new UserId($command->userId);
     $user = $this->userRepository->findUserById($userId);
     if (is_null($user)) {
-        return null;
+      return null;
     }
 
     return new AccountData($user);
