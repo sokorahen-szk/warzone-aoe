@@ -16,7 +16,7 @@ import {addStyleParser} from '@/services/helper'
 export default {
   name: 'Select',
   props: {
-    items: {type: Array, default: []},
+    items: {type: [Array, Object], default: []},
     selectedIndex: {type: [Number, String]},
     disabled: {type: Boolean, default: false},
     label: {type: String, default: '' },

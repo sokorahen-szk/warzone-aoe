@@ -15,7 +15,7 @@
           <v-col cols="12" class="mb-2">
             <Select
               label="ゲームパッケージを選択する"
-              :items="items"
+              :items="gamePackages"
             />
           </v-col>
           <v-col cols="12" class="mb-2">
@@ -84,6 +84,7 @@ import PlayerSearchBox from '@/components/organisms/PlayerSearchBox'
 import Select from '@/components/atoms/Select'
 import Button from '@/components/atoms/Button'
 import { playerListTemplate } from '@/config/player'
+import { gamePackageTemplate } from '@/config/game'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -102,12 +103,16 @@ export default {
         this.$set(this, 'players', this.getPlayers)
       }
     })
+
+    this.setGamePackage();
+
   },
   computed: {
     ...mapGetters('playerStore', ['getPlayers']),
   },
   methods: {
     ...mapActions('playerStore', ['playerList']),
+    ...mapActions('gameStore', ['packageList']),
     updatePlayer(e) {
       if (!e) return;
       if (this.selectedPlayers.find( player => player.id == e.id )) return;
@@ -124,6 +129,18 @@ export default {
         })
       }
       this.selectedPlayers.splice() // リアクティブ反映
+    },
+    setGamePackage() {
+      new Promise((resolve) => {
+        resolve(this.packageList())
+      })
+      .then( (res) => {
+        // jsのサービスを作成　データを書き換える処理
+        //this.$set(this, 'gamePackages', res);
+      })
+      .catch( (err) => {
+        console.log(err)
+      })
     }
   },
   data() {
@@ -131,6 +148,7 @@ export default {
       search: null,
       players: [playerListTemplate],
       selectedPlayers: [],
+      gamePackages: [gamePackageTemplate],
       items: [
         {id: 1, value: "A", label: "AAA"}
       ]
