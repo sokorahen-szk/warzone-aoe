@@ -8,6 +8,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\GamePackageController;
 use App\Http\Controllers\GameMapController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -96,6 +97,14 @@ Route::group(['middleware' => 'auth:api'], function () {
      * POST /api/account/withdrawal
      */
     Route::post('withdrawal', [AccountController::class, 'withdrawal'])->name('account.withdrawal');
+  });
+
+  Route::prefix('admin')->group(function() {
+    /**
+     * 新規登録リクエスト一覧取得
+     * GET /api/admin/request
+     */
+    Route::get('request', [AdminController::class, 'listNewCreateRequest'])->name('admin.request');
   });
 
   Route::prefix('auth')->group(function() {

@@ -10,4 +10,10 @@ interface RegisterRequestRepositoryInterface {
    * @param RegisterRequest $registerRequest
    */
   public function register(RegisterRequest $registerRequest): void;
+
+  /**
+   * 待機データの登録リクエスト一覧を取得
+   * @return array
+   */
+  public function listAtWaiting(): ?array;
 }

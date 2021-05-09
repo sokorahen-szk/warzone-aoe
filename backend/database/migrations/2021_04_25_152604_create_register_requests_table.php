@@ -19,7 +19,7 @@ class CreateRegisterRequestsTable extends Migration
             $table->unsignedBigInteger('user_id')->nullable()->comment('ユーザID');
             //
             // status
-            // 1 = waiting, 2 = done, 3 = canceled
+            // 1 = waiting, 2 = approve, 3 = reject
             $table->tinyInteger('status')->default(1)->comment('新規登録リクエストステータス');
             $table->text('remarks')->nullable()->comment('備考');
 

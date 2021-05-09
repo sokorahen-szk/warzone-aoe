@@ -2,7 +2,6 @@
 
 namespace Package\Usecase\Player\GetList;
 
-use Package\Domain\User\Entity\Player;
 use Package\Usecase\Data;
 
 /**
