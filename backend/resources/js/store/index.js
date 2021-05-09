@@ -7,6 +7,7 @@ import breakpointStore from '@/store/breakpoint'
 import authStore from '@/store/auth'
 import accountStore from '@/store/account'
 import playerStore from '@/store/player'
+import gameStore from '@/store/game'
 
 Vue.use(Vuex)
 
@@ -16,14 +17,8 @@ const store = new Vuex.Store({
     authStore: authStore,
     accountStore: accountStore,
     playerStore: playerStore,
+    gameStore: gameStore,
   },
-
-  actions: {
-    test() {
-      console.log("A")
-    }
-  },
-
   plugins: [createPersistedState(
     {
       key: 'wzn',
