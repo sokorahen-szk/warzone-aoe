@@ -1,19 +1,13 @@
 <template>
   <v-textarea
+    v-model="t"
     :solo="solo"
     :outlined="outlined"
     :name="name"
-    :value="value"
     :label="label"
     :placeholder="placeholder"
   ></v-textarea>
 </template>
-
-<style scoped>
-* >>> .v-messages {
-  min-height: 0px !important;
-}
-</style>
 
 <script>
 export default {
@@ -26,9 +20,20 @@ export default {
     solo: { type: Boolean, default: false },
     outlined: { type: Boolean, default: false },
   },
+  mounted() {
+    this.t = this.value
+  },
+  watch: {
+    t: function(value) {
+      return this.$emit('update', value)
+    },
+    value: function (newValue) {
+      this.t = newValue
+    }
+  },
   data() {
     return {
-
+      t: null,
     }
   }
 }
