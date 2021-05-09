@@ -15,9 +15,9 @@ class GameMapRepository implements GameMapRepositoryInterface {
   /**
    * @return array|null
    */
-  public function list(GamePackageId $gamePackageId): ?array
+  public function list(): ?array
   {
-    $gameMaps = EloquentGameMap::where('game_package_id', $gamePackageId->getValue())->get();
+    $gameMaps = EloquentGameMap::get();
 
     if (!$gameMaps) {
       return null;

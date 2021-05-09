@@ -35,11 +35,12 @@ export default {
     PlayerList,
   },
   props: {
-    players: {type: Array, default: []}
+    keyword: {type: String, default: null},
+    players: {type: Array, default: []},
   },
   data() {
     return {
-      search: '',
+      search: this.keyword,
     }
   },
   watch: {

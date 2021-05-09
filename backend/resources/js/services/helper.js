@@ -28,3 +28,16 @@ export const addStyleParser = styles => {
 
   return obj.join(';')
 }
+
+export const selectParser = (ary, mappingKeys) => {
+  let a =[]
+  if (!Array.isArray(ary)) ary = [ary]
+  if (ary.length < 1) return []
+  ary.forEach( (item, i) => {
+    a[i] = {}
+    Object.keys(mappingKeys).forEach( key  => {
+      a[i][key] = item[mappingKeys[key]]
+    })
+  })
+  return a
+}

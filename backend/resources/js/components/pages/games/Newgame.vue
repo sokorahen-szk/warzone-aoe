@@ -6,6 +6,7 @@
       <v-col cols="12" sm="12" md="5" lg="4" class="px-2" style="border-right: 1px #ddd solid;">
         <div class="py-2">プレイヤー選択</div>
         <PlayerSearchBox
+          :keyword="search"
           :players="players"
           @update="updatePlayer"
         />
@@ -16,12 +17,16 @@
             <Select
               label="ゲームパッケージを選択する"
               :items="gamePackages"
+              :selectedIndex="selectedGamePackageId"
+              @input="selectedGamePackageId = $event"
             />
           </v-col>
           <v-col cols="12" class="mb-2">
             <Select
               label="ルールを選択する"
-              :items="items"
+              :items="gameMaps"
+              :selectedIndex="selectedMapId"
+              @input="selectedMapId = $event"
             />
           </v-col>
           <v-col cols="12">
@@ -63,9 +68,10 @@
               <Button
                 class="ml-2"
                 color="warning"
-                label="キャンセル"
+                label="クリア"
                 width="150"
                 height="55"
+                @click="clearEvent"
               />
             </v-row>
           </v-col>
@@ -84,9 +90,9 @@ import PlayerSearchBox from '@/components/organisms/PlayerSearchBox'
 import Select from '@/components/atoms/Select'
 import Button from '@/components/atoms/Button'
 import { playerListTemplate } from '@/config/player'
-import { gamePackageTemplate } from '@/config/game'
+import { gamePackageTemplate, gameMapTemplate } from '@/config/game'
 import { mapGetters, mapActions } from 'vuex'
-
+import { selectParser } from '@/services/helper'
 export default {
   name: 'Newgame',
   components: {
@@ -101,18 +107,27 @@ export default {
     this.$store.subscribe((mutation) => {
       if (mutation.type === 'playerStore/setPlayers') {
         this.$set(this, 'players', this.getPlayers)
+      } else if (mutation.type === 'gameStore/setPackageList') {
+        this.$set(this, 'gamePackages', selectParser(this.getPackageList, {label: 'name', value: 'id'}))
+      } else if (mutation.type === 'gameStore/setMapList') {
+        this.$set(this, 'gameMaps', selectParser(this.getMapList, {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
       }
     })
 
-    this.setGamePackage();
-
+    this.packageList()
+    this.mapList()
   },
   computed: {
     ...mapGetters('playerStore', ['getPlayers']),
+    ...mapGetters('gameStore', ['getPackageList', 'getMapList']),
+    getGameMap() {
+      if (!this.selectedGamePackageId) return this.gameMaps
+      return this.gameMaps.map( item => item.gamePackageId === this.selectedGamePackageId)
+    }
   },
   methods: {
     ...mapActions('playerStore', ['playerList']),
-    ...mapActions('gameStore', ['packageList']),
+    ...mapActions('gameStore', ['packageList', 'mapList']),
     updatePlayer(e) {
       if (!e) return;
       if (this.selectedPlayers.find( player => player.id == e.id )) return;
@@ -130,17 +145,23 @@ export default {
       }
       this.selectedPlayers.splice() // リアクティブ反映
     },
-    setGamePackage() {
-      new Promise((resolve) => {
-        resolve(this.packageList())
-      })
-      .then( (res) => {
-        // jsのサービスを作成　データを書き換える処理
-        //this.$set(this, 'gamePackages', res);
-      })
-      .catch( (err) => {
-        console.log(err)
-      })
+    clearEvent() {
+      this.search = null
+      this.$set(this, 'selectedPlayers', [])
+      this.selectedGamePackageId = 0
+      this.selectedMapId = 0
+    },
+  },
+  watch: {
+    selectedGamePackageId(val) {
+      if (val) {
+        const maps = this.getMapList.find( map => map.id == val)
+        if (maps) {
+          this.$set(this, 'gameMaps', selectParser(maps, {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
+        } else {
+          this.$set(this, 'gameMaps', selectParser([], {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
+        }
+      }
     }
   },
   data() {
@@ -148,7 +169,10 @@ export default {
       search: null,
       players: [playerListTemplate],
       selectedPlayers: [],
+      selectedGamePackageId: 0,
+      selectedMapId: 0,
       gamePackages: [gamePackageTemplate],
+      gameMaps: [gameMapTemplate],
       items: [
         {id: 1, value: "A", label: "AAA"}
       ]
