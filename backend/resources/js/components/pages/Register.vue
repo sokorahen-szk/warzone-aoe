@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <CommonOneColumnTemplate>
+    <CommonOneColumnTemplate elevation="2">
 			<template slot="container">
         <v-form
           ref="form"

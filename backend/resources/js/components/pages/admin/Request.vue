@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Alert :properties="alert" dense />
     <CommonWithRightColumnTemplate outlined>
 			<template slot="right">
         <AccountRightMenu />
@@ -17,7 +18,7 @@
             <template v-for="(request, index) in requests">
             <v-list-item class="pa-0 ma-0" :key="`v-list-item-${request.id}`">
               <v-list-item-content>
-                <v-list-item-title>{{request.player_name}}</v-list-item-title>
+                <v-list-item-title>{{request.playerName}}</v-list-item-title>
                 <v-list-item-subtitle>参加日：{{request.joinedAt}}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-action>
@@ -34,7 +35,7 @@
                 </v-row>
               </v-list-item-action>
             </v-list-item>
-            <v-card :key="`v-card-${request.id}`" class="pa-4" v-show="req[index].view">
+            <v-card :key="`v-card-${request.id}`" class="pa-4" v-show="req[index] && req[index].view">
               <TextArea
                 outlined
                 placeholder="備考"
@@ -68,45 +69,78 @@ import CommonWithRightColumnTemplate from '@/components/templates/CommonWithRigh
 import AccountRightMenu from '@/components/organisms/AccountRightMenu'
 import TextArea from '@/components/atoms/TextArea'
 import Button from '@/components/atoms/Button'
+import Alert from '@/components/atoms/Alert'
+import { mapActions, mapGetters } from 'vuex'
+import { alertTemplate } from '@/config/global'
+import { registerRequestEnum } from '@/config/admin'
 export default {
   name: 'Request',
   components: {
     CommonWithRightColumnTemplate,
     AccountRightMenu,
     TextArea,
-    Button
+    Button,
+    Alert
   },
   data() {
     return {
       req: [],
-      requests: [
-        {id: 2, player_name: "テストユーザ", joinedAt: "2021-03-22 00:00:00"},
-        {id: 3, player_name: "テストユーザa", joinedAt: "2021-04-19 12:00:00"},
-      ]
+      requests: [],
+      alert: alertTemplate,
     }
   },
-  created() {
-    this.requests.forEach( (item) => {
-      this.req.push({
-        id: item.id,
-        view: false,
-        remarks: null,
-      })
+  mounted() {
+    this.initializeData()
+
+    this.$store.subscribe((mutation) => {
+      if (mutation.type === 'adminStore/setRegisterRequests') {
+        this.$set(this, 'requests', this.getRegisterRequests)
+
+        this.$nextTick( () => {
+          this.requests.forEach( (item) => {
+            this.req.push({
+              id: item.id,
+              view: false,
+              remarks: null,
+            })
+          })
+        })
+
+      }
     })
   },
+  computed: {
+    ...mapGetters('adminStore', ['getRegisterRequests']),
+  },
   methods: {
+    ...mapActions('adminStore', ['registerRequest']),
+    initializeData() {
+      new Promise((resolve) => {
+        resolve(this.registerRequest())
+      })
+      .catch( (err) => {
+        this.alert = Object.assign(alertTemplate, {
+          show: true,
+          type: 'error',
+          message: err,
+        })
+      })
+    },
     edit(index) {
       this.req[index] = Object.assign(this.req[index], {view: !this.req[index].view})
     },
+    change(index, status) {
+      // ここにステータスを変更する実装コード
+    },
     approve(index) {
-      console.log(this.req[index])
+      this.change(index, registerRequestEnum.APPROVE)
     },
     reject(index) {
-      console.log(this.req[index])
+      this.change(index, registerRequestEnum.REJECT)
     },
     update($event, index) {
       this.req[index] = Object.assign(this.req[index], {remarks: $event})
-    }
+    },
   }
 }
 </script>
