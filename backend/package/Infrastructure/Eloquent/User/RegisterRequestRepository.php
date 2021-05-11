@@ -6,7 +6,10 @@ use App\Models\RegisterRequestModel as EloquentRegisterRequest;
 use Package\Domain\User\Repository\RegisterRequestRepositoryInterface;
 use Package\Domain\User\Entity\RegisterRequest;
 use Package\Domain\User\ValueObject\Register\RegisterId;
+use Package\Domain\User\Entity\Player;
 use Package\Domain\User\ValueObject\Player\PlayerId;
+use Package\Domain\User\ValueObject\Player\PlayerName;
+use Package\Domain\User\ValueObject\Player\Datetime;
 use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\User\ValueObject\Register\RegisterStatus;
 use Package\Domain\User\ValueObject\Register\Remarks;
@@ -29,7 +32,15 @@ class RegisterRequestRepository implements RegisterRequestRepositoryInterface {
    */
   public function listAtWaiting(): ?array
   {
-    $registerRequests = EloquentRegisterRequest::get();
+    $registerRequests = EloquentRegisterRequest::leftJoinPlayer()
+      ->select([
+        'register_requests.id as register_request_id',
+        'players.name as player_name',
+        'register_requests.player_id',
+        'register_requests.status as register_request_status',
+        'players.joined_at',
+        'register_requests.remarks',
+      ])->get();
 
     if (!$registerRequests) {
       return null;
@@ -39,9 +50,13 @@ class RegisterRequestRepository implements RegisterRequestRepositoryInterface {
 
     foreach ($registerRequests as $registerRequest) {
       $results[] = new RegisterRequest([
-        'registerId'        => new RegisterId($registerRequest->id),
-        'playerId'          => new PlayerId($registerRequest->player_id),
-        'registerStatus'    => new RegisterStatus($registerRequest->status),
+        'registerId'        => new RegisterId($registerRequest->register_request_id),
+        'player'            => new Player([
+          'playerId'            => new PlayerId($registerRequest->player_id),
+          'playerName'          => new PlayerName($registerRequest->player_name),
+          'joinedAt'            => new Datetime($registerRequest->joined_at),
+        ]),
+        'registerStatus'    => new RegisterStatus($registerRequest->register_request_status),
         'remarks'           => new Remarks($registerRequest->remarks),
       ]);
     }

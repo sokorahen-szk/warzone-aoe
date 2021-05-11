@@ -6,6 +6,7 @@ use Package\Domain\Resource;
 use Package\Domain\User\ValueObject\Register\RegisterId;
 use Package\Domain\User\ValueObject\Player\PlayerId;
 use Package\Domain\User\ValueObject\UserId;
+use Package\Domain\User\Entity\Player;
 use Package\Domain\User\ValueObject\Register\RegisterStatus;
 use Package\Domain\User\ValueObject\Register\Remarks;
 
@@ -13,6 +14,7 @@ class RegisterRequest extends Resource {
 
   protected $registerId;
   protected $playerId;
+  protected $player;
   protected $userId;
   protected $registerStatus;
   protected $remarks;
@@ -36,6 +38,14 @@ class RegisterRequest extends Resource {
   public function getPlayerId(): ?PlayerId
   {
     return $this->playerId;
+  }
+
+  /**
+   * @return Player|null
+   */
+  public function getPlayer(): ?Player
+  {
+    return $this->player;
   }
 
   /**

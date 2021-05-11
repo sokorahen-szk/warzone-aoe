@@ -16,10 +16,12 @@ class AdminRegisterRequestData extends Data {
     $response = [];
     foreach ($sources as $source) {
       $response[] = [
-        'id'        => $source->getRegisterId()->getValue(),
-        'playerId'  => $source->getPlayerId()->getValue(),
-        'status'    => $source->getRegisterStatus()->getValue(),
-        'remarks'   => $source->getRemarks()->getValue(),
+        'id'          => $source->getRegisterId()->getValue(),
+        'playerId'    => $source->getPlayer()->getPlayerId()->getValue(),
+        'playerName'  => $source->getPlayer()->getPlayerName()->getValue(),
+        'joinedAt'    => $source->getPlayer()->getJoinedAt()->getDatetime(),
+        'status'      => $source->getRegisterStatus()->getValue(),
+        'remarks'     => $source->getRemarks()->getValue(),
       ];
     }
     $this->registerRequests = $response;
