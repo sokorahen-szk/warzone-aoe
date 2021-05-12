@@ -16,6 +16,6 @@ class PlayerController extends Controller
     public function list(PlayerGetListServiceInterface $interactor)
     {
         $result = $interactor->handle();
-        return $this->validResponse($result->getVars(), '登録が完了しました。');
+        return $this->validResponse($result->getVars(), 'プレイヤーの一覧を取得しました。');
     }
 }

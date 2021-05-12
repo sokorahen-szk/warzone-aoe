@@ -3,6 +3,7 @@
 namespace Package\Domain\User\Repository;
 
 use Package\Domain\User\Entity\RegisterRequest;
+use Package\Domain\User\ValueObject\Register\RegisterId;
 
 interface RegisterRequestRepositoryInterface {
   /**
@@ -16,4 +17,17 @@ interface RegisterRequestRepositoryInterface {
    * @return array
    */
   public function listAtWaiting(): ?array;
+
+  /**
+   * 登録リクエスト取得する
+   * @param RegisterId $registerId
+   * @return RegisterRequest
+   */
+  public function get(RegisterId $registerId): RegisterRequest;
+
+  /**
+   * 登録リクエストの情報更新
+   * @param RegisterRequest $registerRequest
+   */
+  public function update(RegisterRequest $registerRequest): void;
 }

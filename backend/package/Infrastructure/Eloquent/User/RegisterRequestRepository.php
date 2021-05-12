@@ -63,4 +63,53 @@ class RegisterRequestRepository implements RegisterRequestRepositoryInterface {
 
     return $results;
   }
+
+  /**
+   * 登録リクエスト取得する
+   * @param RegisterId $registerId
+   * @return RegisterRequest
+   */
+  public function get(RegisterId $registerId): RegisterRequest
+  {
+    $registerRequest = EloquentRegisterRequest::where('register_requests.id', $registerId->getValue())
+      ->leftJoinPlayer()
+      ->select([
+        'register_requests.id as register_request_id',
+        'players.name as player_name',
+        'register_requests.player_id',
+        'register_requests.status as register_request_status',
+        'players.joined_at',
+        'register_requests.remarks',
+      ])->first();
+
+    if (!$registerRequest) {
+      throw new \Exception("レコードがありません。");
+    }
+
+    return new RegisterRequest([
+      'registerId'        => new RegisterId($registerReques->register_request_id),
+      'player'            => new Player([
+        'playerId'            => new PlayerId($registerReques->player_id),
+        'playerName'          => new PlayerName($registerReques->player_name),
+        'joinedAt'            => new Datetime($registerReques->joined_at),
+      ]),
+      'registerStatus'    => new RegisterStatus($registerReques->register_request_status),
+      'remarks'           => new Remarks($registerReques->remarks),
+    ]);
+  }
+
+  /**
+   * 登録リクエストの情報更新
+   * @param RegisterRequest $registerRequest
+   */
+  public function update(RegisterRequest $registerRequest): void
+  {
+    if(!EloquentRegisterRequest::update([
+      'user_id'   => $registerRequest->getUserId()->getValue(),
+      'status'    => $registerRequest->getRegisterStatus()->getValue(),
+      'remarks'   => $registerRequest->getRemarks()->getValue(),
+    ])) {
+      throw new \Exception("更新に失敗しました。");
+    }
+  }
 }
