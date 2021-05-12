@@ -5,16 +5,14 @@ namespace Package\Domain\User\ValueObject\Register;
 class RegisterStatus {
   private $value;
 
-  const USER_STATUS_WAITING = 1;
-  const USER_STATUS_ACTIVE = 2;
-  const USER_STATUS_WITHDRAWAL = 3;
-  const USER_STATUS_BANNED = 4;
+  const REGISTER_REQUEST_STATUS_WAITING = 1;
+  const REGISTER_REQUEST_STATUS_APPROVE = 2;
+  const REGISTER_REQUEST_STATUS_REJECT = 3;
 
   private $enums = [
-    self::USER_STATUS_WAITING     => 'waiting',
-    self::USER_STATUS_ACTIVE      => 'active',
-    self::USER_STATUS_WITHDRAWAL  => 'withdrawal',
-    self::USER_STATUS_BANNED      => 'banned',
+    self::REGISTER_REQUEST_STATUS_WAITING       => 'waiting',
+    self::REGISTER_REQUEST_STATUS_APPROVE       => 'approve',
+    self::REGISTER_REQUEST_STATUS_REJECT        => 'reject',
   ];
 
   public function __construct($value)
@@ -33,23 +31,8 @@ class RegisterStatus {
     return $this->enums[$this->value];
   }
 
-  public function changeWaiting()
+  public function isValid(): bool
   {
-    $this->value = self::USER_STATUS_WAITING;
-  }
-
-  public function changeActive()
-  {
-    $this->value = self::USER_STATUS_ACTIVE;
-  }
-
-  public function changeWithdrawal()
-  {
-    $this->value = self::USER_STATUS_WITHDRAWAL;
-  }
-
-  public function changeBanned()
-  {
-    $this->value = self::USER_STATUS_BANNED;
+    return $this->value === self::REGISTER_REQUEST_STATUS_APPROVE;
   }
 }

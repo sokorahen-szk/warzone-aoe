@@ -5,7 +5,7 @@ namespace App\Http\Requests\Admin;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Traits\FailedValidationTrait;
 
-class NewCreateRequest extends FormRequest
+class RegisterRequestUpdateRequest extends FormRequest
 {
     use FailedValidationTrait;
 
@@ -27,8 +27,8 @@ class NewCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'status'    => ['required', 'integer', 'regex:/^[1-3]$/'],
-            'remarks'   => ['sometimes', 'string'],
+            'status'    => ['required', 'integer', 'regex:/^[23]$/'],
+            'remarks'   => ['nullable', 'string'],
         ];
     }
 }

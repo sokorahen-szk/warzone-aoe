@@ -1,6 +1,6 @@
 <?php
 
-namespace Package\Usecase\Admin\GetList;
+namespace Package\Usecase\Admin\RegisterRequest\GetList;
 
 use Package\Usecase\Data;
 

@@ -9,12 +9,12 @@
 				<v-container>
           <div class="subtitle-2">
             <v-row no-gutters no-wrap class="text-right">
-              <v-col cols="12">新規リクエスト数：{{requests.length}} 件</v-col>
+              <v-col cols="12">新規リクエスト数：{{ check ? requests.length : 0 }} 件</v-col>
               <v-col cols="12">承認数：0 件</v-col>
               <v-col cols="12">拒否数：0 件</v-col>
             </v-row>
           </div>
-          <v-list class="pa-0 ma-0">
+          <v-list class="pa-0 ma-0" v-show="check">
             <template v-for="(request, index) in requests">
             <v-list-item class="pa-0 ma-0" :key="`v-list-item-${request.id}`">
               <v-list-item-content>
@@ -111,6 +111,12 @@ export default {
   },
   computed: {
     ...mapGetters('adminStore', ['getRegisterRequests']),
+    check() {
+      if (this.requests.length > 0) {
+        return this.requests[0].id !== -1
+      }
+      return false;
+    }
   },
   methods: {
     ...mapActions('adminStore', ['registerRequest']),

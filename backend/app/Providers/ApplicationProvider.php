@@ -53,8 +53,12 @@ class ApplicationProvider extends ServiceProvider
             \Package\Application\Game\GameMap\GetList\GameMapListService::class
         );
         $this->app->bind(
-            \Package\Usecase\Admin\GetList\AdminRegisterRequestGetListServiceInterface::class,
-            \Package\Application\Admin\GetList\AdminRegisterRequestGetListService::class
+            \Package\Usecase\Admin\RegisterRequest\GetList\AdminRegisterRequestGetListServiceInterface::class,
+            \Package\Application\Admin\RegisterRequest\GetList\AdminRegisterRequestGetListService::class
+        );
+        $this->app->bind(
+            \Package\Usecase\Admin\RegisterRequest\Update\AdminRegisterRequestUpdateServiceInterface::class,
+            \Package\Application\Admin\RegisterRequest\Update\AdminRegisterRequestUpdateService::class
         );
 
     }

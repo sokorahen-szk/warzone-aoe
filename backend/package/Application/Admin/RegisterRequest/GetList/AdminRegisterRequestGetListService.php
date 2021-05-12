@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Package\Application\Admin\GetList;
+namespace Package\Application\Admin\RegisterRequest\GetList;
 
-use Package\Usecase\Admin\GetList\AdminRegisterRequestGetListServiceInterface;
+use Package\Usecase\Admin\RegisterRequest\GetList\AdminRegisterRequestData;
+use Package\Usecase\Admin\RegisterRequest\GetList\AdminRegisterRequestGetListServiceInterface;
 use Package\Domain\User\Repository\RegisterRequestRepositoryInterface;
-use Package\Usecase\Admin\GetList\AdminRegisterRequestData;
 
 class AdminRegisterRequestGetListService implements AdminRegisterRequestGetListServiceInterface {
   private $registerRequestRepository;

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Traits\ApiResponser;
-use Package\Usecase\Admin\GetList\AdminRegisterRequestGetListServiceInterface;
+use App\Http\Requests\Admin\RegisterRequestUpdateRequest;
+use Package\Usecase\Admin\RegisterRequest\GetList\AdminRegisterRequestGetListServiceInterface;
+use Package\Usecase\Admin\RegisterRequest\Update\AdminRegisterRequestUpdateServiceInterface;
+use Package\Usecase\Admin\RegisterRequest\Update\AdminRegisterRequestUpdateCommand;
 
 class AdminController extends Controller
 {
@@ -13,5 +16,17 @@ class AdminController extends Controller
     {
         $result = $interactor->handle();
         return $this->validResponse($result->getVars(), '取得しました。');
+    }
+
+    public function updateNewCreateRequest(AdminRegisterRequestUpdateServiceInterface $interactor, int $registerId, RegisterRequestUpdateRequest $request)
+    {
+        $result = $interactor->handle(new AdminRegisterRequestUpdateCommand(
+            $registerId,
+            \Auth::user()->id,
+            $request->status,
+            $request->input('remarks', null)
+        ));
+
+        return $this->validResponse($result, '新規登録リクエストを更新しました。');
     }
 }

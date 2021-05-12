@@ -151,6 +151,14 @@ class Player extends Resource {
   }
 
   /**
+   * @return Enabled
+   */
+  public function changeEnabled(Enabled $enabled): void
+  {
+    $this->enabled = $enabled;
+  }
+
+  /**
    * 引き分け数を返す
    * @return int
    */

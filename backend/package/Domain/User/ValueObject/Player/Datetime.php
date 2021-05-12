@@ -9,16 +9,20 @@ class Datetime {
 
   public function __construct($value)
   {
-    $this->value = Carbon::parse($value);
+    if ($value) {
+      $this->value = Carbon::parse($value);
+    } else {
+      $this->value = null;
+    }
   }
 
-  public function getValue(): Carbon
+  public function getValue(): ?Carbon
   {
     return $this->value;
   }
 
-  public function getDatetime(): string
+  public function getDatetime(): ?string
   {
-    return $this->value->format('Y-m-d H:i:s');
+    return $this->value ? $this->value->format('Y-m-d H:i:s') : null;
   }
 }

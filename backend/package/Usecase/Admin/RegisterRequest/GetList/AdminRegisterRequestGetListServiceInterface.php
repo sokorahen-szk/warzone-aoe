@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
-namespace Package\Usecase\Admin\GetList;
-use Package\Usecase\Admin\GetList\AdminRegisterRequestData;
+namespace Package\Usecase\Admin\RegisterRequest\GetList;
+use Package\Usecase\Admin\RegisterRequest\GetList\AdminRegisterRequestData;
 
 interface AdminRegisterRequestGetListServiceInterface {
   public function handle(): ?AdminRegisterRequestData;

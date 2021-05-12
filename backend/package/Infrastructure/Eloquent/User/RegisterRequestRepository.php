@@ -10,6 +10,7 @@ use Package\Domain\User\Entity\Player;
 use Package\Domain\User\ValueObject\Player\PlayerId;
 use Package\Domain\User\ValueObject\Player\PlayerName;
 use Package\Domain\User\ValueObject\Player\Datetime;
+use Package\Domain\User\ValueObject\Player\Enabled;
 use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\User\ValueObject\Register\RegisterStatus;
 use Package\Domain\User\ValueObject\Register\Remarks;
@@ -33,13 +34,14 @@ class RegisterRequestRepository implements RegisterRequestRepositoryInterface {
   public function listAtWaiting(): ?array
   {
     $registerRequests = EloquentRegisterRequest::leftJoinPlayer()
+      ->where('register_requests.status', RegisterStatus::REGISTER_REQUEST_STATUS_WAITING)
       ->select([
         'register_requests.id as register_request_id',
-        'players.name as player_name',
         'register_requests.player_id',
         'register_requests.status as register_request_status',
-        'players.joined_at',
         'register_requests.remarks',
+        'players.name as player_name',
+        'players.joined_at',
       ])->get();
 
     if (!$registerRequests) {
@@ -75,11 +77,12 @@ class RegisterRequestRepository implements RegisterRequestRepositoryInterface {
       ->leftJoinPlayer()
       ->select([
         'register_requests.id as register_request_id',
-        'players.name as player_name',
         'register_requests.player_id',
         'register_requests.status as register_request_status',
-        'players.joined_at',
         'register_requests.remarks',
+        'players.name as player_name',
+        'players.joined_at',
+        'players.enabled',
       ])->first();
 
     if (!$registerRequest) {
@@ -87,14 +90,14 @@ class RegisterRequestRepository implements RegisterRequestRepositoryInterface {
     }
 
     return new RegisterRequest([
-      'registerId'        => new RegisterId($registerReques->register_request_id),
+      'registerId'        => new RegisterId($registerRequest->register_request_id),
       'player'            => new Player([
-        'playerId'            => new PlayerId($registerReques->player_id),
-        'playerName'          => new PlayerName($registerReques->player_name),
-        'joinedAt'            => new Datetime($registerReques->joined_at),
+        'playerId'            => new PlayerId($registerRequest->player_id),
+        'playerName'          => new PlayerName($registerRequest->player_name),
+        'enabled'             => new Enabled($registerRequest->enabled),
       ]),
-      'registerStatus'    => new RegisterStatus($registerReques->register_request_status),
-      'remarks'           => new Remarks($registerReques->remarks),
+      'registerStatus'    => new RegisterStatus($registerRequest->register_request_status),
+      'remarks'           => new Remarks($registerRequest->remarks),
     ]);
   }
 
@@ -104,7 +107,8 @@ class RegisterRequestRepository implements RegisterRequestRepositoryInterface {
    */
   public function update(RegisterRequest $registerRequest): void
   {
-    if(!EloquentRegisterRequest::update([
+    if(!EloquentRegisterRequest::find($registerRequest->getRegisterId()->getValue())
+    ->update([
       'user_id'   => $registerRequest->getUserId()->getValue(),
       'status'    => $registerRequest->getRegisterStatus()->getValue(),
       'remarks'   => $registerRequest->getRemarks()->getValue(),

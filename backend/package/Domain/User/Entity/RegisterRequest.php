@@ -57,11 +57,27 @@ class RegisterRequest extends Resource {
   }
 
   /**
+   * @param UserId
+   */
+  public function changeUserId(UserId $userId): void
+  {
+    $this->userId = $userId;
+  }
+
+  /**
    * @return RegisterStatus|null
    */
   public function getRegisterStatus(): ?RegisterStatus
   {
     return $this->registerStatus;
+  }
+
+  /**
+   * @param RegisterStatus
+   */
+  public function changeRegisterStatus(RegisterStatus $registerStatus): void
+  {
+    $this->registerStatus = $registerStatus;
   }
 
   /**
@@ -71,4 +87,13 @@ class RegisterRequest extends Resource {
   {
     return $this->remarks;
   }
+
+  /**
+   * @param Remarks
+   */
+  public function changeRemarks(Remarks $remarks): void
+  {
+    $this->remarks = $remarks;
+  }
+
 }
