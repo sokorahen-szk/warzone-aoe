@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\PlayerModel;
 use Faker\Factory as FakerFactory;
+use Carbon\Carbon;
 
 class PlayerSeeder extends Seeder
 {
@@ -33,8 +34,8 @@ class PlayerSeeder extends Seeder
             'defeat'            => 30,
             'games'             => 55,
             'game_packages'     => '1',
-            'joined_at'         => '2019-02-10',
-            'last_game_at'      => '2020-10-22',
+            'joined_at'         => '2019-02-10 00:00:00',
+            'last_game_at'      => '2020-10-22 00:00:00',
             'enabled'           => true,
         ]);
 
@@ -50,8 +51,8 @@ class PlayerSeeder extends Seeder
             'defeat'            => 30,
             'games'             => 55,
             'game_packages'     => '1,2',
-            'joined_at'         => '2019-02-10',
-            'last_game_at'      => '2020-10-22',
+            'joined_at'         => '2019-02-10 00:00:00',
+            'last_game_at'      => '2020-10-22 00:00:00',
             'enabled'           => true,
         ]);
 
@@ -67,8 +68,8 @@ class PlayerSeeder extends Seeder
             'defeat'            => 30,
             'games'             => 55,
             'game_packages'     => '1,2,3',
-            'joined_at'         => '2019-02-10',
-            'last_game_at'      => '2020-10-22',
+            'joined_at'         => '2019-02-10 00:00:00',
+            'last_game_at'      => '2020-10-22 00:00:00',
             'enabled'           => true,
         ]);
 
@@ -84,8 +85,8 @@ class PlayerSeeder extends Seeder
             'defeat'            => 30,
             'games'             => 55,
             'game_packages'     => '1,2,3',
-            'joined_at'         => '2019-02-10',
-            'last_game_at'      => '2020-10-22',
+            'joined_at'         => '2019-02-10 00:00:00',
+            'last_game_at'      => '2020-10-22 00:00:00',
             'enabled'           => true,
         ]);
 
@@ -109,8 +110,8 @@ class PlayerSeeder extends Seeder
                 'defeat'            => $defeat,
                 'games'             => $games,
                 'game_packages'     => $gamePackages[mt_rand(0, 3)],
-                'joined_at'         => '2019-02-10',
-                'last_game_at'      => '2020-10-22',
+                'joined_at'         => Carbon::now(),
+                'last_game_at'      => (bool) mt_rand(0, 1) ? Carbon::now() : null,
                 'enabled'           => $enabled[mt_rand(0, 1)],
             ]);
         }

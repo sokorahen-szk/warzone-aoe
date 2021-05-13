@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(MapSeeder::class);
         $this->call(PlayerSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(RegisterRequestSeeder::class);
     }
 }

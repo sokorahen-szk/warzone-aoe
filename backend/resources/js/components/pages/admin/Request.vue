@@ -8,13 +8,17 @@
 			<template slot="container">
 				<v-container>
           <div class="subtitle-2">
-            <v-row no-gutters no-wrap class="text-right">
-              <v-col cols="12">新規リクエスト数：{{ check ? requests.length : 0 }} 件</v-col>
-              <v-col cols="12">承認数：0 件</v-col>
-              <v-col cols="12">拒否数：0 件</v-col>
+            <v-row no-gutters no-wrap class="text-right mb-4">
+              <v-col cols="12">新規リクエスト数：{{ this.requests.length }} 件</v-col>
+              <!--
+                TODO: 今後実装予定の場所
+                https://github.com/sokorahen-szk/warzone-aoe/issues/40
+              -->
+              <!--v-col cols="12">承認数：0 件</v-col-->
+              <!--v-col cols="12">拒否数：0 件</v-col-->
             </v-row>
           </div>
-          <v-list class="pa-0 ma-0" v-show="check">
+          <v-list class="pa-0 ma-0" v-if="requests.length > 0">
             <template v-for="(request, index) in requests">
             <v-list-item class="pa-0 ma-0" :key="`v-list-item-${request.id}`">
               <v-list-item-content>
@@ -24,13 +28,13 @@
               <v-list-item-action>
                 <v-row no-gutters>
                   <v-col>
-                    <v-icon @click="edit(index)">mdi-clipboard-edit-outline</v-icon>
+                    <v-icon size="36" @click="edit(index)">mdi-clipboard-edit-outline</v-icon>
                   </v-col>
                   <v-col>
-                    <v-icon @click="approve(index)" color="green">mdi-check-bold</v-icon>
+                    <v-icon size="36" @click="approve(index)" color="green">mdi-check-bold</v-icon>
                   </v-col>
                   <v-col>
-                    <v-icon @click="reject(index)" color="red">mdi-close-thick</v-icon>
+                    <v-icon size="36" @click="reject(index)" color="red">mdi-close-thick</v-icon>
                   </v-col>
                 </v-row>
               </v-list-item-action>
@@ -58,6 +62,7 @@
             <v-divider :key="`v-list-item-divider-${request.id}`" />
             </template>
           </v-list>
+          <div v-else>新規リクエストがありません</div>
         </v-container>
 			</template>
     </CommonWithRightColumnTemplate>
@@ -90,13 +95,14 @@ export default {
     }
   },
   mounted() {
-    this.initializeData()
+    this.loadingData()
 
     this.$store.subscribe((mutation) => {
       if (mutation.type === 'adminStore/setRegisterRequests') {
         this.$set(this, 'requests', this.getRegisterRequests)
 
         this.$nextTick( () => {
+          this.req.splice(0, this.req.length);
           this.requests.forEach( (item) => {
             this.req.push({
               id: item.id,
@@ -111,16 +117,10 @@ export default {
   },
   computed: {
     ...mapGetters('adminStore', ['getRegisterRequests']),
-    check() {
-      if (this.requests.length > 0) {
-        return this.requests[0].id !== -1
-      }
-      return false;
-    }
   },
   methods: {
-    ...mapActions('adminStore', ['registerRequest']),
-    initializeData() {
+    ...mapActions('adminStore', ['registerRequest', 'updateRegisterRequest']),
+    loadingData() {
       new Promise((resolve) => {
         resolve(this.registerRequest())
       })
@@ -136,14 +136,35 @@ export default {
       this.req[index] = Object.assign(this.req[index], {view: !this.req[index].view})
     },
     change(index, status) {
-      // ここにステータスを変更する実装コード
+      const param = this.req[index]
+      if (!param) return;
+
+      new Promise((resolve) => {
+        resolve(this.updateRegisterRequest({
+          registerId: param.id,
+          status: status,
+          remarks: param.remarks,
+        }))
+      })
+      .then ( (res) => {
+        this.alert = Object.assign(alertTemplate, {
+          show: true,
+          type: 'info',
+          message: res,
+        })
+
+        this.loadingData()
+      })
+      .catch( (err) => {
+        this.alert = Object.assign(alertTemplate, {
+          show: true,
+          type: 'error',
+          message: err,
+        })
+      })
     },
-    approve(index) {
-      this.change(index, registerRequestEnum.APPROVE)
-    },
-    reject(index) {
-      this.change(index, registerRequestEnum.REJECT)
-    },
+    approve(index) { this.change(index, registerRequestEnum.APPROVE) },
+    reject(index) { this.change(index, registerRequestEnum.REJECT) },
     update($event, index) {
       this.req[index] = Object.assign(this.req[index], {remarks: $event})
     },

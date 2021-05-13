@@ -35,6 +35,7 @@ class RegisterRequestRepository implements RegisterRequestRepositoryInterface {
   {
     $registerRequests = EloquentRegisterRequest::leftJoinPlayer()
       ->where('register_requests.status', RegisterStatus::REGISTER_REQUEST_STATUS_WAITING)
+      ->orderBy('register_requests.id', 'desc')
       ->select([
         'register_requests.id as register_request_id',
         'register_requests.player_id',

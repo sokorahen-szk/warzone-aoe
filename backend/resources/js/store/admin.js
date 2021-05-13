@@ -1,6 +1,5 @@
-import {registerRequestTemplate} from '@/config/admin'
 const state = {
-  registerRequests: [registerRequestTemplate],
+  registerRequests: null,
 }
 const getters = {
   getRegisterRequests: (state) => {
@@ -9,7 +8,7 @@ const getters = {
 }
 const mutations = {
   setRegisterRequests (state, val) {
-    state.registerRequests = Object.assign(state.registerRequests, val.$registerRequests)
+    state.registerRequests = val.$registerRequests
   }
 }
 const actions = {
@@ -25,6 +24,20 @@ const actions = {
       })
     })
   },
+  updateRegisterRequest ({ commit }, payload) {
+    return new Promise( (resolve, reject) => {
+      axios.post(`/api/admin/request/${payload.registerId}`,{
+        status: payload.status,
+        remarks: payload.remarks,
+      }).then( (res) => {
+        if(res.data && res.data.isSuccess) {
+          resolve(res.data.messages)
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
+    })
+  }
 }
 const adminStore = {
   namespaced: true,
