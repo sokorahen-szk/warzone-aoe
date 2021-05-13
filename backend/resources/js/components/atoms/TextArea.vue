@@ -25,6 +25,7 @@ export default {
   },
   watch: {
     t: function(value) {
+      if (!value) return
       return this.$emit('update', value)
     },
     value: function (newValue) {

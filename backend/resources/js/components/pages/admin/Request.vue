@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Alert :properties="alert" dense />
     <CommonWithRightColumnTemplate outlined>
 			<template slot="right">
         <AccountRightMenu />
@@ -7,34 +8,38 @@
 			<template slot="container">
 				<v-container>
           <div class="subtitle-2">
-            <v-row no-gutters no-wrap class="text-right">
-              <v-col cols="12">新規リクエスト数：{{requests.length}} 件</v-col>
-              <v-col cols="12">承認数：0 件</v-col>
-              <v-col cols="12">拒否数：0 件</v-col>
+            <v-row no-gutters no-wrap class="text-right mb-4">
+              <v-col cols="12">新規リクエスト数：{{ this.requests.length }} 件</v-col>
+              <!--
+                TODO: 今後実装予定の場所
+                https://github.com/sokorahen-szk/warzone-aoe/issues/40
+              -->
+              <!--v-col cols="12">承認数：0 件</v-col-->
+              <!--v-col cols="12">拒否数：0 件</v-col-->
             </v-row>
           </div>
-          <v-list class="pa-0 ma-0">
+          <v-list class="pa-0 ma-0" v-if="requests.length > 0">
             <template v-for="(request, index) in requests">
             <v-list-item class="pa-0 ma-0" :key="`v-list-item-${request.id}`">
               <v-list-item-content>
-                <v-list-item-title>{{request.player_name}}</v-list-item-title>
+                <v-list-item-title>{{request.playerName}}</v-list-item-title>
                 <v-list-item-subtitle>参加日：{{request.joinedAt}}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-action>
                 <v-row no-gutters>
                   <v-col>
-                    <v-icon @click="edit(index)">mdi-clipboard-edit-outline</v-icon>
+                    <v-icon size="36" @click="edit(index)">mdi-clipboard-edit-outline</v-icon>
                   </v-col>
                   <v-col>
-                    <v-icon @click="approve(index)" color="green">mdi-check-bold</v-icon>
+                    <v-icon size="36" @click="approve(index)" color="green">mdi-check-bold</v-icon>
                   </v-col>
                   <v-col>
-                    <v-icon @click="reject(index)" color="red">mdi-close-thick</v-icon>
+                    <v-icon size="36" @click="reject(index)" color="red">mdi-close-thick</v-icon>
                   </v-col>
                 </v-row>
               </v-list-item-action>
             </v-list-item>
-            <v-card :key="`v-card-${request.id}`" class="pa-4" v-show="req[index].view">
+            <v-card :key="`v-card-${request.id}`" class="pa-4" v-show="req[index] && req[index].view">
               <TextArea
                 outlined
                 placeholder="備考"
@@ -57,6 +62,7 @@
             <v-divider :key="`v-list-item-divider-${request.id}`" />
             </template>
           </v-list>
+          <div v-else>新規リクエストがありません</div>
         </v-container>
 			</template>
     </CommonWithRightColumnTemplate>
@@ -68,45 +74,100 @@ import CommonWithRightColumnTemplate from '@/components/templates/CommonWithRigh
 import AccountRightMenu from '@/components/organisms/AccountRightMenu'
 import TextArea from '@/components/atoms/TextArea'
 import Button from '@/components/atoms/Button'
+import Alert from '@/components/atoms/Alert'
+import { mapActions, mapGetters } from 'vuex'
+import { alertTemplate } from '@/config/global'
+import { registerRequestEnum } from '@/config/admin'
 export default {
   name: 'Request',
   components: {
     CommonWithRightColumnTemplate,
     AccountRightMenu,
     TextArea,
-    Button
+    Button,
+    Alert
   },
   data() {
     return {
       req: [],
-      requests: [
-        {id: 2, player_name: "テストユーザ", joinedAt: "2021-03-22 00:00:00"},
-        {id: 3, player_name: "テストユーザa", joinedAt: "2021-04-19 12:00:00"},
-      ]
+      requests: [],
+      alert: alertTemplate,
     }
   },
-  created() {
-    this.requests.forEach( (item) => {
-      this.req.push({
-        id: item.id,
-        view: false,
-        remarks: null,
-      })
+  mounted() {
+    this.loadingData()
+
+    this.$store.subscribe((mutation) => {
+      if (mutation.type === 'adminStore/setRegisterRequests') {
+        this.$set(this, 'requests', this.getRegisterRequests)
+
+        this.$nextTick( () => {
+          this.req.splice(0, this.req.length);
+          this.requests.forEach( (item) => {
+            this.req.push({
+              id: item.id,
+              view: false,
+              remarks: null,
+            })
+          })
+        })
+
+      }
     })
   },
+  computed: {
+    ...mapGetters('adminStore', ['getRegisterRequests']),
+  },
   methods: {
+    ...mapActions('adminStore', ['registerRequest', 'updateRegisterRequest']),
+    loadingData() {
+      new Promise((resolve) => {
+        resolve(this.registerRequest())
+      })
+      .catch( (err) => {
+        this.alert = Object.assign(alertTemplate, {
+          show: true,
+          type: 'error',
+          message: err,
+        })
+      })
+    },
     edit(index) {
       this.req[index] = Object.assign(this.req[index], {view: !this.req[index].view})
     },
-    approve(index) {
-      console.log(this.req[index])
+    change(index, status) {
+      const param = this.req[index]
+      if (!param) return;
+
+      new Promise((resolve) => {
+        resolve(this.updateRegisterRequest({
+          registerId: param.id,
+          status: status,
+          remarks: param.remarks,
+        }))
+      })
+      .then ( (res) => {
+        this.alert = Object.assign(alertTemplate, {
+          show: true,
+          type: 'info',
+          message: res,
+        })
+
+        this.loadingData()
+      })
+      .catch( (err) => {
+        this.alert = Object.assign(alertTemplate, {
+          show: true,
+          type: 'error',
+          message: err,
+        })
+      })
     },
-    reject(index) {
-      console.log(this.req[index])
-    },
+    approve(index) { this.change(index, registerRequestEnum.APPROVE) },
+    reject(index) { this.change(index, registerRequestEnum.REJECT) },
     update($event, index) {
       this.req[index] = Object.assign(this.req[index], {remarks: $event})
-    }
+    },
   }
 }
 </script>

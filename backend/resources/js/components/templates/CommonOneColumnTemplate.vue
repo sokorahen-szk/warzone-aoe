@@ -5,6 +5,7 @@
         <v-sheet
           :color="backGround"
           class="pa-3"
+          :elevation="elevation"
         >
           <slot name="container"></slot>
         </v-sheet>
@@ -18,6 +19,7 @@ export default {
   name: 'CommonOneColumnTemplate',
   props: {
     backGround: {type: String, default: 'grey lighten-4'},
+    elevation: {type: [String, Number], default: 0},
   },
   data() {
     return {

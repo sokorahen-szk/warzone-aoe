@@ -10,7 +10,7 @@ class Remarks {
     $this->value = $value;
   }
 
-  public function getValue(): int
+  public function getValue(): ?string
   {
     return $this->value;
   }

@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <Alert :properties="alert" dense />
-    <CommonOneColumnTemplate>
+    <CommonOneColumnTemplate elevation="2">
 			<template slot="container">
         <v-form
           ref="form"
