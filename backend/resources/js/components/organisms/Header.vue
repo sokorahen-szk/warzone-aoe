@@ -14,7 +14,7 @@
       </v-toolbar-title>
       <v-spacer />
 
-      <template v-if="device == 'pc'">
+      <template v-if="getDeviceType == 'pc'">
         <v-btn
           v-for="link in header.links"
           :key="link.label"
@@ -50,7 +50,7 @@
     </v-app-bar>
 
     <v-navigation-drawer
-      v-if="device == 'sp'"
+      v-if="getDeviceType == 'sp'"
       v-model="drawer"
       app
       right
@@ -87,9 +87,6 @@ export default {
   computed: {
     ...mapGetters('breakpointStore', ['getDeviceType']),
     ...mapGetters('authStore', ['isLogin']),
-    device() {
-      return this.getDeviceType;
-    }
   },
   data() {
     return {
