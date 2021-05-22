@@ -46,10 +46,18 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="12" class="py-4">
+        <v-col cols="12" class="pt-4 pb-2">
           <div>
-          パッケージ：<Label>AoE2HD</Label><Label>AoE2DE</Label><Label>AoE2</Label>
+            <Label tag>AoE2HD</Label><Label tag>AoE2DE</Label><Label tag>AoE2</Label>
           </div>
+        </v-col>
+        <v-col cols="12">
+          <Tabs
+            :grow="getDeviceType === 'sp'"
+            :tabs="tabs"
+            @change="selectTab = $event"
+          />
+          <div v-bind:is="component"></div>
         </v-col>
       </v-row>
     </template>
@@ -58,9 +66,13 @@
 
 <script>
 import CommonOneColumnTemplate from '@/components/templates/CommonOneColumnTemplate'
+import IndexBasicPlayerProfile from '@/components/pages/player/_Index/_IndexBasicPlayerProfile'
+import IndexWarsPlayerHistory from '@/components/pages/player/_Index/_IndexWarsPlayerHistory'
+import IndexRatePlayerHisyory from '@/components/pages/player/_Index/_IndexRatePlayerHisyory'
 import Avator from '@/components/atoms/Avator'
 import Icon from '@/components/atoms/Icon'
 import Label from '@/components/atoms/Label'
+import Tabs from '@/components/molecules/Tabs'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -69,14 +81,33 @@ export default {
     CommonOneColumnTemplate,
     Avator,
     Icon,
-    Label
+    Label,
+    Tabs,
+    IndexBasicPlayerProfile,
+    IndexWarsPlayerHistory,
+    IndexRatePlayerHisyory,
   },
   computed: {
     ...mapGetters('breakpointStore', ['getDeviceType']),
+    component: function(){
+      return this.components[this.selectTab]
+    }
   },
   data() {
     return {
-      playerId: this.$route.params['id']
+      playerId: this.$route.params['id'],
+      selectTab: 0,
+      tabs: [
+        {label: '基本情報', icon: 'mdi-account'},
+        {label: '対戦履歴', icon: 'mdi-menu'},
+        {label: 'レート遷移', icon: 'mdi-menu'},
+      ],
+
+      components: [
+        'IndexBasicPlayerProfile',
+        'IndexWarsPlayerHistory',
+        'IndexRatePlayerHisyory',
+      ]
     }
   },
 }
