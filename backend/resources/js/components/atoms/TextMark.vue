@@ -7,7 +7,7 @@ export default {
   name: 'TextMark',
   props: {
     value: {type: String, default: null},
-    color: {Type: String},
+    color: {Type: String, default: ''},
   },
   computed: {
     setColor() {
