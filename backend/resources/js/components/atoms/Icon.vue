@@ -25,7 +25,7 @@ export default {
   props: {
     path: {type: String, default: null},
     href: {type: String, default: null},
-    color: {type: String, default: 'blue-grey lighten-3'},
+    color: {type: String, default: ''},
     size: {type: [String, Number], default: 32},
   },
   data() {

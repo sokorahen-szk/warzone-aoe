@@ -57,7 +57,7 @@
             :tabs="tabs"
             @change="selectTab = $event"
           />
-          <div v-bind:is="component"></div>
+          <div :is="component"></div>
         </v-col>
       </v-row>
     </template>
