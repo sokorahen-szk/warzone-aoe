@@ -144,7 +144,7 @@ export default {
   },
   data() {
     return {
-      drawer: true,
+      drawer: false,
       homePath: '/account/mypage',
       mobileMenuLists: mobileMenuLists,
     }

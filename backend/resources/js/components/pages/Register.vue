@@ -120,6 +120,9 @@
                           color="success"
                           @click="registerEvent"
                           :disabled="!valid"
+                          height="65"
+                          width="200"
+                          font-size="22"
                         />
                       </v-col>
                     </v-row>
