@@ -55,7 +55,7 @@ export default {
         if (player.name === null) {
           return false;
         }
-        return player.name.indexOf(this.search) != -1
+        return player.name.toUpperCase().indexOf(this.search.toUpperCase()) != -1
       })
     }
   },
