@@ -1,5 +1,6 @@
 <template>
-  <v-container>
+  <v-container :class="{'pa-0 ma-0': device === 'sp'}">
+    <slot name="header"></slot>
     <v-row no-gutters>
       <v-col cols="12">
         <v-sheet
@@ -20,6 +21,7 @@ export default {
   props: {
     backGround: {type: String, default: 'grey lighten-4'},
     elevation: {type: [String, Number], default: 0},
+    device: {type: String},
   },
   data() {
     return {
