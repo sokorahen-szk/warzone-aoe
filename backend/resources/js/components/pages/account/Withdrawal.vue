@@ -1,48 +1,49 @@
 <template>
-  <v-container>
-    <CommonWithRightColumnTemplate outlined>
-			<template slot="right">
-        <AccountRightMenu />
-			</template>
-			<template slot="container">
-        <v-row no-gutters>
-          <v-col cols="12">
-            <div class="py-2">退会手続き</div>
-            <div class="text-center">
-              <v-icon size="64" color="red">mdi-alert</v-icon>
-            </div>
-            <div class="text-center py-2">
-              退会手続きの前にご確認ください
-            </div>
-            <v-row no-gutters justify="center" align-content="center" style="height: 75px;">
-              <CheckBoxList
-                :items="question"
-                @update="valid = !valid"
-              />
-            </v-row>
-            <div class="text-center mb-4">
-              <Button
-                width="150"
-                height="45"
-                color="error"
-                label="退会する"
-                @click="withdrawalEvent"
-                :disabled="!valid"
-              ></Button>
-            </div>
-          </v-col>
-        </v-row>
-			</template>
-    </CommonWithRightColumnTemplate>
-  </v-container>
+  <CommonWithRightColumnTemplate
+    outlined
+    :device="getDeviceType"
+  >
+    <template slot="right">
+      <AccountRightMenu />
+    </template>
+    <template slot="container">
+      <v-row no-gutters>
+        <v-col cols="12">
+          <div class="py-2">退会手続き</div>
+          <div class="text-center">
+            <v-icon size="64" color="red">mdi-alert</v-icon>
+          </div>
+          <div class="text-center py-2">
+            退会手続きの前にご確認ください
+          </div>
+          <v-row no-gutters justify="center" align-content="center" style="height: 75px;">
+            <CheckBoxList
+              :items="question"
+              @update="valid = !valid"
+            />
+          </v-row>
+          <div class="text-center mb-4">
+            <Button
+              width="150"
+              height="45"
+              color="error"
+              label="退会する"
+              @click="withdrawalEvent"
+              :disabled="!valid"
+            ></Button>
+          </div>
+        </v-col>
+      </v-row>
+    </template>
+  </CommonWithRightColumnTemplate>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import CommonWithRightColumnTemplate from '@/components/templates/CommonWithRightColumnTemplate'
 import AccountRightMenu from '@/components/organisms/AccountRightMenu'
 import Button from '@/components/atoms/Button'
 import CheckBoxList from '@/components/molecules/CheckBoxList'
-import { mapActions } from 'vuex'
 import router from '@/router/index'
 export default {
   name: 'Withdrawal',
@@ -74,6 +75,9 @@ export default {
         alert(err);
       })
     }
-  }
+  },
+  computed: {
+    ...mapGetters('breakpointStore', ['getDeviceType']),
+  },
 }
 </script>
