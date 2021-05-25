@@ -1,9 +1,12 @@
 <template>
-  <CommonOneColumnTemplate back-ground='#eee'>
+  <CommonOneColumnTemplate
+    back-ground='#eee'
+    :device="getDeviceType"
+  >
   <template slot="container">
 
     <v-row no-gutters>
-      <v-col cols="12" sm="12" md="5" lg="4" class="px-2" style="border-right: 1px #ddd solid;">
+      <v-col cols="12" sm="12" md="5" lg="4" class="px-2" :style="addStyle">
         <div class="py-2">プレイヤー選択</div>
         <PlayerSearchBox
           :keyword="search"
@@ -58,21 +61,29 @@
           </v-col>
           <v-col cols="12">
             <v-row no-gutters justify="center" align-content="center">
-              <Button
-                class="mr-2"
-                color="info"
-                label="チーム分け"
-                height="55"
-                width="150"
-              />
-              <Button
-                class="ml-2"
-                color="warning"
-                label="クリア"
-                width="150"
-                height="55"
-                @click="clearEvent"
-              />
+
+              <v-row no-gutters>
+                <v-col cols="6" sm="6" md="6" lg="6" xl="6">
+                  <Button
+                    class="mr-2"
+                    color="info"
+                    label="チーム分け"
+                    height="55"
+                    block
+                  />
+                </v-col>
+                <v-col cols="6" sm="6" md="6" lg="6" xl="6">
+                  <Button
+                    class="ml-2"
+                    color="warning"
+                    label="クリア"
+                    height="55"
+                    @click="clearEvent"
+                    block
+                  />
+                </v-col>
+              </v-row>
+
             </v-row>
           </v-col>
         </v-row>
@@ -93,6 +104,7 @@ import { playerListTemplate } from '@/config/player'
 import { gamePackageTemplate, gameMapTemplate } from '@/config/game'
 import { mapGetters, mapActions } from 'vuex'
 import { selectParser } from '@/services/helper'
+import { addStyleParser } from '@/services/helper'
 export default {
   name: 'Newgame',
   components: {
@@ -120,9 +132,17 @@ export default {
   computed: {
     ...mapGetters('playerStore', ['getPlayers']),
     ...mapGetters('gameStore', ['getPackageList', 'getMapList']),
+    ...mapGetters('breakpointStore', ['getDeviceType']),
     getGameMap() {
       if (!this.selectedGamePackageId) return this.gameMaps
       return this.gameMaps.map( item => item.gamePackageId === this.selectedGamePackageId)
+    },
+    addStyle() {
+      if (this.getDeviceType !== 'sp') {
+        return addStyleParser({
+          'border-right': '1px #ddd solid',
+        })
+      }
     }
   },
   methods: {

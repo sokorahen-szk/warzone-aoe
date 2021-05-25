@@ -1,72 +1,75 @@
 <template>
-  <v-container>
-    <Alert :properties="alert" dense />
-    <CommonWithRightColumnTemplate outlined>
-			<template slot="right">
-        <AccountRightMenu />
-			</template>
-			<template slot="container">
-				<v-container>
-          <div class="subtitle-2">
-            <v-row no-gutters no-wrap class="text-right mb-4">
-              <v-col cols="12">新規リクエスト数：{{ this.requests.length }} 件</v-col>
-              <!--
-                TODO: 今後実装予定の場所
-                https://github.com/sokorahen-szk/warzone-aoe/issues/40
-              -->
-              <!--v-col cols="12">承認数：0 件</v-col-->
-              <!--v-col cols="12">拒否数：0 件</v-col-->
-            </v-row>
-          </div>
-          <v-list class="pa-0 ma-0" v-if="requests.length > 0">
-            <template v-for="(request, index) in requests">
-            <v-list-item class="pa-0 ma-0" :key="`v-list-item-${request.id}`">
-              <v-list-item-content>
-                <v-list-item-title>{{request.playerName}}</v-list-item-title>
-                <v-list-item-subtitle>参加日：{{request.joinedAt}}</v-list-item-subtitle>
-              </v-list-item-content>
-              <v-list-item-action>
-                <v-row no-gutters>
-                  <v-col>
-                    <v-icon size="36" @click="edit(index)">mdi-clipboard-edit-outline</v-icon>
-                  </v-col>
-                  <v-col>
-                    <v-icon size="36" @click="approve(index)" color="green">mdi-check-bold</v-icon>
-                  </v-col>
-                  <v-col>
-                    <v-icon size="36" @click="reject(index)" color="red">mdi-close-thick</v-icon>
-                  </v-col>
-                </v-row>
-              </v-list-item-action>
-            </v-list-item>
-            <v-card :key="`v-card-${request.id}`" class="pa-4" v-show="req[index] && req[index].view">
-              <TextArea
-                outlined
-                placeholder="備考"
-                class="pa-0 ma-0"
-                @update="update($event, index)"
+  <CommonWithRightColumnTemplate
+    outlined
+    :device="getDeviceType"
+  >
+    <template slot="header">
+      <Alert :properties="alert" dense />
+    </template>
+    <template slot="right">
+      <AccountRightMenu />
+    </template>
+    <template slot="container">
+      <v-container>
+        <div class="subtitle-2">
+          <v-row no-gutters no-wrap class="text-right mb-4">
+            <v-col cols="12">新規リクエスト数：{{ this.requests.length }} 件</v-col>
+            <!--
+              TODO: 今後実装予定の場所
+              https://github.com/sokorahen-szk/warzone-aoe/issues/40
+            -->
+            <!--v-col cols="12">承認数：0 件</v-col-->
+            <!--v-col cols="12">拒否数：0 件</v-col-->
+          </v-row>
+        </div>
+        <v-list class="pa-0 ma-0" v-if="requests.length > 0">
+          <template v-for="(request, index) in requests">
+          <v-list-item class="pa-0 ma-0" :key="`v-list-item-${request.id}`">
+            <v-list-item-content>
+              <v-list-item-title>{{request.playerName}}</v-list-item-title>
+              <v-list-item-subtitle>参加日：{{request.joinedAt}}</v-list-item-subtitle>
+            </v-list-item-content>
+            <v-list-item-action>
+              <v-row no-gutters>
+                <v-col>
+                  <v-icon size="36" @click="edit(index)">mdi-clipboard-edit-outline</v-icon>
+                </v-col>
+                <v-col>
+                  <v-icon size="36" @click="approve(index)" color="green">mdi-check-bold</v-icon>
+                </v-col>
+                <v-col>
+                  <v-icon size="36" @click="reject(index)" color="red">mdi-close-thick</v-icon>
+                </v-col>
+              </v-row>
+            </v-list-item-action>
+          </v-list-item>
+          <v-card :key="`v-card-${request.id}`" class="pa-4" v-show="req[index] && req[index].view">
+            <TextArea
+              outlined
+              placeholder="備考"
+              class="pa-0 ma-0"
+              @update="update($event, index)"
+            />
+            <div class="text-right">
+              <Button
+                color="success"
+                label="承認"
+                @click="approve(index)"
               />
-              <div class="text-right">
-                <Button
-                  color="success"
-                  label="承認"
-                  @click="approve(index)"
-                />
-                <Button
-                  color="error"
-                  label="拒否"
-                  @click="reject(index)"
-                />
-              </div>
-            </v-card>
-            <v-divider :key="`v-list-item-divider-${request.id}`" />
-            </template>
-          </v-list>
-          <div v-else>新規リクエストがありません</div>
-        </v-container>
-			</template>
-    </CommonWithRightColumnTemplate>
-  </v-container>
+              <Button
+                color="error"
+                label="拒否"
+                @click="reject(index)"
+              />
+            </div>
+          </v-card>
+          <v-divider :key="`v-list-item-divider-${request.id}`" />
+          </template>
+        </v-list>
+        <div v-else>新規リクエストがありません</div>
+      </v-container>
+    </template>
+  </CommonWithRightColumnTemplate>
 </template>
 
 <script>
@@ -117,6 +120,7 @@ export default {
   },
   computed: {
     ...mapGetters('adminStore', ['getRegisterRequests']),
+    ...mapGetters('breakpointStore', ['getDeviceType']),
   },
   methods: {
     ...mapActions('adminStore', ['registerRequest', 'updateRegisterRequest']),

@@ -9,6 +9,7 @@
     :width="width"
     :height="height"
     :tile="tile"
+    :style="addStyle"
   >
     <v-icon
       v-if="icon"
@@ -16,12 +17,15 @@
       left
     >
       {{iconType}}
-    </v-icon>{{label}}
+    </v-icon>
+    {{label}}
   </v-btn>
 </template>
 
 <script>
 import router from '@/router/index'
+import {addStyleParser} from '@/services/helper'
+
 export default {
   name: 'Button',
   props: {
@@ -37,6 +41,7 @@ export default {
     iconType: {type: String, default: 'mdi-checkbox-marked-circle'},
     width: {type: [String, Number]},
     height: {type: [String, Number]},
+    fontSize: {type: [String, Number], default: 15},
   },
   data() {
     return {
@@ -51,6 +56,13 @@ export default {
       }
       return this.$emit('click')
     }
-  }
+  },
+  computed: {
+    addStyle() {
+      return addStyleParser({
+        'font-size': `${this.fontSize}px`,
+      })
+    }
+  },
 }
 </script>
