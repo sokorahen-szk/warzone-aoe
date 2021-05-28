@@ -18,16 +18,12 @@
 import { mapGetters } from 'vuex'
 import CommonWithRightColumnTemplate from '@/components/templates/CommonWithRightColumnTemplate'
 import AccountRightMenu from '@/components/organisms/AccountRightMenu'
+
 export default {
   name: 'AccountHistory',
   components: {
     CommonWithRightColumnTemplate,
-    AccountRightMenu
-  },
-  data() {
-    return {
-      //
-    }
+    AccountRightMenu,
   },
   computed: {
     ...mapGetters('breakpointStore', ['getDeviceType']),

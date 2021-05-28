@@ -8,7 +8,7 @@
     </template>
     <template slot="container">
       <v-container>
-        個人レーティングページ
+        <PlayerRateChart />
       </v-container>
     </template>
   </CommonWithRightColumnTemplate>
@@ -18,11 +18,14 @@
 import { mapGetters } from 'vuex'
 import CommonWithRightColumnTemplate from '@/components/templates/CommonWithRightColumnTemplate'
 import AccountRightMenu from '@/components/organisms/AccountRightMenu'
+import PlayerRateChart from '@/components/organisms/PlayerRateChart'
+
 export default {
   name: 'AccountRating',
   components: {
     CommonWithRightColumnTemplate,
-    AccountRightMenu
+    AccountRightMenu,
+    PlayerRateChart
   },
   data() {
     return {
