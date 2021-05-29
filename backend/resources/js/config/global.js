@@ -60,3 +60,11 @@ export const mobileMenuLists = [
     ]
   },
 ]
+
+export const chartFilter = [
+  {id: 0, label: '選択しない'},
+  {id: 1, label: '今月'},
+  {id: 2, label: '先月'},
+  {id: 3, label: '今年'},
+  {id: 4, label: '去年'},
+]

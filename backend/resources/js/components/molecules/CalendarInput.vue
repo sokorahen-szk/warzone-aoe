@@ -15,6 +15,7 @@
         readonly
         v-bind="attrs"
         v-on="on"
+        :disabled="disabled"
       ></v-text-field>
     </template>
     <v-date-picker
@@ -29,6 +30,7 @@ export default {
   name: 'CalendarInput',
   props: {
     label: {type: String, default: ''},
+    disabled: {type: Boolean, default: false},
   },
   data() {
     return {

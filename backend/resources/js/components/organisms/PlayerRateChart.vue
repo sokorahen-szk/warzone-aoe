@@ -1,13 +1,16 @@
 <template>
   <div>
-    <Chart />
-    <ChartFilter />
+    <Chart :columns="columns" />
+    <ChartFilter
+      @change="chartFilter = $event"
+      :selectedDefault="chartFilter"
+    />
     <v-row no-gutters>
       <v-col cols="12" sm="6" md="6" lg="6">
-        <CalendarInput label="抽出開始" />
+        <CalendarInput label="抽出開始" :disabled="chartFilter !== 0" />
       </v-col>
       <v-col cols="12" sm="6" md="6" lg="6">
-        <CalendarInput label="抽出終了" />
+        <CalendarInput label="抽出終了" :disabled="chartFilter !== 0" />
       </v-col>
     </v-row>
   </div>
@@ -27,7 +30,11 @@ export default {
   },
   data () {
     return {
-      //
+      chartFilter: 1,
+      columns: {
+        date: ['date', '2021-05-29', '2021-05-30'],
+        raiting: ['レーティング', 2000, 2100],
+      }
     }
   },
 }

@@ -14,6 +14,9 @@ export default {
   components: {
     VueC3,
   },
+  props: {
+    columns: {type: Object },
+  },
   data () {
     return {
       handler: new Vue()
@@ -23,10 +26,7 @@ export default {
     const options = {
       data: {
         x: 'date',
-        columns: [
-          ['date','2020-10-01','2020-10-02','2020-10-03','2020-10-04','2020-10-05'],
-          ['レーティング', 2, 4, 1, 5, 2, 1],
-        ],
+        columns: [],
       },
       axis: {
         x: {
@@ -37,6 +37,8 @@ export default {
         },
       },
     }
+
+    options.data.columns = [this.columns.date, this.columns.raiting];
 
     this.handler.$emit('init', options)
   },

@@ -13,18 +13,22 @@
 </template>
 
 <script>
+import {chartFilter} from '@/config/global'
 export default {
   name: 'ChartFilter',
+  props: {
+    selectedDefault: {type: Number},
+  },
   data() {
     return {
-      filters: [
-        {id: 1, label: '今月'},
-        {id: 2, label: '先月'},
-        {id: 3, label: '今年'},
-        {id: 4, label: '去年'},
-      ],
-      selected: 1
+      filters: chartFilter,
+      selected: this.selectedDefault,
     }
   },
+  watch: {
+    selected(val) {
+      return this.$emit('change', val)
+    }
+  }
 }
 </script>
