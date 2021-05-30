@@ -4,6 +4,7 @@ namespace Package\Usecase\Game\GameMap\GetList;
 
 use Package\Usecase\Game\GameMap\GetList\GameMapData;
 
-interface GameMapListServiceInterface {
-  public function handle(): ?GameMapData;
+interface GameMapListServiceInterface
+{
+    public function handle(): ?GameMapData;
 }

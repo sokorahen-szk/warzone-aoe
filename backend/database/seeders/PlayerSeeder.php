@@ -95,7 +95,7 @@ class PlayerSeeder extends Seeder
         $enabled = [true, false];
 
         // ここからダミーデータ
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $win = mt_rand(1, 100);
             $defeat = mt_rand(1, 100);
             $games = $win + $defeat + mt_rand(0, 10);

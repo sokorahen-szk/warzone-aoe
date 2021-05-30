@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\RegisterRequestUpdateRequest;
 use Package\Usecase\Admin\RegisterRequest\GetList\AdminRegisterRequestGetListServiceInterface;
 use Package\Usecase\Admin\RegisterRequest\Update\AdminRegisterRequestUpdateServiceInterface;
 use Package\Usecase\Admin\RegisterRequest\Update\AdminRegisterRequestUpdateCommand;
+use Auth;
 
 class AdminController extends Controller
 {
@@ -22,7 +23,7 @@ class AdminController extends Controller
     {
         $result = $interactor->handle(new AdminRegisterRequestUpdateCommand(
             $registerId,
-            \Auth::user()->id,
+            Auth::user()->id,
             $request->status,
             $request->input('remarks', null)
         ));

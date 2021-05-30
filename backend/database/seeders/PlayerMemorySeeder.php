@@ -17,13 +17,12 @@ class PlayerMemorySeeder extends Seeder
     {
         SeederHelper::truncate('player_memories');
 
-        $length = PlayerModel::count();
         $playerMap = [];
-        for ($i = 1; $i <= $length; $i++) {
+        for ($i = 1; $i <= 8; $i++) {
             $playerMap[] = $i;
         }
 
-        for ($i = 1; $i <= 100; $i++) {
+        for ($i = 1; $i <= 1000; $i++) {
             $playerCount = mt_rand(2, 8);
             $dummyPlayerMap = $playerMap;
 
@@ -33,13 +32,17 @@ class PlayerMemorySeeder extends Seeder
                 PlayerMemoryModel::create([
                     'player_id'         => $playerNum[0],
                     'game_record_id'    => $i,
-                    'team'              => $x % 2,
-                    'mu'                => 200.1,
-                    'sigma'             => 1000.11,
+                    'team'              => $x % 2 == 0 ? 2 : 1,
+                    'mu'                => randomFloat(1000, 4000),
+                    'sigma'             => randomFloat(10, 100),
                     'rate'              => mt_rand(100, 4000),
                 ]);
             }
-
         }
     }
+}
+
+function randomFloat($min = 0, $max = 1)
+{
+    return $min + mt_rand() / mt_getrandmax() * ($max - $min);
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Account\AccountRegistrationRequest;
 use App\Http\Requests\Account\AccountUpdateAvatorRequest;
 use App\Http\Requests\Account\AccountProfileEditRequest;
+use App\Http\Requests\Account\AccountRaitingRequest;
 
 use Package\Usecase\Account\GetInfo\AccountGetInfoCommand;
 use Package\Usecase\Account\GetInfo\AccountGetInfoServiceInterface;
@@ -20,7 +21,14 @@ use Package\Usecase\Account\ChangeProfile\AccountChangeProfileServiceInterface;
 use Package\Usecase\Account\ChangeProfile\AccountChangeProfileCommand;
 use Package\Usecase\Account\Withdrawal\AccountWithdrawalServiceInterface;
 use Package\Usecase\Account\Withdrawal\AccountWithdrawalCommand;
+use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeServiceInterface;
+use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeCommand;
+
+
+
 use Exception;
+use Auth;
+use DB;
 
 class AccountController extends Controller
 {
@@ -46,11 +54,11 @@ class AccountController extends Controller
         );
 
         try {
-            \DB::beginTransaction();
+            DB::beginTransaction();
             $result = $interactor->handle($command);
-            \DB::commit();
+            DB::commit();
         } catch (Exception $e) {
-            \DB::rollback();
+            DB::rollback();
             throw $e;
         }
 
@@ -64,7 +72,7 @@ class AccountController extends Controller
      */
     public function show(AccountGetInfoServiceInterface $interactor)
     {
-        $command = new AccountGetInfoCommand(\Auth::user()->id);
+        $command = new AccountGetInfoCommand(Auth::user()->id);
         $result = $interactor->handle($command);
 
         return $this->validResponse($result->getVars(), 'アカウント詳細を取得しました。');
@@ -79,7 +87,7 @@ class AccountController extends Controller
     public function updateAvator(AccountUpdateAvatorRequest $request, AccountUpdateAvatorServiceInterface $interactor)
     {
         $command = new AccountUpdateAvatorCommand(
-            \Auth::user()->id,
+            Auth::user()->id,
             $request->file('file')
         );
         $result = $interactor->handle($command);
@@ -95,7 +103,7 @@ class AccountController extends Controller
     public function deleteAvator(AccountDeleteAvatorServiceInterface $interactor)
     {
         $command = new AccountDeleteAvatorCommand(
-            \Auth::user()->id
+            Auth::user()->id
         );
         $result = $interactor->handle($command);
 
@@ -111,7 +119,7 @@ class AccountController extends Controller
     public function changeProfile(AccountProfileEditRequest $request, AccountChangeProfileServiceInterface $interactor)
     {
         $command = new AccountChangeProfileCommand(
-            \Auth::user()->id,
+            Auth::user()->id,
             $request->user_name,
             $request->input('email', null),
             $request->input('password', null),
@@ -133,10 +141,30 @@ class AccountController extends Controller
     public function withdrawal(AccountWithdrawalServiceInterface $interactor)
     {
         $command = new AccountWithdrawalCommand(
-            \Auth::user()->id
+            Auth::user()->id
         );
         $result = $interactor->handle($command);
 
         return $this->validResponse($result, '退会処理が完了しました。');
+    }
+
+    /**
+     * 個人レーティング
+     *
+     * @param GameRecordListByDateRangeServiceInterface $interactor
+     * @param AccountRaitingRequest $request
+     * @return json(...)
+     */
+    public function raiting(GameRecordListByDateRangeServiceInterface $interactor, AccountRaitingRequest $request)
+    {
+        $command = new GameRecordListByDateRangeCommand(
+            Auth::user()->id,
+            $request->begin_date,
+            $request->input('end_date', null)
+        );
+
+        $result = $interactor->handle($command);
+
+        return $this->validResponse($result, '個人レーティングを取得しました。');
     }
 }

@@ -60,7 +60,10 @@ class ApplicationProvider extends ServiceProvider
             \Package\Usecase\Admin\RegisterRequest\Update\AdminRegisterRequestUpdateServiceInterface::class,
             \Package\Application\Admin\RegisterRequest\Update\AdminRegisterRequestUpdateService::class
         );
-
+        $this->app->bind(
+            \Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeServiceInterface::class,
+            \Package\Application\Game\GameRecord\GetList\GameRecordListByDateRangeService::class
+        );
     }
 
     /**
