@@ -12,9 +12,11 @@ use Package\Domain\System\ValueObject\Datetime;
 
 use Package\Domain\Game\Entity\GamePackage;
 use Package\Domain\Game\Entity\User;
+use Package\Domain\User\Entity\PlayerMemory;
 
 class GamePlayerRecord extends Resource {
   protected $gameRecordId;
+  protected $playerMemory;
   protected $gamePackageId;
   protected $gamePackage;
   protected $userId;
@@ -35,6 +37,14 @@ class GamePlayerRecord extends Resource {
   public function getGameRecordId(): ?GameRecordId
   {
     return $this->gameRecordId;
+  }
+
+  /**
+   * @return PlayerMemory|null
+   */
+  public function getPlayerMemory(): ?PlayerMemory
+  {
+    return $this->playerMemory;
   }
 
   /**

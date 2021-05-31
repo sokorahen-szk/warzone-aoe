@@ -8,8 +8,8 @@ use Package\Domain\User\ValueObject\Player\PlayerId;
 use Package\Domain\Game\ValueObject\GameRecord\GameRecordId;
 use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
 use Package\Domain\User\ValueObject\Player\Mu;
-use Package\Domain\Game\ValueObject\Player\Sigma;
-use Package\Domain\Game\ValueObject\Player\Rate;
+use Package\Domain\User\ValueObject\Player\Sigma;
+use Package\Domain\User\ValueObject\Player\Rate;
 
 class PlayerMemory extends Resource {
   protected $playerMemoryId;

@@ -10,26 +10,35 @@ class Date
 
     public function __construct($value)
     {
-        $this->value = $value ? new Carbon($value) : Carbon::now();
+        $this->value = $value ? new Carbon($value) : null;
     }
 
-    public function getValue(): Carbon
+    public function getValue(): ?Carbon
     {
         return $this->value;
     }
 
-    public function getDateFormatYYYYMMDD(): string
+    public function getDateFormatYYYYMMDD(): ?string
     {
+        if (!$this->value) {
+            return null;
+        }
         return $this->value->format('Y-m-d');
     }
 
-    public function getDateFormatYYYYMMDDForBegin(): string
+    public function getDateFormatYYYYMMDDForBegin(): ?string
     {
+        if (!$this->value) {
+            return null;
+        }
         return $this->value->format('Y-m-d 00:00:00');
     }
 
-    public function getDateFormatYYYYMMDDForEnd(): string
+    public function getDateFormatYYYYMMDDForEnd(): ?string
     {
+        if (!$this->value) {
+            return null;
+        }
         return $this->value->format('Y-m-d 23:59:59');
     }
 }

@@ -28,7 +28,9 @@ class GameRecordListByDateRangeService implements GameRecordListByDateRangeServi
     {
         $user = $this->userRepository->findUserById(new UserId($command->userId));
 
-        $gameRecords = $this->gameRecordRepository->listByDateRange($user, new Date($command->beginDate), new Date($command->endDate));
+        $endDate = $command->endDate ? new Date($command->endDate) : Date::now();
+
+        $gameRecords = $this->gameRecordRepository->listByDateRange($user, new Date($command->beginDate), $endDate);
         return new GameRecordListByDateRangeData($gameRecords);
     }
 }
