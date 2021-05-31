@@ -3,18 +3,18 @@
 namespace Package\Domain\Game\Entity;
 
 use Package\Domain\Resource;
-use Package\Domain\Game\ValueObject\Id as GameMapId;
-use Package\Domain\Game\ValueObject\Id as GamePackageId;
-use Package\Domain\Game\ValueObject\Name as GameMapName;
+use Package\Domain\Game\ValueObject\GameMap\GameMapId;
+use Package\Domain\Game\ValueObject\GamePackage\GamePackageId;
+use Package\Domain\System\ValueObject\Name;
 use Package\Domain\Game\ValueObject\GameMap\Image;
-use Package\Domain\Game\ValueObject\Description as GamePackageDescription;
+use Package\Domain\System\ValueObject\Description;
 
 class GameMap extends Resource {
   protected $gameMapId;
   protected $gamePackageId;
-  protected $gameMapName;
+  protected $name;
   protected $image;
-  protected $gameMapDescription;
+  protected $description;
 
   public function __construct($data)
   {
@@ -38,11 +38,11 @@ class GameMap extends Resource {
   }
 
   /**
-   * @return GameMapName|null
+   * @return Name|null
    */
-  public function getGameMapName(): ?GameMapName
+  public function getName(): ?Name
   {
-    return $this->gameMapName;
+    return $this->name;
   }
 
   /**
@@ -54,11 +54,11 @@ class GameMap extends Resource {
   }
 
   /**
-   * @return GamePackageDescription|null
+   * @return Description|null
    */
-  public function getGamePackageDescription(): ?GamePackageDescription
+  public function getDescription(): ?Description
   {
-    return $this->gameMapDescription;
+    return $this->description;
   }
 
 }

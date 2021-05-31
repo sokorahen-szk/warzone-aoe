@@ -9,11 +9,12 @@ use Package\Domain\User\ValueObject\Register\RegisterId;
 use Package\Domain\User\Entity\Player;
 use Package\Domain\User\ValueObject\Player\PlayerId;
 use Package\Domain\User\ValueObject\Player\PlayerName;
-use Package\Domain\User\ValueObject\Player\Datetime;
 use Package\Domain\User\ValueObject\Player\Enabled;
 use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\User\ValueObject\Register\RegisterStatus;
 use Package\Domain\User\ValueObject\Register\Remarks;
+
+use Package\Domain\System\ValueObject\Datetime;
 
 class RegisterRequestRepository implements RegisterRequestRepositoryInterface {
   /**

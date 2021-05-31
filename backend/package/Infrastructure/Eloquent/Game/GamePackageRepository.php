@@ -4,9 +4,9 @@ namespace Package\Infrastructure\Eloquent\Game;
 
 use Package\Domain\Game\Repository\GamePackageRepositoryInterface;
 use Package\Domain\Game\Entity\GamePackage;
-use Package\Domain\Game\ValueObject\Id as GamePackageId;
-use Package\Domain\Game\ValueObject\Description as GamePackageDescription;
-use Package\Domain\Game\ValueObject\Name as GamePackageName;
+use Package\Domain\Game\ValueObject\GamePackage\GamePackageId;
+use Package\Domain\System\ValueObject\Description;
+use Package\Domain\System\ValueObject\Name;
 use App\Models\GamePackageModel as EloquentGamePackage;
 
 class GamePackageRepository implements GamePackageRepositoryInterface {
@@ -25,9 +25,9 @@ class GamePackageRepository implements GamePackageRepositoryInterface {
 
     foreach ($gamePackages as $gamePackage) {
       $results[] = new GamePackage([
-        'gamePackageId'               => new GamePackageId($gamePackage->id),
-        'gamePackageDescription'      => new GamePackageDescription($gamePackage->description),
-        'gamePackageName'             => new GamePackageName($gamePackage->name),
+        'gamePackageId'    => new GamePackageId($gamePackage->id),
+        'description'      => new Description($gamePackage->description),
+        'name'             => new Name($gamePackage->name),
       ]);
     }
 

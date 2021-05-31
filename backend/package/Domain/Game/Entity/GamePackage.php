@@ -3,14 +3,14 @@
 namespace Package\Domain\Game\Entity;
 
 use Package\Domain\Resource;
-use Package\Domain\Game\ValueObject\Id as GamePackageId;
-use Package\Domain\Game\ValueObject\Description as GamePackageDescription;
-use Package\Domain\Game\ValueObject\Name as GamePackageName;
+use Package\Domain\Game\ValueObject\GamePackage\GamePackageId;
+use Package\Domain\System\ValueObject\Description;
+use Package\Domain\System\ValueObject\Name;
 
 class GamePackage extends Resource {
   protected $gamePackageId;
-  protected $gamePackageDescription;
-  protected $gamePackageName;
+  protected $description;
+  protected $name;
 
   public function __construct($data)
   {
@@ -26,19 +26,19 @@ class GamePackage extends Resource {
   }
 
   /**
-   * @return GamePackageDescription|null
+   * @return Description|null
    */
-  public function getGamePackageDescription(): ?GamePackageDescription
+  public function getDescription(): ?Description
   {
-    return $this->gamePackageDescription;
+    return $this->description;
   }
 
   /**
-   * @return GamePackageName|null
+   * @return Name|null
    */
-  public function getGamePackageName(): ?GamePackageName
+  public function getName(): ?Name
   {
-    return $this->gamePackageName;
+    return $this->name;
   }
 
 }

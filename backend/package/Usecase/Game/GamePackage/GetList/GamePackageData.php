@@ -13,8 +13,8 @@ class GamePackageData extends Data {
     foreach ($sources as $source) {
       $response[] = [
         'id'          => $source->getGamePackageId()->getValue(),
-        'description' => $source->getGamePackageDescription()->getValue(),
-        'name'        => $source->getGamePackageName()->getValue(),
+        'description' => $source->getDescription()->getValue(),
+        'name'        => $source->getName()->getValue(),
       ];
     }
 

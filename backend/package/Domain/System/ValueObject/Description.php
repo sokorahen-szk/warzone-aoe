@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Package\Domain\Game\ValueObject;
+namespace Package\Domain\System\ValueObject;
 
-class Name {
+class Description {
   private $value;
 
   public function __construct($value)

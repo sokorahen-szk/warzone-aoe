@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Package\Domain\User\ValueObject\Player;
+namespace Package\Domain\System\ValueObject;
 
 use Carbon\Carbon;
 
