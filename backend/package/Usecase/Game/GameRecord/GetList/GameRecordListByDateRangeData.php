@@ -22,8 +22,8 @@ class GameRecordListByDateRangeData extends Data
                 'rate'                  => $source->getPlayerMemory()->getRate()->getValue(),
                 'winningTeam'           => $source->getWinningTeam()->getValue(),
                 'status'                => $source->getStatus()->getValue(),
-                'startedAt'             => $source->getStartedAt()->getDatetime(),
-                'finishedAt'            => $source->getFinishedAt()->getDatetime(),
+                'startedAt'             => $source->getStartedAt()->getDate(),
+                'finishedAt'            => $source->getFinishedAt()->getDate(),
             ];
         }
 

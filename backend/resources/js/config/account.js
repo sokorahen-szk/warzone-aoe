@@ -87,3 +87,16 @@ export const profileTemplate = {
     gamePackages: null,
   }
 }
+
+export const raitingTemplate = {
+  finishedAt: null,
+  startedAt: null,
+  gamePackageId: null,
+  gameRecordId: null,
+  playerMemoryId: null,
+  rank: null,
+  rate: null,
+  status: null,
+  team: null,
+  winningTeam: null
+}

@@ -10,6 +10,7 @@ use Package\Domain\User\Repository\UserRepositoryInterface;
 
 use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\System\ValueObject\Date;
+use Carbon\Carbon;
 
 class GameRecordListByDateRangeService implements GameRecordListByDateRangeServiceInterface
 {
@@ -27,8 +28,7 @@ class GameRecordListByDateRangeService implements GameRecordListByDateRangeServi
     public function handle(GameRecordListByDateRangeCommand $command): ?GameRecordListByDateRangeData
     {
         $user = $this->userRepository->findUserById(new UserId($command->userId));
-
-        $endDate = $command->endDate ? new Date($command->endDate) : Date::now();
+        $endDate = $command->endDate ? new Date($command->endDate) : new Date(Carbon::parse($command->beginDate)->endOfMonth());
 
         $gameRecords = $this->gameRecordRepository->listByDateRange($user, new Date($command->beginDate), $endDate);
         return new GameRecordListByDateRangeData($gameRecords);

@@ -7,10 +7,18 @@
     />
     <v-row no-gutters>
       <v-col cols="12" sm="6" md="6" lg="6">
-        <CalendarInput label="抽出開始" :disabled="chartFilter !== 0" />
+        <CalendarInput
+          label="抽出開始"
+          :disabled="chartFilter !== 0"
+          @update="beginDate = $event"
+        />
       </v-col>
       <v-col cols="12" sm="6" md="6" lg="6">
-        <CalendarInput label="抽出終了" :disabled="chartFilter !== 0" />
+        <CalendarInput
+          label="抽出終了"
+          :disabled="chartFilter !== 0"
+          @update="endDate = $event"
+        />
       </v-col>
     </v-row>
   </div>
@@ -28,13 +36,14 @@ export default {
     ChartFilter,
     CalendarInput,
   },
+  props: {
+    columns: { type: Object }
+  },
   data () {
     return {
       chartFilter: 1,
-      columns: {
-        date: ['date', '2021-05-29', '2021-05-30'],
-        raiting: ['レーティング', 2000, 2100],
-      }
+      beginDate: null,
+      endDate: null,
     }
   },
 }

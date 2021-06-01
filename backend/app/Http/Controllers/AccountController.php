@@ -67,7 +67,7 @@ class AccountController extends Controller
      */
     public function show(AccountGetInfoServiceInterface $interactor)
     {
-        $command = new AccountGetInfoCommand(Auth::user()->id);
+        $command = new AccountGetInfoCommand(\Auth::user()->id);
         $result = $interactor->handle($command);
 
         return $this->validResponse($result->getVars(), 'アカウント詳細を取得しました。');

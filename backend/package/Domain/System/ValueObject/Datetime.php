@@ -25,4 +25,9 @@ class Datetime {
   {
     return $this->value ? $this->value->format('Y-m-d H:i:s') : null;
   }
+
+  public function getDate(): ?string
+  {
+    return $this->value ? $this->value->format('Y-m-d') : null;
+  }
 }
