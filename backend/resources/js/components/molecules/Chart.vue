@@ -1,25 +1,36 @@
 <template>
-  <vue-c3
-    :handler="handler"
-  />
+  <div>
+    <template v-if="view">
+      <vue-c3
+        :handler="handler"
+      />
+    </template>
+    <template v-else>
+      <Loading size="64" />
+    </template>
+  </div>
 </template>
 
 <script>
 import Vue from 'vue'
 import VueC3 from 'vue-c3'
 import 'c3/c3.min.css'
+import Loading from '@/components/atoms/Loading'
 
 export default {
   name: 'Chart',
   components: {
     VueC3,
+    Loading,
   },
   props: {
     columns: {type: Object },
+    show: {type: Boolean, default: false},
   },
   data () {
     return {
-      handler: new Vue()
+      handler: new Vue(),
+      view: false,
     }
   },
   mounted () {
@@ -27,33 +38,49 @@ export default {
   },
   watch: {
     columns: {
-      handler() {
-        this.setOptions()
+      handler(v) {
+        this.setOptions(v)
       },
       deep: true,
     }
   },
   methods: {
-    setOptions() {
+    setOptions(v = null) {
+      const data = v || this.columns
       const options = {
         data: {
           x: 'date',
-          columns: [],
+          xs: {
+              date: ['rating', 'mu'],
+          },
+          types: {
+              mu: 'bar',
+          },
+          columns: [
+            ['date'],
+            ['rating'],
+            ['mu'],
+          ],
+          labels: true,
         },
         axis: {
           x: {
             type: 'timeseries',
             tick: {
-              format: '%Y-%m-%d'
+              format: '%m月%d日',
+              rotate: 90,
             }
           },
         },
+        zoom: {
+            enabled: true
+        }
       }
 
       options.data.columns = [
-        this.columns.dateList,
-        this.columns.rateList,
-        this.columns.rankList,
+        data.dateList,
+        data.rateList,
+        data.muList,
       ];
 
       this.handler.$emit('init', options)

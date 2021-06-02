@@ -19,6 +19,7 @@ class GameRecordListByDateRangeData extends Data
                 'playerMemoryId'        => $source->getPlayerMemory()->getPlayerMemoryId()->getValue(),
                 'team'                  => $source->getPlayerMemory()->getTeam()->getValue(),
                 'rank'                  => $source->getPlayerMemory()->getMu()->getRank(),
+                'mu'                    => $source->getPlayerMemory()->getMu()->getValue(),
                 'rate'                  => $source->getPlayerMemory()->getRate()->getValue(),
                 'winningTeam'           => $source->getWinningTeam()->getValue(),
                 'status'                => $source->getStatus()->getValue(),

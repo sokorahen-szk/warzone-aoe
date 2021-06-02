@@ -53,17 +53,17 @@ export default {
           const raiting = this.getRaiting()
 
           let dateList = ["date"]
-          let rateList = ["レーティング"]
-          let rankList = ["ランク"]
+          let rateList = ["rating"]
+          let muList = ["mu"]
 
           raiting.forEach( (item) => {
             dateList.push(item.startedAt)
             rateList.push(item.rate)
-            rankList.push(item.rank)
+            muList.push(item.mu)
           })
           this.columns.dateList = Object.assign([], dateList)
           this.columns.rateList = Object.assign([], rateList)
-          this.columns.rankList = Object.assign([], rankList)
+          this.columns.muList = Object.assign([], muList)
         })
       }
     })

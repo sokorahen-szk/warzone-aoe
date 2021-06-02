@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify';
+import Dayjs from 'dayjs'
 
 // Import CSS
 import 'vuetify/dist/vuetify.min.css';
@@ -13,7 +14,10 @@ import store from '@/store/index';
 // Main Component
 import App from '@/components/App.vue';
 
+Dayjs.locale('ja')
+
 Vue.use(Vuetify);
+Vue.use(Dayjs);
 
 new Vue({
     vuetify: new Vuetify(),

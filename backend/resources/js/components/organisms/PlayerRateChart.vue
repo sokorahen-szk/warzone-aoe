@@ -1,6 +1,9 @@
 <template>
   <div>
-    <Chart :columns="columns" />
+    <Chart
+      :columns="columns"
+      :show="loading"
+    />
     <ChartFilter
       @change="chartFilter = $event"
       :selectedDefault="chartFilter"
@@ -37,13 +40,14 @@ export default {
     CalendarInput,
   },
   props: {
-    columns: { type: Object }
+    columns: { type: Object },
   },
   data () {
     return {
       chartFilter: 1,
       beginDate: null,
       endDate: null,
+      loading: false,
     }
   },
 }
