@@ -17,7 +17,8 @@ import App from '@/components/App.vue';
 Dayjs.locale('ja')
 
 Vue.use(Vuetify);
-Vue.use(Dayjs);
+
+Vue.prototype.$dayjs = Dayjs()
 
 new Vue({
     vuetify: new Vuetify(),

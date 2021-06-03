@@ -1,8 +1,8 @@
 <template>
   <div>
-    <template v-if="view">
+    <template v-if="show">
       <vue-c3
-        :handler="handler"
+        :handler="handlerData"
       />
     </template>
     <template v-else>
@@ -25,16 +25,12 @@ export default {
   },
   props: {
     columns: {type: Object },
-    show: {type: Boolean, default: false},
   },
   data () {
     return {
-      handler: new Vue(),
-      view: false,
+      handlerData: new Vue(),
+      show: true,
     }
-  },
-  mounted () {
-    this.setOptions()
   },
   watch: {
     columns: {
@@ -42,7 +38,7 @@ export default {
         this.setOptions(v)
       },
       deep: true,
-    }
+    },
   },
   methods: {
     setOptions(v = null) {
@@ -83,7 +79,7 @@ export default {
         data.muList,
       ];
 
-      this.handler.$emit('init', options)
+      this.handlerData.$emit('init', options)
     }
   }
 }

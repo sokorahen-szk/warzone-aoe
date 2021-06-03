@@ -2,7 +2,6 @@
   <div>
     <Chart
       :columns="columns"
-      :show="loading"
     />
     <ChartFilter
       @change="chartFilter = $event"
@@ -42,13 +41,28 @@ export default {
   props: {
     columns: { type: Object },
   },
+  watch: {
+    chartFilter() { this.filters() },
+    beginDate() { this.filters() },
+    endDate() { this.filters() },
+  },
   data () {
     return {
       chartFilter: 1,
       beginDate: null,
       endDate: null,
-      loading: false,
     }
   },
+  methods: {
+    filters() {
+      return this.$emit('filters', {
+        option: this.chartFilter,
+        date: {
+          begin_date: this.beginDate,
+          end_date: this.endDate,
+        }
+      })
+    }
+  }
 }
 </script>

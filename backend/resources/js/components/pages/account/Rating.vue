@@ -8,7 +8,10 @@
     </template>
     <template slot="container">
       <v-container>
-        <PlayerRateChart :columns="columns" />
+        <PlayerRateChart
+          :columns="columns"
+          @filters="updateFilter"
+        />
       </v-container>
     </template>
   </CommonWithRightColumnTemplate>
@@ -42,10 +45,27 @@ export default {
   methods: {
     ...mapActions('accountStore', ['raiting']),
     ...mapGetters('accountStore', ['getRaiting']),
+    updateFilter(filter) {
+      let params = {}
+      let date = this.$dayjs
+
+      switch(filter.option) {
+        case 0:
+          params = Object.assign(params, filter.date)
+          break
+        case 1:
+          params = {begin_date: date.startOf('month').format('YYYY-MM-DD')}
+        case 2:
+          params = {begin_date: date.subtract(1, 'month').startOf('month').format('YYYY-MM-DD')}
+          break
+      }
+      console.log(date)
+      console.log(params)
+      this.raiting(params);
+    }
   },
   mounted() {
-    // TODO: ここに今日の日付とか？
-    this.raiting({begin_date: "2021-05-01"});
+    this.raiting({begin_date: this.$dayjs.format('YYYY-MM-DD')});
 
     this.$store.subscribe((mutation) => {
       if (mutation.type === 'accountStore/setRaiting') {
