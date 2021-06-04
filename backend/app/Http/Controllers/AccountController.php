@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Account\AccountRegistrationRequest;
 use App\Http\Requests\Account\AccountUpdateAvatorRequest;
 use App\Http\Requests\Account\AccountProfileEditRequest;
+use App\Http\Requests\Account\AccountRaitingRequest;
 
 use Package\Usecase\Account\GetInfo\AccountGetInfoCommand;
 use Package\Usecase\Account\GetInfo\AccountGetInfoServiceInterface;
@@ -20,6 +21,8 @@ use Package\Usecase\Account\ChangeProfile\AccountChangeProfileServiceInterface;
 use Package\Usecase\Account\ChangeProfile\AccountChangeProfileCommand;
 use Package\Usecase\Account\Withdrawal\AccountWithdrawalServiceInterface;
 use Package\Usecase\Account\Withdrawal\AccountWithdrawalCommand;
+use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeServiceInterface;
+use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeCommand;
 use Exception;
 
 class AccountController extends Controller
@@ -138,5 +141,25 @@ class AccountController extends Controller
         $result = $interactor->handle($command);
 
         return $this->validResponse($result, '退会処理が完了しました。');
+    }
+
+    /**
+     * 個人レーティング
+     *
+     * @param GameRecordListByDateRangeServiceInterface $interactor
+     * @param AccountRaitingRequest $request
+     * @return json(...)
+     */
+    public function raiting(GameRecordListByDateRangeServiceInterface $interactor, AccountRaitingRequest $request)
+    {
+        $command = new GameRecordListByDateRangeCommand(
+            \Auth::user()->id,
+            $request->begin_date,
+            $request->input('end_date', null)
+        );
+
+        $result = $interactor->handle($command);
+
+        return $this->validResponse($result, '個人レーティングを取得しました。');
     }
 }

@@ -15,8 +15,9 @@ use Package\Domain\User\ValueObject\Player\Win;
 use Package\Domain\User\ValueObject\Player\Defeat;
 use Package\Domain\User\ValueObject\Player\Games;
 use Package\Domain\User\ValueObject\Player\GamePackages;
-use Package\Domain\User\ValueObject\Player\Datetime;
 use Package\Domain\User\ValueObject\Player\Enabled;
+
+use Package\Domain\System\ValueObject\Datetime;
 
 class Player extends Resource {
   protected $playerId;
@@ -33,10 +34,10 @@ class Player extends Resource {
   protected $joinedAt;
   protected $lastGameAt;
   protected $enabled;
+
   public function __construct($data) {
     parent::__construct($data);
   }
-
 
   /**
    * @return PlayerId|null
@@ -186,5 +187,4 @@ class Player extends Resource {
   {
     return $this->getGameWinningPercentage() . '%';
   }
-
 }

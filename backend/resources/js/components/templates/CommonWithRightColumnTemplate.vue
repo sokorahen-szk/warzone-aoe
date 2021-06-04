@@ -2,10 +2,10 @@
   <v-container :class="{'pa-0 ma-0': device === 'sp'}">
     <slot name="header"></slot>
     <v-row no-gutters>
-      <v-col cols="12" sm="12" md="5" lg="4" xl="3" v-if="device != 'sp'">
+      <v-col cols="12" sm="12" md="5" lg="4" xl="3" v-if="device != 'sp'" v-show="!zoom">
         <slot name="right"></slot>
       </v-col>
-      <v-col cols="12" sm="12" md="7" lg="8" xl="9">
+      <v-col cols="12" sm="12" :md="zoom ? 12 : 7" :lg="zoom ? 12 : 8" :xl="zoom ? 12 : 9">
         <v-container>
           <v-card
             class="pa-3"
@@ -27,10 +27,10 @@ export default {
     color: {type: String, default: 'grey lighten-4'},
     outlined: {type: Boolean, default: false},
     device: {type: String},
+    zoom: {type: Boolean, default: false},
   },
   data() {
     return {
-      //
     }
   }
 }

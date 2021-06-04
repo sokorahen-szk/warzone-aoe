@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Package\Domain\Game\ValueObject;
+namespace Package\Domain\User\ValueObject\PlayerMemory;
 
-class Id {
+class PlayerMemoryId {
   private $value;
 
   public function __construct($value)
@@ -14,4 +14,5 @@ class Id {
   {
     return $this->value;
   }
+
 }

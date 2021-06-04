@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Package\Domain\User\ValueObject\Player;
+namespace Package\Domain\System\ValueObject;
 
 use Carbon\Carbon;
 
@@ -24,5 +24,10 @@ class Datetime {
   public function getDatetime(): ?string
   {
     return $this->value ? $this->value->format('Y-m-d H:i:s') : null;
+  }
+
+  public function getDate(): ?string
+  {
+    return $this->value ? $this->value->format('Y-m-d') : null;
   }
 }

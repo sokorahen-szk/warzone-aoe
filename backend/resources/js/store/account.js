@@ -3,6 +3,7 @@ import { excludeNullParams } from '@/services/api_helper';
 
 const state = {
   user: userTemplate,
+  raiting: [],
 }
 const getters ={
   getProfile: (state) => {
@@ -10,11 +11,18 @@ const getters ={
   },
   getUserId: (state) => {
     return state.user.id
+  },
+  getRaiting: (state) => {
+    return state.raiting
   }
 }
 const mutations = {
   setProfile (state, val) {
     state.user = Object.assign(state.user, val.$user)
+  },
+
+  setRaiting (state, val) {
+    state.raiting = val.$gameRecords
   },
 
   reset( state ) {
@@ -94,6 +102,20 @@ const actions = {
           dispatch("authStore/stateReset", null , {root: true})
           commit('reset')
 
+          resolve(res.data.messages)
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
+    })
+  },
+
+  raiting ({ commit }, payload) {
+    return new Promise( (resolve, reject) => {
+      axios.get('/api/account/raiting', { params: excludeNullParams(payload) }).then( (res) => {
+        if(res.data && res.data.isSuccess) {
+
+          commit('setRaiting', {$gameRecords: res.data.body.gameRecords})
           resolve(res.data.messages)
         } else {
           reject(res.data.errorMessages)

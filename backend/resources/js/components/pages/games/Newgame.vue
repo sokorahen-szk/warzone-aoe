@@ -103,8 +103,7 @@ import Button from '@/components/atoms/Button'
 import { playerListTemplate } from '@/config/player'
 import { gamePackageTemplate, gameMapTemplate } from '@/config/game'
 import { mapGetters, mapActions } from 'vuex'
-import { selectParser } from '@/services/helper'
-import { addStyleParser } from '@/services/helper'
+import { selectParser, addStyleParser } from '@/services/helper'
 export default {
   name: 'Newgame',
   components: {

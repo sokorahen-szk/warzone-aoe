@@ -14,9 +14,9 @@ class GameMapData extends Data {
       $response[] = [
         'id'              => $source->getGameMapId()->getValue(),
         'gamePackageId'   => $source->getGamePackageId()->getValue(),
-        'name'            => $source->getGameMapName()->getValue(),
+        'name'            => $source->getName()->getValue(),
         'image'           => $source->getImage()->getValue(),
-        'description'     => $source->getGamePackageDescription()->getValue(),
+        'description'     => $source->getDescription()->getValue(),
       ];
     }
 

@@ -97,6 +97,12 @@ Route::group(['middleware' => 'auth:api'], function () {
      * POST /api/account/withdrawal
      */
     Route::post('withdrawal', [AccountController::class, 'withdrawal'])->name('account.withdrawal');
+
+    /**
+     * 個人レーティング
+     * GET /api/account/raiting
+     */
+    Route::get('raiting', [AccountController::class, 'raiting'])->name('account.raiting');
   });
 
   Route::prefix('admin')->group(function() {

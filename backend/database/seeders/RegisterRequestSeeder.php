@@ -19,7 +19,7 @@ class RegisterRequestSeeder extends Seeder
         SeederHelper::truncate('register_requests');
         $faker = FakerFactory::create();
 
-        for ($i = 1; $i <= 20; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             RegisterRequestModel::create([
                 'player_id' => $i,
                 'user_id'   => mt_rand(1, 5),
