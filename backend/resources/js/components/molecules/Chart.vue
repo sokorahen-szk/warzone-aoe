@@ -50,7 +50,7 @@ export default {
               date: ['rating', 'mu'],
           },
           types: {
-              mu: 'bar',
+              rating: 'area',
           },
           columns: [
             ['date'],

@@ -2,6 +2,7 @@
   <CommonWithRightColumnTemplate
     outlined
     :device="getDeviceType"
+    :zoom="zoom"
   >
     <template slot="right">
       <AccountRightMenu />
@@ -37,6 +38,7 @@ export default {
         rateList: [],
         rankList: [],
       },
+      zoom: false,
     }
   },
   computed: {
@@ -55,12 +57,29 @@ export default {
           break
         case 1:
           params = {begin_date: date.startOf('month').format('YYYY-MM-DD')}
+          break
         case 2:
-          params = {begin_date: date.subtract(1, 'month').startOf('month').format('YYYY-MM-DD')}
+          params = {
+            begin_date: date.subtract(1, 'month').startOf('month').format('YYYY-MM-DD'),
+            end_date: date.subtract(1, 'month').endOf('month').format('YYYY-MM-DD'),
+          }
+          break
+        case 3:
+          params = {
+            begin_date: date.startOf('year').format('YYYY-MM-DD'),
+            end_date: date.endOf('year').format('YYYY-MM-DD')
+          }
+          break
+        case 4:
+          params = {
+            begin_date: date.subtract(1, 'year').startOf('year').format('YYYY-MM-DD'),
+            end_date: date.subtract(1, 'year').endOf('year').format('YYYY-MM-DD')
+          }
           break
       }
-      console.log(date)
-      console.log(params)
+      console.log(filter)
+      this.zoom = filter.zoom
+
       this.raiting(params);
     }
   },

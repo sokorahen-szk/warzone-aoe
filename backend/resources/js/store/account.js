@@ -22,7 +22,7 @@ const mutations = {
   },
 
   setRaiting (state, val) {
-    state.raiting = Object.assign(state.raiting, val.$gameRecords)
+    state.raiting = val.$gameRecords
   },
 
   reset( state ) {

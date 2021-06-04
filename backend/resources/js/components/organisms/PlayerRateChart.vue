@@ -3,10 +3,21 @@
     <Chart
       :columns="columns"
     />
-    <ChartFilter
-      @change="chartFilter = $event"
-      :selectedDefault="chartFilter"
-    />
+    <v-row>
+      <v-col cols="8">
+        <ChartFilter
+          @change="chartFilter = $event"
+          :selectedDefault="chartFilter"
+        />
+      </v-col>
+      <v-col cols="4" class="text-right">
+         <Button
+          :label="zoom ? '縮小' : '拡大'"
+          text
+          @click="zoom = !zoom"
+        />
+      </v-col>
+    </v-row>
     <v-row no-gutters>
       <v-col cols="12" sm="6" md="6" lg="6">
         <CalendarInput
@@ -30,6 +41,7 @@
 import Chart from '@/components/molecules/Chart'
 import ChartFilter from '@/components/molecules/ChartFilter'
 import CalendarInput from '@/components/molecules/CalendarInput'
+import Button from '@/components/atoms/Button'
 
 export default {
   name: 'PlayerRateChart',
@@ -37,6 +49,7 @@ export default {
     Chart,
     ChartFilter,
     CalendarInput,
+    Button,
   },
   props: {
     columns: { type: Object },
@@ -45,12 +58,14 @@ export default {
     chartFilter() { this.filters() },
     beginDate() { this.filters() },
     endDate() { this.filters() },
+    zoom() { this.filters() },
   },
   data () {
     return {
       chartFilter: 1,
       beginDate: null,
       endDate: null,
+      zoom: false,
     }
   },
   methods: {
@@ -60,7 +75,8 @@ export default {
         date: {
           begin_date: this.beginDate,
           end_date: this.endDate,
-        }
+        },
+        zoom: this.zoom,
       })
     }
   }
