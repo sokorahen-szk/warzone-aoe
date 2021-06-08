@@ -77,9 +77,8 @@ export default {
           }
           break
       }
-      console.log(filter)
-      this.zoom = filter.zoom
 
+      this.zoom = filter.zoom
       this.raiting(params);
     }
   },

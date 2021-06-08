@@ -14,6 +14,7 @@ use Package\Domain\User\ValueObject\Player\MaxRate;
 use Package\Domain\User\ValueObject\Player\Win;
 use Package\Domain\User\ValueObject\Player\Defeat;
 use Package\Domain\User\ValueObject\Player\Games;
+use Package\Domain\User\ValueObject\Player\Streak;
 use Package\Domain\User\ValueObject\Player\GamePackages;
 use Package\Domain\User\ValueObject\Player\Enabled;
 
@@ -30,6 +31,7 @@ class Player extends Resource {
   protected $win;
   protected $defeat;
   protected $games;
+  protected $streak;
   protected $gamePackages;
   protected $joinedAt;
   protected $lastGameAt;
@@ -117,6 +119,14 @@ class Player extends Resource {
   public function getGames(): ?Games
   {
     return $this->games;
+  }
+
+  /**
+   * @return Streak|null
+   */
+  public function getStreak(): ?Streak
+  {
+    return $this->streak;
   }
 
   /**

@@ -13,6 +13,7 @@ use Package\Domain\User\ValueObject\Player\MaxRate;
 use Package\Domain\User\ValueObject\Player\Win;
 use Package\Domain\User\ValueObject\Player\Defeat;
 use Package\Domain\User\ValueObject\Player\Games;
+use Package\Domain\User\ValueObject\Player\Streak;
 use Package\Domain\User\ValueObject\Player\GamePackages;
 use Package\Domain\User\ValueObject\Player\Enabled;
 use Package\Domain\User\Entity\Player;
@@ -46,6 +47,7 @@ class PlayerRepository implements PlayerRepositoryInterface {
         'win'           => new Win($player->win),
         'defeat'        => new Defeat($player->defeat),
         'games'         => new Games($player->games),
+        'streak'        => new Streak($player->streak),
         'gamePackages'  => new GamePackages($player->game_packages),
         'joinedAt'      => new Datetime($player->joined_at),
         'lastGameAt'    => new Datetime($player->last_game_at),
@@ -95,6 +97,7 @@ class PlayerRepository implements PlayerRepositoryInterface {
       'win'           => new Win($player->win),
       'defeat'        => new Defeat($player->defeat),
       'games'         => new Games($player->games),
+      'streak'        => new Streak($player->streak),
       'gamePackages'  => new GamePackages($player->game_packages),
       'joinedAt'      => new Datetime($player->joined_at),
       'lastGameAt'    => new Datetime($player->last_game_at),

@@ -24,6 +24,7 @@ class CreatePlayersTable extends Migration
             $table->integer('win')->default(0)->comment('勝利数');
             $table->integer('defeat')->default(0)->comment('敗北数');
             $table->integer('games')->default(0)->comment('試合数');
+            $table->integer('streak')->default(0)->comment('連勝敗');
             $table->string('game_packages')->nullable()->comment('ゲーム種別リスト'); //ゲーム種別IDはカンマ区切りで登録される。複数のPackageに所属する場合があるため。
             $table->dateTime('joined_at')->default(\DB::raw('CURRENT_TIMESTAMP'))->comment('参加日');
             $table->dateTime('last_game_at')->nullable()->comment('最終ゲーム日');

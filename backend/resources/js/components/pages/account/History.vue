@@ -8,7 +8,7 @@
     </template>
     <template slot="container">
       <v-container>
-        対戦履歴
+        <GameRecordTable />
       </v-container>
     </template>
   </CommonWithRightColumnTemplate>
@@ -18,12 +18,14 @@
 import { mapGetters } from 'vuex'
 import CommonWithRightColumnTemplate from '@/components/templates/CommonWithRightColumnTemplate'
 import AccountRightMenu from '@/components/organisms/AccountRightMenu'
+import GameRecordTable from '@/components/organisms/GameRecordTable'
 
 export default {
   name: 'AccountHistory',
   components: {
     CommonWithRightColumnTemplate,
     AccountRightMenu,
+    GameRecordTable,
   },
   computed: {
     ...mapGetters('breakpointStore', ['getDeviceType']),
