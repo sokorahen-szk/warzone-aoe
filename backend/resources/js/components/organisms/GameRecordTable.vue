@@ -39,6 +39,10 @@
 tbody > tr {
   cursor: pointer !important;
 }
+
+tbody > tr > td {
+  height: 50px !important;
+}
 </style>
 
 <script>
@@ -56,8 +60,14 @@ export default {
         {id: 2, game_package_id: "AoE2DE", winning_team: "チーム1", status: "ゲーム終了", started_at: "2020-01-01 00:00:00", finished_at: "2021-01-01 22:22:22"},
         {id: 3, game_package_id: "AoE2DE", winning_team: "チーム1", status: "ゲーム終了", started_at: "2020-01-01 00:00:00", finished_at: "2021-01-01 22:22:22"},
         {id: 4, game_package_id: "AoE2DE", winning_team: "チーム1", status: "ゲーム終了", started_at: "2020-01-01 00:00:00", finished_at: "2021-01-01 22:22:22"},
-      ]
+      ],
+      recordDetail: [],
     }
+  },
+  mounted() {
+    this.recordDetail = Object.assign([], this.records.map( (record) => {
+      return {id: record.id, view: false}
+    }))
   },
   methods: {
     detail(id) {
