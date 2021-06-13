@@ -62,6 +62,23 @@ services:
       app_net:
         ipv4_address: 172.26.0.5
 
+  # API (true skill)
+  api:
+    container_name: api
+    build:
+      context: ./docker/django
+      dockerfile: Dockerfile
+    tty: true
+    ports:
+        - 8000:8000
+    volumes:
+      - ../api/apps:/work
+    command: python3 manage.py runserver 0.0.0.0:8000
+    restart: always
+    networks:
+      app_net:
+        ipv4_address: 172.26.0.6
+
 volumes:
   db-store:
 
