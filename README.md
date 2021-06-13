@@ -51,7 +51,7 @@ $ cd /path/to/warzone-aoe/backend
 # nodeとnpmのバージョンを合わせて下さい。
 # npm -v
 # 6.10.2
-#$ node -v
+# node -v
 # v12.8.0
 
 npm i
