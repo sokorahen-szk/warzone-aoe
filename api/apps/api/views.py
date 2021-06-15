@@ -13,7 +13,7 @@ import sys
 import trueskill
 from apps.settings import MU,SIGMA
 
-# Create your views here. 
+# Create your views here.
 class Auth(APIView):
     authentication_classes = [Authentication, ]
 
@@ -32,7 +32,7 @@ class DefaultSkill(APIView):
         result = {
             'mu': rating.mu,
             'sigma': rating.sigma,
-            'rating_exposure' : env.expose(rating)    
+            'rating_exposure' : env.expose(rating)
         }
         return Response(result)
 
@@ -43,13 +43,12 @@ class CalcSkill(APIView):
     authentication_classes = [JWTAuthentication, ]
     permission_classes = [IsAuthenticated, ]
 
-    def post(self, request, *args, **kwargs):        
+    def post(self, request, *args, **kwargs):
         datas = json.loads(request.body)
 
         result = copy.deepcopy(datas)
         env = create_trueskill()
-        
-        
+
         winning_team = datas['winning_team']
         ranks = None
         if winning_team == 1:
@@ -59,37 +58,35 @@ class CalcSkill(APIView):
         else:
           #引き分け時はAPI呼び出しされない想定だが、一応考慮
           ranks = [0, 0]
-          
 
         teams_rate = []
         for t in datas['teams']:
             team_rate = []
             for p in t:
-                rating = env.create_rating(mu=p['mu'], sigma=p['sigma'])            
+                rating = env.create_rating(mu=p['mu'], sigma=p['sigma'])
                 team_rate.append(rating)
             teams_rate.append(team_rate)
-        
+
         #trueskill計算
         new_teams_rate = env.rate(teams_rate, ranks=ranks)
         #品質を計算
         quality = env.quality(teams_rate)
-        
+
         #勝率を計算
         lt1 = teams_rate[0]
         lt2 = teams_rate[1]
         wp = win_probability(tuple(lt1), tuple(lt2), env=env)
-        
 
         #計算結果を反映
-        for ntsr,t in zip(new_teams_rate, result['teams']):        
-            for ntr,p in zip(ntsr, t):            
+        for ntsr,t in zip(new_teams_rate, result['teams']):
+            for ntr,p in zip(ntsr, t):
                 p['mu'] = ntr.mu
                 p['sigma'] = ntr.sigma
-                p['rating_exposure'] =  env.expose(ntr)            
-        
+                p['rating_exposure'] =  env.expose(ntr)
+
         result['quality'] = quality
         result['win_probability'] = wp
-        
+
         return Response(result)
 
 # チーム分けパターンを取得
@@ -107,14 +104,13 @@ class TeamDivisionPattern(APIView):
         env = create_trueskill()
         #trueskillのリストを作成
         ratings = [env.create_rating(mu=p['mu'], sigma=p['sigma']) for p in players]
-            
 
         indexList = range(len(players))
-        
+
         #奇数メンバーの場合のチーム分けの考慮なし
         c = itertools.combinations(indexList, math.ceil(len(indexList)/2))
 
-        patternList = [] 
+        patternList = []
         for ptn in c:
             #第１プレイヤーをピックした組み合わせのみ残す
             if ptn[0] == 0:
@@ -123,15 +119,14 @@ class TeamDivisionPattern(APIView):
                 for index in indexList:
                     if index not in index_team1:
                         index_team2.append(index)
-                
+
                 team1_rate = [ratings[i] for i in index_team1]
                 team2_rate = [ratings[i] for i in index_team2]
-                
+
                 quality = env.quality([team1_rate,team2_rate])
-                
 
                 pattern = {}
-                pattern['quality'] = quality            
+                pattern['quality'] = quality
                 pattern['team1'] = [players[i] for i in index_team1]
                 pattern['team2'] = [players[i] for i in index_team2]
                 pattern['sum_mu1'] = sum([players[i]['mu'] for i in index_team1])
@@ -140,7 +135,7 @@ class TeamDivisionPattern(APIView):
 
         #品質順（降順）にソート
         patternList_sorted = sorted(patternList, key=lambda x:x['quality'],reverse=True)
-        
+
         return Response(patternList_sorted)
 
 # データコンバート
@@ -150,7 +145,7 @@ class DataConversion(APIView):
     authentication_classes = [JWTAuthentication, ]
     permission_classes = [IsAuthenticated, ]
 
-    def post(self, request, *args, **kwargs):        
+    def post(self, request, *args, **kwargs):
         datas = json.loads(request.body)
 
         # #試合履歴
@@ -162,8 +157,8 @@ class DataConversion(APIView):
         env = create_trueskill()
 
         for match in match_history:
-            convert_match(players,env,match,match_history_with_trueskill)  
-        
+            convert_match(players,env,match,match_history_with_trueskill)
+
         #プレイヤーをID順にソート
         players = collections.OrderedDict(
             sorted(players.items(), key=lambda x: x[0])
@@ -174,10 +169,10 @@ class DataConversion(APIView):
         for id in players:
             player = players[id]
             newP = {}
-            newP['id'] = player['id']            
+            newP['id'] = player['id']
             newP['mu'] = player['rating'].mu
             newP['sigma'] = player['rating'].sigma
-            newP['rating_exposure'] = env.expose(player['rating'])   
+            newP['rating_exposure'] = env.expose(player['rating'])
             resutl_players[newP['id']] = newP
 
 
@@ -192,10 +187,10 @@ class DataConversion(APIView):
 
 
 def create_trueskill():
- 
+
     mu = MU
     sigma = SIGMA
-    
+
     beta = sigma / 2.
     tau = sigma / 100.
     # draw_probability = 0.1
@@ -219,23 +214,23 @@ def win_probability(team1, team2, env=None):
 
 def create_match_with_trueskill(match,participant,env,isAfter):
     mtc = {}
-    mtc['id'] = match['id']    
+    mtc['id'] = match['id']
     mtc['started_at'] = match['started_at']
     if isAfter :
       mtc['isAfter'] = '1:試合後'
     else :
       mtc['isAfter'] = '0:試合前'
     mtc['win_team'] = match['win_team']
-    
+
     for key in participant:
       p = participant[key]
       if p is not None :
-        mtc[key +'_id'] = p['id']        
+        mtc[key +'_id'] = p['id']
         mtc[key +'_mu'] = p['rating'].mu
         mtc[key +'_sigma'] = p['rating'].sigma
-        mtc[key +'_rating_exposure'] = env.expose(p['rating'])        
+        mtc[key +'_rating_exposure'] = env.expose(p['rating'])
       else :
-        mtc[key +'_id'] = None        
+        mtc[key +'_id'] = None
         mtc[key +'_mu'] = None
         mtc[key +'_sigma'] = None
         mtc[key +'_rating_exposure'] = None
@@ -246,26 +241,26 @@ def create_match_with_trueskill(match,participant,env,isAfter):
 def get_or_create_player(players,id,env):
 
     if id < 0:
-      # print('idがマイナス　id：'+str(id)) 
+      # print('idがマイナス　id：'+str(id))
       return None
 
-    if(id in players):      
+    if(id in players):
       return players[id]
     else:
       player={}
-      player['id'] = id      
+      player['id'] = id
       player['rating'] = env.create_rating()
-      players[id]=player      
+      players[id]=player
       return players[id]
-      
+
 def convert_match(players,env,match,match_history_with_trueskill):
-    
-    #該当試合の参加プレイヤー    
+
+    #該当試合の参加プレイヤー
     participant={}
     for i in range(2):
       for j in range(4):
-        key = 't'+ str(i+1) + 'm' + str(j+1)        
-        participant[key] = get_or_create_player(players,match[key +'_id'],env)    
+        key = 't'+ str(i+1) + 'm' + str(j+1)
+        participant[key] = get_or_create_player(players,match[key +'_id'],env)
 
 
     #trueskill用のチームを作成
@@ -304,7 +299,7 @@ def convert_match(players,env,match,match_history_with_trueskill):
           p['rating'] = newt1[key]
         else :
           p['rating'] = newt2[key]
-    
+
     #trueskill版の試合データ(試合後)
     match_trueskill = create_match_with_trueskill(match,participant,env,True)
 
