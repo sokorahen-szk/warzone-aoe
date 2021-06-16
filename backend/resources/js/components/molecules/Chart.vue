@@ -25,6 +25,7 @@ export default {
   },
   props: {
     columns: {type: Object },
+    numberLabel: {type: Boolean, default: false},
   },
   data () {
     return {
@@ -57,7 +58,7 @@ export default {
             ['rating'],
             ['mu'],
           ],
-          labels: true,
+          labels: this.numberLabel,
         },
         axis: {
           x: {
