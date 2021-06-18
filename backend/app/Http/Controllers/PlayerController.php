@@ -18,4 +18,12 @@ class PlayerController extends Controller
         $result = $interactor->handle();
         return $this->validResponse($result->getVars(), 'プレイヤーの一覧を取得しました。');
     }
+
+    /**
+     * プレイヤーのレーティングを取得する
+     */
+    public function raiting()
+    {
+        return "A";
+    }
 }
