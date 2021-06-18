@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 use Routes\Api\Unauthenticated\UnauthenticatedRoutes;
 use Routes\Api\Authentication\AuthenticationRoutes;
 
@@ -15,7 +14,6 @@ use Routes\Api\Authentication\AuthenticationRoutes;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 
 /**
  * 未ログインユーザ向けAPI
