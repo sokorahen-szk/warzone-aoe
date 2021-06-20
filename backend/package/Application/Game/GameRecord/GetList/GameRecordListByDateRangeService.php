@@ -7,6 +7,7 @@ use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeCommand;
 use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeData;
 use Package\Domain\Game\Repository\GameRecordRepositoryInterface;
 use Package\Domain\User\Repository\UserRepositoryInterface;
+use Package\Domain\Game\ValueObject\GameRecord\GameRecordMuEnabled;
 
 use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\System\ValueObject\Date;
@@ -30,7 +31,9 @@ class GameRecordListByDateRangeService implements GameRecordListByDateRangeServi
         $user = $this->userRepository->findUserById(new UserId($command->userId));
         $endDate = $command->endDate ? new Date($command->endDate) : new Date(Carbon::parse($command->beginDate)->endOfMonth());
 
+        $gameRecordMuEnabled = new GameRecordMuEnabled($command->muEnabled);
+
         $gameRecords = $this->gameRecordRepository->listByDateRange($user, new Date($command->beginDate), $endDate);
-        return new GameRecordListByDateRangeData($gameRecords);
+        return new GameRecordListByDateRangeData($gameRecords, $gameRecordMuEnabled);
     }
 }

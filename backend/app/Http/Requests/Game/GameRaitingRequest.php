@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Account;
+namespace App\Http\Requests\Game;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Traits\FailedValidationTrait;
 
-class AccountRaitingRequest extends FormRequest
+class GameRaitingRequest extends FormRequest
 {
     use FailedValidationTrait;
 

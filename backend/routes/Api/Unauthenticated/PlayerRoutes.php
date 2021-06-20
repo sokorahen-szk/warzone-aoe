@@ -3,7 +3,7 @@
 namespace Routes\Api\Unauthenticated;
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AccountController;
+use App\Http\Controllers\PlayerController;
 
 class PlayerRoutes {
 	public static function routes()
@@ -17,11 +17,11 @@ class PlayerRoutes {
 
 			/**
 			 * プレイヤーのレート情報を取得
-			 * GET /api/player/rating/{id}
+			 * GET /api/player/rating/{userId}
 			 */
-			Route::get('raiting/{id}', [PlayerController::class, 'raiting'])
+			Route::get('raiting/{userId}', [PlayerController::class, 'raiting'])
 			  ->name('player.rating')
-			  ->where('id', '^[0-9]+$');
+			  ->where('userId', '^[0-9]+$');
 		});
 	}
 }

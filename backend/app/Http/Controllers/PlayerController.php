@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Traits\ApiResponser;
 use Package\Usecase\Player\GetList\PlayerGetListServiceInterface;
+use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeServiceInterface;
+use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeCommand;
+use App\Http\Requests\Game\GameRaitingRequest;
+use Package\Domain\Game\ValueObject\GameRecord\GameRecordMuEnabled;
 
 class PlayerController extends Controller
 {
@@ -12,6 +16,7 @@ class PlayerController extends Controller
     /**
      * プレイヤー情報取得する
      * @param PlayerGetListServiceInterface $interactor
+     * @return json(...)
      */
     public function list(PlayerGetListServiceInterface $interactor)
     {
@@ -21,9 +26,22 @@ class PlayerController extends Controller
 
     /**
      * プレイヤーのレーティングを取得する
+     * @param GameRecordListByDateRangeServiceInterface $interactor
+     * @param GameRaitingRequest $request
+     * @param int $userId
+     * @return json(...)
      */
-    public function raiting()
+    public function raiting(GameRecordListByDateRangeServiceInterface $interactor, GameRaitingRequest $request, $userId)
     {
-        return "A";
+        $command = new GameRecordListByDateRangeCommand(
+            $userId,
+            GameRecordMuEnabled::RAITING_MU_DISABLED,
+            $request->begin_date,
+            $request->input('end_date', null)
+        );
+
+        $result = $interactor->handle($command);
+
+        return $this->validResponse($result, 'プレイヤーレーティングを取得しました。');
     }
 }
