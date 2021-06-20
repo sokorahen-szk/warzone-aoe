@@ -77,8 +77,11 @@ export default {
       options.data.columns = [
         data.dateList,
         data.rateList,
-        data.muList,
       ];
+
+      if (data.muList) {
+        options.data.columns.push(data.muList)
+      }
 
       this.handlerData.$emit('init', options)
     }

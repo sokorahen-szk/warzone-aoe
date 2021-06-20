@@ -57,7 +57,7 @@
             :tabs="tabs"
             @change="selectTab = $event"
           />
-          <div :is="component"></div>
+          <div :is="component" v-bind="props"></div>
         </v-col>
       </v-row>
     </template>
@@ -102,6 +102,10 @@ export default {
         {label: '対戦履歴', icon: 'mdi-menu'},
         {label: 'レート遷移', icon: 'mdi-menu'},
       ],
+
+      props: {
+        id: this.$route.params['id'],
+      },
 
       components: [
         'IndexBasicPlayerProfile',

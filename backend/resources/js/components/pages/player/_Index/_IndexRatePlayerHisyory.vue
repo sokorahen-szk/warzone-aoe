@@ -17,40 +17,42 @@ export default {
   components: {
     PlayerRateChart
   },
+  props: {
+    id: {type: [Number, String]}
+  },
   data() {
     return {
       columns: {
         dateList: [],
         rateList: [],
-        rankList: [],
       },
     }
   },
   methods: {
-    ...mapActions('accountStore', ['raiting']),
-    ...mapGetters('accountStore', ['getRaiting']),
+    ...mapActions('playerStore', ['playerRaitingList']),
+    ...mapGetters('playerStore', ['getPlayerRaitings']),
     updateFilter(filter) {
       let params = filterScopeDateFilter(filter, this.$dayjs)
-      this.raiting(params);
+      this.playerRaitingList({id: this.id, options: params});
     }
   },
   mounted() {
-    this.raiting({begin_date: this.$dayjs.format('YYYY-MM-DD')});
+    this.playerRaitingList({id: this.id, options: {begin_date: this.$dayjs.format('YYYY-MM-DD')}});
 
     this.$store.subscribe((mutation) => {
-      if (mutation.type === 'accountStore/setRaiting') {
+      if (mutation.type === 'playerStore/setPlayerRaitings') {
         this.$nextTick( () => {
-          const raiting = this.getRaiting()
+          const raiting = this.getPlayerRaitings()
 
           let dateList = ["date"]
-          let muList = ["mu"]
+          let rateList = ["rating"]
 
           raiting.forEach( (item) => {
             dateList.push(item.startedAt)
-            muList.push(item.mu)
+            rateList.push(item.rate)
           })
           this.columns.dateList = Object.assign([], dateList)
-          this.columns.muList = Object.assign([], muList)
+          this.columns.rateList = Object.assign([], rateList)
         })
       }
     })
