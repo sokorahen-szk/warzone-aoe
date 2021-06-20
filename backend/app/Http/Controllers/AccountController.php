@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Account\AccountRegistrationRequest;
 use App\Http\Requests\Account\AccountUpdateAvatorRequest;
 use App\Http\Requests\Account\AccountProfileEditRequest;
-use App\Http\Requests\Account\AccountRaitingRequest;
+use App\Http\Requests\Game\GameRaitingRequest;
 
+use Package\Domain\Game\ValueObject\GameRecord\GameRecordMuEnabled;
 use Package\Usecase\Account\GetInfo\AccountGetInfoCommand;
 use Package\Usecase\Account\GetInfo\AccountGetInfoServiceInterface;
 use Package\Usecase\Account\Register\AccountRegisterCommand;
@@ -147,13 +148,14 @@ class AccountController extends Controller
      * 個人レーティング
      *
      * @param GameRecordListByDateRangeServiceInterface $interactor
-     * @param AccountRaitingRequest $request
+     * @param GameRaitingRequest $request
      * @return json(...)
      */
-    public function raiting(GameRecordListByDateRangeServiceInterface $interactor, AccountRaitingRequest $request)
+    public function raiting(GameRecordListByDateRangeServiceInterface $interactor, GameRaitingRequest $request)
     {
         $command = new GameRecordListByDateRangeCommand(
             \Auth::user()->id,
+            GameRecordMuEnabled::RAITING_MU_ENABLED,
             $request->begin_date,
             $request->input('end_date', null)
         );

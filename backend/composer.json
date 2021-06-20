@@ -36,7 +36,8 @@
             "App\\": "app/",
             "Package\\": "package/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeders/",
+            "Routes\\": "routes/"
         }
     },
     "autoload-dev": {

@@ -25,6 +25,7 @@ export default {
   },
   props: {
     columns: {type: Object },
+    numberLabel: {type: Boolean, default: false},
   },
   data () {
     return {
@@ -57,7 +58,7 @@ export default {
             ['rating'],
             ['mu'],
           ],
-          labels: true,
+          labels: this.numberLabel,
         },
         axis: {
           x: {
@@ -76,8 +77,11 @@ export default {
       options.data.columns = [
         data.dateList,
         data.rateList,
-        data.muList,
       ];
+
+      if (data.muList) {
+        options.data.columns.push(data.muList)
+      }
 
       this.handlerData.$emit('init', options)
     }
