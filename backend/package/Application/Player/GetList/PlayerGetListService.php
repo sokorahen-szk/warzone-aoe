@@ -7,7 +7,7 @@ use Package\Domain\User\Repository\PlayerRepositoryInterface;
 use Package\Usecase\Player\GetList\PlayerData;
 
 class PlayerGetListService implements PlayerGetListServiceInterface {
-  private $userRepository;
+  private $playerRepository;
 
   public function __construct(PlayerRepositoryInterface $playerRepository)
   {

@@ -6,6 +6,9 @@ use App\Traits\ApiResponser;
 use Package\Usecase\Player\GetList\PlayerGetListServiceInterface;
 use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeServiceInterface;
 use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeCommand;
+use Package\Usecase\Player\GetProfile\PlayerGetProfileServiceInterface;
+use Package\Usecase\Player\GetProfile\PlayerGetProfileCommand;
+
 use App\Http\Requests\Game\GameRaitingRequest;
 use Package\Domain\Game\ValueObject\GameRecord\GameRecordMuEnabled;
 
@@ -43,5 +46,22 @@ class PlayerController extends Controller
         $result = $interactor->handle($command);
 
         return $this->validResponse($result, 'プレイヤーレーティングを取得しました。');
+    }
+
+    /**
+     * プレイヤー基本情報取得
+     * @param PlayerGetProfileServiceInterface $interactor
+     * @param int $userId
+     * @return json(...)
+     */
+    public function profile(PlayerGetProfileServiceInterface $interactor, $userId)
+    {
+        $command = new PlayerGetProfileCommand(
+            $userId
+        );
+
+        $result = $interactor->handle($command);
+
+        return $this->validResponse($result, 'プレイヤー基本情報を取得しました。');
     }
 }
