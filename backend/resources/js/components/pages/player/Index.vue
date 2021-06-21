@@ -51,7 +51,7 @@
         <v-col cols="12" class="pt-4 pb-2">
           <GamePackageList
             :gamePackages="getPackageList"
-            :hasPackages="profile && profile.player.gamePackages"
+            :hasGamePackages="profile && profile.player.gamePackages"
           />
         </v-col>
         <v-col cols="12">
