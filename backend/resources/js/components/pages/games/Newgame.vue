@@ -125,8 +125,6 @@ export default {
       }
     })
 
-    this.packageList()
-    this.mapList()
   },
   computed: {
     ...mapGetters('playerStore', ['getPlayers']),
@@ -146,7 +144,6 @@ export default {
   },
   methods: {
     ...mapActions('playerStore', ['playerList']),
-    ...mapActions('gameStore', ['packageList', 'mapList']),
     updatePlayer(e) {
       if (!e) return;
       if (this.selectedPlayers.find( player => player.id == e.id )) return;

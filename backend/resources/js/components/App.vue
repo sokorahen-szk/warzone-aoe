@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import Header from '@/components/organisms/Header';
 import { headerConfig } from '@/config/global'
 import { userTemplate } from '@/config/user'
@@ -36,10 +36,15 @@ export default {
       }
     })
 
+    this.packageList()
+    this.mapList()
   },
   computed: {
-        ...mapGetters('accountStore', ['getProfile']),
-        ...mapGetters('authStore', ['isLogin']),
+    ...mapGetters('accountStore', ['getProfile']),
+    ...mapGetters('authStore', ['isLogin']),
+  },
+  methods: {
+    ...mapActions('gameStore', ['packageList', 'mapList']),
   },
 }
 </script>

@@ -3,6 +3,7 @@ import { excludeNullParams } from '@/services/api_helper';
 const state = {
   players: null,
   raiting: [],
+  playerProfile: null,
 }
 const getters ={
   getPlayers: (state) => {
@@ -10,6 +11,9 @@ const getters ={
   },
   getPlayerRaitings: (state) => {
     return state.raiting
+  },
+  getPlayerProfile: (state) => {
+    return state.playerProfile
   }
 }
 const mutations = {
@@ -18,6 +22,9 @@ const mutations = {
   },
   setPlayerRaitings (state, val) {
     state.raiting = val.$gameRecords
+  },
+  setPlayerProfile (state, val) {
+    state.playerProfile = val.$playerProfile
   },
 }
 const actions = {
@@ -41,6 +48,18 @@ const actions = {
       })
     })
   },
+  playerProfile ({ commit }, payload) {
+    return new Promise( (resolve, reject) => {
+      axios.get(`/api/player/profile/${payload.id}`).then( (res) => {
+        if(res.data && res.data.isSuccess) {
+          commit('setPlayerProfile', {$playerProfile: res.data.body})
+          resolve()
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
+    })
+  }
 }
 const playerStore = {
   namespaced: true,
