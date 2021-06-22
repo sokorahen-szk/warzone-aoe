@@ -45,6 +45,9 @@
                   初心者です。よろしくお願いします。
                 </v-card>
               </div>
+              <div>
+                登録日 {{ profile && toStringYYYYMM(profile.player.joinedAt) }}
+              </div>
             </v-col>
           </v-row>
         </v-col>
@@ -96,6 +99,7 @@ export default {
     this.$store.subscribe((mutation) => {
       if (mutation.type === 'playerStore/setPlayerProfile') {
         this.$set(this, 'profile', this.getPlayerProfile)
+        this.$set(this.props, 'profile', this.getPlayerProfile)
       }
     })
   },
@@ -112,6 +116,9 @@ export default {
     loadPlayerProfile() {
       this.playerProfile({id: this.playerId})
     },
+    toStringYYYYMM(date) {
+      return this.$dayjs(date).format('YYYY年MM月DD日')
+    }
   },
   data() {
     return {
@@ -126,6 +133,7 @@ export default {
 
       props: {
         id: this.$route.params['id'],
+        profile: null,
       },
 
       components: [

@@ -8,6 +8,8 @@ import '@mdi/font/css/materialdesignicons.css'
 
 import '@/bootstrap';
 
+import 'dayjs/locale/ja';
+
 import router from '@/router/index';
 import store from '@/store/index';
 
@@ -18,7 +20,7 @@ Dayjs.locale('ja')
 
 Vue.use(Vuetify);
 
-Vue.prototype.$dayjs = Dayjs()
+Vue.prototype.$dayjs = Dayjs
 
 new Vue({
     vuetify: new Vuetify(),
