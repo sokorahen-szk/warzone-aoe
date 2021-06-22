@@ -16,11 +16,19 @@ class PlayerRoutes {
 			Route::get('list', [PlayerController::class, 'list'])->name('player.list');
 
 			/**
-			 * プレイヤーのレート情報を取得
+			 * プレイヤーレート情報を取得
 			 * GET /api/player/rating/{userId}
 			 */
 			Route::get('raiting/{userId}', [PlayerController::class, 'raiting'])
 			  ->name('player.rating')
+			  ->where('userId', '^[0-9]+$');
+
+			/**
+			 * プレイヤー基本情報取得
+			 * GET /api/player/profile/{userId}
+			 */
+			Route::get('profile/{userId}', [PlayerController::class, 'profile'])
+			  ->name('player.profile')
 			  ->where('userId', '^[0-9]+$');
 		});
 	}

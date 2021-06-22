@@ -7,7 +7,7 @@
             <v-col cols="12" class="text-center">
               <Avator
                 size="200"
-                src="https://hayabusa.io/openrec-image/user/2188980/218897971.q95.w164.ttl604800.headercache0.v1586754759.png?format=png"
+                :src="profile && profile.avatorImage"
               />
             </v-col>
           </v-row>
@@ -19,19 +19,21 @@
                 :class="{
                   'text-center py-3': getDeviceType == 'sp',
                 }">
-                titan
+                {{ profile && profile.player.name }}
               </div>
               <div
                 :class="{
                   'text-center': getDeviceType == 'sp',
                 }">
                 <Icon
-                  href="https://yahoo.co.jp"
+                  :href="profile && profile.twitterUrl"
                   color="#29B6F6"
+                  v-show="profile && profile.twitterUrl"
                 >mdi-twitter</Icon>
                 <Icon
-                  href="https://yahoo.co.jp"
+                  :href="profile && profile.steamUrl"
                   color="#37474F"
+                  v-show="profile && profile.steamUrl"
                 >mdi-steam</Icon>
               </div>
               <div class="py-4">
@@ -43,13 +45,17 @@
                   初心者です。よろしくお願いします。
                 </v-card>
               </div>
+              <div>
+                登録日 {{ profile && toStringYYYYMM(profile.player.joinedAt) }}
+              </div>
             </v-col>
           </v-row>
         </v-col>
         <v-col cols="12" class="pt-4 pb-2">
-          <div>
-            <Label tag>AoE2HD</Label><Label tag>AoE2DE</Label><Label tag>AoE2</Label>
-          </div>
+          <GamePackageList
+            :gamePackages="getPackageList"
+            :hasGamePackages="profile && profile.player.gamePackages"
+          />
         </v-col>
         <v-col cols="12">
           <Tabs
@@ -70,10 +76,10 @@ import IndexBasicPlayerProfile from '@/components/pages/player/_Index/_IndexBasi
 import IndexWarsPlayerHistory from '@/components/pages/player/_Index/_IndexWarsPlayerHistory'
 import IndexRatePlayerHisyory from '@/components/pages/player/_Index/_IndexRatePlayerHisyory'
 import Avator from '@/components/atoms/Avator'
+import GamePackageList from '@/components/molecules/GamePackageList'
 import Icon from '@/components/atoms/Icon'
-import Label from '@/components/atoms/Label'
 import Tabs from '@/components/molecules/Tabs'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'PlayerIndex',
@@ -81,21 +87,43 @@ export default {
     CommonOneColumnTemplate,
     Avator,
     Icon,
-    Label,
     Tabs,
     IndexBasicPlayerProfile,
     IndexWarsPlayerHistory,
     IndexRatePlayerHisyory,
+    GamePackageList,
+  },
+  mounted() {
+    this.loadPlayerProfile();
+
+    this.$store.subscribe((mutation) => {
+      if (mutation.type === 'playerStore/setPlayerProfile') {
+        this.$set(this, 'profile', this.getPlayerProfile)
+        this.$set(this.props, 'profile', this.getPlayerProfile)
+      }
+    })
   },
   computed: {
     ...mapGetters('breakpointStore', ['getDeviceType']),
+    ...mapGetters('playerStore', ['getPlayerProfile']),
+    ...mapGetters('gameStore', ['getPackageList']),
     component: function(){
       return this.components[this.selectTab]
+    }
+  },
+  methods: {
+    ...mapActions('playerStore', ['playerProfile']),
+    loadPlayerProfile() {
+      this.playerProfile({id: this.playerId})
+    },
+    toStringYYYYMM(date) {
+      return this.$dayjs(date).format('YYYY年MM月DD日')
     }
   },
   data() {
     return {
       playerId: this.$route.params['id'],
+      profile: null,
       selectTab: 0,
       tabs: [
         {label: '基本情報', icon: 'mdi-account'},
@@ -105,6 +133,7 @@ export default {
 
       props: {
         id: this.$route.params['id'],
+        profile: null,
       },
 
       components: [

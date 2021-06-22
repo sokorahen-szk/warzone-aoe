@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <v-container>
     <PlayerRateChart
       :columns="columns"
       @filters="updateFilter"
     />
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -32,12 +32,12 @@ export default {
     ...mapActions('playerStore', ['playerRaitingList']),
     ...mapGetters('playerStore', ['getPlayerRaitings']),
     updateFilter(filter) {
-      let params = filterScopeDateFilter(filter, this.$dayjs)
+      let params = filterScopeDateFilter(filter, this.$dayjs())
       this.playerRaitingList({id: this.id, options: params});
     }
   },
   mounted() {
-    this.playerRaitingList({id: this.id, options: {begin_date: this.$dayjs.format('YYYY-MM-DD')}});
+    this.playerRaitingList({id: this.id, options: {begin_date: this.$dayjs().format('YYYY-MM-DD')}});
 
     this.$store.subscribe((mutation) => {
       if (mutation.type === 'playerStore/setPlayerRaitings') {

@@ -64,6 +64,10 @@ class ApplicationProvider extends ServiceProvider
             \Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeServiceInterface::class,
             \Package\Application\Game\GameRecord\GetList\GameRecordListByDateRangeService::class
         );
+        $this->app->bind(
+            \Package\Usecase\Player\GetProfile\PlayerGetProfileServiceInterface::class,
+            \Package\Application\Player\GetProfile\PlayerGetProfileService::class
+        );
     }
 
     /**

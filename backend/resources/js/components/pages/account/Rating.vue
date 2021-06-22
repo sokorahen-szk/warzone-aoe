@@ -49,13 +49,13 @@ export default {
     ...mapActions('accountStore', ['raiting']),
     ...mapGetters('accountStore', ['getRaiting']),
     updateFilter(filter) {
-      let params = filterScopeDateFilter(filter, this.$dayjs)
+      let params = filterScopeDateFilter(filter, this.$dayjs())
       this.zoom = filter.zoom
       this.raiting(params);
     }
   },
   mounted() {
-    this.raiting({begin_date: this.$dayjs.format('YYYY-MM-DD')});
+    this.raiting({begin_date: this.$dayjs().format('YYYY-MM-DD')});
 
     this.$store.subscribe((mutation) => {
       if (mutation.type === 'accountStore/setRaiting') {
