@@ -1,7 +1,7 @@
 <template>
   <header>
     <v-app-bar dense color="#424242" app>
-      <v-container class="py-0 fill-height">
+      <v-container class="py-0 fill-height container">
       <v-toolbar-title>
         <v-btn
          :to="header.site.home"

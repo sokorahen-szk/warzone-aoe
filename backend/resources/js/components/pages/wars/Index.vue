@@ -1,20 +1,20 @@
 <template>
   <CommonOneColumnTemplate>
     <template slot="container">
-      <GameRecordFullTable />
+      <GameRecordTable />
     </template>
   </CommonOneColumnTemplate>
 </template>
 
 <script>
 import CommonOneColumnTemplate from '@/components/templates/CommonOneColumnTemplate'
-import GameRecordFullTable from '@/components/organisms/GameRecordFullTable'
+import GameRecordTable from '@/components/organisms/GameRecordTable'
 
 export default {
   name: 'Index',
   components: {
     CommonOneColumnTemplate,
-    GameRecordFullTable,
+    GameRecordTable,
   },
   data() {
     return {

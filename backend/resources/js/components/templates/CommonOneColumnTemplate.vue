@@ -1,5 +1,5 @@
 <template>
-  <v-container :class="{'pa-0 ma-0': device === 'sp'}">
+  <v-container :class="{'pa-0 ma-0': device === 'sp'}" class="container">
     <slot name="header"></slot>
     <v-row no-gutters>
       <v-col cols="12">

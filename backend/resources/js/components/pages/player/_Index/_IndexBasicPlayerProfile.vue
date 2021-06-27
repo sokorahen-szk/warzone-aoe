@@ -51,7 +51,7 @@
         最終ゲーム日
       </v-col>
       <v-col cols="6" sm="6" md="8" lg="9">
-        {{ profile && toStringYYYYMM(profile.player.lastGameAt) }}
+        {{ profile && profile.player.lastGameAt && toStringYYYYMM(profile.player.lastGameAt) }}
       </v-col>
     </v-row>
     <v-row no-gutters class="pa-3">
