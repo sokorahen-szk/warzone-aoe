@@ -178,11 +178,9 @@ export default {
 				return 0
 			}
 
-			const total = d.reduce(function(s, v) {
+			return d.reduce(function(s, v) {
 				return s + v[key]
 			}, 0)
-
-			return total
 		},
 		status(winning, team) {
 			return winning == team
