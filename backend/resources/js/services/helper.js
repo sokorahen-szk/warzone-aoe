@@ -1,3 +1,5 @@
+import {playerProfileTabs} from '@/config/player'
+
 export const objCopy = (o, c) => {
   let obj = {}
   Object.keys(o).forEach( (key) => {
@@ -40,4 +42,9 @@ export const selectParser = (ary, mappingKeys) => {
     })
   })
   return a
+}
+
+export const playerProfileTab = (tabName) => {
+  const tab = Object.keys(playerProfileTabs).find( (tab) => tab === tabName)
+  return playerProfileTabs[tab]
 }

@@ -70,6 +70,7 @@
           <Tabs
             :grow="getDeviceType === 'sp'"
             :tabs="tabs"
+            :selected-tab="selectTab"
             @change="selectTab = $event"
           />
           <div :is="component" v-bind="props"></div>
@@ -90,6 +91,7 @@ import GamePackageList from '@/components/molecules/GamePackageList'
 import Icon from '@/components/atoms/Icon'
 import Tabs from '@/components/molecules/Tabs'
 import { mapActions, mapGetters } from 'vuex'
+import {playerProfileTab} from '@/services/helper';
 
 export default {
   name: 'PlayerIndex',
@@ -137,7 +139,7 @@ export default {
     return {
       playerId: this.$route.params['id'],
       profile: null,
-      selectTab: 0,
+      selectTab: playerProfileTab(this.$route.query['tab']),
       tabs: [
         {label: '基本情報', icon: 'mdi-account'},
         {label: '対戦履歴', icon: 'mdi-menu'},

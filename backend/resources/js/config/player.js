@@ -12,3 +12,9 @@ export const playerListTemplate = {
   gamePackages: null,
   enabled: null
 }
+
+export const playerProfileTabs = {
+  profile: 0,
+  history: 1,
+  rating: 2,
+}
