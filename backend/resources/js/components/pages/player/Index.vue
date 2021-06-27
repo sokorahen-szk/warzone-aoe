@@ -91,7 +91,8 @@ import GamePackageList from '@/components/molecules/GamePackageList'
 import Icon from '@/components/atoms/Icon'
 import Tabs from '@/components/molecules/Tabs'
 import { mapActions, mapGetters } from 'vuex'
-import {playerProfileTab} from '@/services/helper';
+import {playerProfileTab, findBySpecificKey} from '@/services/helper';
+import {playerProfileTabs} from '@/config/player';
 
 export default {
   name: 'PlayerIndex',
@@ -123,7 +124,10 @@ export default {
     ...mapGetters('authStore', ['isLogin']),
     ...mapGetters('accountStore', ['getProfile']),
     component: function(){
-      return this.components[this.selectTab]
+      return findBySpecificKey(playerProfileTabs, this.selectTab, 'id', 'component')
+    },
+    tabs() {
+      return playerProfileTabs
     }
   },
   methods: {
@@ -139,23 +143,12 @@ export default {
     return {
       playerId: this.$route.params['id'],
       profile: null,
-      selectTab: playerProfileTab(this.$route.query['tab']),
-      tabs: [
-        {label: '基本情報', icon: 'mdi-account'},
-        {label: '対戦履歴', icon: 'mdi-menu'},
-        {label: 'レート遷移', icon: 'mdi-menu'},
-      ],
+      selectTab: findBySpecificKey(playerProfileTabs, this.$route.query['tab'] || 'profile', 'name', 'id'),
 
       props: {
         id: this.$route.params['id'],
         profile: null,
       },
-
-      components: [
-        'IndexBasicPlayerProfile',
-        'IndexWarsPlayerHistory',
-        'IndexRatePlayerHisyory',
-      ]
     }
   },
 }

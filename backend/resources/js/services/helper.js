@@ -44,7 +44,8 @@ export const selectParser = (ary, mappingKeys) => {
   return a
 }
 
-export const playerProfileTab = (tabName) => {
-  const tab = Object.keys(playerProfileTabs).find( (tab) => tab === tabName)
-  return playerProfileTabs[tab]
+export const findBySpecificKey = (ary, value, findKey, getKey) => {
+  if (!ary && ary.length < 1) return null
+  const foundItem = ary.find( (item) => item[findKey] === value && typeof item[getKey] !== 'undefined')
+  return foundItem ? foundItem[getKey] : null
 }
