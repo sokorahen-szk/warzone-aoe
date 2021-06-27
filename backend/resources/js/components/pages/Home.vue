@@ -1,6 +1,8 @@
 <template>
 	<v-container>
-		<CommonWithLeftColumnTemplate>
+		<CommonWithLeftColumnTemplate
+		    :device="getDeviceType"
+		>
 			<template slot="container">
 				aaa
 			</template>
@@ -17,11 +19,15 @@
 <script>
 import CommonWithLeftColumnTemplate from '@/components/templates/CommonWithLeftColumnTemplate'
 import RankingColumn from '@/components/organisms/RankingColumn'
+import { mapGetters } from 'vuex'
 export default {
 	name: 'Home',
 	components: {
 		CommonWithLeftColumnTemplate,
 		RankingColumn
+	},
+	computed: {
+		...mapGetters('breakpointStore', ['getDeviceType']),
 	},
 	data() {
 		return {

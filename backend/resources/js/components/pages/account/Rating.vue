@@ -55,7 +55,7 @@ export default {
     }
   },
   mounted() {
-    this.raiting({begin_date: this.$dayjs().format('YYYY-MM-DD')});
+    this.raiting({begin_date: this.$dayjs().startOf('month').format('YYYY-MM-DD')})
 
     this.$store.subscribe((mutation) => {
       if (mutation.type === 'accountStore/setRaiting') {

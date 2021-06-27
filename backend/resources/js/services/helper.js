@@ -1,3 +1,5 @@
+import {playerProfileTabs} from '@/config/player'
+
 export const objCopy = (o, c) => {
   let obj = {}
   Object.keys(o).forEach( (key) => {
@@ -40,4 +42,10 @@ export const selectParser = (ary, mappingKeys) => {
     })
   })
   return a
+}
+
+export const findBySpecificKey = (ary, value, findKey, getKey) => {
+  if (!ary && ary.length < 1) return null
+  const foundItem = ary.find( (item) => item[findKey] === value && typeof item[getKey] !== 'undefined')
+  return foundItem ? foundItem[getKey] : null
 }

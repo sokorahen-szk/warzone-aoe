@@ -37,7 +37,12 @@ export default {
     }
   },
   mounted() {
-    this.playerRaitingList({id: this.id, options: {begin_date: this.$dayjs().format('YYYY-MM-DD')}});
+    this.playerRaitingList({
+      id: this.id,
+      options: {
+        begin_date: this.$dayjs().startOf('month').format('YYYY-MM-DD')
+      }
+    });
 
     this.$store.subscribe((mutation) => {
       if (mutation.type === 'playerStore/setPlayerRaitings') {
