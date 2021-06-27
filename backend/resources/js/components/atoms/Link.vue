@@ -3,8 +3,6 @@
 </template>
 
 <style scoped>
-.link {
-}
 .link:hover {
   color: #87cefa;
   text-decoration: none;

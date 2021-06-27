@@ -45,8 +45,17 @@
                   初心者です。よろしくお願いします。
                 </v-card>
               </div>
-              <div>
-                登録日 {{ profile && toStringYYYYMM(profile.player.joinedAt) }}
+              <div>登録日 {{ profile && toStringYYYYMM(profile.player.joinedAt) }}</div>
+              <div
+                v-if="isLogin && playerId == getProfile.player.id"
+                class="text-right"
+              >
+                <Button
+                  label="プロフィール編集"
+                  tile
+                  color="info"
+                  path="/account/profile"
+                />
               </div>
             </v-col>
           </v-row>
@@ -76,6 +85,7 @@ import IndexBasicPlayerProfile from '@/components/pages/player/_Index/_IndexBasi
 import IndexWarsPlayerHistory from '@/components/pages/player/_Index/_IndexWarsPlayerHistory'
 import IndexRatePlayerHisyory from '@/components/pages/player/_Index/_IndexRatePlayerHisyory'
 import Avator from '@/components/atoms/Avator'
+import Button from '@/components/atoms/Button'
 import GamePackageList from '@/components/molecules/GamePackageList'
 import Icon from '@/components/atoms/Icon'
 import Tabs from '@/components/molecules/Tabs'
@@ -88,6 +98,7 @@ export default {
     Avator,
     Icon,
     Tabs,
+    Button,
     IndexBasicPlayerProfile,
     IndexWarsPlayerHistory,
     IndexRatePlayerHisyory,
@@ -107,6 +118,8 @@ export default {
     ...mapGetters('breakpointStore', ['getDeviceType']),
     ...mapGetters('playerStore', ['getPlayerProfile']),
     ...mapGetters('gameStore', ['getPackageList']),
+    ...mapGetters('authStore', ['isLogin']),
+    ...mapGetters('accountStore', ['getProfile']),
     component: function(){
       return this.components[this.selectTab]
     }
