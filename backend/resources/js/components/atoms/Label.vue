@@ -1,6 +1,7 @@
 <template>
   <v-chip
     class="ma-2"
+    :color="color"
     label
   >
     <v-icon
@@ -19,6 +20,7 @@ export default {
   name: 'Label',
   props: {
     tag: { type: Boolean, default: false},
+    color: { type: String, default: ''},
   },
   data() {
     return {

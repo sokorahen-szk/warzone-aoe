@@ -29,13 +29,26 @@
 						<v-row no-gutters class="py-2" :key="`table-team1-${player.id}`">
 							<v-col cols="2" class="text-center"><Avator /></v-col>
 							<v-col cols="5" class="py-2">{{player.name}}</v-col>
-							<v-col cols="2" class="py-2">{{player.rank}}</v-col>
-							<v-col cols="3" class="py-2">{{player.rate}}</v-col>
+							<v-col cols="2" class="py-2">
+								{{player.rank}}
+								<span v-if="player.afterRank !== null">({{ addSign(player.afterRank) }})</span>
+							</v-col>
+							<v-col cols="3" class="py-2">
+								{{player.rate}}
+								<span v-if="player.afterRate !== null">({{ addSign(player.afterRate) }})</span>
+							</v-col>
 						</v-row>
 						</template>
 						<v-divider />
 						<v-row no-gutters class="py-2">
-							<v-col cols="7"></v-col>
+							<v-col cols="7">
+								<Label
+									:color="status(d.winningTeam, 1) ? 'primary' : 'error'"
+									v-if="d.winningTeam"
+								>
+									{{ status(d.winningTeam, 1) ? 'WIN' : 'LOSE' }}
+								</Label>
+							</v-col>
 							<v-col cols="2" class="py-2">{{sum(d.team1, 'rank')}}</v-col>
 							<v-col cols="2" class="py-2">{{sum(d.team1, 'rate')}}</v-col>
 						</v-row>
@@ -45,13 +58,26 @@
 						<v-row no-gutters class="py-2" :key="`table-team1-${player.id}`">
 							<v-col cols="2" class="text-center"><Avator /></v-col>
 							<v-col cols="5" class="py-2">{{player.name}}</v-col>
-							<v-col cols="2" class="py-2">{{player.rank}}</v-col>
-							<v-col cols="3" class="py-2">{{player.rate}}</v-col>
+							<v-col cols="2" class="py-2">
+								{{player.rank}}
+								<span v-if="player.afterRank !== null">({{ addSign(player.afterRank) }})</span>
+							</v-col>
+							<v-col cols="3" class="py-2">
+								{{player.rate}}
+								<span v-if="player.afterRate !== null">({{ addSign(player.afterRate) }})</span>
+							</v-col>
 						</v-row>
 						</template>
 						<v-divider />
 						<v-row no-gutters class="py-2">
-							<v-col cols="7"></v-col>
+							<v-col cols="7">
+								<Label
+									:color="status(d.winningTeam, 2) ? 'primary' : 'error' "
+									v-if="d.winningTeam"
+								>
+									{{ status(d.winningTeam, 2) ? 'WIN' : 'LOSE' }}
+								</Label>
+							</v-col>
 							<v-col cols="2" class="py-2">{{sum(d.team2, 'rank')}}</v-col>
 							<v-col cols="2" class="py-2">{{sum(d.team2, 'rate')}}</v-col>
 						</v-row>
@@ -60,6 +86,7 @@
 			</tbody>
 		</template>
 		</v-simple-table>
+		<Pagination />
 	</div>
 </template>
 
@@ -69,7 +96,7 @@ thead > tr {
 }
 
 thead > tr > th {
-  height: 65px !important;
+  height: 45px !important;
 }
 
 .w20 {
@@ -93,11 +120,13 @@ thead > tr > th {
 <script>
 import Avator from '@/components/atoms/Avator'
 import Label from '@/components/atoms/Label'
+import Pagination from '@/components/atoms/Pagination'
 export default {
 	name: 'GameRecordFullTable',
 	components: {
 		Avator,
-		Label
+		Label,
+		Pagination
 	},
 	data() {
 		return {
@@ -154,6 +183,18 @@ export default {
 			}, 0)
 
 			return total
+		},
+		status(winning, team) {
+			return winning == team
+		},
+		addSign(num) {
+			if (num === null) return ''
+			if (num > 0) {
+				return `+${ Math.abs(num) }`
+			} else if (num < 0) {
+				return `-${ Math.abs(num) }`
+			}
+			return '0';
 		}
 	}
 }
