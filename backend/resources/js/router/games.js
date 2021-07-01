@@ -1,5 +1,5 @@
 // Games
-import Newgame from '@/components/pages/games/Newgame.vue'
+import Newgame from '@pages/games/Newgame.vue'
 
 export const gamesRoute = [
   {

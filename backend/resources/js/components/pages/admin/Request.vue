@@ -73,11 +73,11 @@
 </template>
 
 <script>
-import CommonWithRightColumnTemplate from '@/components/templates/CommonWithRightColumnTemplate'
-import AccountRightMenu from '@/components/organisms/AccountRightMenu'
-import TextArea from '@/components/atoms/TextArea'
-import Button from '@/components/atoms/Button'
-import Alert from '@/components/atoms/Alert'
+import CommonWithRightColumnTemplate from '@templates/CommonWithRightColumnTemplate'
+import AccountRightMenu from '@organisms/AccountRightMenu'
+import TextArea from '@atoms/TextArea'
+import Button from '@atoms/Button'
+import Alert from '@atoms/Alert'
 import { mapActions, mapGetters } from 'vuex'
 import { alertTemplate } from '@/config/global'
 import { registerRequestEnum } from '@/config/admin'

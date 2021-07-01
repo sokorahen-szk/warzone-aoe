@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import SelectCard from '@/components/molecules/SelectCard'
+import SelectCard from '@molecules/SelectCard'
 export default {
   name: 'GamePackage',
   components: {

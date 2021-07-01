@@ -96,10 +96,10 @@
 </template>
 
 <script>
-import CommonOneColumnTemplate from '@/components/templates/CommonOneColumnTemplate'
-import PlayerSearchBox from '@/components/organisms/PlayerSearchBox'
-import Select from '@/components/atoms/Select'
-import Button from '@/components/atoms/Button'
+import CommonOneColumnTemplate from '@templates/CommonOneColumnTemplate'
+import PlayerSearchBox from '@organisms/PlayerSearchBox'
+import Select from '@atoms/Select'
+import Button from '@atoms/Button'
 import { playerListTemplate } from '@/config/player'
 import { gamePackageTemplate, gameMapTemplate } from '@/config/game'
 import { mapGetters, mapActions } from 'vuex'

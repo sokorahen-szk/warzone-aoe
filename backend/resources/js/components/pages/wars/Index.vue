@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import CommonOneColumnTemplate from '@/components/templates/CommonOneColumnTemplate'
-import GameRecordTable from '@/components/organisms/GameRecordTable'
+import CommonOneColumnTemplate from '@templates/CommonOneColumnTemplate'
+import GameRecordTable from '@organisms/GameRecordTable'
 
 export default {
   name: 'Index',

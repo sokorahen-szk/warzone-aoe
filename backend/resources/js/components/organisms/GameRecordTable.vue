@@ -118,9 +118,9 @@ thead > tr > th {
 </style>
 
 <script>
-import Avator from '@/components/atoms/Avator'
-import Label from '@/components/atoms/Label'
-import Pagination from '@/components/atoms/Pagination'
+import Avator from '@atoms/Avator'
+import Label from '@atoms/Label'
+import Pagination from '@atoms/Pagination'
 export default {
 	name: 'GameRecordTable',
 	components: {

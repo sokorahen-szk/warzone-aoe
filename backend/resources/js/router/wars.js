@@ -1,5 +1,5 @@
 // Wars
-import WarsIndex from '@/components/pages/wars/Index.vue'
+import WarsIndex from '@pages/wars/Index.vue'
 
 export const warsRoute = [
   {

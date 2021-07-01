@@ -8,7 +8,7 @@
 
 <script>
 import { playerListTemplate } from '@/config/player'
-import PlayerTable from '@/components/organisms/PlayerTable'
+import PlayerTable from '@organisms/PlayerTable'
 import CommonOneColumnTemplate from '@/components/templates/CommonOneColumnTemplate'
 import { mapActions, mapGetters } from 'vuex'
 

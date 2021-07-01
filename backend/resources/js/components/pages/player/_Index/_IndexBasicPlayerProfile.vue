@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import PopOverMenu from '@/components/molecules/PopOverMenu'
+import PopOverMenu from '@molecules/PopOverMenu'
 export default {
   name: 'IndexBasicPlayerProfile',
   components: {

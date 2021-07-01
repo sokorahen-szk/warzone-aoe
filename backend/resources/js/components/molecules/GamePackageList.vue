@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import Label from '@/components/atoms/Label'
+import Label from '@atoms/Label'
 export default {
 	name: 'GamePackageList',
   	components: {

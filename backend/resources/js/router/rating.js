@@ -1,5 +1,5 @@
 // Rating
-import RatingIndex from '@/components/pages/rating/Index.vue'
+import RatingIndex from '@pages/rating/Index.vue'
 
 export const ratingRoute = [
   {

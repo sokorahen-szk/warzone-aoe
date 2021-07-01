@@ -25,8 +25,8 @@
 </style>
 
 <script>
-import TextInput from '@/components/atoms/TextInput'
-import PlayerList from '@/components/molecules/PlayerList'
+import TextInput from '@atoms/TextInput'
+import PlayerList from '@molecules/PlayerList'
 
 export default {
   name: 'PlayerSearchBox',

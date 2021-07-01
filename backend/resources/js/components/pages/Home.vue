@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import CommonWithLeftColumnTemplate from '@/components/templates/CommonWithLeftColumnTemplate'
-import RankingColumn from '@/components/organisms/RankingColumn'
+import CommonWithLeftColumnTemplate from '@templates/CommonWithLeftColumnTemplate'
+import RankingColumn from '@organisms/RankingColumn'
 import { mapGetters } from 'vuex'
 export default {
 	name: 'Home',

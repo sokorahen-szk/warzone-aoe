@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import Img from '@/components/atoms/Img'
+import Img from '@atoms/Img'
 export default {
   name: 'Avatar',
   props: {

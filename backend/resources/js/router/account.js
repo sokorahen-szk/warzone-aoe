@@ -1,9 +1,9 @@
 // Account...
-import AccountMypage from '@/components/pages/account/Mypage.vue'
-import AccountProfile from '@/components/pages/account/Profile.vue'
-import AccountRating from '@/components/pages/account/Rating.vue'
-import AccountHistory from '@/components/pages/account/History.vue'
-import AccountWithdrawal from '@/components/pages/account/Withdrawal.vue'
+import AccountMypage from '@pages/account/Mypage.vue'
+import AccountProfile from '@pages/account/Profile.vue'
+import AccountRating from '@pages/account/Rating.vue'
+import AccountHistory from '@pages/account/History.vue'
+import AccountWithdrawal from '@pages/account/Withdrawal.vue'
 
 export const accountRoute = [
   {

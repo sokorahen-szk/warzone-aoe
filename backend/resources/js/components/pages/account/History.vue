@@ -16,8 +16,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import CommonWithRightColumnTemplate from '@/components/templates/CommonWithRightColumnTemplate'
-import AccountRightMenu from '@/components/organisms/AccountRightMenu'
+import CommonWithRightColumnTemplate from '@templates/CommonWithRightColumnTemplate'
+import AccountRightMenu from '@organisms/AccountRightMenu'
 export default {
   name: 'AccountHistory',
   components: {

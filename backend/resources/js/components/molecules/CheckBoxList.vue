@@ -23,7 +23,7 @@
 </style>
 
 <script>
-import CheckBox from '@/components/atoms/CheckBox'
+import CheckBox from '@atoms/CheckBox'
 export default {
   name: 'CheckBoxList',
   props: {
