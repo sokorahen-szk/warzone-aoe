@@ -38,10 +38,10 @@
 </template>
 
 <script>
-import Chart from '@/components/molecules/Chart'
-import ChartFilter from '@/components/molecules/ChartFilter'
-import CalendarInput from '@/components/molecules/CalendarInput'
-import Button from '@/components/atoms/Button'
+import Chart from '@molecules/Chart'
+import ChartFilter from '@molecules/ChartFilter'
+import CalendarInput from '@molecules/CalendarInput'
+import Button from '@atoms/Button'
 
 export default {
   name: 'PlayerRateChart',

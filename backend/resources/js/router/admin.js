@@ -1,5 +1,5 @@
 // Common...
-import AdminRequest from '@/components/pages/admin/Request.vue'
+import AdminRequest from '@pages/admin/Request.vue'
 
 export const adminRoute = [
   {

@@ -120,10 +120,10 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Avatar from '@/components/molecules/Avatar'
-import Button from '@/components/atoms/Button'
-import Icon from '@/components/atoms/Icon'
-import Link from '@/components/atoms/Link'
+import Avatar from '@molecules/Avatar'
+import Button from '@atoms/Button'
+import Icon from '@atoms/Icon'
+import Link from '@atoms/Link'
 import { mobileMenuLists } from '@/config/global'
 import router from '@/router/index'
 export default {

@@ -31,9 +31,9 @@
 </template>
 
 <script>
-import FileUpload from '@/components/atoms/FileUpload'
-import Button from '@/components/atoms/Button'
-import Img from '@/components/atoms/Img'
+import FileUpload from '@atoms/FileUpload'
+import Button from '@atoms/Button'
+import Img from '@atoms/Img'
 export default {
   name: 'ImageUpload',
   props: {

@@ -40,8 +40,8 @@
 </template>
 
 <script>
-import PlayerList from '@/components/molecules/PlayerList'
-import Button from '@/components/atoms/Button'
+import PlayerList from '@molecules/PlayerList'
+import Button from '@atoms/Button'
 export default {
   name: 'ColumnBox',
   props: {

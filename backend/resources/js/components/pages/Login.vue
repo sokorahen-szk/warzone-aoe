@@ -77,12 +77,12 @@
 </template>
 
 <script>
-import CommonOneColumnTemplate from '@/components/templates/CommonOneColumnTemplate'
-import TextInput from '@/components/atoms/TextInput'
-import Button from '@/components/atoms/Button'
-import PasswordTextInput from '@/components/atoms/PasswordTextInput'
-import Link from '@/components/atoms/Link'
-import Alert from '@/components/atoms/Alert'
+import CommonOneColumnTemplate from '@templates/CommonOneColumnTemplate'
+import TextInput from '@atoms/TextInput'
+import Button from '@atoms/Button'
+import PasswordTextInput from '@atoms/PasswordTextInput'
+import Link from '@atoms/Link'
+import Alert from '@atoms/Alert'
 import router from '@/router/index'
 import { mapActions, mapGetters } from 'vuex'
 import { alertTemplate } from '@/config/global'

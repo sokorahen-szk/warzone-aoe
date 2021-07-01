@@ -40,10 +40,10 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import CommonWithRightColumnTemplate from '@/components/templates/CommonWithRightColumnTemplate'
-import AccountRightMenu from '@/components/organisms/AccountRightMenu'
-import Button from '@/components/atoms/Button'
-import CheckBoxList from '@/components/molecules/CheckBoxList'
+import CommonWithRightColumnTemplate from '@templates/CommonWithRightColumnTemplate'
+import AccountRightMenu from '@organisms/AccountRightMenu'
+import Button from '@atoms/Button'
+import CheckBoxList from '@molecules/CheckBoxList'
 import router from '@/router/index'
 export default {
   name: 'Withdrawal',

@@ -1,5 +1,5 @@
 // Player
-import PlayerIndex from '@/components/pages/player/Index.vue'
+import PlayerIndex from '@pages/player/Index.vue'
 
 export const playerRoute = [
   {

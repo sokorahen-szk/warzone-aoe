@@ -27,8 +27,8 @@
 
 <script>
 import { mapActions } from 'vuex'
-import ListWithSubHeader from '@/components/molecules/ListWithSubHeader'
-import Button from '@/components/atoms/Button'
+import ListWithSubHeader from '@molecules/ListWithSubHeader'
+import Button from '@atoms/Button'
 import {
   rightMenuCommonList,
   rightMenuOtherList,

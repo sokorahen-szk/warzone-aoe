@@ -9,7 +9,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import Header from '@/components/organisms/Header';
+import Header from '@organisms/Header';
 import { headerConfig } from '@/config/global'
 import { userTemplate } from '@/config/user'
 

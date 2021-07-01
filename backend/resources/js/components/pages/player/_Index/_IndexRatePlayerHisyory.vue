@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import PlayerRateChart from '@/components/organisms/PlayerRateChart'
+import PlayerRateChart from '@organisms/PlayerRateChart'
 import { mapGetters, mapActions } from 'vuex'
 import {filterScopeDateFilter} from '@/services/api_helper'
 

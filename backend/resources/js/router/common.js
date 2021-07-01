@@ -1,8 +1,8 @@
 // Common...
-import Home from '@/components/pages/Home.vue'
-import Login from '@/components/pages/Login.vue'
-import Contact from '@/components/pages/Contact.vue'
-import Register from '@/components/pages/Register.vue'
+import Home from '@pages/Home.vue'
+import Login from '@pages/Login.vue'
+import Contact from '@pages/Contact.vue'
+import Register from '@pages/Register.vue'
 
 export const commonRoute = [
   {

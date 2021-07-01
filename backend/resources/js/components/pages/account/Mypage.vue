@@ -50,10 +50,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import CommonWithRightColumnTransportTemplate from '@/components/templates/CommonWithRightColumnTransportTemplate'
-import AccountRightMenu from '@/components/organisms/AccountRightMenu'
-import TextMark from '@/components/atoms/TextMark'
-import Status from '@/components/atoms/Status'
+import CommonWithRightColumnTransportTemplate from '@templates/CommonWithRightColumnTransportTemplate'
+import AccountRightMenu from '@organisms/AccountRightMenu'
+import TextMark from '@atoms/TextMark'
+import Status from '@atoms/Status'
 import {objCopy} from '@/services/helper'
 import { profileViewTemplate } from '@/config/account'
 

@@ -81,15 +81,15 @@
 </template>
 
 <script>
-import CommonOneColumnTemplate from '@/components/templates/CommonOneColumnTemplate'
-import IndexBasicPlayerProfile from '@/components/pages/player/_Index/_IndexBasicPlayerProfile'
-import IndexWarsPlayerHistory from '@/components/pages/player/_Index/_IndexWarsPlayerHistory'
-import IndexRatePlayerHisyory from '@/components/pages/player/_Index/_IndexRatePlayerHisyory'
-import Avator from '@/components/atoms/Avator'
-import Button from '@/components/atoms/Button'
-import GamePackageList from '@/components/molecules/GamePackageList'
-import Icon from '@/components/atoms/Icon'
-import Tabs from '@/components/molecules/Tabs'
+import CommonOneColumnTemplate from '@templates/CommonOneColumnTemplate'
+import IndexBasicPlayerProfile from '@pages/player/_Index/_IndexBasicPlayerProfile'
+import IndexWarsPlayerHistory from '@pages/player/_Index/_IndexWarsPlayerHistory'
+import IndexRatePlayerHisyory from '@pages/player/_Index/_IndexRatePlayerHisyory'
+import Avator from '@atoms/Avator'
+import Button from '@atoms/Button'
+import GamePackageList from '@molecules/GamePackageList'
+import Icon from '@atoms/Icon'
+import Tabs from '@molecules/Tabs'
 import { mapActions, mapGetters } from 'vuex'
 import {playerProfileTab, findBySpecificKey} from '@/services/helper';
 import {playerProfileTabs} from '@/config/player';

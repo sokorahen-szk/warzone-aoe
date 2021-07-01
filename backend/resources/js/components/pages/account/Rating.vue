@@ -20,9 +20,9 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import CommonWithRightColumnTemplate from '@/components/templates/CommonWithRightColumnTemplate'
-import AccountRightMenu from '@/components/organisms/AccountRightMenu'
-import PlayerRateChart from '@/components/organisms/PlayerRateChart'
+import CommonWithRightColumnTemplate from '@templates/CommonWithRightColumnTemplate'
+import AccountRightMenu from '@organisms/AccountRightMenu'
+import PlayerRateChart from '@organisms/PlayerRateChart'
 import {filterScopeDateFilter} from '@/services/api_helper'
 
 export default {
