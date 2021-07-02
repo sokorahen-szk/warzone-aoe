@@ -18,9 +18,12 @@ class CreatePlayerMemoriesTable extends Migration
             $table->unsignedBigInteger('player_id')->comment('プレイヤーID');
             $table->unsignedBigInteger('game_record_id')->comment('試合記録ID');
             $table->integer('team')->nullable()->comment('チーム番号');
-            $table->float('mu')->nullable()->comment('μ値');
-            $table->float('sigma')->nullable()->comment('σ値');
-            $table->integer('rate')->nullable()->comment('レート');
+            $table->float('mu')->comment('μ値');
+            $table->float('after_mu')->nullable()->comment('試合後μ値');
+            $table->float('sigma')->comment('σ値');
+            $table->float('after_sigma')->nullable()->comment('試合後σ値');
+            $table->integer('rate')->comment('レート');
+            $table->integer('after_rate')->nullable()->comment('試合後レート');
 
             $table->foreign('player_id')->references('id')->on('players');
             $table->foreign('game_record_id')->references('id')->on('game_records');

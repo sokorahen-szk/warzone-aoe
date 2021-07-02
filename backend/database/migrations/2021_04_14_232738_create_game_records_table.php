@@ -17,7 +17,12 @@ class CreateGameRecordsTable extends Migration
             $table->id()->comment('試合記録ID');
             $table->unsignedBigInteger('game_package_id')->comment('ゲーム種別ID');
             $table->unsignedBigInteger('user_id')->comment('ユーザID');
+            $table->unsignedBigInteger('rule_id')->comment('ルールID');
+            $table->unsignedBigInteger('map_id')->comment('マップID');
+
             $table->integer('winning_team')->nullable()->comment('勝利チーム');
+            $table->integer('victory_prediction')->nullable()->comment('勝利予測');
+
             //
             // status
             // 1 = matching, 2 = draw, 3 = canceled, 4 = finished
@@ -27,6 +32,8 @@ class CreateGameRecordsTable extends Migration
 
             $table->foreign('game_package_id')->references('id')->on('game_packages');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('rule_id')->references('id')->on('rules');
+            $table->foreign('map_id')->references('id')->on('maps');
         });
     }
 

@@ -17,8 +17,11 @@ class PlayerMemory extends Resource {
   protected $gameRecordId;
   protected $team;
   protected $mu;
+  protected $afterMu;
   protected $sigma;
+  protected $afterSigma;
   protected $rate;
+  protected $afterRate;
 
   public function __construct($data)
   {
@@ -66,6 +69,14 @@ class PlayerMemory extends Resource {
   }
 
   /**
+   * @return Mu|null
+   */
+  public function getAfterMu(): ?Mu
+  {
+    return $this->afterMu;
+  }
+
+  /**
    * @return Sigma|null
    */
   public function getSigma(): ?Sigma
@@ -74,11 +85,27 @@ class PlayerMemory extends Resource {
   }
 
   /**
+   * @return Sigma|null
+   */
+  public function getAfterSigma(): ?Sigma
+  {
+    return $this->afterSigma;
+  }
+
+  /**
    * @return Rate|null
    */
   public function getRate(): ?Rate
   {
     return $this->rate;
+  }
+
+  /**
+   * @return Rate|null
+   */
+  public function getAfterRate(): ?Rate
+  {
+    return $this->afterRate;
   }
 
 }

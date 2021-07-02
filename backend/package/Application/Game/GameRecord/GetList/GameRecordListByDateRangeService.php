@@ -33,7 +33,7 @@ class GameRecordListByDateRangeService implements GameRecordListByDateRangeServi
 
         $gameRecordMuEnabled = new GameRecordMuEnabled($command->muEnabled);
 
-        $gameRecords = $this->gameRecordRepository->listByDateRange($user, new Date($command->beginDate), $endDate);
+        $gameRecords = $this->gameRecordRepository->listByUserWithDateRange($user, new Date($command->beginDate), $endDate);
         return new GameRecordListByDateRangeData($gameRecords, $gameRecordMuEnabled);
     }
 }

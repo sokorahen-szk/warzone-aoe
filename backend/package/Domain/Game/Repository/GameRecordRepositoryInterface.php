@@ -14,5 +14,5 @@ interface GameRecordRepositoryInterface
     * @param Date|null $endDate
     * @return array
     */
-    public function listByDateRange(User $user, Date $beginDate, ?Date $endDate): array;
+    public function listByUserWithDateRange(User $user, Date $beginDate, ?Date $endDate): array;
 }

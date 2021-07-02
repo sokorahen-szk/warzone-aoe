@@ -31,7 +31,7 @@ class GameRecordRepository implements GameRecordRepositoryInterface
     * @param Date|null $endDate
     * @return array
     */
-    public function listByDateRange(User $user, Date $beginDate, ?Date $endDate): array
+    public function listByUserWithDateRange(User $user, Date $beginDate, ?Date $endDate): array
     {
         $gameRecords = EloquentGameRecordModel::leftJoinPlayerMemories()
             ->select([
@@ -41,12 +41,16 @@ class GameRecordRepository implements GameRecordRepositoryInterface
                 "game_records.status",
                 "game_records.started_at",
                 "game_records.finished_at",
+                "game_records.victory_prediction",
                 "player_memories.id AS player_memory_id",
                 "player_memories.player_id AS player_id",
                 "player_memories.team",
                 "player_memories.mu",
+                "player_memories.after_mu",
                 "player_memories.sigma",
+                "player_memories.after_sigma",
                 "player_memories.rate",
+                "player_memories.after_rate",
             ])
             ->whereStartedAtByDateRange($beginDate, $endDate)
             ->whereStatusByFinished()
@@ -68,8 +72,11 @@ class GameRecordRepository implements GameRecordRepositoryInterface
                     'playerId'          => new PlayerId($gameRecord->player_id),
                     'team'              => new GameTeam($gameRecord->team),
                     'mu'                => new Mu($gameRecord->mu),
+                    'afterMu'           => new Mu($gameRecord->afterMu),
                     'sigma'             => new Sigma($gameRecord->sigma),
+                    'afterSigma'        => new Mu($gameRecord->afterSigma),
                     'rate'              => new Rate($gameRecord->rate),
+                    'afterRate'         => new Mu($gameRecord->afterRate),
                 ]),
                 'gamePackageId' => new GamePackageId($gameRecord->game_package_id),
                 'winningTeam'   => new GameTeam($gameRecord->winning_team),

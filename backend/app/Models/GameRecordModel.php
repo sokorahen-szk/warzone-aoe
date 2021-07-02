@@ -78,4 +78,10 @@ class GameRecordModel extends Model
     {
         return $this->hasOne(GamePackageModel::class, 'id', 'game_package_id');
     }
+
+    // 個別記録
+    public function player_memories()
+    {
+        return $this->hasOne(PlayerMemoryModel::class, 'id', 'game_package_id');
+    }
 }
