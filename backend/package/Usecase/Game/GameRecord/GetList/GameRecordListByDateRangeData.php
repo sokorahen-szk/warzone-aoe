@@ -15,13 +15,8 @@ class GameRecordListByDateRangeData extends Data
 
         foreach ($sources as $key => $source) {
             $response[$key] = [
-                'gameRecordId'          => $source->getGameRecordId()->getValue(),
-                'gamePackageId'         => $source->getGamePackageId()->getValue(),
-                'playerMemoryId'        => $source->getPlayerMemory()->getPlayerMemoryId()->getValue(),
-                'team'                  => $source->getPlayerMemory()->getTeam()->getValue(),
                 'rank'                  => $source->getPlayerMemory()->getMu()->getRank(),
                 'rate'                  => $source->getPlayerMemory()->getRate()->getValue(),
-                'winningTeam'           => $source->getWinningTeam()->getValue(),
                 'status'                => $source->getStatus()->getValue(),
                 'startedAt'             => $source->getStartedAt()->getDate(),
                 'finishedAt'            => $source->getFinishedAt()->getDate(),

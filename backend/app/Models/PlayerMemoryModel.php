@@ -14,4 +14,16 @@ class PlayerMemoryModel extends Model
     public $timestamps = false;
 
     protected $guarded = [];
+
+    /**
+     * ################################################
+     * リレーション
+     * ################################################
+     */
+
+    // プレイヤー
+    public function player()
+    {
+        return $this->hasOne(PlayerModel::class, 'id', 'player_id');
+    }
 }

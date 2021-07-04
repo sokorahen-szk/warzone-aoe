@@ -41,7 +41,10 @@ class GameRecordModel extends Model
      */
     public function scopeWhereStartedAtByDateRange($query, Date $beginDate, Date $endDate)
     {
-        return $query->whereBetween('started_at', [$beginDate->getDateFormatYYYYMMDDForBegin(), $endDate->getDateFormatYYYYMMDDForEnd()]);
+        if (!$beginDate->isNull() && !$endDate->isNull()) {
+            $query = $query->whereBetween('started_at', [$beginDate->getDateFormatYYYYMMDDForBegin(), $endDate->getDateFormatYYYYMMDDForEnd()]);
+        }
+        return $query;
     }
 
     /**
@@ -62,9 +65,11 @@ class GameRecordModel extends Model
      * @param PlayerId $playerId
      * @return void
      */
-    public function scopeWhereByPlayerId($query, PlayerId $playerId)
+    public function scopeWhereHasByPlayerMemory($query, PlayerId $playerId)
     {
-        return $query->where('player_id', $playerId->getValue());
+        return $query->whereHas('player_memories', function($query) use ($playerId) {
+            $query->where('player_id', $playerId->getValue());
+        });
     }
 
     /**
@@ -77,5 +82,23 @@ class GameRecordModel extends Model
     public function game_package()
     {
         return $this->hasOne(GamePackageModel::class, 'id', 'game_package_id');
+    }
+
+    // ルール
+    public function rule()
+    {
+        return $this->hasOne(RuleModel::class, 'id', 'game_package_id');
+    }
+
+    // マップ
+    public function map()
+    {
+        return $this->hasOne(MapModel::class, 'id', 'map_id');
+    }
+
+    // ゲームパッケージ
+    public function player_memories()
+    {
+        return $this->hasMany(PlayerMemoryModel::class, 'game_record_id', 'id');
     }
 }

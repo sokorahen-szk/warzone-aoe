@@ -10,4 +10,9 @@ class PlayerModel extends Model
 
     protected $guarded = [];
 
+    // ユーザ情報
+    public function user()
+    {
+        return $this->hasOne(UserModel::class, 'player_id', 'id');
+    }
 }

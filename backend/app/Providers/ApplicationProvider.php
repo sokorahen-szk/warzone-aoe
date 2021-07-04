@@ -68,6 +68,10 @@ class ApplicationProvider extends ServiceProvider
             \Package\Usecase\Player\GetProfile\PlayerGetProfileServiceInterface::class,
             \Package\Application\Player\GetProfile\PlayerGetProfileService::class
         );
+        $this->app->bind(
+            \Package\Usecase\Game\GameHistory\GetList\GameHistoryListServiceInterface::class,
+            \Package\Application\Game\GameHistory\GetList\GameHistoryListService::class
+        );
     }
 
     /**

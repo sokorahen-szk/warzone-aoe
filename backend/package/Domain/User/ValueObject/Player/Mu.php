@@ -22,6 +22,7 @@ class Mu {
    */
   public function getRank(): int
   {
+    if ($this->value <= 0) return 0;
     return (int) round($this->value / 100);
   }
 }
