@@ -24,7 +24,7 @@ class GameController extends Controller
     public function listPackage(GamePackageListServiceInterface $interactor)
     {
         $result = $interactor->handle();
-        return $this->validResponse($result->getVars(), '取得しました。');
+        return $this->validResponse($result->getVars());
     }
 
     /**
@@ -37,7 +37,7 @@ class GameController extends Controller
     public function listMap(GameMapListServiceInterface $interactor)
     {
         $result = $interactor->handle();
-        return $this->validResponse($result->getVars(), '取得しました。');
+        return $this->validResponse($result->getVars());
     }
 
     /**
@@ -52,8 +52,10 @@ class GameController extends Controller
         $command = new GameHistoryListCommand(
             $request->input('page', 1),
             $request->input('limit', 10),
+            $request->input('begin_date', null),
+            $request->input('end_date', null)
         );
         $result = $interactor->handle($command);
-        return $this->validResponse($result->getVars(), '取得しました。');
+        return $this->validResponse($result->getVars());
     }
 }

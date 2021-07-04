@@ -10,10 +10,12 @@ use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
 use Package\Domain\User\ValueObject\Player\Mu;
 use Package\Domain\User\ValueObject\Player\Sigma;
 use Package\Domain\User\ValueObject\Player\Rate;
+use Package\Domain\User\Entity\Player;
 
 class PlayerMemory extends Resource {
   protected $playerMemoryId;
   protected $playerId;
+  protected $player;
   protected $gameRecordId;
   protected $team;
   protected $mu;
@@ -42,6 +44,14 @@ class PlayerMemory extends Resource {
   public function getPlayerId(): ?PlayerId
   {
     return $this->playerId;
+  }
+
+  /**
+   * @return Player|null
+   */
+  public function getPlayer(): ?Player
+  {
+    return $this->player;
   }
 
   /**

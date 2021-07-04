@@ -9,18 +9,22 @@ use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\Game\ValueObject\GameRule\GameRuleId;
 use Package\Domain\Game\ValueObject\GameMap\GameMapId;
 use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
-use Package\Domain\Game\ValueObject\GameRule\VictoryPrediction;
+use Package\Domain\Game\ValueObject\GameRecord\GameStatus;
+use Package\Domain\Game\ValueObject\GameRecord\VictoryPrediction;
+use Package\Domain\User\Entity\PlayerMemory;
 
 use Package\Domain\System\ValueObject\Datetime;
 
 class GameRecord extends Resource {
 	protected $gameRecordId;
 	protected $gamePackageId;
+	protected $playerMemories;
 	protected $userId;
 	protected $ruleId;
 	protected $mapId;
 	protected $winningTeam;
 	protected $victoryPrediction;
+	protected $status;
 	protected $startedAt;
 	protected $finishedAt;
 
@@ -43,6 +47,14 @@ class GameRecord extends Resource {
 	public function getGamePackageId(): ?GamePackageId
 	{
 		return $this->gamePackageId;
+	}
+
+	/**
+	 * @return array<PlayerMemory>|null
+	 */
+	public function getPlayerMemories(): ?array
+	{
+		return $this->playerMemories;
 	}
 
 	/**
@@ -83,6 +95,14 @@ class GameRecord extends Resource {
 	public function getVictoryPrediction(): ?VictoryPrediction
 	{
 		return $this->victoryPrediction;
+	}
+
+	/**
+	 * @return GameStatus|null
+	 */
+	public function getGameStatus(): ?GameStatus
+	{
+		return $this->status;
 	}
 
 	/**

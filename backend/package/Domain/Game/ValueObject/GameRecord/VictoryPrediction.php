@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Package\Domain\Game\ValueObject\GameRule;
+namespace Package\Domain\Game\ValueObject\GameRecord;
 
 class VictoryPrediction {
   private $value;

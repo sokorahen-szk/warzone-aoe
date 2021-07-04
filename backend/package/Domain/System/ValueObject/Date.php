@@ -41,4 +41,9 @@ class Date
         }
         return $this->value->format('Y-m-d 23:59:59');
     }
+
+    public function isNull(): bool
+    {
+        return $this->value === null;
+    }
 }

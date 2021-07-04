@@ -23,6 +23,7 @@ use Package\Domain\System\ValueObject\Datetime;
 class Player extends Resource {
   protected $playerId;
   protected $playerName;
+  protected $user;
   protected $mu;
   protected $sigma;
   protected $rate;
@@ -55,6 +56,14 @@ class Player extends Resource {
   public function getPlayerName(): ?PlayerName
   {
     return $this->playerName;
+  }
+
+  /**
+   * @return User|null
+   */
+  public function getUser(): ?User
+  {
+    return $this->user;
   }
 
   /**
