@@ -3,11 +3,11 @@
 namespace Package\Domain\System\Entity;
 
 use Package\Domain\Resource;
-use Package\Domain\System\ValueObject\Page;
+use Package\Domain\System\ValueObject\Offset;
 use Package\Domain\System\ValueObject\Limit;
 
 class Paginator extends Resource {
-  protected $page;
+  protected $offset;
   protected $limit;
 
   public function __construct($data)
@@ -16,11 +16,11 @@ class Paginator extends Resource {
   }
 
   /**
-   * @return Page
+   * @return Offset
    */
-  public function getPage(): Page
+  public function getOffset(): Offset
   {
-    return $this->page;
+    return $this->offset;
   }
 
   /**
@@ -29,5 +29,16 @@ class Paginator extends Resource {
   public function getLimit(): Limit
   {
     return $this->limit;
+  }
+
+  /**
+   * データをpaginatorで取り出す時に、offset + page計算する
+   * @return int
+   */
+  public function getNextOffset(): int
+  {
+    $offset = $this->offset->getValue();
+    $limit = $this->limit->getValue();
+    return $offset * $limit;
   }
 }

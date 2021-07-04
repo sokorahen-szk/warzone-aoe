@@ -8,6 +8,8 @@ use Package\Usecase\Game\GameHistory\GetList\GameHistoryListData;
 use Package\Usecase\Game\GameHistory\GetList\GameHistoryListCommand;
 use Package\Domain\System\Entity\Paginator;
 use Package\Domain\System\ValueObject\Date;
+use Package\Domain\System\ValueObject\Offset;
+use Package\Domain\System\ValueObject\Limit;
 
 class GameHistoryListService implements GameHistoryListServiceInterface {
     private $gameRecordRepository;
@@ -20,8 +22,8 @@ class GameHistoryListService implements GameHistoryListServiceInterface {
 	public function handle(GameHistoryListCommand $command): ?GameHistoryListData
 	{
 		$paginator = new Paginator([
-			'page' 		=> 	$command->page,
-			'limit' 	=>	$command->limit,
+			'offset' 	=> 	new Offset($command->page),
+			'limit' 	=>	new Limit($command->limit),
 		]);
 
 		$beginDate = new Date($command->beginDate);

@@ -27,8 +27,9 @@ use Package\Domain\Game\Entity\GamePlayerRecord;
 use Package\Domain\Game\Entity\GameRecord;
 use Package\Domain\User\ValueObject\Player\PlayerName;
 use Package\Domain\User\ValueObject\AvatorImage;
-
 use Package\Domain\System\Entity\Paginator;
+
+use Illuminate\Support\Collection;
 
 class GameRecordRepository implements GameRecordRepositoryInterface
 {
@@ -43,7 +44,7 @@ class GameRecordRepository implements GameRecordRepositoryInterface
     {
         $gameRecords = EloquentGameRecordModel::with('player_memories')
             ->whereStartedAtByDateRange($beginDate, $endDate)
-            ->whereStatusByFinished()
+            ->whereIn('status', [GameStatus::GAME_STATUS_DRAW, GameStatus::GAME_STATUS_FINISHED])
             ->whereHasByPlayerMemory($user->getPlayer()->getPlayerId())
             ->get();
 
@@ -76,6 +77,9 @@ class GameRecordRepository implements GameRecordRepositoryInterface
             'rule',
         ])
         ->whereStartedAtByDateRange($beginDate, $endDate)
+        ->orderBy('id', 'DESC')
+        ->offset($paginator->getNextOffset())
+        ->limit($paginator->getLimit()->getValue())
         ->get();
 
         if (!$gameRecords) {
@@ -150,7 +154,7 @@ class GameRecordRepository implements GameRecordRepositoryInterface
             return null;
         }
 
-        if (count($playerMemory) >= 1) {
+        if ($playerMemory instanceof Collection) {
             $playerMemory = $playerMemory[0];
         }
 
