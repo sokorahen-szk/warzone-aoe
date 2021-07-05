@@ -3,15 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Traits\ApiResponser;
-use Package\Usecase\Player\GetList\PlayerGetListServiceInterface;
-use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeServiceInterface;
+
+use Package\Domain\Game\ValueObject\GameRecord\GameRecordMuEnabled;
 use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeCommand;
-use Package\Usecase\Player\GetProfile\PlayerGetProfileServiceInterface;
 use Package\Usecase\Player\GetProfile\PlayerGetProfileCommand;
+use Package\Usecase\Player\GetHistory\PlayerGetHistoryCommand;
 
 use App\Http\Requests\Game\GameRaitingRequest;
-use Package\Domain\Game\ValueObject\GameRecord\GameRecordMuEnabled;
 use App\Http\Requests\Game\GameHistoryListRequest;
+use Package\Usecase\Player\GetHistory\PlayerGetHistoryServiceInterface;
+use Package\Usecase\Player\PlayerList\PlayerListServiceInterface;
+use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeServiceInterface;
+use Package\Usecase\Player\GetProfile\PlayerGetProfileServiceInterface;
 
 class PlayerController extends Controller
 {
@@ -19,10 +22,10 @@ class PlayerController extends Controller
 
     /**
      * プレイヤー情報取得する
-     * @param PlayerGetListServiceInterface $interactor
+     * @param PlayerListServiceInterface $interactor
      * @return json(...)
      */
-    public function list(PlayerGetListServiceInterface $interactor)
+    public function list(PlayerListServiceInterface $interactor)
     {
         $result = $interactor->handle();
         return $this->validResponse($result->getVars());
@@ -68,13 +71,22 @@ class PlayerController extends Controller
 
     /**
      * プレイヤー対戦履歴
+     * @param PlayerGetHistoryServiceInterface $interactor
      * @param GameHistoryListRequest $request
      * @param int $userId
      * @return json(...)
      */
-    public function history(GameHistoryListRequest $request, $userId)
+    public function history(PlayerGetHistoryServiceInterface $interactor, GameHistoryListRequest $request, $userId)
     {
-        $result = [];
+        $command = new PlayerGetHistoryCommand(
+            $request->input('page', 1),
+            $request->input('limit', 10),
+            $request->input('begin_date', null),
+            $request->input('end_date', null)
+        );
+
+        $result = $interactor->handle($command);
+
         return $this->validResponse($result);
     }
 }
