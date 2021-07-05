@@ -11,6 +11,7 @@ use Package\Usecase\Player\GetProfile\PlayerGetProfileCommand;
 
 use App\Http\Requests\Game\GameRaitingRequest;
 use Package\Domain\Game\ValueObject\GameRecord\GameRecordMuEnabled;
+use App\Http\Requests\Game\GameHistoryListRequest;
 
 class PlayerController extends Controller
 {
@@ -24,7 +25,7 @@ class PlayerController extends Controller
     public function list(PlayerGetListServiceInterface $interactor)
     {
         $result = $interactor->handle();
-        return $this->validResponse($result->getVars(), 'プレイヤーの一覧を取得しました。');
+        return $this->validResponse($result->getVars());
     }
 
     /**
@@ -45,7 +46,7 @@ class PlayerController extends Controller
 
         $result = $interactor->handle($command);
 
-        return $this->validResponse($result, 'プレイヤーレーティングを取得しました。');
+        return $this->validResponse($result);
     }
 
     /**
@@ -62,6 +63,18 @@ class PlayerController extends Controller
 
         $result = $interactor->handle($command);
 
-        return $this->validResponse($result, 'プレイヤー基本情報を取得しました。');
+        return $this->validResponse($result);
+    }
+
+    /**
+     * プレイヤー対戦履歴
+     * @param GameHistoryListRequest $request
+     * @param int $userId
+     * @return json(...)
+     */
+    public function history(GameHistoryListRequest $request, $userId)
+    {
+        $result = [];
+        return $this->validResponse($result);
     }
 }

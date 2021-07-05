@@ -38,7 +38,7 @@ class GameRecordRepository implements GameRecordRepositoryInterface
     * @param User $user
     * @param Date $beginDate
     * @param Date|null $endDate
-    * @return array
+    * @return array<GamePlayerRecord>
     */
     public function listRaitingByUserWithDateRange(User $user, Date $beginDate, ?Date $endDate): array
     {
@@ -65,10 +65,10 @@ class GameRecordRepository implements GameRecordRepositoryInterface
     * 対戦履歴を日付範囲で取得する
     * @param Paginator
     * @param Date $beginDate
-    * @param Date|null $endDate
-    * @return array
+    * @param Date $endDate
+    * @return array<GameRecord>
     */
-    public function listHistoryByDateRange(Paginator $paginator, Date $beginDate, ?Date $endDate): array
+    public function listHistoryByDateRange(Paginator $paginator, Date $beginDate, Date $endDate): array
     {
         $gameRecords = EloquentGameRecordModel::with([
             'game_package',
@@ -93,6 +93,18 @@ class GameRecordRepository implements GameRecordRepositoryInterface
         }
 
         return $results;
+    }
+
+    /**
+    * 特定ユーザの対戦履歴を日付範囲で取得する
+    * @param Paginator
+    * @param Date $beginDate
+    * @param Date $endDate
+    * @return array<GamePlayerRecord>
+    */
+    public function listHistoryByUserWithDateRange(Paginator $paginator, Date $beginDate, Date $endDate): array
+    {
+        return [];
     }
 
     /**************************************************
