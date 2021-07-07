@@ -97,14 +97,38 @@ class GameRecordRepository implements GameRecordRepositoryInterface
 
     /**
     * 特定ユーザの対戦履歴を日付範囲で取得する
-    * @param Paginator
+    * @param User $user
+    * @param Paginator $paginator
     * @param Date $beginDate
     * @param Date $endDate
     * @return array<GamePlayerRecord>
     */
-    public function listHistoryByUserWithDateRange(Paginator $paginator, Date $beginDate, Date $endDate): array
+    public function listHistoryByUserWithDateRange(User $user, Paginator $paginator, Date $beginDate, Date $endDate): array
     {
-        return [];
+        $gameRecords = EloquentGameRecordModel::with([
+            'game_package',
+            'player_memories.player.user',
+            'map',
+            'rule',
+        ])
+        ->whereStartedAtByDateRange($beginDate, $endDate)
+        ->orderBy('id', 'DESC')
+        ->offset($paginator->getNextOffset())
+        ->limit($paginator->getLimit()->getValue())
+        ->whereHasByPlayerMemory($user->getPlayer()->getPlayerId())
+        ->get();
+
+        if (!$gameRecords) {
+            return [];
+        }
+
+        $results = [];
+
+        foreach ($gameRecords as $gameRecord) {
+            $results[] = $this->toGameRecord($gameRecord);
+        }
+
+        return $results;
     }
 
     /**************************************************

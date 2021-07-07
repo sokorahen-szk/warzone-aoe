@@ -7,14 +7,14 @@ use App\Traits\ApiResponser;
 use Package\Domain\Game\ValueObject\GameRecord\GameRecordMuEnabled;
 use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeCommand;
 use Package\Usecase\Player\GetProfile\PlayerGetProfileCommand;
-use Package\Usecase\Player\GetHistory\PlayerGetHistoryCommand;
+use Package\Usecase\Player\ListHistory\PlayerListHistoryCommand;
 
 use App\Http\Requests\Game\GameRaitingRequest;
 use App\Http\Requests\Game\GameHistoryListRequest;
-use Package\Usecase\Player\GetHistory\PlayerGetHistoryServiceInterface;
+use Package\Usecase\Player\ListHistory\PlayerListHistoryServiceInterface;
 use Package\Usecase\Player\PlayerList\PlayerListServiceInterface;
 use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeServiceInterface;
-use Package\Usecase\Player\GetProfile\PlayerGetProfileServiceInterface;
+use Package\Usecase\Player\GetProfile\PlayerListProfileServiceInterface;
 
 class PlayerController extends Controller
 {
@@ -71,14 +71,15 @@ class PlayerController extends Controller
 
     /**
      * プレイヤー対戦履歴
-     * @param PlayerGetHistoryServiceInterface $interactor
+     * @param PlayerListHistoryServiceInterface $interactor
      * @param GameHistoryListRequest $request
      * @param int $userId
      * @return json(...)
      */
-    public function history(PlayerGetHistoryServiceInterface $interactor, GameHistoryListRequest $request, $userId)
+    public function history(PlayerListHistoryServiceInterface $interactor, GameHistoryListRequest $request, $userId)
     {
-        $command = new PlayerGetHistoryCommand(
+        $command = new PlayerListHistoryCommand(
+            $userId,
             $request->input('page', 1),
             $request->input('limit', 10),
             $request->input('begin_date', null),

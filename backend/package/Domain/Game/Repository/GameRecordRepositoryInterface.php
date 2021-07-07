@@ -28,10 +28,11 @@ interface GameRecordRepositoryInterface
 
     /**
     * 特定ユーザの対戦履歴を日付範囲で取得する
-    * @param Paginator
+    * @param User $user
+    * @param Paginator $paginator
     * @param Date $beginDate
     * @param Date $endDate
     * @return array<GamePlayerRecord>
     */
-    public function listHistoryByUserWithDateRange(Paginator $paginator, Date $beginDate, Date $endDate): array;
+    public function listHistoryByUserWithDateRange(User $user, Paginator $paginator, Date $beginDate, Date $endDate): array;
 }
