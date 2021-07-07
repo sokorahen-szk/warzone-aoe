@@ -13,7 +13,7 @@ interface GameRecordRepositoryInterface
     * @param User $user
     * @param Date $beginDate
     * @param Date|null $endDate
-    * @return array
+    * @return array<GamePlayerRecord>
     */
     public function listRaitingByUserWithDateRange(User $user, Date $beginDate, ?Date $endDate): array;
 
@@ -21,8 +21,18 @@ interface GameRecordRepositoryInterface
     * 対戦履歴を日付範囲で取得する
     * @param Paginator
     * @param Date $beginDate
-    * @param Date|null $endDate
-    * @return array
+    * @param Date $endDate
+    * @return array<GameRecord>
     */
-    public function listHistoryByDateRange(Paginator $paginator, Date $beginDate, ?Date $endDate): array;
+    public function listHistoryByDateRange(Paginator $paginator, Date $beginDate, Date $endDate): array;
+
+    /**
+    * 特定ユーザの対戦履歴を日付範囲で取得する
+    * @param User $user
+    * @param Paginator $paginator
+    * @param Date $beginDate
+    * @param Date $endDate
+    * @return array<GamePlayerRecord>
+    */
+    public function listHistoryByUserWithDateRange(User $user, Paginator $paginator, Date $beginDate, Date $endDate): array;
 }

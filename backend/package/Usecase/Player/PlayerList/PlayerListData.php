@@ -1,14 +1,13 @@
 <?php
 
-namespace Package\Usecase\Player\GetList;
-
+namespace Package\Usecase\Player\PlayerList;
 use Package\Usecase\Data;
 
 /**
  * Data Transfer Object
  */
 
-class PlayerData extends Data {
+class PlayerListData extends Data {
   public $players;
 
   public function __construct(array $sources)

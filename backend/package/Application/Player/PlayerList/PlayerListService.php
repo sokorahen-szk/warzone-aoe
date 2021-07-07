@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Package\Application\Player\GetList;
+namespace Package\Application\Player\PlayerList;
 
-use Package\Usecase\Player\GetList\PlayerGetListServiceInterface;
 use Package\Domain\User\Repository\PlayerRepositoryInterface;
-use Package\Usecase\Player\GetList\PlayerData;
+use Package\Usecase\Player\PlayerList\PlayerListData;
+use Package\Usecase\Player\PlayerList\PlayerListServiceInterface;
 
-class PlayerGetListService implements PlayerGetListServiceInterface {
+class PlayerListService implements PlayerListServiceInterface {
   private $playerRepository;
 
   public function __construct(PlayerRepositoryInterface $playerRepository)
@@ -14,12 +14,12 @@ class PlayerGetListService implements PlayerGetListServiceInterface {
     $this->playerRepository = $playerRepository;
   }
 
-  public function handle(): PlayerData
+  public function handle(): PlayerListData
   {
     $players = $this->playerRepository->list();
     if (is_null($players)) {
         return null;
     }
-    return new PlayerData($players);
+    return new PlayerListData($players);
   }
 }
