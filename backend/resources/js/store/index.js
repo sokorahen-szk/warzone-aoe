@@ -9,6 +9,7 @@ import accountStore from '@/store/account'
 import playerStore from '@/store/player'
 import gameStore from '@/store/game'
 import adminStore from '@/store/admin'
+import warStore from '@/store/war'
 
 Vue.use(Vuex)
 
@@ -20,6 +21,7 @@ const store = new Vuex.Store({
     playerStore: playerStore,
     gameStore: gameStore,
     adminStore: adminStore,
+    warStore: warStore,
   },
   plugins: [createPersistedState(
     {

@@ -16,19 +16,19 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr class="tr py-2" v-for="d in data" :key="d.gameId">
+				<tr class="tr py-2" v-for="gameRecord in gameRecordList" :key="gameRecord.gameId">
 					<td class="text-center">
-						<div>{{d.gameStartDate}}</div>
-						<div>{{d.gameStartTime}}</div>
-						<div>
-							<Label>{{d.gamePackageName}}</Label>
-						</div>
+						<div>{{gameRecord.gameStartDate}}</div>
+						<div>{{gameRecord.gameStartTime}}</div>
+						<!-- <div>
+							<Label>{{gameRecord.gamePackageName}}</Label>
+						</div> -->
 					</td>
 					<td>
-						<template v-for="player in d.team1">
-						<v-row no-gutters class="py-2" :key="`table-team1-${player.id}`">
-							<v-col cols="2" class="text-center"><Avator /></v-col>
-							<v-col cols="5" class="py-2">{{player.name}}</v-col>
+						<template v-for="player in gameRecord.playerMemories[1]">
+						<v-row no-gutters class="py-2" :key="`table-team1-${player.playerId}`">
+							<v-col cols="2" class="text-center"><Avator :src="player.avatorImage"/></v-col>
+							<v-col cols="5" class="py-2">{{player.playerName}}</v-col>
 							<v-col cols="2" class="py-2">
 								{{player.rank}}
 								<span v-if="player.afterRank !== null">({{ addSign(player.afterRank) }})</span>
@@ -43,21 +43,21 @@
 						<v-row no-gutters class="py-2">
 							<v-col cols="7">
 								<Label
-									:color="status(d.winningTeam, 1) ? 'primary' : 'error'"
-									v-if="d.winningTeam"
+									:color="status(gameRecord.winningTeam, 1) ? 'primary' : 'error'"
+									v-if="gameRecord.winningTeam"
 								>
-									{{ status(d.winningTeam, 1) ? 'WIN' : 'LOSE' }}
+									{{ status(gameRecord.winningTeam, 1) ? 'WIN' : 'LOSE' }}
 								</Label>
 							</v-col>
-							<v-col cols="2" class="py-2">{{sum(d.team1, 'rank')}}</v-col>
-							<v-col cols="2" class="py-2">{{sum(d.team1, 'rate')}}</v-col>
+							<v-col cols="2" class="py-2">{{sum(gameRecord.playerMemories[1], 'rank')}}</v-col>
+							<v-col cols="2" class="py-2">{{sum(gameRecord.playerMemories[1], 'rate')}}</v-col>
 						</v-row>
 					</td>
 					<td>
-						<template v-for="player in d.team2">
-						<v-row no-gutters class="py-2" :key="`table-team1-${player.id}`">
-							<v-col cols="2" class="text-center"><Avator /></v-col>
-							<v-col cols="5" class="py-2">{{player.name}}</v-col>
+						<template v-for="player in gameRecord.playerMemories[2]">
+						<v-row no-gutters class="py-2" :key="`table-team1-${player.playerId}`">
+							<v-col cols="2" class="text-center"><Avator :src="player.avatorImage"/></v-col>
+							<v-col cols="5" class="py-2">{{player.playerName}}</v-col>
 							<v-col cols="2" class="py-2">
 								{{player.rank}}
 								<span v-if="player.afterRank !== null">({{ addSign(player.afterRank) }})</span>
@@ -72,14 +72,14 @@
 						<v-row no-gutters class="py-2">
 							<v-col cols="7">
 								<Label
-									:color="status(d.winningTeam, 2) ? 'primary' : 'error' "
-									v-if="d.winningTeam"
+									:color="status(gameRecord.winningTeam, 2) ? 'primary' : 'error' "
+									v-if="gameRecord.winningTeam"
 								>
-									{{ status(d.winningTeam, 2) ? 'WIN' : 'LOSE' }}
+									{{ status(gameRecord.winningTeam, 2) ? 'WIN' : 'LOSE' }}
 								</Label>
 							</v-col>
-							<v-col cols="2" class="py-2">{{sum(d.team2, 'rank')}}</v-col>
-							<v-col cols="2" class="py-2">{{sum(d.team2, 'rate')}}</v-col>
+							<v-col cols="2" class="py-2">{{sum(gameRecord.playerMemories[2], 'rank')}}</v-col>
+							<v-col cols="2" class="py-2">{{sum(gameRecord.playerMemories[2], 'rate')}}</v-col>
 						</v-row>
 					</td>
 				</tr>
@@ -89,33 +89,6 @@
 		<Pagination />
 	</div>
 </template>
-
-<style scoped>
-thead > tr {
-  background: #eee;
-}
-
-thead > tr > th {
-  height: 45px !important;
-}
-
-.w20 {
-	width: 20%;
-}
-
-.w40 {
-	width: 40%;
-}
-
-.tr:hover {
-  background: transparent !important;
-}
-
-.v-data-table td {
-	margin-bottom: 10px;
-}
-
-</style>
 
 <script>
 import Avator from '@atoms/Avator'
@@ -127,6 +100,9 @@ export default {
 		Avator,
 		Label,
 		Pagination
+	},
+	props: {
+		gameRecordList: Array,
 	},
 	data() {
 		return {
@@ -193,7 +169,34 @@ export default {
 				return `-${ Math.abs(num) }`
 			}
 			return '0';
-		}
+		},
+
 	}
 }
 </script>
+
+<style scoped>
+	thead > tr {
+		background: #eee;
+	}
+
+	thead > tr > th {
+		height: 45px !important;
+	}
+
+	.w20 {
+		width: 20%;
+	}
+
+	.w40 {
+		width: 40%;
+	}
+
+	.tr:hover {
+		background: transparent !important;
+	}
+
+	.v-data-table td {
+		margin-bottom: 10px;
+	}
+</style>

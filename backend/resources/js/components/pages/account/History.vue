@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import CommonWithRightColumnTemplate from '@templates/CommonWithRightColumnTemplate'
 import AccountRightMenu from '@organisms/AccountRightMenu'
 export default {
