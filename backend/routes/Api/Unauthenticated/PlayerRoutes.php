@@ -30,6 +30,14 @@ class PlayerRoutes {
 			Route::get('profile/{userId}', [PlayerController::class, 'profile'])
 			  ->name('player.profile')
 			  ->where('userId', '^[0-9]+$');
+
+			/**
+			 * プレイヤー対戦履歴取得
+			 * GET /api/player/history/{userId}
+			 */
+			Route::get('history/{userId}', [PlayerController::class, 'history'])
+			  ->name('player.history')
+			  ->where('userId', '^[0-9]+$');
 		});
 	}
 }

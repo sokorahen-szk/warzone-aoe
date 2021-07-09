@@ -163,3 +163,162 @@ paths:
                     }
                   ]
                 }
+  "/api/player/history/{userId}":
+    get:
+      summary: "対戦履歴API実装（個別ユーザ向け）"
+      description: ""
+      parameters: [
+          {
+              name: "begin_date",
+              type: "string",
+              in: "query",
+              description: "試合日付開始",
+              required: false
+          },
+          {
+              name: "end_date",
+              type: "string",
+              in: "query",
+              description: "試合日付終了",
+              required: false
+          },
+          {
+              name: "page",
+              type: "integer",
+              in: "query",
+              description: "ページ数（デフォルトは１ページ）",
+              required: false
+          },
+          {
+              name: "limit",
+              type: "integer",
+              in: "query",
+              description: "ページ数（デフォルトは１０件）",
+              required: false
+          }
+      ]
+      responses:
+        200:
+          description: "成功時のレスポンス"
+          schema:
+            type: "object"
+            properties:
+              isSuccess:
+                type: "boolean"
+              messages:
+                type: "string"
+                example: null
+              body:
+                type: "object"
+                example: {
+                  gameHistories: [
+                    {
+                      "gameRecordId": 12,
+                      "playerMemories": [
+                        {
+                          "playerMemoryId": 111,
+                          "playerId": 1,
+                          "team": 1,
+                          "playerName": "titan",
+                          "avatorImage": "/storage/profile/1.jpeg",
+                          "rate": 1600,
+                          "afterRate": 0,
+                          "rank": 26,
+                          "afterRank": 0
+                        },
+                        {
+                          "playerMemoryId": 112,
+                          "playerId": 2,
+                          "team": 1,
+                          "playerName": "nagoo",
+                          "avatorImage": "/storage/profile/2.jpeg",
+                          "rate": 1700,
+                          "afterRate": 0,
+                          "rank": 26,
+                          "afterRank": 0
+                        },
+                        {
+                          "playerMemoryId": 113,
+                          "playerId": 3,
+                          "team": 2,
+                          "playerName": "nagisa",
+                          "avatorImage": "/storage/profile/3.jpeg",
+                          "rate": 2000,
+                          "afterRate": 0,
+                          "rank": 26,
+                          "afterRank": 0
+                        },
+                        {
+                          "playerMemoryId": 114,
+                          "playerId": 4,
+                          "team": 2,
+                          "playerName": "nagisa",
+                          "avatorImage": "/storage/profile/3.jpeg",
+                          "rate": 2222,
+                          "afterRate": 0,
+                          "rank": 26,
+                          "afterRank": 0
+                        },
+                      ],
+                      "winningTeam": 2,
+                      "victoryPrediction": 29,
+                      "status": 1,
+                      "startedAt": "2021-12-20 15:02:00",
+                      "finishedAt": null
+                    },
+                    {
+                      "gameRecordId": 12,
+                      "playerMemories": [
+                        {
+                          "playerMemoryId": 111,
+                          "playerId": 1,
+                          "team": 1,
+                          "playerName": "titan",
+                          "avatorImage": "/storage/profile/1.jpeg",
+                          "rate": 1600,
+                          "afterRate": 1550,
+                          "rank": 26,
+                          "afterRank": 25
+                        },
+                        {
+                          "playerMemoryId": 112,
+                          "playerId": 2,
+                          "team": 1,
+                          "playerName": "nagoo",
+                          "avatorImage": "/storage/profile/2.jpeg",
+                          "rate": 1700,
+                          "afterRate": 1680,
+                          "rank": 26,
+                          "afterRank": 26
+                        },
+                        {
+                          "playerMemoryId": 113,
+                          "playerId": 3,
+                          "team": 2,
+                          "playerName": "nagisa",
+                          "avatorImage": "/storage/profile/3.jpeg",
+                          "rate": 2000,
+                          "afterRate": 2200,
+                          "rank": 26,
+                          "afterRank": 27
+                        },
+                        {
+                          "playerMemoryId": 114,
+                          "playerId": 4,
+                          "team": 2,
+                          "playerName": "nagisa",
+                          "avatorImage": "/storage/profile/3.jpeg",
+                          "rate": 2222,
+                          "afterRate": 2230,
+                          "rank": 26,
+                          "afterRank": 26
+                        },
+                      ],
+                      "winningTeam": 2,
+                      "victoryPrediction": 29,
+                      "status": 2,
+                      "startedAt": "2021-12-20 15:02:00",
+                      "finishedAt": "2021-12-20 15:02:10"
+                    }
+                  ]
+                }

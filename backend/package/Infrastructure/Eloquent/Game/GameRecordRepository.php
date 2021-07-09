@@ -29,6 +29,9 @@ use Package\Domain\User\ValueObject\Player\PlayerName;
 use Package\Domain\User\ValueObject\AvatorImage;
 use Package\Domain\System\Entity\Paginator;
 
+use Package\Domain\System\ValueObject\Description;
+use Package\Domain\System\ValueObject\Name;
+
 use Illuminate\Support\Collection;
 
 class GameRecordRepository implements GameRecordRepositoryInterface
@@ -38,7 +41,7 @@ class GameRecordRepository implements GameRecordRepositoryInterface
     * @param User $user
     * @param Date $beginDate
     * @param Date|null $endDate
-    * @return array
+    * @return array<GamePlayerRecord>
     */
     public function listRaitingByUserWithDateRange(User $user, Date $beginDate, ?Date $endDate): array
     {
@@ -65,10 +68,10 @@ class GameRecordRepository implements GameRecordRepositoryInterface
     * 対戦履歴を日付範囲で取得する
     * @param Paginator
     * @param Date $beginDate
-    * @param Date|null $endDate
-    * @return array
+    * @param Date $endDate
+    * @return array<GameRecord>
     */
-    public function listHistoryByDateRange(Paginator $paginator, Date $beginDate, ?Date $endDate): array
+    public function listHistoryByDateRange(Paginator $paginator, Date $beginDate, Date $endDate): array
     {
         $gameRecords = EloquentGameRecordModel::with([
             'game_package',
@@ -95,6 +98,42 @@ class GameRecordRepository implements GameRecordRepositoryInterface
         return $results;
     }
 
+    /**
+    * 特定ユーザの対戦履歴を日付範囲で取得する
+    * @param User $user
+    * @param Paginator $paginator
+    * @param Date $beginDate
+    * @param Date $endDate
+    * @return array<GamePlayerRecord>
+    */
+    public function listHistoryByUserWithDateRange(User $user, Paginator $paginator, Date $beginDate, Date $endDate): array
+    {
+        $gameRecords = EloquentGameRecordModel::with([
+            'game_package',
+            'player_memories.player.user',
+            'map',
+            'rule',
+        ])
+        ->whereStartedAtByDateRange($beginDate, $endDate)
+        ->orderBy('id', 'DESC')
+        ->offset($paginator->getNextOffset())
+        ->limit($paginator->getLimit()->getValue())
+        ->whereHasByPlayerMemory($user->getPlayer()->getPlayerId())
+        ->get();
+
+        if (!$gameRecords) {
+            return [];
+        }
+
+        $results = [];
+
+        foreach ($gameRecords as $gameRecord) {
+            $results[] = $this->toGameRecord($gameRecord);
+        }
+
+        return $results;
+    }
+
     /**************************************************
      * PRIVATE
      **************************************************/
@@ -106,6 +145,7 @@ class GameRecordRepository implements GameRecordRepositoryInterface
 
         return new GameRecord([
             'gameRecordId'      => new GameRecordId($gameRecord->id),
+            'gamePackage'       => $this->toGamePackage($gameRecord->game_package),
             'playerMemories'    => $this->toPlayerMemories($gameRecord->player_memories),
             'winningTeam'       => new GameTeam($gameRecord->winning_team),
             'victoryPrediction' => new VictoryPrediction($gameRecord->victory_prediction),
@@ -130,6 +170,18 @@ class GameRecordRepository implements GameRecordRepositoryInterface
             'status'            => new GameStatus($gameRecord->status),
             'startedAt'         => new Datetime($gameRecord->started_at),
             'finishedAt'        => new Datetime($gameRecord->finished_at),
+        ]);
+    }
+
+    private function toGamePackage($gamePackage): ?GamePackage
+    {
+        if (!$gamePackage) {
+            return null;
+        }
+        return new GamePackage([
+            'gamePackageId' => new GamePackageId($gamePackage->id),
+            'name'          => new Name($gamePackage->name),
+            'description'   => new Description($gamePackage->description),
         ]);
     }
 

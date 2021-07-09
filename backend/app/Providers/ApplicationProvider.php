@@ -25,8 +25,8 @@ class ApplicationProvider extends ServiceProvider
             \Package\Application\Account\Register\AccountRegisterService::class
         );
         $this->app->bind(
-            \Package\Usecase\Player\GetList\PlayerGetListServiceInterface::class,
-            \Package\Application\Player\GetList\PlayerGetListService::class
+            \Package\Usecase\Player\PlayerList\PlayerListServiceInterface::class,
+            \Package\Application\Player\PlayerList\PlayerListService::class
         );
         $this->app->bind(
             \Package\Usecase\Account\UpdateAvator\AccountUpdateAvatorServiceInterface::class,
@@ -71,6 +71,10 @@ class ApplicationProvider extends ServiceProvider
         $this->app->bind(
             \Package\Usecase\Game\GameHistory\GetList\GameHistoryListServiceInterface::class,
             \Package\Application\Game\GameHistory\GetList\GameHistoryListService::class
+        );
+        $this->app->bind(
+            \Package\Usecase\Player\ListHistory\PlayerListHistoryServiceInterface::class,
+            \Package\Application\Player\ListHistory\PlayerListHistoryService::class
         );
     }
 
