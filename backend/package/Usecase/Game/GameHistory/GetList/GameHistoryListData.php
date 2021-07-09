@@ -13,6 +13,10 @@ class GameHistoryListData extends Data {
     foreach ($sources as $source) {
       $response[] = [
         'gameRecordId'        => $source->getGameRecordId()->getValue(),
+        'gamePackage'         => [
+          'id'                      => $source->getGamePackage()->getGamePackageId()->getValue(),
+          'name'                    => $source->getGamePackage()->getName()->getValue(),
+        ],
         'playerMemories'      => $this->toPlayerMemories($source->getPlayerMemories()),
         'winningTeam'         => $source->getWinningTeam()->getValue(),
         'victoryPrediction'   => $source->getVictoryPrediction()->getValue(),
@@ -25,21 +29,21 @@ class GameHistoryListData extends Data {
     $this->gameHistories = $response;
   }
 
-  private function toPlayerMemories(array $playerMemories): array
+  private function toPlayerMemories(array $sources): array
   {
     $list = [];
 
-    foreach ($playerMemories as $playerMemory) {
+    foreach ($sources as $source) {
       $list[] = [
-        'playerMemoryId'  => $playerMemory->getPlayerMemoryId()->getValue(),
-        'playerId'        => $playerMemory->getplayerId()->getValue(),
-        'team'            => $playerMemory->getTeam()->getValue(),
-        'playerName'      => $playerMemory->getplayer()->getPlayerName()->getValue(),
-        'avatorImage'     => $playerMemory->getplayer()->getUser()->getAvatorImage()->getValue(),
-        'rate'            => $playerMemory->getRate()->getValue(),
-        'afterRate'       => $playerMemory->getAfterRate()->getValue(),
-        'rank'            => $playerMemory->getMu()->getRank(),
-        'afterRank'       => $playerMemory->getAfterMu()->getRank(),
+        'playerMemoryId'  => $source->getPlayerMemoryId()->getValue(),
+        'playerId'        => $source->getplayerId()->getValue(),
+        'team'            => $source->getTeam()->getValue(),
+        'playerName'      => $source->getplayer()->getPlayerName()->getValue(),
+        'avatorImage'     => $source->getplayer()->getUser()->getAvatorImage()->getValue(),
+        'rate'            => $source->getRate()->getValue(),
+        'afterRate'       => $source->getAfterRate()->getValue(),
+        'rank'            => $source->getMu()->getRank(),
+        'afterRank'       => $source->getAfterMu()->getRank(),
       ];
     }
     return $list;

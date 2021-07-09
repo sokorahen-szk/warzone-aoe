@@ -17,6 +17,10 @@ class PlayerListHistoryData extends Data
 		foreach ($sources as $source) {
 		  $response[] = [
 			'gameRecordId'        => $source->getGameRecordId()->getValue(),
+			'gamePackage'         => [
+				'id'                      => $source->getGamePackage()->getGamePackageId()->getValue(),
+				'name'                    => $source->getGamePackage()->getName()->getValue(),
+			],
 			'playerMemories'      => $this->toPlayerMemories($source->getPlayerMemories()),
 			'winningTeam'         => $source->getWinningTeam()->getValue(),
 			'victoryPrediction'   => $source->getVictoryPrediction()->getValue(),

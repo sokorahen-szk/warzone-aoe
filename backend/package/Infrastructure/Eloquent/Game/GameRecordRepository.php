@@ -29,6 +29,9 @@ use Package\Domain\User\ValueObject\Player\PlayerName;
 use Package\Domain\User\ValueObject\AvatorImage;
 use Package\Domain\System\Entity\Paginator;
 
+use Package\Domain\System\ValueObject\Description;
+use Package\Domain\System\ValueObject\Name;
+
 use Illuminate\Support\Collection;
 
 class GameRecordRepository implements GameRecordRepositoryInterface
@@ -142,6 +145,7 @@ class GameRecordRepository implements GameRecordRepositoryInterface
 
         return new GameRecord([
             'gameRecordId'      => new GameRecordId($gameRecord->id),
+            'gamePackage'       => $this->toGamePackage($gameRecord->game_package),
             'playerMemories'    => $this->toPlayerMemories($gameRecord->player_memories),
             'winningTeam'       => new GameTeam($gameRecord->winning_team),
             'victoryPrediction' => new VictoryPrediction($gameRecord->victory_prediction),
@@ -166,6 +170,18 @@ class GameRecordRepository implements GameRecordRepositoryInterface
             'status'            => new GameStatus($gameRecord->status),
             'startedAt'         => new Datetime($gameRecord->started_at),
             'finishedAt'        => new Datetime($gameRecord->finished_at),
+        ]);
+    }
+
+    private function toGamePackage($gamePackage): ?GamePackage
+    {
+        if (!$gamePackage) {
+            return null;
+        }
+        return new GamePackage([
+            'gamePackageId' => new GamePackageId($gamePackage->id),
+            'name'          => new Name($gamePackage->name),
+            'description'   => new Description($gamePackage->description),
         ]);
     }
 
