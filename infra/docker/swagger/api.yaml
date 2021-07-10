@@ -161,7 +161,8 @@ paths:
                       "startedAt": "2021-12-20 15:02:00",
                       "finishedAt": null
                     }
-                  ]
+                  ],
+                  gameHistoryTotalCount: 222
                 }
   "/api/player/history/{userId}":
     get:
@@ -320,5 +321,6 @@ paths:
                       "startedAt": "2021-12-20 15:02:00",
                       "finishedAt": "2021-12-20 15:02:10"
                     }
-                  ]
+                  ],
+                  playerHistoryTotalCount: 122
                 }
