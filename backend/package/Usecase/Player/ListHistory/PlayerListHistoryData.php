@@ -10,8 +10,9 @@ use Package\Usecase\Data;
 class PlayerListHistoryData extends Data
 {
 	public $playerHistories;
+	public $playerHistoryTotalCount;
 
-	public function __construct($sources)
+	public function __construct(array $sources, int $count)
 	{
 		$response = [];
 		foreach ($sources as $source) {
@@ -31,6 +32,7 @@ class PlayerListHistoryData extends Data
 		}
 
 		$this->playerHistories = $response;
+		$this->playerHistoryTotalCount = $count;
 	}
 
 	private function toPlayerMemories(array $playerMemories): array

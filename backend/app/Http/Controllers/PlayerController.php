@@ -14,7 +14,7 @@ use App\Http\Requests\Game\GameHistoryListRequest;
 use Package\Usecase\Player\ListHistory\PlayerListHistoryServiceInterface;
 use Package\Usecase\Player\PlayerList\PlayerListServiceInterface;
 use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeServiceInterface;
-use Package\Usecase\Player\GetProfile\PlayerListProfileServiceInterface;
+use Package\Usecase\Player\GetProfile\PlayerGetProfileServiceInterface;
 
 class PlayerController extends Controller
 {

@@ -99,6 +99,20 @@ class GameRecordRepository implements GameRecordRepositoryInterface
     }
 
     /**
+    * 対戦履歴を日付範囲で取得し、総件数を返す
+    * @param Date $beginDate
+    * @param Date $endDate
+    * @return int
+    */
+    public function listHistoryByDateRangeCount(Date $beginDate, Date $endDate): int
+    {
+        $count = EloquentGameRecordModel::whereStartedAtByDateRange($beginDate, $endDate)
+        ->count();
+
+        return $count;
+    }
+
+    /**
     * 特定ユーザの対戦履歴を日付範囲で取得する
     * @param User $user
     * @param Paginator $paginator
@@ -132,6 +146,22 @@ class GameRecordRepository implements GameRecordRepositoryInterface
         }
 
         return $results;
+    }
+
+    /**
+    * 特定ユーザの対戦履歴を日付範囲で取得し、総件数を返す
+    * @param User $user
+    * @param Date $beginDate
+    * @param Date $endDate
+    * @return int
+    */
+    public function listHistoryByUserWithDateRangeCount(User $user, Date $beginDate, Date $endDate): int
+    {
+        $count = EloquentGameRecordModel::whereStartedAtByDateRange($beginDate, $endDate)
+        ->whereHasByPlayerMemory($user->getPlayer()->getPlayerId())
+        ->count();
+
+        return $count;
     }
 
     /**************************************************

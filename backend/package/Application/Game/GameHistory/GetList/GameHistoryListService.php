@@ -33,6 +33,8 @@ class GameHistoryListService implements GameHistoryListServiceInterface {
 			$paginator, $beginDate, $endDate
 		);
 
-		return new GameHistoryListData($gameRecords);
+		$gameRecordTotalCount = $this->gameRecordRepository->listHistoryByDateRangeCount($beginDate, $endDate);
+
+		return new GameHistoryListData($gameRecords, $gameRecordTotalCount);
 	}
 }
