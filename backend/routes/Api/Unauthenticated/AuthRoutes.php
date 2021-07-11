@@ -4,6 +4,7 @@ namespace Routes\Api\Unauthenticated;
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\AccountController;
 
 class AuthRoutes {
 	public static function routes()

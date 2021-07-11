@@ -47,6 +47,10 @@ class PlayerListHistoryService implements PlayerListHistoryServiceInterface {
 			$user, $paginator, $beginDate, $endDate
 		);
 
-		return new PlayerListHistoryData($gameRecords);
+		$gameRecordTotalCount = $this->gameRecordRepository->listHistoryByUserWithDateRangeCount(
+			$user, $beginDate, $endDate
+		);
+
+		return new PlayerListHistoryData($gameRecords, $gameRecordTotalCount);
 	}
 }
