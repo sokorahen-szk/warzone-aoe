@@ -3,6 +3,7 @@
 namespace Package\Usecase\Player\ListHistory;
 
 use Package\Usecase\Data;
+use Package\Domain\System\Entity\ApiPaginator;
 
 /**
  * Data Transfer Object
@@ -12,7 +13,7 @@ class PlayerListHistoryData extends Data
 	public $playerHistories;
 	public $playerHistoryTotalCount;
 
-	public function __construct(array $sources, int $count)
+	public function __construct(array $sources, ApiPaginator $apiPaginator)
 	{
 		$response = [];
 		foreach ($sources as $source) {
@@ -32,7 +33,7 @@ class PlayerListHistoryData extends Data
 		}
 
 		$this->playerHistories = $response;
-		$this->playerHistoryTotalCount = $count;
+		$this->paginator = $apiPaginator->getPaginator();
 	}
 
 	private function toPlayerMemories(array $playerMemories): array

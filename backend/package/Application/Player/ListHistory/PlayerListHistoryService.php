@@ -12,6 +12,7 @@ use Package\Domain\System\Entity\Paginator;
 use Package\Domain\System\ValueObject\Date;
 use Package\Domain\System\ValueObject\Offset;
 use Package\Domain\System\ValueObject\Limit;
+use Package\Domain\System\Entity\ApiPaginator;
 
 class PlayerListHistoryService implements PlayerListHistoryServiceInterface {
 	private $userRepository;
@@ -51,6 +52,12 @@ class PlayerListHistoryService implements PlayerListHistoryServiceInterface {
 			$user, $beginDate, $endDate
 		);
 
-		return new PlayerListHistoryData($gameRecords, $gameRecordTotalCount);
+		$apiPaginator = new ApiPaginator([
+			'currentPage' 	=> $command->page,
+			'totalCount' 	=> $gameRecordTotalCount,
+			'limit' 		=> $command->limit,
+		]);
+
+		return new PlayerListHistoryData($gameRecords, $apiPaginator);
 	}
 }

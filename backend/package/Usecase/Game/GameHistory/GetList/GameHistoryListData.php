@@ -3,12 +3,13 @@
 namespace Package\Usecase\Game\GameHistory\GetList;
 
 use Package\Usecase\Data;
+use Package\Domain\System\Entity\ApiPaginator;
 
 class GameHistoryListData extends Data {
   public $gameHistories;
   public $gameHistoryTotalCount;
 
-  public function __construct(array $sources, int $count)
+  public function __construct(array $sources, ApiPaginator $apiPaginator)
   {
     $response = [];
     foreach ($sources as $source) {
@@ -28,7 +29,7 @@ class GameHistoryListData extends Data {
     }
 
     $this->gameHistories = $response;
-    $this->gameHistoryTotalCount = $count;
+		$this->paginator = $apiPaginator->getPaginator();
   }
 
   private function toPlayerMemories(array $sources): array
