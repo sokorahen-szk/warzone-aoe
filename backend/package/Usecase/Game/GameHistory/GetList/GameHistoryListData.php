@@ -7,7 +7,7 @@ use Package\Domain\System\Entity\ApiPaginator;
 
 class GameHistoryListData extends Data {
   public $gameHistories;
-  public $gameHistoryTotalCount;
+  public $paginator;
 
   public function __construct(array $sources, ApiPaginator $apiPaginator)
   {
