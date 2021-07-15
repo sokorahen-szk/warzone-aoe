@@ -9,6 +9,7 @@ use Package\Usecase\Game\GameMap\GetList\GameMapListServiceInterface;
 use Package\Usecase\Game\GameHistory\GetList\GameHistoryListServiceInterface;
 use Package\Usecase\Game\GameHistory\GetList\GameHistoryListCommand;
 use App\Http\Requests\Game\GameHistoryListRequest;
+use App\Http\Requests\Game\GameCreateTeamDivisionRequest;
 
 class GameController extends Controller
 {
@@ -57,5 +58,15 @@ class GameController extends Controller
         );
         $result = $interactor->handle($command);
         return $this->validResponse($result->getVars());
+    }
+
+    /**
+     * ゲームチーム分け
+     * GET /api/game/create/team_division
+     * @param GameCreateTeamDivisionRequest $request
+     */
+    public function teamDivision(GameCreateTeamDivisionRequest $request)
+    {
+        // TODO: ここにinteractorを
     }
 }

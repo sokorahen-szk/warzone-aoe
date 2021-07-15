@@ -26,6 +26,12 @@ class GameRoutes {
 			 * GET /api/game/history/list
 			 */
 			Route::get('history/list', [GameController::class, 'listHistory'])->name('game.history.list');
+
+			/**
+			 * ゲームチーム分け
+			 * POST /api/game/create/team_division
+			 */
+			Route::post('/create/team_division', [GameController::class, 'teamDivision'])->name('game.create.team_division');
 		});
 	}
 }
