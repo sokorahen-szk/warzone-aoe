@@ -5,6 +5,9 @@
       <GameRecordTable
         v-else
         :gameRecordList="gameRecordList"
+        :gameRecordTotalPage="gameRecordTotalPage"
+        :currentPage="currentPage"
+        @pageChange="pageChange"
       />
     </template>
   </CommonOneColumnTemplate>
@@ -25,37 +28,60 @@ export default {
   },
   data() {
     return {
-      isLoading: false
+      isLoading: false,
+      currentPage: 1,
+      gameRecordList: []
     }
   },
   computed: {
     ...mapGetters({
       getDeviceType: 'breakpointStore/getDeviceType',
-      gameRecordList: 'warStore/getWarHistoryList'
+      gameRecordTotalPage: 'warStore/getAllTotalPage',
     }),
   },
   methods: {
     ...mapActions({
-      fetchWarHistoryListToStore: 'warStore/fetchWarHistoryList'
+      fetchWarHistoryListToStore: 'warStore/fetchAllWarHistoryList'
     }),
-    fetchWarHistoryList() {
+    fetchWarHistoryList(page) {
+      // 対象ページがキャッシュ済みなら、キャッシュデータを使用する
+      if(this.existTargetPage(page)){
+        this.setGameRecordList(page)
+        return
+      }
       this.isLoading = true
       new Promise((resolve, reject) => {
-        resolve(this.fetchWarHistoryListToStore())
+        resolve(this.fetchWarHistoryListToStore(page))
       })
       .then(res => {
-        // 取得に成功した時の処理
+        this.setGameRecordList(page)
       })
       .catch(err => {
-        reject(err);
+        reject(err)
       })
       .finally(() => {
-        this.isLoading = false;
+        this.isLoading = false
       })
+    },
+    pageChange(val) {
+      this.currentPage = val
+      this.fetchWarHistoryList(this.currentPage)
+    },
+    setGameRecordList(page) {
+      if(!page){
+        return
+      }
+      this.gameRecordList = this.$store.getters['warStore/getAllWarHistoryList'](page)
+    },
+    existTargetPage(page) {
+      if(!page){
+        return false
+      }
+      return this.$store.getters['warStore/existAllTargetPage'](page)
     }
   },
   created() {
-    this.fetchWarHistoryList();
+    this.fetchWarHistoryList(this.currentPage)
   },
 }
 </script>

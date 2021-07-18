@@ -20,9 +20,9 @@
 					<td class="text-center">
 						<div>{{gameRecord.gameStartDate}}</div>
 						<div>{{gameRecord.gameStartTime}}</div>
-						<!-- <div>
-							<Label>{{gameRecord.gamePackageName}}</Label>
-						</div> -->
+						<div>
+							<Label :color="'success'">{{gameRecord.gamePackage.name}}</Label>
+						</div>
 					</td>
 					<td>
 						<template v-for="player in gameRecord.playerMemories[1]">
@@ -86,7 +86,11 @@
 			</tbody>
 		</template>
 		</v-simple-table>
-		<Pagination />
+		<Pagination
+			:current="currentPage"
+			:length="gameRecordTotalPage"
+			@change="(page) => $emit('pageChange', page)"
+		/>
 	</div>
 </template>
 
@@ -103,50 +107,8 @@ export default {
 	},
 	props: {
 		gameRecordList: Array,
-	},
-	data() {
-		return {
-			data: [
-				{
-					gameId: 1,
-					gameStartDate: "2020-01-01",
-					gameStartTime: "00:00",
-					gamePackageName: "AoE2DE",
-					winningTeam: null,
-					team1: [
-						{id: 1, avator: null, name: "AAA", rank: 27, afterRank: null, rate: 2500, afterRate: null},
-						{id: 2, avator: null, name: "BBB", rank: 25, afterRank: null, rate: 2333, afterRate: null},
-						{id: 3, avator: null, name: "CCCCCCCCCC", rank: 25, afterRank: null, rate: 2110, afterRate: null},
-						{id: 4, avator: null, name: "DDD", rank: 22, afterRank: null, rate: 2000, afterRate: null},
-					],
-					team2: [
-						{id: 1, avator: null, name: "AAA", rank: 27, afterRank: null, rate: 2500, afterRate: null},
-						{id: 2, avator: null, name: "BBB", rank: 25, afterRank: null, rate: 2333, afterRate: null},
-						{id: 3, avator: null, name: "CCCCCCCCCC", rank: 25, afterRank: null, rate: 2110, afterRate: null},
-						{id: 4, avator: null, name: "DDD", rank: 22, afterRank: null, rate: 2000, afterRate: null},
-					],
-				},
-				{
-					gameId: 2,
-					gameStartDate: "2020-01-01",
-					gameStartTime: "00:00",
-					gamePackageName: "AoE2DE",
-					winningTeam: 1,
-					team1: [
-						{id: 1, avator: null, name: "AAA", rank: 27, afterRank: -1, rate: 2500, afterRate: 30},
-						{id: 2, avator: null, name: "BBB", rank: 25, afterRank: -2, rate: 2333, afterRate: 35},
-						{id: 3, avator: null, name: "CCCCCCCCCC", rank: 25, afterRank: 0, rate: 2110, afterRate: 5},
-						{id: 4, avator: null, name: "DDD", rank: 22, afterRank: -1, rate: 2000, afterRate: 10},
-					],
-					team2: [
-						{id: 1, avator: null, name: "AAA", rank: 27, afterRank: +1, rate: 2500, afterRate: 30},
-						{id: 2, avator: null, name: "BBB", rank: 25, afterRank: +2, rate: 2333, afterRate: 35},
-						{id: 3, avator: null, name: "CCCCCCCCCC", rank: 25, afterRank: 0, rate: 2110, afterRate: 5},
-						{id: 4, avator: null, name: "DDD", rank: 22, afterRank: +1, rate: 2000, afterRate: 10},
-					],
-				},
-			]
-		}
+		currentPage: Number,
+		gameRecordTotalPage: Number
 	},
 	methods: {
 		sum(d, key) {
