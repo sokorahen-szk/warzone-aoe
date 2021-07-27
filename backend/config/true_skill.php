@@ -12,8 +12,8 @@ return [
 
 	'requests' => [
 		'default_skill' 			=> [
-			'method' 	=> 'GET',
-			'uri'		=>	'v2/get/default_skill',
+			'method' 		=> 'GET',
+			'uri'			=>	'v2/get/default_skill',
 		],
 		'calc_skill' 				=> [
 			'method' 		=> 'POST',
