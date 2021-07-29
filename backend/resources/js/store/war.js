@@ -1,3 +1,5 @@
+import dayjs from 'dayjs'
+
 const state = {
   // 全対戦履歴
   allWarHistoryList: {
@@ -74,8 +76,8 @@ const mutations = {
     let value = _.orderBy(warHistoryList.value, 'startedAt', 'desc')
     value = _.map(value, warHistory => {
       // 日付と時間に分割
-      warHistory.gameStartDate = warHistory.startedAt.split(' ')[0]
-      warHistory.gameStartTime = warHistory.startedAt.split(' ')[1]
+      warHistory.gameStartDate = dayjs(warHistory.startedAt).format('YYYY-MM-DD')
+      warHistory.gameStartTime = dayjs(warHistory.startedAt).format('HH:mm:ss')
       // チーム単位でプレイヤーをグループ化
       const playerMemories = _.groupBy(warHistory.playerMemories, 'team')
       warHistory.playerMemories = playerMemories
@@ -94,8 +96,8 @@ const mutations = {
     let value = _.orderBy(warHistoryList.value, 'startedAt', 'desc')
     value = _.map(value, warHistory => {
       // 日付と時間に分割
-      warHistory.gameStartDate = warHistory.startedAt.split(' ')[0]
-      warHistory.gameStartTime = warHistory.startedAt.split(' ')[1]
+      warHistory.gameStartDate = dayjs(warHistory.startedAt).format('YYYY-MM-DD')
+      warHistory.gameStartTime = dayjs(warHistory.startedAt).format('HH:mm:ss')
       // チーム単位でプレイヤーをグループ化
       const playerMemories = _.groupBy(warHistory.playerMemories, 'team')
       warHistory.playerMemories = playerMemories
@@ -114,8 +116,8 @@ const mutations = {
     let value = _.orderBy(warHistoryList.value, 'startedAt', 'desc')
     value = _.map(value, warHistory => {
       // 日付と時間に分割
-      warHistory.gameStartDate = warHistory.startedAt.split(' ')[0]
-      warHistory.gameStartTime = warHistory.startedAt.split(' ')[1]
+      warHistory.gameStartDate = dayjs(warHistory.startedAt).format('YYYY-MM-DD')
+      warHistory.gameStartTime = dayjs(warHistory.startedAt).format('HH:mm:ss')
       // チーム単位でプレイヤーをグループ化
       const playerMemories = _.groupBy(warHistory.playerMemories, 'team')
       warHistory.playerMemories = playerMemories
