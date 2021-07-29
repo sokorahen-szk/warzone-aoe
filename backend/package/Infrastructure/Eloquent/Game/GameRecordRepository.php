@@ -135,17 +135,13 @@ class GameRecordRepository implements GameRecordRepositoryInterface
         ->whereHasByPlayerMemory($user->getPlayer()->getPlayerId())
         ->get();
 
-        if (!$gameRecords) {
-            return [];
-        }
-
-        $results = [];
+        $resources = [];
 
         foreach ($gameRecords as $gameRecord) {
-            $results[] = $this->toGameRecord($gameRecord);
+            $resources[] = $this->toGameRecord($gameRecord);
         }
 
-        return $results;
+        return $resources;
     }
 
     /**
@@ -158,10 +154,30 @@ class GameRecordRepository implements GameRecordRepositoryInterface
     public function listHistoryByUserWithDateRangeCount(User $user, Date $beginDate, Date $endDate): int
     {
         $count = EloquentGameRecordModel::whereStartedAtByDateRange($beginDate, $endDate)
-        ->whereHasByPlayerMemory($user->getPlayer()->getPlayerId())
+            ->whereHasByPlayerMemory($user->getPlayer()->getPlayerId())
         ->count();
 
         return $count;
+    }
+
+    /**
+     * 特定のステータスでデータを抽出する
+     * @param GameStatus $status
+     * @return array<GamePlayerRecord>
+     */
+    public function listHistoryByStatus(GameStatus $status): array
+    {
+        $gameRecords = EloquentGameRecordModel::with('player_memories')
+        ->where('status', $status->getValue())
+        ->get();
+
+        $resources = [];
+
+        foreach ($gameRecords as $gameRecord) {
+            $resources[] = $this->toGameRecord($gameRecord);
+        }
+
+        return $resources;
     }
 
     /**************************************************
