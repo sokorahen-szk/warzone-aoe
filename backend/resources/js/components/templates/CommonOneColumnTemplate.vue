@@ -5,7 +5,7 @@
       <v-col cols="12">
         <v-sheet
           :color="backGround"
-          class="pa-3"
+          :class="sheetPaClass"
           :elevation="elevation"
         >
           <slot name="container"></slot>
@@ -22,6 +22,7 @@ export default {
     backGround: {type: String, default: 'grey lighten-4'},
     elevation: {type: [String, Number], default: 0},
     device: {type: String},
+    sheetPaClass: {type: String, default: null}
   },
   data() {
     return {

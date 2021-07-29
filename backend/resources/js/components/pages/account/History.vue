@@ -25,7 +25,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import CommonWithRightColumnTemplate from '@templates/CommonWithRightColumnTemplate'
 import AccountRightMenu from '@organisms/AccountRightMenu'
-import GameRecordTable from '@organisms/GameRecordTable'
+import GameRecordTable from '@organisms/pc/GameRecordTable'
 import Loading from '@atoms/Loading'
 
 export default {
@@ -56,9 +56,9 @@ export default {
     }),
     fetchWarHistoryList(page) {
       // 対象ページがキャッシュ済みなら、キャッシュデータを使用する
-      console.log(this.existTargetPage(page))
       if(this.existTargetPage(page)){
         this.setGameRecordList(page)
+
         return
       }
       this.isLoading = true
@@ -94,6 +94,11 @@ export default {
   },
   created() {
     this.fetchWarHistoryList(this.currentPage)
+  },
+  watch: {
+    gameRecordList() {
+      window.scrollTo(0, 0)
+    }
   },
 }
 </script>

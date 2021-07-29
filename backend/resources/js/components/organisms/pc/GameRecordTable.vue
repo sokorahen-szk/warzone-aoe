@@ -8,10 +8,26 @@
 						日付
 					</th>
 					<th class="text-center w40">
-						チーム1
+						<v-row no-gutters class="py-1">
+							<v-col>チーム1</v-col>
+						</v-row>
+						<v-row no-gutters class="py-1">
+							<v-col cols="2"></v-col>
+							<v-col cols="5" class="py-1 text-left">プレイヤー</v-col>
+							<v-col cols="2" class="py-1 text-left">ランク</v-col>
+							<v-col cols="3" class="py-1 text-left">レート</v-col>
+						</v-row>
 					</th>
 					<th class="text-center w40">
-						チーム2
+						<v-row no-gutters class="py-1">
+							<v-col>チーム2</v-col>
+						</v-row>
+						<v-row no-gutters class="py-1">
+							<v-col cols="2"></v-col>
+							<v-col cols="5" class="py-1 text-left">プレイヤー</v-col>
+							<v-col cols="2" class="py-1 text-left">ランク</v-col>
+							<v-col cols="3" class="py-1 text-left">レート</v-col>
+						</v-row>
 					</th>
 				</tr>
 			</thead>
@@ -108,7 +124,7 @@ export default {
 	props: {
 		gameRecordList: Array,
 		currentPage: Number,
-		gameRecordTotalPage: Number
+		gameRecordTotalPage: Number,
 	},
 	methods: {
 		sum(d, key) {
@@ -138,6 +154,15 @@ export default {
 </script>
 
 <style scoped>
+	table {
+		position: relative;
+	}
+
+	/* thead {
+		position: fixed;
+		width: 100%;
+	} */
+
 	thead > tr {
 		background: #eee;
 	}

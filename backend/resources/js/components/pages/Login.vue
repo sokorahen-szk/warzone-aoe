@@ -2,6 +2,7 @@
   <CommonOneColumnTemplate
     elevation="2"
     :device="getDeviceType"
+    :sheetPaClass="'pa-3'"
   >
     <template slot="header">
       <Alert :properties="alert" dense />

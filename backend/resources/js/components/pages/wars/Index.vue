@@ -1,21 +1,33 @@
 <template>
-  <CommonOneColumnTemplate>
+  <CommonOneColumnTemplate :device="deviceType">
     <template slot="container">
       <Loading v-if="isLoading" />
-      <GameRecordTable
-        v-else
-        :gameRecordList="gameRecordList"
-        :gameRecordTotalPage="gameRecordTotalPage"
-        :currentPage="currentPage"
-        @pageChange="pageChange"
-      />
+      <div v-else>
+        <GameRecordTablePc
+          v-if="deviceType == 'pc'"
+          :gameRecordList="gameRecordList"
+          :gameRecordTotalPage="gameRecordTotalPage"
+          :currentPage="currentPage"
+          :deviceType="deviceType"
+          @pageChange="pageChange"
+        />
+        <GameRecordTableSp
+          v-else
+          :gameRecordList="gameRecordList"
+          :gameRecordTotalPage="gameRecordTotalPage"
+          :currentPage="currentPage"
+          :deviceType="deviceType"
+          @pageChange="pageChange"
+        />
+      </div>
     </template>
   </CommonOneColumnTemplate>
 </template>
 
 <script>
 import CommonOneColumnTemplate from '@templates/CommonOneColumnTemplate'
-import GameRecordTable from '@organisms/GameRecordTable'
+import GameRecordTablePc from '@organisms/pc/GameRecordTable'
+import GameRecordTableSp from '@organisms/sp/GameRecordTable'
 import { mapGetters, mapActions } from 'vuex'
 import Loading from '@atoms/Loading'
 
@@ -23,7 +35,8 @@ export default {
   name: 'Index',
   components: {
     CommonOneColumnTemplate,
-    GameRecordTable,
+    GameRecordTablePc,
+    GameRecordTableSp,
     Loading,
   },
   data() {
@@ -35,7 +48,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getDeviceType: 'breakpointStore/getDeviceType',
+      deviceType: 'breakpointStore/getDeviceType',
       gameRecordTotalPage: 'warStore/getAllTotalPage',
     }),
   },
@@ -82,6 +95,11 @@ export default {
   },
   created() {
     this.fetchWarHistoryList(this.currentPage)
+  },
+  watch: {
+    gameRecordList() {
+      window.scrollTo(0, 0)
+    }
   },
 }
 </script>
