@@ -1,22 +1,31 @@
 <template>
   <CommonWithRightColumnTemplate
     outlined
-    :device="getDeviceType"
+    :device="deviceType"
   >
     <template slot="right">
       <AccountRightMenu />
     </template>
     <template slot="container">
-      <v-container>
-        <Loading v-if="isLoading" />
-        <GameRecordTable
+      <Loading v-if="isLoading" />
+      <div v-else>
+        <GameRecordTablePc
+          v-if="breakPoint == 'lg'"
+          :gameRecordList="gameRecordList"
+          :gameRecordTotalPage="gameRecordTotalPage"
+          :currentPage="currentPage"
+          :deviceType="deviceType"
+          @pageChange="pageChange"
+        />
+        <GameRecordTableSp
           v-else
           :gameRecordList="gameRecordList"
           :gameRecordTotalPage="gameRecordTotalPage"
           :currentPage="currentPage"
+          :deviceType="deviceType"
           @pageChange="pageChange"
         />
-      </v-container>
+      </div>
     </template>
   </CommonWithRightColumnTemplate>
 </template>
@@ -25,7 +34,8 @@
 import { mapGetters, mapActions } from 'vuex'
 import CommonWithRightColumnTemplate from '@templates/CommonWithRightColumnTemplate'
 import AccountRightMenu from '@organisms/AccountRightMenu'
-import GameRecordTable from '@organisms/pc/GameRecordTable'
+import GameRecordTablePc from '@organisms/pc/GameRecordTable'
+import GameRecordTableSp from '@organisms/sp/GameRecordTable'
 import Loading from '@atoms/Loading'
 
 export default {
@@ -33,7 +43,8 @@ export default {
   components: {
     CommonWithRightColumnTemplate,
     AccountRightMenu,
-    GameRecordTable,
+    GameRecordTablePc,
+    GameRecordTableSp,
     Loading,
   },
   data() {
@@ -45,7 +56,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getDeviceType: 'breakpointStore/getDeviceType',
+      deviceType: 'breakpointStore/getDeviceType',
+      breakPoint: 'breakpointStore/getBreakPoint',
       gameRecordTotalPage: 'warStore/getUserTotalPage',
       userId: 'accountStore/getUserId'
     }),

@@ -1,23 +1,25 @@
 <template>
-  <CommonOneColumnTemplate>
+  <CommonOneColumnTemplate :device="deviceType">
     <template slot="container">
       <Loading v-if="isLoading" />
-      <GameRecordTablePc
-        v-if="deviceType == 'pc'"
-        :gameRecordList="gameRecordList"
-        :gameRecordTotalPage="gameRecordTotalPage"
-        :currentPage="currentPage"
-        :deviceType="deviceType"
-        @pageChange="pageChange"
-      />
-      <GameRecordTableSp
-        v-else
-        :gameRecordList="gameRecordList"
-        :gameRecordTotalPage="gameRecordTotalPage"
-        :currentPage="currentPage"
-        :deviceType="deviceType"
-        @pageChange="pageChange"
-      />
+      <div v-else>
+        <GameRecordTablePc
+          v-if="deviceType == 'pc'"
+          :gameRecordList="gameRecordList"
+          :gameRecordTotalPage="gameRecordTotalPage"
+          :currentPage="currentPage"
+          :deviceType="deviceType"
+          @pageChange="pageChange"
+        />
+        <GameRecordTableSp
+          v-else
+          :gameRecordList="gameRecordList"
+          :gameRecordTotalPage="gameRecordTotalPage"
+          :currentPage="currentPage"
+          :deviceType="deviceType"
+          @pageChange="pageChange"
+        />
+      </div>
     </template>
   </CommonOneColumnTemplate>
 </template>
@@ -60,7 +62,6 @@ export default {
     }),
     fetchWarHistoryList(page) {
       // 対象ページがキャッシュ済みなら、キャッシュデータを使用する
-      console.log(this.existTargetPage(page))
       if(this.existTargetPage(page)){
         this.setGameRecordList(page)
         return

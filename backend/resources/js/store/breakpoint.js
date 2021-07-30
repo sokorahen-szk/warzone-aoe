@@ -16,6 +16,9 @@ const getters ={
       case 'xs':
         return 'sp'
     }
+  },
+  getBreakPoint: (state) => {
+    return state.v.breakpoint.name;
   }
 }
 const mutations = {
