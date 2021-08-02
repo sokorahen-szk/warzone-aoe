@@ -18,6 +18,8 @@ use Package\Domain\User\ValueObject\Player\GamePackages;
 use Package\Domain\User\ValueObject\Player\Enabled;
 use Package\Domain\User\Entity\Player;
 use App\Models\PlayerModel as EloquentPlayer;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Log;
 
 use Package\Domain\System\ValueObject\Datetime;
 
@@ -80,10 +82,11 @@ class PlayerRepository implements PlayerRepositoryInterface {
    */
   public function getById(PlayerId $playerId): Player
   {
-    $player = EloquentPlayer::first($playerId);
-
-    if (!$player) {
-      throw new \Exception("プレイヤー情報が取得できませんでした。");
+    try {
+      $player = EloquentPlayer::findOrFail($playerId->getValue());
+    } catch (ModelNotFoundException $e) {
+      Log::Info($e->getMessage());
+      throw new ModelNotFoundException(sprintf("プレイヤーID %d の情報が存在しません。", $playerId->getValue()));
     }
 
     return new Player([

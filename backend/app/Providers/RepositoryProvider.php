@@ -36,10 +36,13 @@ class RepositoryProvider extends ServiceProvider
             \Package\Domain\Game\Repository\GameMapRepositoryInterface::class,
             \Package\Infrastructure\Eloquent\Game\GameMapRepository::class
         );
-
         $this->app->singleton(
             \Package\Domain\Game\Repository\GameRecordRepositoryInterface::class,
             \Package\Infrastructure\Eloquent\Game\GameRecordRepository::class
+        );
+        $this->app->singleton(
+            \Package\Domain\Game\Repository\GameRuleRepositoryInterface::class,
+            \Package\Infrastructure\Eloquent\Game\GameRuleRepository::class
         );
     }
 

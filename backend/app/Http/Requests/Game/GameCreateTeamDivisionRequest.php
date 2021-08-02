@@ -4,11 +4,11 @@ namespace App\Http\Requests\Game;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Traits\FailedValidationTrait;
+use App\Rules\CheckArrayType;
 
-class GameHistoryListRequest extends FormRequest
+class GameCreateTeamDivisionRequest extends FormRequest
 {
     use FailedValidationTrait;
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -27,10 +27,17 @@ class GameHistoryListRequest extends FormRequest
     public function rules()
     {
         return [
-            'page'              => ['integer'],
-            'offset'            => ['integer'],
-            'begin_date'        => ['sometimes', 'date'],
-            'end_date'          => ['sometimes', 'date'],
+            // プレイヤーID配列
+            'player_ids'            => ['required', 'array', new CheckArrayType('integer')],
+
+            // ゲームパッケージID
+            'game_package_id'       => ['required', 'integer'],
+
+            // ルールID
+            'rule_id'               => ['required', 'integer'],
+
+            // マップID
+            'map_id'                => ['required', 'integer'],
         ];
     }
 }

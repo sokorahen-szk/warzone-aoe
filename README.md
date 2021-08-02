@@ -59,13 +59,9 @@ npm i
 
 ## .envやkeyのgenerate
 ```
-$ cd /path/to/warzone-aoe/backend
+$ docker exec web php artisan key:generate
 
-$ cp ./.env.example ./.env
-
-$ php artisan key generate
-
-$ php artisan jwt:secret
+$ docker exec web php artisan jwt:secret
 ```
 
 ## migration
@@ -97,4 +93,11 @@ xxx.xxx.xxx.xxxのIPをhostsに登録します。
 `sudo vi /etc/hosts`
 ```
 xxx.xxx.xxx.xxx  vm.warzone-aoe.jp
+```
+
+## テスト
+Classごとの機能テストはすべてUnitに書いてください。
+テストコマンドは以下で実行できます。
+```
+$ composer test
 ```

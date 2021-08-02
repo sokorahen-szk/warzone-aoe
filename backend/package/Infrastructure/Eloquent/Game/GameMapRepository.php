@@ -10,6 +10,8 @@ use Package\Domain\System\ValueObject\Name;
 use Package\Domain\Game\ValueObject\GameMap\Image;
 use Package\Domain\System\ValueObject\Description;
 use Package\Domain\Game\Entity\GameMap;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Log;
 
 class GameMapRepository implements GameMapRepositoryInterface {
   /**
@@ -36,5 +38,39 @@ class GameMapRepository implements GameMapRepositoryInterface {
     }
 
     return $results;
+  }
+
+  /**
+   * ゲームマップを取得する
+   *
+   * @param GameMapId $gameMapId
+   * @return GameMap
+   */
+  public function get(GameMapId $gameMapId): GameMap
+  {
+    try {
+      $gameMap = EloquentGameMap::findOrFail($gameMapId->getValue());
+      $resource = $this->toGameMap($gameMap);
+    } catch (ModelNotFoundException $e) {
+      Log::Info($e->getMessage());
+      throw new ModelNotFoundException(sprintf("ゲームマップID %d の情報が存在しません。", $gameMapId->getValue()));
+    }
+
+    return $resource;
+  }
+
+  private function toGameMap(EloquentGameMap $gameMap): ?GameMap
+  {
+    if (!$gameMap) {
+      return null;
+    }
+
+    return new GameMap([
+      'gameMapId'        => new GameMapId($gameMap->id),
+      'gamePackageId'    => new GamePackageId($gameMap->game_package_id),
+      'name'             => new Name($gameMap->name),
+      'image'            => new Image($gameMap->image),
+      'description'      => new Description($gameMap->description),
+    ]);
   }
 }

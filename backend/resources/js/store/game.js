@@ -1,9 +1,7 @@
-import { gamePackageTemplate, gameMapTemplate } from '@/config/game'
-
 const state = {
   game: {
-    packages: [gamePackageTemplate],
-    maps: [gameMapTemplate],
+    packages: null,
+    maps: null,
   }
 }
 const getters ={

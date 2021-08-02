@@ -5,6 +5,7 @@ namespace Package\Domain\Game\Repository;
 use Package\Domain\User\Entity\User;
 use Package\Domain\System\ValueObject\Date;
 use Package\Domain\System\Entity\Paginator;
+use Package\Domain\Game\ValueObject\GameRecord\GameStatus;
 
 interface GameRecordRepositoryInterface
 {
@@ -52,4 +53,11 @@ interface GameRecordRepositoryInterface
     * @return int
     */
     public function listHistoryByUserWithDateRangeCount(User $user, Date $beginDate, Date $endDate): int;
+
+    /**
+     * 特定のステータスでデータを抽出する
+     * @param GameStatus $status
+     * @return array<GamePlayerRecord>
+     */
+    public function listHistoryByStatus(GameStatus $status): array;
 }
