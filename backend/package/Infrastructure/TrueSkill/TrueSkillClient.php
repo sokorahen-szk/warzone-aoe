@@ -93,7 +93,9 @@ class TrueSkillClient {
 			'json'		=> true,
 		];
 
-		return $this->request('team_division_pattern', array_merge($data, $params))->toArray();
+		$resource = $this->request('team_division_pattern', array_merge($data, $params))->toArray();
+
+		return $resource[0];
 	}
 
 	/**

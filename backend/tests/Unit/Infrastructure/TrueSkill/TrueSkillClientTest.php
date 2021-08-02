@@ -65,7 +65,7 @@ class TrueSkillClientTest extends TestCase
             ],
         ];
 
-        $actualRes = $client->teamDivisionPattern($data)[0];
+        $actualRes = $client->teamDivisionPattern($data);
         $this->assertEquals($expectedRes->quality, $actualRes->quality);
         $this->assertEquals($expectedRes->sum_mu1, $actualRes->sum_mu1);
         $this->assertEquals($expectedRes->sum_mu2, $actualRes->sum_mu2);

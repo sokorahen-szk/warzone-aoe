@@ -6,12 +6,16 @@ use Package\Usecase\Data;
 
 class GameTeamDivisionData extends Data
 {
-    public $teamDivision;
+    public $division;
+    public $gamePackageId;
+    public $ruleId;
+    public $mapId;
 
-    public function __construct(array $sources)
+    public function __construct($sources, $gamePackage, $gameRule, $gameMap)
     {
-        $response = [];
-
-        $this->teamDivision = $response;
+        $this->division = $sources;
+        $this->gamePackageId = $gamePackage->getGamePackageId()->getValue();
+        $this->ruleId = $gameRule->getGameRuleId()->getValue();
+        $this->mapId = $gameMap->getGameMapId()->getValue();
     }
 }
