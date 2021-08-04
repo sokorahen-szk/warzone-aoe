@@ -8,7 +8,7 @@
       <v-col cols="12" sm="12" :md="zoom ? 12 : 7" :lg="zoom ? 12 : 8" :xl="zoom ? 12 : 9">
         <v-container>
           <v-card
-            class="pa-3"
+            :class="cardPaClass"
             tile
             :outlined="outlined"
           >
@@ -28,6 +28,7 @@ export default {
     outlined: {type: Boolean, default: false},
     device: {type: String},
     zoom: {type: Boolean, default: false},
+    cardPaClass: {type: String, default: 'pa-3'}
   },
   data() {
     return {

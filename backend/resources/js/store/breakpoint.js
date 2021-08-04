@@ -8,6 +8,7 @@ const state = {
 const getters ={
   getDeviceType: (state) => {
     switch(state.v.breakpoint.name) {
+      case 'xl':
       case 'lg':
       case 'md':
       default:

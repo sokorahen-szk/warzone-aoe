@@ -52,9 +52,6 @@ export default {
       deviceType: 'breakpointStore/getDeviceType',
       gameRecordTotalPage: 'warStore/getPlayerTotalPage',
     }),
-    slotClass() {
-      
-    }
   },
   methods: {
     ...mapActions({

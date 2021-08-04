@@ -154,17 +154,8 @@ export default {
 </script>
 
 <style scoped>
-	table {
-		position: relative;
-	}
-
-	/* thead {
-		position: fixed;
-		width: 100%;
-	} */
-
 	thead > tr {
-		background: #eee;
+		background: #cccddd;
 	}
 
 	thead > tr > th {

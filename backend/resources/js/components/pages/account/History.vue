@@ -2,6 +2,7 @@
   <CommonWithRightColumnTemplate
     outlined
     :device="deviceType"
+    cardPaClass="pa-0"
   >
     <template slot="right">
       <AccountRightMenu />
@@ -10,7 +11,7 @@
       <Loading v-if="isLoading" />
       <div v-else>
         <GameRecordTablePc
-          v-if="breakPoint == 'lg'"
+          v-if="breakPoint == 'lg' || breakPoint == 'xl'"
           :gameRecordList="gameRecordList"
           :gameRecordTotalPage="gameRecordTotalPage"
           :currentPage="currentPage"

@@ -1,7 +1,6 @@
 <template>
 	<div>
 		<v-card class="mb-1 thead">
-			<!-- このヘッダーをスクロールしてもくっつけたい -->
 			<v-row no-gutters class="py-1">
 				<v-col cols="2"></v-col>
 				<v-col cols="5" class="py-1 text-left">プレイヤー</v-col>
@@ -11,11 +10,11 @@
 		</v-card>
 		<v-card v-for="gameRecord in gameRecordList" :key="gameRecord.gameId" class="mb-5">
 			<v-row no-gutters class="py-1 d-flex head-row">
-				<v-col cols="9 d-flex align-center">
+				<v-col cols="8 d-flex align-center justify-center">
 					<span>{{gameRecord.gameStartDate}}</span>&nbsp;
 					<span>{{gameRecord.gameStartTime}}</span>
 				</v-col>
-				<v-col cols="3">
+				<v-col cols="4 d-flex justify-center">
 					<Label :color="'success'">{{gameRecord.gamePackage.name}}</Label>
 				</v-col>
 			</v-row>
@@ -132,12 +131,8 @@ export default {
 </script>
 
 <style scoped>
-	thead > tr, .thead, .head-row {
-		background: #eee;
-	}
-
-	thead > tr > th {
-		height: 45px !important;
+	.thead {
+		background: #cccddd;
 	}
 
 	.w20 {
