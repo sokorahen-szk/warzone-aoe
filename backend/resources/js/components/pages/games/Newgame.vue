@@ -2,6 +2,7 @@
   <CommonOneColumnTemplate
     back-ground='#eee'
     :device="getDeviceType"
+    :sheetPaClass="'pa-3'"
   >
   <template slot="container">
 

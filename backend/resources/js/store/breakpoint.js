@@ -8,6 +8,7 @@ const state = {
 const getters ={
   getDeviceType: (state) => {
     switch(state.v.breakpoint.name) {
+      case 'xl':
       case 'lg':
       case 'md':
       default:
@@ -16,6 +17,9 @@ const getters ={
       case 'xs':
         return 'sp'
     }
+  },
+  getBreakPoint: (state) => {
+    return state.v.breakpoint.name;
   }
 }
 const mutations = {
