@@ -40,10 +40,16 @@ export default {
   },
   data() {
     return {
-      search: this.keyword,
+      search: null,
     }
   },
   watch: {
+    keyword(v) {
+      this.search = v;
+    },
+    search(v) {
+      return this.$emit('input', v)
+    }
   },
   computed: {
     setPlayers() {

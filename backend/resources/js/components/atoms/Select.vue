@@ -3,7 +3,7 @@
     <select @change="updateValue" :disabled="disabled" :class="[{disabled: disabled}]" :style="addStyle">
       <option>{{ label }}</option>
       <template v-for="(item, index) in items">
-        <option :value="item.value" :key="item['id'] ? item['id'] : index" :selected="item['id'] == selectedIndex">
+        <option :value="item.value" :key="item['id'] ? item['id'] : index" :selected="item['id'] == selectedItemId">
           {{ item.label }}
         </option>
       </template>
@@ -27,6 +27,12 @@ export default {
   data() {
     return {
       enabled: true,
+      selectedItemId: 0,
+    }
+  },
+  watch: {
+    selectedIndex(v) {
+      this.selectedItemId = v
     }
   },
   methods: {
