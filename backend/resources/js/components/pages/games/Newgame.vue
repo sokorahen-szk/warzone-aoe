@@ -145,12 +145,8 @@ export default {
       }
     })
 
-    if (this.getPackageList) {
-      this.$set(this, 'gamePackages', selectParser(this.getPackageList, {label: 'name', value: 'id'}))
-    }
-    if (this.getPackageList) {
-      this.$set(this, 'gameMaps', selectParser(this.getMapList, {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
-    }
+    if (this.getPackageList) { this.$set(this, 'gamePackages', selectParser(this.getPackageList, {label: 'name', value: 'id'})) }
+    if (this.getPackageList) { this.$set(this, 'gameMaps', selectParser(this.getMapList, {label: 'name', value: 'id', gamePackageId: 'gamePackageId'})) }
   },
   computed: {
     ...mapGetters('playerStore', ['getPlayers']),
