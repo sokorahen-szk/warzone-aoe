@@ -124,6 +124,7 @@ import Avatar from '@molecules/Avatar'
 import Button from '@atoms/Button'
 import Icon from '@atoms/Icon'
 import Link from '@atoms/Link'
+import ComponentTemplate from '@/components/ComponentTemplate'
 import { mobileMenuLists } from '@/config/global'
 import router from '@/router/index'
 export default {
@@ -138,6 +139,7 @@ export default {
     Link,
     Icon
   },
+  extends: ComponentTemplate,
   computed: {
     ...mapGetters('breakpointStore', ['getDeviceType']),
     ...mapGetters('authStore', ['isLogin']),

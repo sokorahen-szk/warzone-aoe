@@ -13,8 +13,11 @@
 </template>
 
 <script>
+import ComponentTemplate from '@/components/ComponentTemplate'
+
 export default {
   name: 'CommonWithLeftColumnTemplate',
+  extends: ComponentTemplate,
   props: {
     backGround: {type: String, default: 'grey lighten-4'},
     elevation: {type: [String, Number], default: 0},

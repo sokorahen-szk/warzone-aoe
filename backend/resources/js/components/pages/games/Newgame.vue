@@ -13,6 +13,7 @@
           :keyword="search"
           :players="players"
           @update="updatePlayer"
+          @input="search = $event"
         />
 
         <div class="py-2 text-h6">ゲーム設定</div>
@@ -50,7 +51,7 @@
 
         <v-row no-gutters>
           <v-col cols="12" style="min-height: 500px;" class="pa-2">
-            <v-card height="500" class="pa-2">
+            <v-card class="pa-2">
               <div class="text-center mb-2 text-h6">
                 選択プレイヤー ({{selectedPlayers.length}}/8) 人
               </div>
@@ -86,7 +87,7 @@
                 プレイヤーを選択
               </v-card>
 
-              <v-row no-gutters justify="center" align-content="center">
+              <v-row no-gutters justify="center" align-content="center" style="height:100px;">
                 <Button
                   class="mr-2"
                   color="info"
@@ -121,7 +122,6 @@ import PlayerSearchBox from '@organisms/PlayerSearchBox'
 import Select from '@atoms/Select'
 import Button from '@atoms/Button'
 import { playerListTemplate } from '@/config/player'
-import { gamePackageTemplate, gameMapTemplate } from '@/config/game'
 import { mapGetters, mapActions } from 'vuex'
 import { selectParser, addStyleParser } from '@/services/helper'
 export default {
@@ -145,6 +145,8 @@ export default {
       }
     })
 
+    if (this.getPackageList) { this.$set(this, 'gamePackages', selectParser(this.getPackageList, {label: 'name', value: 'id'})) }
+    if (this.getPackageList) { this.$set(this, 'gameMaps', selectParser(this.getMapList, {label: 'name', value: 'id', gamePackageId: 'gamePackageId'})) }
   },
   computed: {
     ...mapGetters('playerStore', ['getPlayers']),
@@ -213,7 +215,7 @@ export default {
 
       // TODO: ルールのAPIがまだのため、ダミーデータを渡しておく
       gameRules: [
-        {id: 1, value: "サンプル", label: "サンプル"}
+        {id: 1, value: 1, label: "サンプル"}
       ]
     }
   }

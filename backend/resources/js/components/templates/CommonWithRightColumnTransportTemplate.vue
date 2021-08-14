@@ -14,8 +14,11 @@
 </template>
 
 <script>
+import ComponentTemplate from '@/components/ComponentTemplate'
+
 export default {
   name: 'CommonWithRightColumnTransportTemplate',
+  extends: ComponentTemplate,
   props: {
     color: {type: String, default: 'grey lighten-4'},
     outlined: {type: Boolean, default: false},
