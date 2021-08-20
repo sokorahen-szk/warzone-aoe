@@ -4,6 +4,7 @@ namespace Package\Domain\User\Entity;
 
 use Package\Domain\Resource;
 
+use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\User\ValueObject\Player\PlayerId;
 use Package\Domain\User\ValueObject\Player\PlayerName;
 use Package\Domain\User\ValueObject\Player\Mu;
@@ -15,15 +16,18 @@ use Package\Domain\User\ValueObject\Player\Win;
 use Package\Domain\User\ValueObject\Player\Defeat;
 use Package\Domain\User\ValueObject\Player\Games;
 use Package\Domain\User\ValueObject\Player\Streak;
-use Package\Domain\User\ValueObject\Player\GamePackages;
 use Package\Domain\User\ValueObject\Player\Enabled;
+use Package\Domain\Game\ValueObject\GamePackage\GamePackageId;
 
 use Package\Domain\System\ValueObject\Datetime;
 
+use Package\Domain\User\Entity\User;
+
 class Player extends Resource {
   protected $playerId;
+  protected $userId;
+  protected $gamePackageId;
   protected $playerName;
-  protected $user;
   protected $mu;
   protected $sigma;
   protected $rate;
@@ -33,10 +37,10 @@ class Player extends Resource {
   protected $defeat;
   protected $games;
   protected $streak;
-  protected $gamePackages;
-  protected $joinedAt;
   protected $lastGameAt;
   protected $enabled;
+
+  protected $user;
 
   public function __construct($data) {
     parent::__construct($data);
@@ -51,19 +55,27 @@ class Player extends Resource {
   }
 
   /**
+   * @return UserId|null
+   */
+  public function getUserId(): ?UserId
+  {
+    return $this->userId;
+  }
+
+  /**
+   * @return GamePackageId|null
+   */
+  public function getGamePackageId(): ?GamePackageId
+  {
+    return $this->gamePackageId;
+  }
+
+  /**
    * @return PlayerName|null
    */
   public function getPlayerName(): ?PlayerName
   {
     return $this->playerName;
-  }
-
-  /**
-   * @return User|null
-   */
-  public function getUser(): ?User
-  {
-    return $this->user;
   }
 
   /**
@@ -139,22 +151,6 @@ class Player extends Resource {
   }
 
   /**
-   * @return GamePackages|null
-   */
-  public function getGamePackages(): ?GamePackages
-  {
-    return $this->gamePackages;
-  }
-
-  /**
-   * @return Datetime|null
-   */
-  public function getJoinedAt(): ?Datetime
-  {
-    return $this->joinedAt;
-  }
-
-  /**
    * @return Datetime|null
    */
   public function getLastGameAt(): ?Datetime
@@ -176,6 +172,14 @@ class Player extends Resource {
   public function changeEnabled(Enabled $enabled): void
   {
     $this->enabled = $enabled;
+  }
+
+  /**
+   * @return User|null
+   */
+  public function getUser(): ?User
+  {
+    return $this->user;
   }
 
   /**

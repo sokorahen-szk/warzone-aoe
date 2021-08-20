@@ -14,7 +14,7 @@ interface RegisterRequestRepositoryInterface {
 
   /**
    * 待機データの登録リクエスト一覧を取得
-   * @return array
+   * @return null|RegisterRequest[]
    */
   public function listAtWaiting(): ?array;
 

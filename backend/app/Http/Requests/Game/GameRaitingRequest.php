@@ -27,6 +27,7 @@ class GameRaitingRequest extends FormRequest
     public function rules()
     {
         return [
+            'game_package_id'               => ['required', 'integer'],
             'begin_date'                    => ['required', 'date'],
             'end_date'                      => ['sometimes', 'date'],
         ];

@@ -8,9 +8,11 @@ use Package\Domain\Game\ValueObject\GameRecord\GameRecordMuEnabled;
 use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeCommand;
 use Package\Usecase\Player\GetProfile\PlayerGetProfileCommand;
 use Package\Usecase\Player\ListHistory\PlayerListHistoryCommand;
+use Package\Usecase\Player\PlayerList\PlayerListCommand;
 
 use App\Http\Requests\Game\GameRaitingRequest;
 use App\Http\Requests\Game\GameHistoryListRequest;
+use App\Http\Requests\Player\PlayerListRequest;
 use Package\Usecase\Player\ListHistory\PlayerListHistoryServiceInterface;
 use Package\Usecase\Player\PlayerList\PlayerListServiceInterface;
 use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeServiceInterface;
@@ -23,11 +25,15 @@ class PlayerController extends Controller
     /**
      * プレイヤー情報取得する
      * @param PlayerListServiceInterface $interactor
+     * @param PlayerListRequest $request
      * @return json(...)
      */
-    public function list(PlayerListServiceInterface $interactor)
+    public function list(PlayerListServiceInterface $interactor, PlayerListRequest $request)
     {
-        $result = $interactor->handle();
+        $command = new PlayerListCommand(
+            $request->game_package_id
+        );
+        $result = $interactor->handle($command);
         return $this->validResponse($result->getVars());
     }
 
@@ -43,6 +49,7 @@ class PlayerController extends Controller
         $command = new GameRecordListByDateRangeCommand(
             $userId,
             GameRecordMuEnabled::RAITING_MU_DISABLED,
+            $request->game_package_id,
             $request->begin_date,
             $request->input('end_date', null)
         );
@@ -82,6 +89,7 @@ class PlayerController extends Controller
             $userId,
             $request->input('page', 1),
             $request->input('limit', 10),
+            $request->game_package_id,
             $request->input('begin_date', null),
             $request->input('end_date', null)
         );

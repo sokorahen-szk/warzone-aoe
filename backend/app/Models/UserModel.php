@@ -2,14 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-
-use App\Models\PlayerModel;
-use App\Models\RoleModel;
 
 class UserModel extends Authenticatable implements JWTSubject
 {
@@ -56,13 +52,22 @@ class UserModel extends Authenticatable implements JWTSubject
     }
 
     /**
+     * 登録済みのパッケージIDを文字列で返す
+     * @return string
+     */
+    public function getGamePackageIdsAttribute(): string
+    {
+        return implode(',', $this->players->pluck('id')->toArray());
+    }
+
+    /**
      * リレーション
      */
 
-     // プレイヤー情報
-    public function player()
+     // プレイヤー
+    public function players()
     {
-        return $this->hasOne(PlayerModel::class, 'id', 'player_id');
+        return $this->hasMany(PlayerModel::class, 'user_id');
     }
 
      // 権限情報

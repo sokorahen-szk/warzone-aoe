@@ -15,7 +15,6 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id()->comment('ユーザID');
-            $table->unsignedBigInteger('player_id')->unique()->comment('プレイヤーID');
             $table->unsignedBigInteger('role_id')->comment('ロールID');
             $table->string('name', 16)->unique()->comment('ユーザ名');
             $table->string('steam_id', 30)->nullable()->comment('SteamID');

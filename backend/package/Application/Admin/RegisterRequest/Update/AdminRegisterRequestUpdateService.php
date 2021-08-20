@@ -36,10 +36,6 @@ class AdminRegisterRequestUpdateService implements AdminRegisterRequestUpdateSer
     $registerRequest->changeRemarks(new Remarks($command->remarks));
 
     $this->registerRequestRepository->update($registerRequest);
-
-    $player = $registerRequest->getPlayer();
-    $player->changeEnabled(new Enabled($status->isValid()));
-
-    $this->playerRepository->updateEnabled($player);
+    $this->playerRepository->updateEnabled($registerRequest->getUserId());
   }
 }

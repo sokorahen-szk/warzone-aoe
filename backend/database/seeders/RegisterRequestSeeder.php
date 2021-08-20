@@ -20,11 +20,12 @@ class RegisterRequestSeeder extends Seeder
         $faker = FakerFactory::create();
 
         for ($i = 1; $i <= 10; $i++) {
+            $status = mt_rand(1, 3);
             RegisterRequestModel::create([
-                'player_id' => $i,
-                'user_id'   => mt_rand(1, 5),
-                'status'    => mt_rand(1, 3),
-                'remarks'   => $faker->text,
+                'user_id'               => $i,
+                'created_by_user_id'    => $status === 1 ? null : mt_rand(1, 5),
+                'status'                => $status,
+                'remarks'               => $status === 1 ? null : $faker->text,
             ]);
         }
     }

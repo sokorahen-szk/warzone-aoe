@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Game;
+namespace App\Http\Requests\Player;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Traits\FailedValidationTrait;
 
-class GameHistoryListRequest extends FormRequest
+class PlayerListRequest extends FormRequest
 {
     use FailedValidationTrait;
 
@@ -27,11 +27,7 @@ class GameHistoryListRequest extends FormRequest
     public function rules()
     {
         return [
-            'game_package_id'   => ['required', 'integer'],
-            'page'              => ['integer'],
-            'offset'            => ['integer'],
-            'begin_date'        => ['sometimes', 'date'],
-            'end_date'          => ['sometimes', 'date'],
+            'game_package_id'                    => ['required', 'integer'],
         ];
     }
 }

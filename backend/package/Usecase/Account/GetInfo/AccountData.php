@@ -11,15 +11,17 @@ use Package\Usecase\Data;
 
 class AccountData extends Data {
   public $id;
-  public $player;
   public $name;
   public $steamId;
   public $twitterId;
   public $webSiteUrl;
   public $avatorImage;
   public $email;
-  public $role;
   public $status;
+  public $gamePackageIds;
+  public $createdAt;
+  public $players;
+  public $role;
 
   public function __construct(User $source)
   {
@@ -31,24 +33,29 @@ class AccountData extends Data {
     $this->avatorImage = $source->getAvatorImage()->getImageFullPath();
     $this->email = $source->getEmail()->getValidEmail();
     $this->status = $source->getStatus()->getEnumName();
+    $this->gamePackageIds = $source->getGamePackageIds()->getList();
+    $this->createdAt = $source->getCreatedAt()->getDatetime();
 
-    $this->player = [
-      'id' => $source->getPlayer()->getPlayerId()->getValue(),
-      'name' => $source->getPlayer()->getPlayerName()->getValue(),
-      'mu' => $source->getPlayer()->getMu()->getValue(),
-      'sigma' => $source->getPlayer()->getSigma()->getValue(),
-      'minRate' => $source->getPlayer()->getMinRate()->getValue(),
-      'maxRate' => $source->getPlayer()->getMaxRate()->getValue(),
-      'win' => $source->getPlayer()->getWin()->getValue(),
-      'defeat' => $source->getPlayer()->getDefeat()->getValue(),
-      'draw' => $source->getPlayer()->getGameDraw(),
-      'games' => $source->getPlayer()->getGames()->getValue(),
-      'wp' => $source->getPlayer()->getGameWinningPercentage(),
-      'gamePackages' => $source->getPlayer()->getGamePackages()->getList(),
-      'joinedAt' => $source->getPlayer()->getJoinedAt()->getDatetime(),
-      'lastGameAt' => $source->getPlayer()->getLastGameAt()->getDatetime(),
-      'enabled' => $source->getPlayer()->getEnabled()->getValue(),
-    ];
+    $this->players = [];
+    foreach ($source->getPlayers() as $player) {
+      $this->players[] = [
+        'id' => $player->getPlayerId()->getValue(),
+        'userId' => $player->getUserId()->getValue(),
+        'gamePackageId' => $player->getGamePackageId()->getValue(),
+        'name' => $player->getPlayerName()->getValue(),
+        'mu' => $player->getMu()->getValue(),
+        'sigma' => $player->getSigma()->getValue(),
+        'minRate' => $player->getMinRate()->getValue(),
+        'maxRate' => $player->getMaxRate()->getValue(),
+        'win' => $player->getWin()->getValue(),
+        'defeat' => $player->getDefeat()->getValue(),
+        'draw' => $player->getGameDraw(),
+        'games' => $player->getGames()->getValue(),
+        'wp' => $player->getGameWinningPercentage(),
+        'lastGameAt' => $player->getLastGameAt()->getDatetime(),
+        'enabled' => $player->getEnabled()->getValue(),
+      ];
+    }
 
     $this->role = [
       'id' => $source->getRole()->getRoleId()->getValue(),

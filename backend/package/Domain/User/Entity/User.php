@@ -6,7 +6,6 @@ use Package\Domain\Resource;
 
 // ValueObjects
 use Package\Domain\User\ValueObject\UserId;
-use Package\Domain\User\ValueObject\Player\PlayerId;
 use Package\Domain\User\ValueObject\Role\RoleId;
 use Package\Domain\User\ValueObject\Name;
 use Package\Domain\User\ValueObject\SteamId;
@@ -16,16 +15,14 @@ use Package\Domain\User\ValueObject\AvatorImage;
 use Package\Domain\User\ValueObject\Email;
 use Package\Domain\User\ValueObject\Status;
 use Package\Domain\User\ValueObject\Password;
+use Package\Domain\User\ValueObject\Player\GamePackageIds;
+use Package\Domain\System\ValueObject\Datetime;
 
 // Entities
 use Package\Domain\User\Entity\Role;
-use Package\Domain\User\Entity\Player;
 
 class User extends Resource {
   protected $id;
-  protected $player;
-  protected $playerId;
-  protected $role;
   protected $roleId;
   protected $name;
   protected $steamId;
@@ -35,6 +32,11 @@ class User extends Resource {
   protected $email;
   protected $status;
   protected $password;
+  protected $gamePackageIds;
+  protected $createdAt;
+
+  protected $players;
+  protected $role;
 
   public function __construct($data)
   {
@@ -47,30 +49,6 @@ class User extends Resource {
   public function getId(): ?UserId
   {
     return $this->id;
-  }
-
-  /**
-   * @return PlayerId|null
-   */
-  public function getPlayerId(): ?PlayerId
-  {
-    return $this->playerId;
-  }
-
-  /**
-   * @return Player|null
-   */
-  public function getPlayer(): ?Player
-  {
-    return $this->player;
-  }
-
-  /**
-   * @return Role|null
-   */
-  public function getRole(): ?Role
-  {
-    return $this->role;
   }
 
   /**
@@ -193,4 +171,35 @@ class User extends Resource {
     $this->password = $password;
   }
 
+  /**
+   * @return GamePackageIds|null
+   */
+  public function getGamePackageIds(): ?GamePackageIds
+  {
+    return $this->gamePackageIds;
+  }
+
+  /**
+   * @return Datetime|null
+   */
+  public function getCreatedAt(): ?Datetime
+  {
+    return $this->createdAt;
+  }
+
+  /**
+   * @return Player[]
+   */
+  public function getPlayers(): array
+  {
+    return $this->players;
+  }
+
+  /**
+   * @return Role
+   */
+  public function getRole(): Role
+  {
+    return $this->role;
+  }
 }

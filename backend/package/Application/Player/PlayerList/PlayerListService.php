@@ -5,6 +5,9 @@ namespace Package\Application\Player\PlayerList;
 use Package\Domain\User\Repository\PlayerRepositoryInterface;
 use Package\Usecase\Player\PlayerList\PlayerListData;
 use Package\Usecase\Player\PlayerList\PlayerListServiceInterface;
+use Package\Usecase\Player\PlayerList\PlayerListCommand;
+
+use Package\Domain\Game\ValueObject\GamePackage\GamePackageId;
 
 class PlayerListService implements PlayerListServiceInterface {
   private $playerRepository;
@@ -14,9 +17,10 @@ class PlayerListService implements PlayerListServiceInterface {
     $this->playerRepository = $playerRepository;
   }
 
-  public function handle(): PlayerListData
+  public function handle(PlayerListCommand $command): PlayerListData
   {
-    $players = $this->playerRepository->list();
+    $gamePackageId = new GamePackageId($command->gamePackageId);
+    $players = $this->playerRepository->list($gamePackageId);
     if (is_null($players)) {
         return null;
     }

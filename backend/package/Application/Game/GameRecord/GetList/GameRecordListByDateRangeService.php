@@ -8,6 +8,7 @@ use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeData;
 use Package\Domain\Game\Repository\GameRecordRepositoryInterface;
 use Package\Domain\User\Repository\UserRepositoryInterface;
 use Package\Domain\Game\ValueObject\GameRecord\GameRecordMuEnabled;
+use  Package\Domain\Game\ValueObject\GamePackage\GamePackageId;
 
 use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\System\ValueObject\Date;
@@ -33,7 +34,12 @@ class GameRecordListByDateRangeService implements GameRecordListByDateRangeServi
 
         $gameRecordMuEnabled = new GameRecordMuEnabled($command->muEnabled);
 
-        $gameRecords = $this->gameRecordRepository->listRaitingByUserWithDateRange($user, new Date($command->beginDate), $endDate);
+        $gameRecords = $this->gameRecordRepository->listRaitingByUserWithDateRange(
+            $user,
+            new GamePackageId($command->gamePackageId),
+            new Date($command->beginDate),
+            $endDate
+        );
         return new GameRecordListByDateRangeData($gameRecords, $gameRecordMuEnabled);
     }
 }

@@ -4,75 +4,44 @@ namespace Package\Infrastructure\Eloquent\Player;
 
 use Package\Domain\User\Repository\PlayerRepositoryInterface;
 use Package\Domain\User\ValueObject\Player\PlayerId;
-use Package\Domain\User\ValueObject\Player\PlayerName;
-use Package\Domain\User\ValueObject\Player\Mu;
-use Package\Domain\User\ValueObject\Player\Sigma;
-use Package\Domain\User\ValueObject\Player\Rate;
-use Package\Domain\User\ValueObject\Player\MinRate;
-use Package\Domain\User\ValueObject\Player\MaxRate;
-use Package\Domain\User\ValueObject\Player\Win;
-use Package\Domain\User\ValueObject\Player\Defeat;
-use Package\Domain\User\ValueObject\Player\Games;
-use Package\Domain\User\ValueObject\Player\Streak;
-use Package\Domain\User\ValueObject\Player\GamePackages;
-use Package\Domain\User\ValueObject\Player\Enabled;
+use Package\Domain\User\ValueObject\UserId;
+use Package\Domain\Game\ValueObject\GamePackage\GamePackageId;
 use Package\Domain\User\Entity\Player;
 use App\Models\PlayerModel as EloquentPlayer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Log;
 
-use Package\Domain\System\ValueObject\Datetime;
+use Package\Infrastructure\Eloquent\Converter;
 
 class PlayerRepository implements PlayerRepositoryInterface {
   /**
-   * @return array|null
+   * @return Player[]|null
    */
-  public function list(): ?array
+  public function list(GamePackageId $gamePackageId): ?array
   {
-    $players = EloquentPlayer::get();
+    $players = EloquentPlayer::where('game_package_id', $gamePackageId->getValue())
+      ->with('user')
+      ->get();
 
     if (!$players) {
       return null;
     }
 
-    $results = [];
-
-    foreach ($players as $player) {
-      $results[] = new Player([
-        'playerId'      => new PlayerId($player->id),
-        'playerName'    => new PlayerName($player->name),
-        'mu'            => new Mu($player->mu),
-        'sigma'         => new Sigma($player->sigma),
-        'rate'          => new Rate($player->rate),
-        'minRate'       => new MinRate($player->min_rate),
-        'maxRate'       => new MaxRate($player->max_rate),
-        'win'           => new Win($player->win),
-        'defeat'        => new Defeat($player->defeat),
-        'games'         => new Games($player->games),
-        'streak'        => new Streak($player->streak),
-        'gamePackages'  => new GamePackages($player->game_packages),
-        'joinedAt'      => new Datetime($player->joined_at),
-        'lastGameAt'    => new Datetime($player->last_game_at),
-        'enabled'       => new Enabled($player->enabled),
-      ]);
-    }
-    return $results;
+    return Converter::players($players);
   }
 
   /**
    * プレイヤー新規作成
    * @param Player $player
-   * @return PlayerId|null
    * @
    */
-  public function register(Player $player): ?PlayerId
+  public function register(Player $player): void
   {
-    $player = EloquentPlayer::create([
-      'name'            => $player->getPlayerName()->getValue(),
-      'game_packages'   => $player->getGamePackages()->getValue(),
+    EloquentPlayer::create([
+      'user_id'            => $player->getUserId()->getValue(),
+      'game_package_id'   => $player->getGamePackageId()->getValue(),
+      'name'              => $player->getPlayerName()->getValue(),
     ]);
-
-    return new PlayerId($player->id);
   }
 
   /**
@@ -89,34 +58,18 @@ class PlayerRepository implements PlayerRepositoryInterface {
       throw new ModelNotFoundException(sprintf("プレイヤーID %d の情報が存在しません。", $playerId->getValue()));
     }
 
-    return new Player([
-      'playerId'      => new PlayerId($player->id),
-      'playerName'    => new PlayerName($player->name),
-      'mu'            => new Mu($player->mu),
-      'sigma'         => new Sigma($player->sigma),
-      'rate'          => new Rate($player->rate),
-      'minRate'       => new MinRate($player->min_rate),
-      'maxRate'       => new MaxRate($player->max_rate),
-      'win'           => new Win($player->win),
-      'defeat'        => new Defeat($player->defeat),
-      'games'         => new Games($player->games),
-      'streak'        => new Streak($player->streak),
-      'gamePackages'  => new GamePackages($player->game_packages),
-      'joinedAt'      => new Datetime($player->joined_at),
-      'lastGameAt'    => new Datetime($player->last_game_at),
-      'enabled'       => new Enabled($player->enabled),
-    ]);
+    return Converter::player($player);
   }
 
   /**
    * プレイヤーの有効性　更新
-   * @param Player $player
+   * @param UserId $userId
    */
-  public function updateEnabled(Player $player): void
+  public function updateEnabled(UserId $userId): void
   {
-    if(!EloquentPlayer::find($player->getPlayerId()->getValue())
+    if(!EloquentPlayer::where('user_id', $userId->getValue())
     ->update([
-      'enabled'       => $player->getEnabled()->getValue(),
+      'enabled' => true,
     ])) {
       throw new \Exception("更新に失敗しました。");
     }

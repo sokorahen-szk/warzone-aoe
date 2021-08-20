@@ -11,37 +11,44 @@ use Package\Domain\User\Entity\User;
 class PlayerGetProfileData extends Data
 {
 	public $id;
-	public $player;
+	public $name;
 	public $steamUrl;
 	public $twitterUrl;
 	public $webSiteUrl;
 	public $avatorImage;
 	public $status;
+	public $createdAt;
+
+	public $players;
 
 	public function __construct(User $source)
 	{
 		$this->id = $source->getId()->getValue();
+		$this->name = $source->getName()->getValue();
 		$this->steamUrl = $source->getSteamId()->getFullUrl();
 		$this->twitterUrl = $source->getTwitterId()->getFullUrl();
 		$this->webSiteUrl = $source->getWebSiteUrl()->getValue();
 		$this->avatorImage = $source->getAvatorImage()->getImageFullPath();
 		$this->status = $source->getStatus()->getEnumName();
+		$this->createdAt = $source->getCreatedAt()->getDatetime();
 
-		$this->player = [
-		  'id' 				=> $source->getPlayer()->getPlayerId()->getValue(),
-		  'name' 			=> $source->getPlayer()->getPlayerName()->getValue(),
-		  'rank'    		=> $source->getPlayer()->getMu()->getRank(),
-		  'minRate' 		=> $source->getPlayer()->getMinRate()->getValue(),
-		  'maxRate' 		=> $source->getPlayer()->getMaxRate()->getValue(),
-		  'win' 			=> $source->getPlayer()->getWin()->getValue(),
-		  'defeat' 			=> $source->getPlayer()->getDefeat()->getValue(),
-		  'draw' 			=> $source->getPlayer()->getGameDraw(),
-		  'games' 			=> $source->getPlayer()->getGames()->getValue(),
-		  'wp' 				=> $source->getPlayer()->getGameWinningPercentage(),
-		  'gamePackages' 	=> $source->getPlayer()->getGamePackages()->getList(),
-		  'joinedAt' 		=> $source->getPlayer()->getJoinedAt()->getDatetime(),
-		  'lastGameAt' 		=> $source->getPlayer()->getLastGameAt()->getDatetime(),
-		];
-
+		$this->players = [];
+		foreach ($source->getPlayers() as $player) {
+		$this->players[] = [
+			'id' 			=> $player->getPlayerId()->getValue(),
+			'userId'		=> $player->getUserId()->getValue(),
+			'name' 			=> $player->getPlayerName()->getValue(),
+			'rank'    		=> $player->getMu()->getRank(),
+			'minRate' 		=> $player->getMinRate()->getValue(),
+			'maxRate' 		=> $player->getMaxRate()->getValue(),
+			'win' 			=> $player->getWin()->getValue(),
+			'defeat' 		=> $player->getDefeat()->getValue(),
+			'draw' 			=> $player->getGameDraw(),
+			'games' 		=> $player->getGames()->getValue(),
+			'wp' 			=> $player->getGameWinningPercentage(),
+			'gamePackageId' => $player->getGamePackageId()->getValue(),
+			'lastGameAt' 	=> $player->getLastGameAt()->getDatetime(),
+		  ];
+		}
 	}
 }

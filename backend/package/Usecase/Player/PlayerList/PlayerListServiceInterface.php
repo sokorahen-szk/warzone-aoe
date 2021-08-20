@@ -3,5 +3,5 @@
 namespace Package\Usecase\Player\PlayerList;
 
 interface PlayerListServiceInterface {
-  public function handle(): PlayerListData;
+  public function handle(PlayerListCommand $command): PlayerListData;
 }

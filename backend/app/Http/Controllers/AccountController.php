@@ -43,7 +43,7 @@ class AccountController extends Controller
             $request->player_name,
             $request->password,
             $request->input('email', null),
-            $request->input('game_package', null),
+            $request->game_package_ids,
             $request->input('answer1', null),
             $request->input('answers2', null),
             $request->input('answers3', null)
@@ -156,6 +156,7 @@ class AccountController extends Controller
         $command = new GameRecordListByDateRangeCommand(
             \Auth::user()->id,
             GameRecordMuEnabled::RAITING_MU_ENABLED,
+            $request->game_package_id,
             $request->begin_date,
             $request->input('end_date', null)
         );

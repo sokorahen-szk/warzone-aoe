@@ -4,20 +4,21 @@ namespace Package\Domain\User\Entity;
 
 use Package\Domain\Resource;
 use Package\Domain\User\ValueObject\Register\RegisterId;
-use Package\Domain\User\ValueObject\Player\PlayerId;
 use Package\Domain\User\ValueObject\UserId;
-use Package\Domain\User\Entity\Player;
 use Package\Domain\User\ValueObject\Register\RegisterStatus;
 use Package\Domain\User\ValueObject\Register\Remarks;
+use Package\Domain\User\ValueObject\Register\CreatedByUserId;
+
+use Package\Domain\User\Entity\User;
 
 class RegisterRequest extends Resource {
-
   protected $registerId;
-  protected $playerId;
-  protected $player;
   protected $userId;
+  protected $createdByUserId;
   protected $registerStatus;
   protected $remarks;
+
+  protected $user;
 
   public function __construct($data)
   {
@@ -33,27 +34,27 @@ class RegisterRequest extends Resource {
   }
 
   /**
-   * @return PlayerId|null
-   */
-  public function getPlayerId(): ?PlayerId
-  {
-    return $this->playerId;
-  }
-
-  /**
-   * @return Player|null
-   */
-  public function getPlayer(): ?Player
-  {
-    return $this->player;
-  }
-
-  /**
    * @return UserId|null
    */
   public function getUserId(): ?UserId
   {
     return $this->userId;
+  }
+
+  /**
+   * @return CreatedByUserId|null
+   */
+  public function getCreatedByUserId(): ?CreatedByUserId
+  {
+    return $this->createdByUserId;
+  }
+
+  /**
+   * @return User
+   */
+  public function getUser(): User
+  {
+    return $this->user;
   }
 
   /**

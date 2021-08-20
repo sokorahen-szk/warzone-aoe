@@ -14,6 +14,8 @@ use Package\Domain\System\ValueObject\Offset;
 use Package\Domain\System\ValueObject\Limit;
 use Package\Domain\System\Entity\ApiPaginator;
 
+use Package\Domain\Game\ValueObject\GamePackage\GamePackageId;
+
 class PlayerListHistoryService implements PlayerListHistoryServiceInterface {
 	private $userRepository;
     private $gameRecordRepository;
@@ -44,12 +46,14 @@ class PlayerListHistoryService implements PlayerListHistoryServiceInterface {
 		$beginDate = new Date($command->beginDate);
 		$endDate = new Date($command->endDate);
 
+		$gamePackageId = new GamePackageId($command->gamePackageId);
+
 		$gameRecords = $this->gameRecordRepository->listHistoryByUserWithDateRange(
-			$user, $paginator, $beginDate, $endDate
+			$user, $gamePackageId, $paginator, $beginDate, $endDate
 		);
 
 		$gameRecordTotalCount = $this->gameRecordRepository->listHistoryByUserWithDateRangeCount(
-			$user, $beginDate, $endDate
+			$user, $gamePackageId, $beginDate, $endDate
 		);
 
 		$apiPaginator = new ApiPaginator([

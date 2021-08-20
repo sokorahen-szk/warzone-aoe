@@ -16,7 +16,9 @@ class PlayerListData extends Data {
     foreach ($sources as $source) {
       $response[] = [
         'id' => $source->getPlayerId()->getValue(),
+        'gamePackageId' => $source->getGamePackageId()->getValue(),
         'name' => $source->getPlayerName()->getValue(),
+        'avatorImage' => $source->getUser()->getAvatorImage()->getImageFullPath(),
         'rate' => $source->getRate()->getValue(),
         'rank' => $source->getMu()->getRank(),
         'sigma' => $source->getSigma()->getValue(),
@@ -25,7 +27,6 @@ class PlayerListData extends Data {
         'draw' => $source->getGameDraw(),
         'games' => $source->getGames()->getValue(),
         'wp' => $source->getGameWinningPercentageWithPer(),
-        'gamePackages' => $source->getGamePackages()->getList(),
         'enabled' => $source->getEnabled()->getValue(),
       ];
     }

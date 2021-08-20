@@ -7,7 +7,7 @@ class AccountRegisterCommand {
   public $playerName;
   public $password;
   public $email;
-  public $gamePackages;
+  public $gamePackageIds;
   public $answer1;
   public $answers2;
   public $answers3;
@@ -17,7 +17,7 @@ class AccountRegisterCommand {
     string $playerName,
     string $password,
     ?string $email,
-    ?string $gamePackages,
+    string $gamePackageIds,
     ?string $answer1,
     ?string $answers2,
     ?string $answers3
@@ -27,7 +27,7 @@ class AccountRegisterCommand {
     $this->playerName = $playerName;
     $this->password = $password;
     $this->email = $email;
-    $this->gamePackages = $gamePackages;
+    $this->gamePackageIds = $gamePackageIds;
     $this->answer1 = $answer1;
     $this->answers2 = $answers2;
     $this->answers3 = $answers3;

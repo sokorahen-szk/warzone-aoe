@@ -13,6 +13,6 @@ class PlayerModel extends Model
     // ユーザ情報
     public function user()
     {
-        return $this->hasOne(UserModel::class, 'player_id', 'id');
+        return $this->belongsTo(UserModel::class, 'user_id', 'id');
     }
 }

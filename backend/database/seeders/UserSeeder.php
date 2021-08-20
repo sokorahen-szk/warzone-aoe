@@ -20,7 +20,6 @@ class UserSeeder extends Seeder
 
         // オーナー
         UserModel::create([
-            'player_id'         => 1,
             'role_id'           => 1,
             'name'              => 'titan',
             'steam_id'          => "4242424242424242",
@@ -32,7 +31,6 @@ class UserSeeder extends Seeder
 
         // 管理者
         UserModel::create([
-            'player_id'         => 2,
             'role_id'           => 2,
             'name'              => 'titan2',
             'steam_id'          => "4242424242424242",
@@ -44,7 +42,6 @@ class UserSeeder extends Seeder
 
         // 編集者
         UserModel::create([
-            'player_id'         => 3,
             'role_id'           => 3,
             'name'              => 'titan3',
             'steam_id'          => "4242424242424242",
@@ -57,7 +54,6 @@ class UserSeeder extends Seeder
 
         // 一般ユーザ
         UserModel::create([
-            'player_id'         => 4,
             'role_id'           => 4,
             'name'              => 'titan4',
             'steam_id'          => "4242424242424242",
@@ -72,7 +68,6 @@ class UserSeeder extends Seeder
         // ここからダミーデータ
         for ($i = 1; $i < 10; $i++) {
             UserModel::create([
-                'player_id'         => $index + $i,
                 'role_id'           => mt_rand(1, 3),
                 'name'              => strtolower($faker->firstNameFemale) . $i,
                 'status'            => mt_rand(1, 4),

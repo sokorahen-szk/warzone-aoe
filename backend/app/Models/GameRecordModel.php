@@ -65,11 +65,33 @@ class GameRecordModel extends Model
      * @param PlayerId $playerId
      * @return void
      */
+    public function scopeWhereHasByPlayerMemories($query, PlayerId $playerId)
+    {
+        if (!$playerId) {
+            return $query->whereHas('player_memories', function($query) use ($playerId) {
+                $query->where('player_id', $playerId->getValue());
+            });
+        }
+
+        return $query;
+    }
+
+    /**
+     * プレイヤーIDで抽出する
+     *
+     * @param $query
+     * @param PlayerId $playerId
+     * @return void
+     */
     public function scopeWhereHasByPlayerMemory($query, PlayerId $playerId)
     {
-        return $query->whereHas('player_memories', function($query) use ($playerId) {
-            $query->where('player_id', $playerId->getValue());
-        });
+        if (!$playerId) {
+            return $query->whereHas('player_memory', function($query) use ($playerId) {
+                $query->where('player_id', $playerId->getValue());
+            });
+        }
+
+        return $query;
     }
 
     /**
@@ -96,7 +118,13 @@ class GameRecordModel extends Model
         return $this->hasOne(MapModel::class, 'id', 'map_id');
     }
 
-    // ゲームパッケージ
+    // ゲーム履歴
+    public function player_memory()
+    {
+        return $this->belongsTo(PlayerMemoryModel::class, 'game_record_id', 'id');
+    }
+
+    // ゲーム履歴一覧
     public function player_memories()
     {
         return $this->hasMany(PlayerMemoryModel::class, 'game_record_id', 'id');

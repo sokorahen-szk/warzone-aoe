@@ -15,6 +15,8 @@ class CreatePlayersTable extends Migration
     {
         Schema::create('players', function (Blueprint $table) {
             $table->id()->comment('プレイヤーID');
+            $table->unsignedBigInteger('user_id')->comment('ユーザID');
+            $table->unsignedBigInteger('game_package_id')->comment('ゲーム種別ID');
             $table->string('name', 30)->comment('プレイヤー名');
             $table->float('mu')->default(0)->comment('μ値');
             $table->float('sigma')->default(0)->comment('σ値');
@@ -25,11 +27,11 @@ class CreatePlayersTable extends Migration
             $table->integer('defeat')->default(0)->comment('敗北数');
             $table->integer('games')->default(0)->comment('試合数');
             $table->integer('streak')->default(0)->comment('連勝敗');
-            $table->string('game_packages')->nullable()->comment('ゲーム種別リスト'); //ゲーム種別IDはカンマ区切りで登録される。複数のPackageに所属する場合があるため。
-            $table->dateTime('joined_at')->default(\DB::raw('CURRENT_TIMESTAMP'))->comment('参加日');
             $table->dateTime('last_game_at')->nullable()->comment('最終ゲーム日');
             $table->boolean('enabled')->default(false)->comment('プレイヤー有効設定');
             $table->timestamps();
+
+            $table->unique(['user_id', 'game_package_id']);
         });
     }
 

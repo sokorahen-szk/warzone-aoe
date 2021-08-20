@@ -13,17 +13,17 @@ class AdminRegisterRequestData extends Data {
 
   public function __construct(array $sources)
   {
-    $response = [];
+    $resources = [];
     foreach ($sources as $source) {
-      $response[] = [
+      $resources[] = [
         'id'          => $source->getRegisterId()->getValue(),
-        'playerId'    => $source->getPlayer()->getPlayerId()->getValue(),
-        'playerName'  => $source->getPlayer()->getPlayerName()->getValue(),
-        'joinedAt'    => $source->getPlayer()->getJoinedAt()->getDatetime(),
+        'userId'      => $source->getUser()->getId()->getValue(),
+        'userName'    => $source->getUser()->getName()->getValue(),
+        'createdAt'   => $source->getUser()->getCreatedAt()->getDatetime(),
         'status'      => $source->getRegisterStatus()->getValue(),
         'remarks'     => $source->getRemarks()->getValue(),
       ];
     }
-    $this->registerRequests = $response;
+    $this->registerRequests = $resources;
   }
 }

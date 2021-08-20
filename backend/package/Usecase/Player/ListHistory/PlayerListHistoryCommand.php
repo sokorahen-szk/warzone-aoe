@@ -7,6 +7,7 @@ class PlayerListHistoryCommand
   public $userId;
   public $page;
   public $limit;
+  public $gamePackageId;
   public $beginDate;
   public $endDate;
 
@@ -14,6 +15,7 @@ class PlayerListHistoryCommand
     int $userId,
     int $page,
     int $limit,
+    int $gamePackageId,
     ?string $beginDate,
     ?string $endDate
   )
@@ -21,6 +23,7 @@ class PlayerListHistoryCommand
     $this->userId = $userId;
     $this->page = $page;
     $this->limit = $limit;
+    $this->gamePackageId = $gamePackageId;
     $this->beginDate = $beginDate;
     $this->endDate = $endDate;
   }

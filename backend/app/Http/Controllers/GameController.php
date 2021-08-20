@@ -55,6 +55,7 @@ class GameController extends Controller
         $command = new GameHistoryListCommand(
             $request->input('page', 1),
             $request->input('limit', 10),
+            $request->game_package_id,
             $request->input('begin_date', null),
             $request->input('end_date', null)
         );

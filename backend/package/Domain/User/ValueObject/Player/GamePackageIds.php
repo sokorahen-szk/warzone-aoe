@@ -2,7 +2,7 @@
 
 namespace Package\Domain\User\ValueObject\Player;
 
-class GamePackages {
+class GamePackageIds {
   private $value;
 
   public function __construct($value)

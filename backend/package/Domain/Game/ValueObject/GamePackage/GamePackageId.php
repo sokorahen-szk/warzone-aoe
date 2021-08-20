@@ -2,8 +2,10 @@
 
 namespace Package\Domain\Game\ValueObject\GamePackage;
 
-class GamePackageId {
-  private $value;
+use Package\Domain\ValueObject;
+
+class GamePackageId extends ValueObject {
+  protected $value;
 
   public function __construct($value)
   {
