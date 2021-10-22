@@ -20,6 +20,16 @@ class DomainServiceProvider extends ServiceProvider
             \Package\Domain\User\Service\UserServiceInterface::class,
             \Package\Domain\User\Service\UserService::class
         );
+
+        $this->app->bind(
+            \Package\Domain\User\Service\PlayerServiceInterface::class,
+            \Package\Domain\User\Service\PlayerService::class
+        );
+
+        $this->app->bind(
+            \Package\Domain\Game\Service\GameRecordServiceInterface::class,
+            \Package\Domain\Game\Service\GameRecordService::class
+        );
     }
 
     /**

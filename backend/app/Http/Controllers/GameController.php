@@ -3,15 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Traits\ApiResponser;
-use Illuminate\Http\Request;
 use Package\Usecase\Game\GamePackage\GetList\GamePackageListServiceInterface;
-use Package\Usecase\Game\GameMap\GetList\GameMapListServiceInterface;
 use Package\Usecase\Game\GameHistory\GetList\GameHistoryListServiceInterface;
+use Package\Usecase\Game\TeamDivision\GameTeamDivisionServiceInterface;
+use Package\Usecase\Game\GameMap\GetList\GameMapListServiceInterface;
 use Package\Usecase\Game\GameHistory\GetList\GameHistoryListCommand;
+use Package\Usecase\Game\Matching\GameMatchingServiceInterface;
+
 use App\Http\Requests\Game\GameHistoryListRequest;
 use App\Http\Requests\Game\GameCreateTeamDivisionRequest;
-use Package\Usecase\Game\TeamDivision\GameTeamDivisionServiceInterface;
+use App\Http\Requests\Game\GameMatchingRequest;
+
 use Package\Usecase\Game\TeamDivision\GameTeamDivisionCommand;
+use Package\Usecase\Game\Matching\GameMatchingCommand;
 
 class GameController extends Controller
 {
@@ -67,6 +71,7 @@ class GameController extends Controller
      * POST /api/game/create/team_division
      * @param GameTeamDivisionServiceInterface $interactor
      * @param GameCreateTeamDivisionRequest $request
+     * @return json(...)
      */
     public function teamDivision(GameTeamDivisionServiceInterface $interactor, GameCreateTeamDivisionRequest $request)
     {
@@ -79,5 +84,25 @@ class GameController extends Controller
 
         $result = $interactor->handle($command);
         return $this->validResponse($result->getVars());
+    }
+
+    /**
+     * ゲーム開始
+     * POST /api/game/create/matching
+     * @param GameMatchingServiceInterface $interactor
+     * @param GameMatchingRequest $request
+     * @return void
+     */
+    public function matching(GameMatchingServiceInterface $interactor, GameMatchingRequest $request)
+    {
+        $command = new GameMatchingCommand(
+            $request->player_ids,
+            $request->game_package_id,
+            $request->rule_id,
+            $request->map_id
+        );
+
+        $interactor->handle($command);
+        return $this->validResponse([]);
     }
 }

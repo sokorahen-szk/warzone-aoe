@@ -80,6 +80,10 @@ class ApplicationProvider extends ServiceProvider
             \Package\Usecase\Game\TeamDivision\GameTeamDivisionServiceInterface::class,
             \Package\Application\Game\TeamDivision\GameTeamDivisionService::class
         );
+        $this->app->bind(
+            \Package\Usecase\Game\Matching\GameMatchingServiceInterface::class,
+            \Package\Application\Game\Matching\GameMatchingService::class
+        );
     }
 
     /**

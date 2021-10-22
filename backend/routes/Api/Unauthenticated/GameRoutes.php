@@ -32,6 +32,12 @@ class GameRoutes {
 			 * POST /api/game/create/team_division
 			 */
 			Route::post('/create/team_division', [GameController::class, 'teamDivision'])->name('game.create.team_division');
+
+			/**
+			 * ゲーム開始
+			 * POST /api/game/create/matching
+			 */
+			Route::post('/create/matching', [GameController::class, 'matching'])->name('game.create.matching');
 		});
 	}
 }
