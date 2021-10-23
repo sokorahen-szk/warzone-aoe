@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Traits\ApiResponser;
-use Illuminate\Http\Request;
 use App\Http\Requests\Account\AccountRegistrationRequest;
 use App\Http\Requests\Account\AccountUpdateAvatorRequest;
 use App\Http\Requests\Account\AccountProfileEditRequest;
@@ -24,7 +23,6 @@ use Package\Usecase\Account\Withdrawal\AccountWithdrawalServiceInterface;
 use Package\Usecase\Account\Withdrawal\AccountWithdrawalCommand;
 use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeServiceInterface;
 use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeCommand;
-use Exception;
 
 class AccountController extends Controller
 {
@@ -48,15 +46,7 @@ class AccountController extends Controller
             $request->input('answers2', null),
             $request->input('answers3', null)
         );
-
-        try {
-            \DB::beginTransaction();
-            $result = $interactor->handle($command);
-            \DB::commit();
-        } catch (Exception $e) {
-            \DB::rollback();
-            throw $e;
-        }
+        $result = $interactor->handle($command);
 
         return $this->validResponse($result, '登録が完了しました。');
     }

@@ -91,7 +91,7 @@ class GameController extends Controller
      * POST /api/game/create/matching
      * @param GameMatchingServiceInterface $interactor
      * @param GameMatchingRequest $request
-     * @return void
+     * @return json(...)
      */
     public function matching(GameMatchingServiceInterface $interactor, GameMatchingRequest $request)
     {

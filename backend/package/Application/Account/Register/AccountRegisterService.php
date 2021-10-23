@@ -21,9 +21,10 @@ use Package\Domain\User\ValueObject\Password;
 
 use Package\Domain\User\ValueObject\Player\PlayerName;
 use Package\Domain\User\ValueObject\Player\GamePackages;
-use Package\Domain\User\ValueObject\Player\PlayerId;
 
 use Package\Domain\User\Exceptions\CanNotRegisterUserException;
+
+use DB;
 
 class AccountRegisterService implements AccountRegisterServiceInterface {
   private $userRepository;
@@ -51,24 +52,34 @@ class AccountRegisterService implements AccountRegisterServiceInterface {
       'gamePackages'  => new GamePackages($command->gamePackages),
     ]);
 
-    $playerId = $this->playerRepository->register($player);
+    try {
+      DB::beginTransaction();
 
-    $user = new User([
-      'playerId'    => $playerId,
-      'roleId'      => new RoleId(4),
-      'name'        => new Name($command->userName),
-      'email'       => new Email($command->email),
-      'password'    => new Password($command->password),
-    ]);
+      $playerId = $this->playerRepository->register($player);
 
-    if ($this->userService->exists($user)) {
-      throw new CanNotRegisterUserException("ユーザ名が既に存在しています。");
+      $user = new User([
+        'playerId'    => $playerId,
+        'roleId'      => new RoleId(4),
+        'name'        => new Name($command->userName),
+        'email'       => new Email($command->email),
+        'password'    => new Password($command->password),
+      ]);
+
+      if ($this->userService->exists($user)) {
+        throw new CanNotRegisterUserException("ユーザ名が既に存在しています。");
+      }
+
+      $this->userRepository->register($user);
+
+      $this->registerRequestRepository->register(new RegisterRequest([
+        'playerId'      => $playerId,
+      ]));
+
+      DB::commit();
+
+    } catch (Exception $e) {
+      DB::rollback();
+      throw $e;
     }
-
-    $this->userRepository->register($user);
-
-    $this->registerRequestRepository->register(new RegisterRequest([
-      'playerId'      => $playerId,
-    ]));
   }
 }

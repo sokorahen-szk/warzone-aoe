@@ -16,7 +16,7 @@ class CreateGameRecordsTable extends Migration
         Schema::create('game_records', function (Blueprint $table) {
             $table->id()->comment('試合記録ID');
             $table->unsignedBigInteger('game_package_id')->comment('ゲーム種別ID');
-            $table->unsignedBigInteger('user_id')->comment('ユーザID');
+            $table->unsignedBigInteger('user_id')->nullable()->comment('ユーザID');
             $table->unsignedBigInteger('rule_id')->comment('ルールID');
             $table->unsignedBigInteger('map_id')->comment('マップID');
 
@@ -31,7 +31,6 @@ class CreateGameRecordsTable extends Migration
             $table->dateTime('finished_at')->nullable()->comment('試合終了時間');
 
             $table->foreign('game_package_id')->references('id')->on('game_packages');
-            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('rule_id')->references('id')->on('rules');
             $table->foreign('map_id')->references('id')->on('maps');
         });
