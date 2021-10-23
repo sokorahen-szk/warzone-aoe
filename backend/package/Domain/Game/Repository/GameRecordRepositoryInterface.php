@@ -6,9 +6,29 @@ use Package\Domain\User\Entity\User;
 use Package\Domain\System\ValueObject\Date;
 use Package\Domain\System\Entity\Paginator;
 use Package\Domain\Game\ValueObject\GameRecord\GameStatus;
+use Package\Domain\Game\ValueObject\GameRecord\GameRecordId;
+use Package\Domain\Game\ValueObject\GameRecord\VictoryPrediction;
+use Package\Domain\Game\ValueObject\GamePackage\GamePackageId;
+use Package\Domain\Game\ValueObject\GameMap\GameMapId;
+use Package\Domain\Game\ValueObject\GameRule\GameRuleId;
+use Package\Domain\User\ValueObject\UserId;
 
 interface GameRecordRepositoryInterface
 {
+    /**
+     * 試合記録作成
+     *
+     * @param UserId|null $userId
+     * @param GamePackageId $gamePackageId
+     * @param GameMapId $gameMapId
+     * @param GameRuleId $gameRuleId
+     * @param VictoryPrediction $victoryPrediction
+     * @return GameRecordId
+     */
+    public function create(?UserId $userId, GamePackageId $gamePackageId, GameMapId $gameMapId,
+    GameRuleId $gameRuleId, VictoryPrediction $victoryPrediction): GameRecordId;
+
+
     /**
     * 特定ユーザのレーティングを日付範囲で取得する
     * @param User $user

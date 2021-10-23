@@ -5,12 +5,12 @@ namespace Package\Infrastructure\Eloquent\Game;
 use Package\Domain\Game\Repository\GamePackageRepositoryInterface;
 use Package\Domain\Game\Entity\GamePackage;
 use Package\Domain\Game\ValueObject\GamePackage\GamePackageId;
-use Package\Domain\System\ValueObject\Description;
-use Package\Domain\System\ValueObject\Name;
 use App\Models\GamePackageModel as EloquentGamePackage;
 use Exception;
 use Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+
+use Package\Infrastructure\Eloquent\Converter;
 
 class GamePackageRepository implements GamePackageRepositoryInterface {
   /**
@@ -24,13 +24,7 @@ class GamePackageRepository implements GamePackageRepositoryInterface {
       return null;
     }
 
-    $results = [];
-
-    foreach ($gamePackages as $gamePackage) {
-      $results[] = $this->toGamePackage($gamePackage);
-    }
-
-    return $results;
+    return Converter::gamePackages($gamePackages);
   }
 
   /**
@@ -44,25 +38,12 @@ class GamePackageRepository implements GamePackageRepositoryInterface {
   {
     try {
       $gamePackage = EloquentGamePackage::findOrFail($gamePackageId->getValue());
-      $resource = $this->toGamePackage($gamePackage);
+      $resource = Converter::gamePackage($gamePackage);
     } catch (ModelNotFoundException $e) {
       Log::Info($e->getMessage());
       throw new ModelNotFoundException(sprintf("ゲームパッケージID %d の情報が存在しません。", $gamePackageId->getValue()));
     }
 
     return $resource;
-  }
-
-  private function toGamePackage(EloquentGamePackage $gamePackage): ?GamePackage
-  {
-    if (!$gamePackage) {
-      return null;
-    }
-
-    return new GamePackage([
-      'gamePackageId'    => new GamePackageId($gamePackage->id),
-      'description'      => new Description($gamePackage->description),
-      'name'             => new Name($gamePackage->name),
-    ]);
   }
 }

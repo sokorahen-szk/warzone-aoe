@@ -7,11 +7,20 @@ class VictoryPrediction {
 
   public function __construct($value)
   {
-    $this->value = (int) $value;
+    $this->value = (float) $value;
   }
 
-  public function getValue(): ?int
+  public function getValue(): float
   {
     return $this->value;
+  }
+
+  public function getPerInt(): int
+  {
+    if ($this->value === 0) {
+      return 0;
+    }
+
+    return (int) ceil($this->value * 100);
   }
 }

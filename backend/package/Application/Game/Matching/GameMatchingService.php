@@ -11,6 +11,7 @@ use Package\Domain\Game\Exceptions\SelectePlayerDuplicateException;
 
 use Package\Domain\User\Service\PlayerServiceInterface;
 use Package\Domain\Game\Service\GameRecordServiceInterface;
+use Package\Domain\Game\Repository\GameRecordRepositoryInterface;
 use Package\Domain\Game\Repository\GamePackageRepositoryInterface;
 use Package\Domain\Game\Repository\GameMapRepositoryInterface;
 use Package\Domain\Game\Repository\GameRuleRepositoryInterface;
@@ -18,12 +19,17 @@ use Package\Domain\Game\Repository\GameRuleRepositoryInterface;
 use Package\Domain\Game\ValueObject\GamePackage\GamePackageId;
 use Package\Domain\Game\ValueObject\GameMap\GameMapId;
 use Package\Domain\Game\ValueObject\GameRule\GameRuleId;
+use Package\Domain\Game\ValueObject\GameRecord\VictoryPrediction;
+
+use Exception;
+use DB;
 
 class GameMatchingService implements GameMatchingServiceInterface
 {
 	private $gameRecordService;
 	private $playerService;
 	private $trueSkillClient;
+	private $gameRecordRepository;
 	private $gamePackageRepository;
 	private $gameMapRepository;
 	private $gameRuleRepository;
@@ -31,6 +37,7 @@ class GameMatchingService implements GameMatchingServiceInterface
 	public function __construct(
 		GameRecordServiceInterface $gameRecordService,
 		PlayerServiceInterface $playerService,
+		GameRecordRepositoryInterface $gameRecordRepository,
 		GamePackageRepositoryInterface $gamePackageRepository,
 		GameMapRepositoryInterface $gameMapRepository,
 		GameRuleRepositoryInterface $gameRuleRepository
@@ -38,6 +45,7 @@ class GameMatchingService implements GameMatchingServiceInterface
 	{
 		$this->gameRecordService = $gameRecordService;
 		$this->playerService = $playerService;
+		$this->gameRecordRepository = $gameRecordRepository;
 		$this->gamePackageRepository = $gamePackageRepository;
 		$this->gameMapRepository = $gameMapRepository;
 		$this->gameRuleRepository = $gameRuleRepository;
@@ -64,5 +72,30 @@ class GameMatchingService implements GameMatchingServiceInterface
 
 		$gameRuleId = new GameRuleId($command->ruleId);
 		$this->gameRuleRepository->get($gameRuleId);
+
+		$selectedPlayers = $this->playerService->selectedPlayers($command->playerIds);
+
+		$trueSkilRequestData = ['players' => $selectedPlayers];
+		$trueSkillResponse = $this->trueSkillClient->teamDivisionPattern($trueSkilRequestData);
+
+		$victoryPrediction = new VictoryPrediction($trueSkillResponse->quality);
+		try {
+			//DB::beginTransaction();
+
+			$gameRecordId = $this->gameRecordRepository->create(
+				null, // TODO: 今はすべてnullにする。ユーザ取得方法どうするかを考える。
+				$gamePaackageId,
+				$gameMapId,
+				$gameRuleId,
+				$victoryPrediction
+			);
+
+			var_dump($gameRecordId);
+
+			//DB::commit();
+		} catch (Exception $e) {
+			//DB::rollback();
+			throw $e;
+		}
 	}
 }

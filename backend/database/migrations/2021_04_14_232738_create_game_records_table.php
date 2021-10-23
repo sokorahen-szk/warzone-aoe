@@ -21,7 +21,7 @@ class CreateGameRecordsTable extends Migration
             $table->unsignedBigInteger('map_id')->comment('マップID');
 
             $table->integer('winning_team')->nullable()->comment('勝利チーム');
-            $table->integer('victory_prediction')->nullable()->comment('勝利予測');
+            $table->integer('victory_prediction')->comment('勝利予測');
 
             //
             // status

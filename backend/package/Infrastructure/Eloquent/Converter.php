@@ -9,6 +9,19 @@ use App\Models\RegisterRequestModel;
 use App\Models\GameRecordModel;
 use App\Models\PlayerMemoryModel;
 use App\Models\GamePackageModel;
+use App\Models\MapModel;
+use App\Models\RuleModel;
+
+use Package\Domain\User\Entity\Role;
+use Package\Domain\User\Entity\Player;
+use Package\Domain\User\Entity\User;
+use Package\Domain\User\Entity\RegisterRequest;
+use Package\Domain\Game\Entity\GamePlayerRecord;
+use Package\Domain\User\Entity\PlayerMemory;
+use Package\Domain\Game\Entity\GameRecord;
+use Package\Domain\Game\Entity\GamePackage;
+use Package\Domain\Game\Entity\GameMap;
+use Package\Domain\Game\Entity\GameRule;
 
 use Package\Domain\User\ValueObject\Role\RoleId;
 use Package\Domain\User\ValueObject\Role\RoleName;
@@ -37,15 +50,6 @@ use Package\Domain\User\ValueObject\AvatorImage;
 use Package\Domain\User\ValueObject\Email;
 use Package\Domain\User\ValueObject\Status;
 
-use Package\Domain\User\Entity\Role;
-use Package\Domain\User\Entity\Player;
-use Package\Domain\User\Entity\User;
-use Package\Domain\User\Entity\RegisterRequest;
-use Package\Domain\Game\Entity\GamePlayerRecord;
-use Package\Domain\User\Entity\PlayerMemory;
-use Package\Domain\Game\Entity\GameRecord;
-use Package\Domain\Game\Entity\GamePackage;
-
 use Package\Domain\User\ValueObject\Register\RegisterId;
 use Package\Domain\User\ValueObject\Register\CreatedByUserId;
 use Package\Domain\User\ValueObject\Register\RegisterStatus;
@@ -56,6 +60,11 @@ use Package\Domain\Game\ValueObject\GameRecord\GameStatus;
 use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
 use Package\Domain\Game\ValueObject\GameRecord\VictoryPrediction;
 use Package\Domain\Game\ValueObject\GameRecord\GameRecordId;
+
+use Package\Domain\Game\ValueObject\GameMap\GameMapId;
+use Package\Domain\Game\ValueObject\GameMap\Image;
+
+use Package\Domain\Game\ValueObject\GameRule\GameRuleId;
 
 use Package\Domain\User\ValueObject\PlayerMemory\PlayerMemoryId;
 
@@ -261,5 +270,41 @@ class Converter {
             'name'          => new Name($gamePackage->name),
             'description'   => new Description($gamePackage->description),
         ]);
+    }
+
+    /**
+     * @param Collection $gamePackages
+     * @return GamePackage[]
+     */
+    public static function gamePackages($gamePackages): array
+    {
+        $resources = [];
+
+        $gamePackages->each(function($item) use (&$resources) {
+            $resources[] = self::gamePackage($item);
+        });
+
+        return $resources;
+    }
+
+    public static function gameMap(MapModel $gameMap): GameMap
+    {
+      return new GameMap([
+        'gameMapId'        => new GameMapId($gameMap->id),
+        'gamePackageId'    => new GamePackageId($gameMap->game_package_id),
+        'name'             => new Name($gameMap->name),
+        'image'            => new Image($gameMap->image),
+        'description'      => new Description($gameMap->description),
+      ]);
+    }
+
+    public static function gameRule(RuleModel $gameRule): GameRule
+    {
+      return new GameRule([
+        'gameRuleId'       => new GameRuleId($gameRule->id),
+        'gamePackageId'    => new GamePackageId($gameRule->game_package_id),
+        'name'             => new Name($gameRule->name),
+        'description'      => new Description($gameRule->description),
+      ]);
     }
 }
