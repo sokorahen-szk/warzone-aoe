@@ -24,6 +24,8 @@ use Package\Usecase\Account\Withdrawal\AccountWithdrawalCommand;
 use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeServiceInterface;
 use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeCommand;
 
+use Auth;
+
 class AccountController extends Controller
 {
     use ApiResponser;
@@ -58,7 +60,7 @@ class AccountController extends Controller
      */
     public function show(AccountGetInfoServiceInterface $interactor)
     {
-        $command = new AccountGetInfoCommand(\Auth::user()->id);
+        $command = new AccountGetInfoCommand(Auth::user()->id);
         $result = $interactor->handle($command);
 
         return $this->validResponse($result->getVars(), 'アカウント詳細を取得しました。');
@@ -73,7 +75,7 @@ class AccountController extends Controller
     public function updateAvator(AccountUpdateAvatorRequest $request, AccountUpdateAvatorServiceInterface $interactor)
     {
         $command = new AccountUpdateAvatorCommand(
-            \Auth::user()->id,
+            Auth::user()->id,
             $request->file('file')
         );
         $result = $interactor->handle($command);
@@ -89,7 +91,7 @@ class AccountController extends Controller
     public function deleteAvator(AccountDeleteAvatorServiceInterface $interactor)
     {
         $command = new AccountDeleteAvatorCommand(
-            \Auth::user()->id
+            Auth::user()->id
         );
         $result = $interactor->handle($command);
 
@@ -105,7 +107,7 @@ class AccountController extends Controller
     public function changeProfile(AccountProfileEditRequest $request, AccountChangeProfileServiceInterface $interactor)
     {
         $command = new AccountChangeProfileCommand(
-            \Auth::user()->id,
+            Auth::user()->id,
             $request->user_name,
             $request->input('email', null),
             $request->input('password', null),
@@ -127,7 +129,7 @@ class AccountController extends Controller
     public function withdrawal(AccountWithdrawalServiceInterface $interactor)
     {
         $command = new AccountWithdrawalCommand(
-            \Auth::user()->id
+            Auth::user()->id
         );
         $result = $interactor->handle($command);
 
@@ -144,7 +146,7 @@ class AccountController extends Controller
     public function raiting(GameRecordListByDateRangeServiceInterface $interactor, GameRaitingRequest $request)
     {
         $command = new GameRecordListByDateRangeCommand(
-            \Auth::user()->id,
+            Auth::user()->id,
             GameRecordMuEnabled::RAITING_MU_ENABLED,
             $request->begin_date,
             $request->input('end_date', null)
