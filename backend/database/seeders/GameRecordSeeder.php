@@ -19,7 +19,7 @@ class GameRecordSeeder extends Seeder
 
         $date = Carbon::today()->subMonth(4);
         for ($i = 1; $i <= 1000; $i++) {
-            $status = mt_rand(1, 4);
+            $status = mt_rand(2, 4);
             GameRecordModel::create([
                 'game_package_id'       => 2,
                 'user_id'               => 1,

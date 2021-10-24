@@ -28,7 +28,6 @@ class GameRecordService implements GameRecordServiceInterface
 		$checkDuplicate = false;
 		foreach($gameRecords as $gameRecord) {
 			if (!$gameRecord) continue;
-
 			foreach ($gameRecord->getPlayerMemories() as $playerMemory) {
 				if (array_search($playerMemory->getPlayerId()->getValue(), $playerIds) !== false) {
 					$checkDuplicate = true;

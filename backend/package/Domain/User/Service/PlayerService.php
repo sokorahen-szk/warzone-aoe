@@ -6,7 +6,6 @@ use Package\Domain\User\Repository\PlayerRepositoryInterface;
 use Package\Domain\User\ValueObject\Player\PlayerId;
 
 class PlayerService implements PlayerServiceInterface {
-
     private $playerRepository;
 
     public function __construct(PlayerRepositoryInterface $playerRepository)

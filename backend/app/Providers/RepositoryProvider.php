@@ -44,6 +44,10 @@ class RepositoryProvider extends ServiceProvider
             \Package\Domain\Game\Repository\GameRuleRepositoryInterface::class,
             \Package\Infrastructure\Eloquent\Game\GameRuleRepository::class
         );
+        $this->app->singleton(
+            \Package\Domain\User\Repository\PlayerMemoryRepositoryInterface::class,
+            \Package\Infrastructure\Eloquent\Player\PlayerMemoryRepository::class
+        );
     }
 
     /**
