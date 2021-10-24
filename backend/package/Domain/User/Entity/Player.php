@@ -91,27 +91,11 @@ class Player extends Resource {
   }
 
   /**
-   * @return Sigma
-   */
-  public function changeSigma(Sigma $sigma): void
-  {
-    $this->sigma = $sigma;
-  }
-
-  /**
    * @return Rate|null
    */
   public function getRate(): ?Rate
   {
     return $this->rate;
-  }
-
-  /**
-   * @return Rate
-   */
-  public function changeRate(Rate $rate): void
-  {
-    $this->rate = $rate;
   }
 
   /**

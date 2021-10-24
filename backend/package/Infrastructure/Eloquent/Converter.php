@@ -39,7 +39,7 @@ use Package\Domain\User\ValueObject\Player\Defeat;
 use Package\Domain\User\ValueObject\Player\Games;
 use Package\Domain\User\ValueObject\Player\Streak;
 use Package\Domain\User\ValueObject\Player\Enabled;
-use Package\Domain\User\ValueObject\Player\GamePackageIds;
+use Package\Domain\User\ValueObject\Player\GamePackages;
 
 use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\User\ValueObject\Name as UserName;
@@ -83,14 +83,13 @@ class Converter {
     }
     public static function player(PlayerModel $player): Player
     {
+        $user = null;
         if ($player->user) {
             $user = self::user($player->user);
         }
 
         return new Player([
             'playerId'      => new PlayerId($player->id),
-            'userId'        => new UserId($player->user_id),
-            'gamePackageId' => new GamePackageId($player->game_package_id),
             'playerName'    => new PlayerName($player->name),
             'mu'            => new Mu($player->mu),
             'sigma'         => new Sigma($player->sigma),
@@ -101,6 +100,7 @@ class Converter {
             'defeat'        => new Defeat($player->defeat),
             'games'         => new Games($player->games),
             'streak'        => new Streak($player->streak),
+            'gamePackages' => new GamePackages($player->game_packages),
             'lastGameAt'    => new Datetime($player->last_game_at),
             'enabled'       => new Enabled($player->enabled),
             'user'          => $user,
@@ -162,7 +162,6 @@ class Converter {
             'players'       => $players,
             'role'          => $role,
             'roleId'        => new RoleId($user->role_id),
-            'gamePackageIds'=> new GamePackageIds($user->game_package_ids),
             'name'          => new UserName($user->name),
             'steamId'       => new SteamId($user->steam_id),
             'twitterId'     => new TwitterId($user->twitter_id),

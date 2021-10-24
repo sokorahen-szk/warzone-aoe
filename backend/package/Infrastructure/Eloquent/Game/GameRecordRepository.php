@@ -37,6 +37,7 @@ use Package\Domain\System\ValueObject\Description;
 use Package\Domain\System\ValueObject\Name;
 
 use Illuminate\Support\Collection;
+use Package\Infrastructure\Eloquent\Converter;
 
 class GameRecordRepository implements GameRecordRepositoryInterface
 {
@@ -119,13 +120,7 @@ class GameRecordRepository implements GameRecordRepositoryInterface
             return [];
         }
 
-        $results = [];
-
-        foreach ($gameRecords as $gameRecord) {
-            $results[] = $this->toGameRecord($gameRecord);
-        }
-
-        return $results;
+        return Converter::gameRecords($gameRecords);
     }
 
     /**

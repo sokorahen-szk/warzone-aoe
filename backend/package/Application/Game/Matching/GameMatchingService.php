@@ -131,11 +131,7 @@ class GameMatchingService implements GameMatchingServiceInterface
 	{
 		$players = [];
 		foreach ($resources as $resource) {
-			$player = $this->playerRepository->getById(new PlayerId($resource->id));
-			$player->changeMu(new Mu($resource->mu));
-			$player->changeSigma(new Sigma($resource->sigma));
-
-			$players[] = $player;
+			$players[] = $this->playerRepository->getById(new PlayerId($resource->id));
 		}
 
 		return $players;

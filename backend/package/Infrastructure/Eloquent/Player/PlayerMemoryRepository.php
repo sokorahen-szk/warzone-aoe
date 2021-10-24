@@ -21,6 +21,13 @@ class PlayerMemoryRepository implements PlayerMemoryRepositoryInterface {
      */
     public function create(GameRecordId $gameRecordId, Player $player, GameTeam $gameTeam): void
     {
-        // TODO: ここに実装
+        EloquentPlayerMemory::create([
+            'player_id' => $player->getPlayerId()->getValue(),
+            'game_record_id' => $gameRecordId->getValue(),
+            'team' => $gameTeam->getValue(),
+            'mu' => $player->getMu()->getValue(),
+            'sigma' => $player->getSigma()->getValue(),
+            'rate' => $player->getRate()->getValue(),
+        ]);
     }
 }
