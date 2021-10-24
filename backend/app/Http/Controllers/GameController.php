@@ -17,6 +17,8 @@ use App\Http\Requests\Game\GameMatchingRequest;
 use Package\Usecase\Game\TeamDivision\GameTeamDivisionCommand;
 use Package\Usecase\Game\Matching\GameMatchingCommand;
 
+use Auth;
+
 class GameController extends Controller
 {
     use ApiResponser;
@@ -95,7 +97,13 @@ class GameController extends Controller
      */
     public function matching(GameMatchingServiceInterface $interactor, GameMatchingRequest $request)
     {
+        $userId = null;
+        if (Auth::check()) {
+            $userId = Auth::user()->id;
+        }
+
         $command = new GameMatchingCommand(
+            $userId,
             $request->player_ids,
             $request->game_package_id,
             $request->rule_id,

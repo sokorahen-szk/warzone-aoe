@@ -8,14 +8,13 @@ use Package\Usecase\Game\Matching\GameMatchingServiceInterface;
 
 use Package\Domain\Game\Exceptions\AlreadyMatchingGamingException;
 use Package\Domain\Game\Exceptions\SelectePlayerDuplicateException;
-
 use Package\Domain\User\Service\PlayerServiceInterface;
 use Package\Domain\Game\Service\GameRecordServiceInterface;
 use Package\Domain\Game\Repository\GameRecordRepositoryInterface;
 use Package\Domain\Game\Repository\GamePackageRepositoryInterface;
 use Package\Domain\Game\Repository\GameMapRepositoryInterface;
 use Package\Domain\Game\Repository\GameRuleRepositoryInterface;
-
+use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\Game\ValueObject\GamePackage\GamePackageId;
 use Package\Domain\Game\ValueObject\GameMap\GameMapId;
 use Package\Domain\Game\ValueObject\GameRule\GameRuleId;
@@ -78,19 +77,21 @@ class GameMatchingService implements GameMatchingServiceInterface
 		$trueSkilRequestData = ['players' => $selectedPlayers];
 		$trueSkillResponse = $this->trueSkillClient->teamDivisionPattern($trueSkilRequestData);
 
+		$userId = null;
+		if ($command->userId) {
+			$userId = new UserId($command->userId);
+		}
 		$victoryPrediction = new VictoryPrediction($trueSkillResponse->quality);
 		try {
 			//DB::beginTransaction();
 
 			$gameRecordId = $this->gameRecordRepository->create(
-				null, // TODO: 今はすべてnullにする。ユーザ取得方法どうするかを考える。
+				$userId,
 				$gamePaackageId,
 				$gameMapId,
 				$gameRuleId,
 				$victoryPrediction
 			);
-
-			var_dump($gameRecordId);
 
 			//DB::commit();
 		} catch (Exception $e) {
