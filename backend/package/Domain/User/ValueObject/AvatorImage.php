@@ -23,6 +23,6 @@ class AvatorImage {
 
   public function getImageFullPath(): string
   {
-    return url($this->getValue);
+    return url($this->getValue());
   }
 }

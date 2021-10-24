@@ -51,7 +51,6 @@ use Package\Domain\User\ValueObject\Email;
 use Package\Domain\User\ValueObject\Status;
 
 use Package\Domain\User\ValueObject\Register\RegisterId;
-use Package\Domain\User\ValueObject\Register\CreatedByUserId;
 use Package\Domain\User\ValueObject\Register\RegisterStatus;
 use Package\Domain\User\ValueObject\Register\Remarks;
 
@@ -100,7 +99,8 @@ class Converter {
             'defeat'        => new Defeat($player->defeat),
             'games'         => new Games($player->games),
             'streak'        => new Streak($player->streak),
-            'gamePackages' => new GamePackages($player->game_packages),
+            'gamePackages'  => new GamePackages($player->game_packages),
+            'joinedAt'      => new Datetime($player->joined_at),
             'lastGameAt'    => new Datetime($player->last_game_at),
             'enabled'       => new Enabled($player->enabled),
             'user'          => $user,
@@ -124,13 +124,17 @@ class Converter {
 
     public static function registerRequest(RegisterRequestModel $registerRequest): RegisterRequest
     {
+        $userId = null;
+        if ($registerRequest->user_id) {
+            $userId = new UserId($registerRequest->user_id);
+        }
         return new RegisterRequest([
-            'registerId'        => new RegisterId($registerRequest->id),
-            'userId'            => new UserId($registerRequest->user_id),
-            'createdByUserId'   => new CreatedByUserId($registerRequest->created_by_user_id),
-            'registerStatus'    => new RegisterStatus($registerRequest->status),
-            'remarks'           => new Remarks($registerRequest->remarks),
-            'user'              => self::user($registerRequest->user),
+            'registerId' => new RegisterId($registerRequest->id),
+            'playerId' => new PlayerId($registerRequest->player_id),
+            'player' => self::player($registerRequest->player),
+            'userId' => $userId,
+            'registerStatus' => new RegisterStatus($registerRequest->status),
+            'remarks' => new Remarks($registerRequest->remarks),
         ]);
     }
 

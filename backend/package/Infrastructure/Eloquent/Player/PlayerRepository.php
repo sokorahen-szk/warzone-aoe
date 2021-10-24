@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Log;
 
 use Package\Domain\System\ValueObject\Datetime;
+use Package\Infrastructure\Eloquent\Converter;
 
 class PlayerRepository implements PlayerRepositoryInterface {
   /**
@@ -35,28 +36,7 @@ class PlayerRepository implements PlayerRepositoryInterface {
       return null;
     }
 
-    $results = [];
-
-    foreach ($players as $player) {
-      $results[] = new Player([
-        'playerId'      => new PlayerId($player->id),
-        'playerName'    => new PlayerName($player->name),
-        'mu'            => new Mu($player->mu),
-        'sigma'         => new Sigma($player->sigma),
-        'rate'          => new Rate($player->rate),
-        'minRate'       => new MinRate($player->min_rate),
-        'maxRate'       => new MaxRate($player->max_rate),
-        'win'           => new Win($player->win),
-        'defeat'        => new Defeat($player->defeat),
-        'games'         => new Games($player->games),
-        'streak'        => new Streak($player->streak),
-        'gamePackages'  => new GamePackages($player->game_packages),
-        'joinedAt'      => new Datetime($player->joined_at),
-        'lastGameAt'    => new Datetime($player->last_game_at),
-        'enabled'       => new Enabled($player->enabled),
-      ]);
-    }
-    return $results;
+    return Converter::players($players);
   }
 
   /**
@@ -89,23 +69,7 @@ class PlayerRepository implements PlayerRepositoryInterface {
       throw new ModelNotFoundException(sprintf("プレイヤーID %d の情報が存在しません。", $playerId->getValue()));
     }
 
-    return new Player([
-      'playerId'      => new PlayerId($player->id),
-      'playerName'    => new PlayerName($player->name),
-      'mu'            => new Mu($player->mu),
-      'sigma'         => new Sigma($player->sigma),
-      'rate'          => new Rate($player->rate),
-      'minRate'       => new MinRate($player->min_rate),
-      'maxRate'       => new MaxRate($player->max_rate),
-      'win'           => new Win($player->win),
-      'defeat'        => new Defeat($player->defeat),
-      'games'         => new Games($player->games),
-      'streak'        => new Streak($player->streak),
-      'gamePackages'  => new GamePackages($player->game_packages),
-      'joinedAt'      => new Datetime($player->joined_at),
-      'lastGameAt'    => new Datetime($player->last_game_at),
-      'enabled'       => new Enabled($player->enabled),
-    ]);
+    return Converter::player($player);
   }
 
   /**
