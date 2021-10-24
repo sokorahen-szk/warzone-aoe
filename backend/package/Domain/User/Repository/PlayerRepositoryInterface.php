@@ -4,7 +4,6 @@ namespace Package\Domain\User\Repository;
 
 use Package\Domain\User\Entity\Player;
 use Package\Domain\User\ValueObject\Player\PlayerId;
-use Package\Domain\User\ValueObject\Player\Enabled;
 
 interface PlayerRepositoryInterface {
   /**

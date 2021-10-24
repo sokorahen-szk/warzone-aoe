@@ -12,17 +12,17 @@ class AvatorImage {
     $this->value = $value;
   }
 
-  public function getValue(): ?string
+  public function getValue(): string
   {
+    if (!$this->value) {
+      return self::DEFAULT_IMAGE_PATH;
+    }
+
     return $this->value;
   }
 
-  public function getImageFullPath()
+  public function getImageFullPath(): string
   {
-    if (!$this->value) {
-      return url(self::DEFAULT_IMAGE_PATH);
-    }
-
-    return url($this->value);
+    return url($this->getValue);
   }
 }

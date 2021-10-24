@@ -27,15 +27,46 @@ use Package\Domain\Game\Entity\GamePlayerRecord;
 use Package\Domain\Game\Entity\GameRecord;
 use Package\Domain\User\ValueObject\Player\PlayerName;
 use Package\Domain\User\ValueObject\AvatorImage;
+use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\System\Entity\Paginator;
+
+use Package\Domain\Game\ValueObject\GameMap\GameMapId;
+use Package\Domain\Game\ValueObject\GameRule\GameRuleId;
 
 use Package\Domain\System\ValueObject\Description;
 use Package\Domain\System\ValueObject\Name;
 
 use Illuminate\Support\Collection;
+use Package\Infrastructure\Eloquent\Converter;
 
 class GameRecordRepository implements GameRecordRepositoryInterface
 {
+    /**
+     * 試合記録作成
+     *
+     * @param UserId|null $userId
+     * @param GamePackageId $gamePackageId
+     * @param GameMapId $gameMapId
+     * @param GameRuleId $gameRuleId
+     * @param VictoryPrediction $victoryPrediction
+     * @return GameRecordId
+     */
+    public function create(?UserId $userId, GamePackageId $gamePackageId, GameMapId $gameMapId,
+    GameRuleId $gameRuleId, VictoryPrediction $victoryPrediction): GameRecordId
+    {
+        $gameRecord = EloquentGameRecordModel::create([
+            'game_package_id' => $gamePackageId->getValue(),
+            'user_id' => $userId ? $userId->getValue() : null,
+            'rule_id' => $gameRuleId->getValue(),
+            'map_id' => $gameMapId->getValue(),
+            'victory_prediction' => $victoryPrediction->getPerInt(),
+            'status' => GameStatus::GAME_STATUS_MATCHING,
+            'started_at' => now()->toDateTimeString(),
+        ]);
+
+        return new GameRecordId($gameRecord->id);
+    }
+
     /**
     * 特定ユーザのレーティングを日付範囲で取得する
     * @param User $user
@@ -89,13 +120,7 @@ class GameRecordRepository implements GameRecordRepositoryInterface
             return [];
         }
 
-        $results = [];
-
-        foreach ($gameRecords as $gameRecord) {
-            $results[] = $this->toGameRecord($gameRecord);
-        }
-
-        return $results;
+        return Converter::gameRecords($gameRecords);
     }
 
     /**

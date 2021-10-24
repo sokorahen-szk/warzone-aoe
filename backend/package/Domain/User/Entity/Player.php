@@ -75,6 +75,14 @@ class Player extends Resource {
   }
 
   /**
+   * @return Mu
+   */
+  public function changeMu(Mu $mu): void
+  {
+    $this->enabled = $mu;
+  }
+
+  /**
    * @return Sigma|null
    */
   public function getSigma(): ?Sigma
