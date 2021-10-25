@@ -60,7 +60,7 @@ class GameRecord extends Resource {
 	}
 
 	/**
-	 * @return array<PlayerMemory>|null
+	 * @return PlayerMemory[]|null
 	 */
 	public function getPlayerMemories(): ?array
 	{

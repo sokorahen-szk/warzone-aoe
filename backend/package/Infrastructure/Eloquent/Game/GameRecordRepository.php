@@ -72,7 +72,7 @@ class GameRecordRepository implements GameRecordRepositoryInterface
     * @param User $user
     * @param Date $beginDate
     * @param Date|null $endDate
-    * @return array<GamePlayerRecord>
+    * @return GamePlayerRecord[]
     */
     public function listRaitingByUserWithDateRange(User $user, Date $beginDate, ?Date $endDate): array
     {
