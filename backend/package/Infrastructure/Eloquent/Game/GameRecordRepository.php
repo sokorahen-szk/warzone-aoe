@@ -70,7 +70,7 @@ class GameRecordRepository implements GameRecordRepositoryInterface
     * @param Paginator
     * @param Date $beginDate
     * @param Date $endDate
-    * @return array<GameRecord>
+    * @return GameRecord[]
     */
     public function listHistoryByDateRange(Paginator $paginator, Date $beginDate, Date $endDate): array
     {
@@ -109,7 +109,7 @@ class GameRecordRepository implements GameRecordRepositoryInterface
     * @param Paginator $paginator
     * @param Date $beginDate
     * @param Date $endDate
-    * @return array<GamePlayerRecord>
+    * @return GamePlayerRecord[]
     */
     public function listHistoryByUserWithDateRange(User $user, Paginator $paginator, Date $beginDate, Date $endDate): array
     {
@@ -148,7 +148,7 @@ class GameRecordRepository implements GameRecordRepositoryInterface
     /**
      * 特定のステータスでデータを抽出する
      * @param GameStatus $status
-     * @return array<GamePlayerRecord>
+     * @return GamePlayerRecord[]
      */
     public function listHistoryByStatus(GameStatus $status): array
     {
