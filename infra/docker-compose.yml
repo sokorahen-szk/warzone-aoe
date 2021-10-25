@@ -9,7 +9,7 @@ services:
       - 443:443
     privileged: true
     volumes:
-      - ../backend:/var/www/html
+      - ../src:/var/www/html
     depends_on:
       - db
     build: ./docker/web
@@ -78,22 +78,6 @@ services:
     networks:
       app_net:
         ipv4_address: 172.26.0.6
-
-  # API Docs Viewer (swagger API)
-  api_docs_view:
-    container_name: api_docs_view
-    image: swaggerapi/swagger-ui
-    tty: true
-    ports:
-        - 8888:8080
-    restart: always
-    volumes:
-      - ./docker/swagger:/usr/share/nginx/html/swagger
-    environment:
-      API_URL: ./swagger/api.yaml
-    networks:
-      app_net:
-        ipv4_address: 172.26.0.7
 
 volumes:
   db-store:
