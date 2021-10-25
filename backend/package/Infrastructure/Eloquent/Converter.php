@@ -82,11 +82,6 @@ class Converter {
     }
     public static function player(PlayerModel $player): Player
     {
-        $user = null;
-        if ($player->user) {
-            $user = self::user($player->user);
-        }
-
         return new Player([
             'playerId'      => new PlayerId($player->id),
             'playerName'    => new PlayerName($player->name),
@@ -103,7 +98,6 @@ class Converter {
             'joinedAt'      => new Datetime($player->joined_at),
             'lastGameAt'    => new Datetime($player->last_game_at),
             'enabled'       => new Enabled($player->enabled),
-            'user'          => $user,
         ]);
     }
 
@@ -156,15 +150,22 @@ class Converter {
 
     /**
      * @param UserModel $user
-     * @param Role $role
-     * @param Player[] $players
      * @return User
      */
-    public static function user(UserModel $user, Role $role = null, array $players = null): User
+    public static function user(UserModel $user): User
     {
+        $player = null;
+        if ($user->player) {
+            $player = self::player($user->player);
+        }
+        $role = null;
+        if ($user->role) {
+            $role = self::role($user->role);
+        }
         return new User([
             'id'            => new UserId($user->id),
-            'players'       => $players,
+            'player'        => $player,
+            'playerId'      => new PlayerId($user->player_id),
             'role'          => $role,
             'roleId'        => new RoleId($user->role_id),
             'name'          => new UserName($user->name),
