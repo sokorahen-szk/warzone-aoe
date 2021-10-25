@@ -5,38 +5,11 @@ namespace Package\Infrastructure\Eloquent\User;
 use Package\Domain\User\Repository\UserRepositoryInterface;
 use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\User\ValueObject\Name;
-use Package\Domain\User\ValueObject\SteamId;
-use Package\Domain\User\ValueObject\TwitterId;
-use Package\Domain\User\ValueObject\WebSiteUrl;
-use Package\Domain\User\ValueObject\AvatorImage;
-use Package\Domain\User\ValueObject\Email;
-use Package\Domain\User\ValueObject\Status;
-use Package\Domain\User\ValueObject\Password;
-use Package\Domain\User\ValueObject\Role\RoleId;
-use Package\Domain\User\ValueObject\Role\RoleName;
-use Package\Domain\User\ValueObject\Role\RoleLevel;
-use Package\Domain\User\ValueObject\Player\PlayerId;
-use Package\Domain\User\ValueObject\Player\PlayerName;
-use Package\Domain\User\ValueObject\Player\Mu;
-use Package\Domain\User\ValueObject\Player\Sigma;
-use Package\Domain\User\ValueObject\Player\Rate;
-use Package\Domain\User\ValueObject\Player\MinRate;
-use Package\Domain\User\ValueObject\Player\MaxRate;
-use Package\Domain\User\ValueObject\Player\Win;
-use Package\Domain\User\ValueObject\Player\Defeat;
-use Package\Domain\User\ValueObject\Player\Games;
-use Package\Domain\User\ValueObject\Player\Streak;
-use Package\Domain\User\ValueObject\Player\GamePackages;
-use Package\Domain\User\ValueObject\Player\Enabled;
-
 use Package\Domain\User\Entity\User;
-use Package\Domain\User\Entity\Role;
-use Package\Domain\User\Entity\Player;
 use Package\Domain\User\Entity\UserAvator;
 
-use Package\Domain\System\ValueObject\Datetime;
-
 use App\Models\UserModel as EloquentUser;
+use Package\Infrastructure\Eloquent\Converter;
 
 class UserRepository implements UserRepositoryInterface {
   /**
@@ -53,44 +26,7 @@ class UserRepository implements UserRepositoryInterface {
       return null;
     }
 
-    $role = new Role([
-      'roleId'        => new RoleId($user->role->id),
-      'roleName'      => new RoleName($user->role->name),
-      'roleLevel'     => new RoleLevel($user->role->level),
-    ]);
-
-    $player = new Player([
-      'playerId'      => new PlayerId($user->player->id),
-      'playerName'    => new PlayerName($user->player->name),
-      'mu'            => new Mu($user->player->mu),
-      'sigma'         => new Sigma($user->player->sigma),
-      'rate'          => new Rate($user->player->rate),
-      'minRate'       => new MinRate($user->player->min_rate),
-      'maxRate'       => new MaxRate($user->player->max_rate),
-      'win'           => new Win($user->player->win),
-      'defeat'        => new Defeat($user->player->defeat),
-      'games'         => new Games($user->player->games),
-      'streak'        => new Streak($user->player->streak),
-      'gamePackages'  => new GamePackages($user->player->game_packages),
-      'joinedAt'      => new Datetime($user->player->joined_at),
-      'lastGameAt'    => new Datetime($user->player->last_game_at),
-      'enabled'       => new Enabled($user->player->enabled)
-    ]);
-
-    return new User([
-      'id'            => new UserId($user->id),
-      'player'        => $player,
-      'playerId'      => new PlayerId($user->player_id),
-      'role'          => $role,
-      'roleId'        => new RoleId($user->role_id),
-      'name'          => new Name($user->name),
-      'steamId'       => new SteamId($user->steam_id),
-      'twitterId'     => new TwitterId($user->twitter_id),
-      'webSiteUrl'    => new WebSiteUrl($user->website_url),
-      'avatorImage'   => new AvatorImage($user->avator_image),
-      'email'         => new Email($user->email),
-      'status'        => new Status($user->status),
-    ]);
+    return Converter::user($user);
   }
 
   /**
@@ -107,44 +43,7 @@ class UserRepository implements UserRepositoryInterface {
       return null;
     }
 
-    $role = new Role([
-      'roleId'        => new RoleId($user->role->id),
-      'roleName'      => new RoleName($user->role->name),
-      'roleLevel'     => new RoleLevel($user->role->level),
-    ]);
-
-    $player = new Player([
-      'playerId'      => new PlayerId($user->player->id),
-      'playerName'    => new PlayerName($user->player->name),
-      'mu'            => new Mu($user->player->mu),
-      'sigma'         => new Sigma($user->player->sigma),
-      'rate'          => new Rate($user->player->rate),
-      'minRate'       => new MinRate($user->player->min_rate),
-      'maxRate'       => new MaxRate($user->player->max_rate),
-      'win'           => new Win($user->player->win),
-      'defeat'        => new Defeat($user->player->defeat),
-      'games'         => new Games($user->player->games),
-      'streak'        => new Streak($user->player->streak),
-      'gamePackages'  => new GamePackages($user->player->game_packages),
-      'joinedAt'      => new Datetime($user->player->joined_at),
-      'lastGameAt'    => new Datetime($user->player->last_game_at),
-      'enabled'       => new Enabled($user->player->enabled)
-    ]);
-
-    return new User([
-      'id'            => new UserId($user->id),
-      'player'        => $player,
-      'playerId'      => new PlayerId($user->player_id),
-      'role'          => $role,
-      'roleId'        => new RoleId($user->role_id),
-      'name'          =>  new Name($user->name),
-      'steamId'       => new SteamId($user->steam_id),
-      'twitterId'     => new TwitterId($user->twitter_id),
-      'webSiteUrl'    => new WebSiteUrl($user->website_url),
-      'avatorImage'   => new AvatorImage($user->avator_image),
-      'email'         => new Email($user->email),
-      'status'        => new Status($user->status),
-    ]);
+    return Converter::user($user);
   }
 
   /**
