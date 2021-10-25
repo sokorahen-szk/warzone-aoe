@@ -84,18 +84,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
         && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
         && docker-php-ext-install -j$(nproc) gd
 
-#yarn manage pack install
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y apt-transport-https wget \
-    && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-    && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
-    && DEBIAN_FRONTEND=noninteractive apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y yarn
-
-#Node.js install
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y sudo \
-    && curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - \
-    && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs
-
 #Composer download / install
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 RUN php composer-setup.php
@@ -103,7 +91,7 @@ RUN php -r "unlink('composer-setup.php');"
 RUN mv composer.phar /usr/local/bin/composer
 
 # apache a2enmod rewrite for setting
-RUN sudo docker-php-entrypoint a2enmod rewrite
+RUN a2enmod rewrite
 
 RUN a2enmod ssl
 
