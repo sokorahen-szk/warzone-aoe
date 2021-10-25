@@ -4,24 +4,11 @@ namespace Package\Infrastructure\Eloquent\Player;
 
 use Package\Domain\User\Repository\PlayerRepositoryInterface;
 use Package\Domain\User\ValueObject\Player\PlayerId;
-use Package\Domain\User\ValueObject\Player\PlayerName;
-use Package\Domain\User\ValueObject\Player\Mu;
-use Package\Domain\User\ValueObject\Player\Sigma;
-use Package\Domain\User\ValueObject\Player\Rate;
-use Package\Domain\User\ValueObject\Player\MinRate;
-use Package\Domain\User\ValueObject\Player\MaxRate;
-use Package\Domain\User\ValueObject\Player\Win;
-use Package\Domain\User\ValueObject\Player\Defeat;
-use Package\Domain\User\ValueObject\Player\Games;
-use Package\Domain\User\ValueObject\Player\Streak;
-use Package\Domain\User\ValueObject\Player\GamePackages;
-use Package\Domain\User\ValueObject\Player\Enabled;
 use Package\Domain\User\Entity\Player;
 use App\Models\PlayerModel as EloquentPlayer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Log;
 
-use Package\Domain\System\ValueObject\Datetime;
 use Package\Infrastructure\Eloquent\Converter;
 
 class PlayerRepository implements PlayerRepositoryInterface {
@@ -30,7 +17,7 @@ class PlayerRepository implements PlayerRepositoryInterface {
    */
   public function list(): ?array
   {
-    $players = EloquentPlayer::get();
+    $players = EloquentPlayer::where('enabled', true)->get();
 
     if (!$players) {
       return null;
