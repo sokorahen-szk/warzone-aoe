@@ -156,6 +156,6 @@ class GameRecordRepository implements GameRecordRepositoryInterface
         ->where('status', $status->getValue())
         ->get();
 
-        return Convert::gameRecords($gameRecords);
+        return Converter::gameRecords($gameRecords);
     }
 }
