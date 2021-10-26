@@ -42,7 +42,7 @@ class GameHistoryListData extends Data {
         'playerId'        => $source->getPlayerId()->getValue(),
         'team'            => $source->getTeam()->getValue(),
         'playerName'      => $source->getPlayer()->getPlayerName()->getValue(),
-        'avatorImage'     => $source->getPlayer()->getUser()->getAvatorImage()->getValue(),
+        'avatorImage'     => $source->getUser()->getAvatorImage()->getValue(),
         'rate'            => $source->getRate()->getValue(),
         'afterRate'       => $source->getAfterRate()->getValue(),
         'rank'            => $source->getMu()->getRank(),

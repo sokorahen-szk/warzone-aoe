@@ -43,10 +43,10 @@ class PlayerListHistoryData extends Data
 	  foreach ($playerMemories as $playerMemory) {
 		$list[] = [
 		  'playerMemoryId'  => $playerMemory->getPlayerMemoryId()->getValue(),
-		  'playerId'        => $playerMemory->getplayerId()->getValue(),
+		  'playerId'        => $playerMemory->getPlayerId()->getValue(),
 		  'team'            => $playerMemory->getTeam()->getValue(),
-		  'playerName'      => $playerMemory->getplayer()->getPlayerName()->getValue(),
-		  'avatorImage'     => $playerMemory->getplayer()->getUser()->getAvatorImage()->getValue(),
+		  'playerName'      => $playerMemory->getPlayer()->getPlayerName()->getValue(),
+		  'avatorImage'     => $playerMemory->getUser()->getAvatorImage()->getValue(),
 		  'rate'            => $playerMemory->getRate()->getValue(),
 		  'afterRate'       => $playerMemory->getAfterRate()->getValue(),
 		  'rank'            => $playerMemory->getMu()->getRank(),

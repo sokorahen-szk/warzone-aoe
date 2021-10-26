@@ -17,9 +17,8 @@ class RegisterRequestModel extends Model
 
     protected $guarded = [];
 
-     // プレイヤーを紐付け
-     public function scopeLeftJoinPlayer($query)
-     {
-         return $query->leftJoin('players', 'register_requests.player_id', '=', 'players.id');
-     }
+    public function player()
+    {
+        return $this->belongsTo(PlayerModel::class, 'player_id');
+    }
 }

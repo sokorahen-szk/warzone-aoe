@@ -51,7 +51,6 @@ use Package\Domain\User\ValueObject\Email;
 use Package\Domain\User\ValueObject\Status;
 
 use Package\Domain\User\ValueObject\Register\RegisterId;
-use Package\Domain\User\ValueObject\Register\CreatedByUserId;
 use Package\Domain\User\ValueObject\Register\RegisterStatus;
 use Package\Domain\User\ValueObject\Register\Remarks;
 
@@ -83,11 +82,6 @@ class Converter {
     }
     public static function player(PlayerModel $player): Player
     {
-        $user = null;
-        if ($player->user) {
-            $user = self::user($player->user);
-        }
-
         return new Player([
             'playerId'      => new PlayerId($player->id),
             'playerName'    => new PlayerName($player->name),
@@ -100,10 +94,10 @@ class Converter {
             'defeat'        => new Defeat($player->defeat),
             'games'         => new Games($player->games),
             'streak'        => new Streak($player->streak),
-            'gamePackages' => new GamePackages($player->game_packages),
+            'gamePackages'  => new GamePackages($player->game_packages),
+            'joinedAt'      => new Datetime($player->joined_at),
             'lastGameAt'    => new Datetime($player->last_game_at),
             'enabled'       => new Enabled($player->enabled),
-            'user'          => $user,
         ]);
     }
 
@@ -124,13 +118,18 @@ class Converter {
 
     public static function registerRequest(RegisterRequestModel $registerRequest): RegisterRequest
     {
+        $userId = null;
+        if ($registerRequest->user_id) {
+            $userId = new UserId($registerRequest->user_id);
+        }
+
         return new RegisterRequest([
-            'registerId'        => new RegisterId($registerRequest->id),
-            'userId'            => new UserId($registerRequest->user_id),
-            'createdByUserId'   => new CreatedByUserId($registerRequest->created_by_user_id),
-            'registerStatus'    => new RegisterStatus($registerRequest->status),
-            'remarks'           => new Remarks($registerRequest->remarks),
-            'user'              => self::user($registerRequest->user),
+            'registerId' => new RegisterId($registerRequest->id),
+            'playerId' => new PlayerId($registerRequest->player_id),
+            'player' => self::player($registerRequest->player),
+            'userId' => $userId,
+            'registerStatus' => new RegisterStatus($registerRequest->status),
+            'remarks' => new Remarks($registerRequest->remarks),
         ]);
     }
 
@@ -151,15 +150,22 @@ class Converter {
 
     /**
      * @param UserModel $user
-     * @param Role $role
-     * @param Player[] $players
      * @return User
      */
-    public static function user(UserModel $user, Role $role = null, array $players = null): User
+    public static function user(UserModel $user): User
     {
+        $player = null;
+        if ($user->player) {
+            $player = self::player($user->player);
+        }
+        $role = null;
+        if ($user->role) {
+            $role = self::role($user->role);
+        }
         return new User([
             'id'            => new UserId($user->id),
-            'players'       => $players,
+            'player'        => $player,
+            'playerId'      => new PlayerId($user->player_id),
             'role'          => $role,
             'roleId'        => new RoleId($user->role_id),
             'name'          => new UserName($user->name),
@@ -233,10 +239,15 @@ class Converter {
 
     public static function playerMemory(PlayerMemoryModel $playerMemory): PlayerMemory
     {
+        $user = null;
+        if ($playerMemory->player->user) {
+            $user = self::user($playerMemory->player->user);
+        }
         return new PlayerMemory([
             'playerMemoryId'    => new PlayerMemoryId($playerMemory->id),
             'playerId'          => new PlayerId($playerMemory->player_id),
             'player'            => self::player($playerMemory->player),
+            'user'              => $user,
             'team'              => new GameTeam($playerMemory->team),
             'mu'                => new Mu($playerMemory->mu),
             'afterMu'           => new Mu($playerMemory->afterMu),

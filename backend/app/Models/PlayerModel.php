@@ -10,6 +10,11 @@ class PlayerModel extends Model
 
     protected $guarded = [];
 
+    public function scopeEnabled($query)
+    {
+        return $query->where('enabled', true);
+    }
+
     // ユーザ情報
     public function user()
     {

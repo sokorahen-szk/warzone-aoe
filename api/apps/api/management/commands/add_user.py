@@ -14,9 +14,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         p = UserInfo(
             id=1,
-            username= os.environ("API_USER_NAME"),
-            password=os.environ("API_USER_PASSWORD"),
-            info=os.environ("API_USER_INFO")
+            username= os.environ["API_USER_NAME"],
+            password=os.environ["API_USER_PASSWORD"],
+            info=os.environ["API_USER_INFO"]
         )
         p.save()
 
