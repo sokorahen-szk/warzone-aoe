@@ -80,6 +80,13 @@ class GameMatchingService implements GameMatchingServiceInterface
 			throw new AlreadyMatchingGamingException('ゲーム中のユーザは選択できません。');
 		}
 
+		$selectedPlayers = $this->playerService->selectedPlayers($command->playerIds);
+
+		if (count($selectedPlayers) < 2) {
+			// TODO: 独自Exception化する
+			throw new Exception('選択プレイヤー数は2人以上である必要があります。');
+		}
+
 		$gamePaackageId = new GamePackageId($command->gamePackageId);
 		$this->gamePackageRepository->get($gamePaackageId);
 
@@ -88,8 +95,6 @@ class GameMatchingService implements GameMatchingServiceInterface
 
 		$gameRuleId = new GameRuleId($command->ruleId);
 		$this->gameRuleRepository->get($gameRuleId);
-
-		$selectedPlayers = $this->playerService->selectedPlayers($command->playerIds);
 
 		$trueSkilRequestData = ['players' => $selectedPlayers];
 		$trueSkillResponse = $this->trueSkillClient->teamDivisionPattern($trueSkilRequestData);
