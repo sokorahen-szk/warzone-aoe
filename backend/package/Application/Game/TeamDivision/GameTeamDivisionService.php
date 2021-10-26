@@ -12,6 +12,8 @@ use Package\Infrastructure\TrueSkill\TrueSkillClient;
 use Package\Domain\User\Service\PlayerServiceInterface;
 use Package\Domain\Game\Service\GameRecordServiceInterface;
 
+use Exception;
+
 class GameTeamDivisionService implements GameTeamDivisionServiceInterface
 {
 	private $gameRecordService;
@@ -41,6 +43,11 @@ class GameTeamDivisionService implements GameTeamDivisionServiceInterface
 		}
 
 		$selectedPlayers = $this->playerService->selectedPlayers($command->playerIds);
+
+		if (count($selectedPlayers) < 2) {
+			// TODO: 独自Exception化する
+			throw new Exception('選択プレイヤー数は2人以上である必要があります。');
+		}
 
 		$trueSkilRequestData = ['players' => $selectedPlayers];
 		$trueSkillResponse = $this->trueSkillClient->teamDivisionPattern($trueSkilRequestData);
