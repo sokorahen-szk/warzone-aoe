@@ -17,7 +17,7 @@ class PlayerRepository implements PlayerRepositoryInterface {
    */
   public function list(): ?array
   {
-    $players = EloquentPlayer::get();
+    $players = EloquentPlayer::enabled()->get();
 
     if (!$players) {
       return null;
