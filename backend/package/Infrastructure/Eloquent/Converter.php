@@ -239,10 +239,15 @@ class Converter {
 
     public static function playerMemory(PlayerMemoryModel $playerMemory): PlayerMemory
     {
+        $user = null;
+        if ($playerMemory->player->user) {
+            $user = self::user($playerMemory->player->user);
+        }
         return new PlayerMemory([
             'playerMemoryId'    => new PlayerMemoryId($playerMemory->id),
             'playerId'          => new PlayerId($playerMemory->player_id),
             'player'            => self::player($playerMemory->player),
+            'user'              => $user,
             'team'              => new GameTeam($playerMemory->team),
             'mu'                => new Mu($playerMemory->mu),
             'afterMu'           => new Mu($playerMemory->afterMu),
