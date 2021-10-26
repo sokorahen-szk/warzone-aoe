@@ -17,10 +17,11 @@ use Package\Domain\User\ValueObject\Player\Games;
 use Package\Domain\User\ValueObject\Player\Streak;
 use Package\Domain\User\ValueObject\Player\GamePackages;
 use Package\Domain\User\ValueObject\Player\Enabled;
-
 use Package\Domain\System\ValueObject\Datetime;
+use Package\Domain\User\Entity\User;
 
 class Player extends Resource {
+  protected $user;
   protected $playerId;
   protected $playerName;
   protected $mu;
@@ -39,6 +40,14 @@ class Player extends Resource {
 
   public function __construct($data) {
     parent::__construct($data);
+  }
+
+  /**
+   * @return User|null
+   */
+  public function getUser(): ?User
+  {
+    return $this->user;
   }
 
   /**

@@ -7,9 +7,9 @@ use Package\Domain\User\ValueObject\Player\PlayerId;
 
 interface PlayerRepositoryInterface {
   /**
-   * @return array|null
+   * @return Player[]
    */
-  public function list(): ?array;
+  public function list(): array;
 
   /**
    * プレイヤー新規作成

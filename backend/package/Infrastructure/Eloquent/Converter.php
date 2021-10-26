@@ -82,7 +82,12 @@ class Converter {
     }
     public static function player(PlayerModel $player): Player
     {
+        $user =  null;
+        if ($player->user) {
+            $user = self::user($player->user);
+        }
         return new Player([
+            'user'          => $user,
             'playerId'      => new PlayerId($player->id),
             'playerName'    => new PlayerName($player->name),
             'mu'            => new Mu($player->mu),
@@ -152,16 +157,8 @@ class Converter {
      * @param UserModel $user
      * @return User
      */
-    public static function user(UserModel $user): User
+    public static function user(UserModel $user, ?Player $player = null, ?Role $role = null): User
     {
-        $player = null;
-        if ($user->player) {
-            $player = self::player($user->player);
-        }
-        $role = null;
-        if ($user->role) {
-            $role = self::role($user->role);
-        }
         return new User([
             'id'            => new UserId($user->id),
             'player'        => $player,

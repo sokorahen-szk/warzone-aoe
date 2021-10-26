@@ -17,7 +17,7 @@ class UserRepository implements UserRepositoryInterface {
    * @return User|null
    */
   public function findUserById(UserId $userId): ?User
-  {
+  { 
     $user = EloquentUser::where('id', $userId->getValue())
       ->with(['player', 'role'])
       ->first();
@@ -26,7 +26,10 @@ class UserRepository implements UserRepositoryInterface {
       return null;
     }
 
-    return Converter::user($user);
+    $player =  Converter::player($user->player);
+    $role =  Converter::role($user->role);
+
+    return Converter::user($user, $player, $role);
   }
 
   /**
@@ -43,7 +46,10 @@ class UserRepository implements UserRepositoryInterface {
       return null;
     }
 
-    return Converter::user($user);
+    $player =  Converter::player($user->player);
+    $role =  Converter::role($user->role);
+
+    return Converter::user($user, $player, $role);
   }
 
   /**

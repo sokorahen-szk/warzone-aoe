@@ -13,14 +13,16 @@ use Package\Infrastructure\Eloquent\Converter;
 
 class PlayerRepository implements PlayerRepositoryInterface {
   /**
-   * @return Player[]|null
+   * @return Player[]
    */
-  public function list(): ?array
+  public function list(): array
   {
-    $players = EloquentPlayer::enabled()->get();
+    $players = EloquentPlayer::with('user')
+      ->enabled()
+      ->get();
 
     if (!$players) {
-      return null;
+      return [];
     }
 
     return Converter::players($players);

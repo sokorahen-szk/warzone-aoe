@@ -17,9 +17,6 @@ class PlayerListService implements PlayerListServiceInterface {
   public function handle(): PlayerListData
   {
     $players = $this->playerRepository->list();
-    if (is_null($players)) {
-        return null;
-    }
     return new PlayerListData($players);
   }
 }
