@@ -14,21 +14,19 @@ use Package\Infrastructure\Eloquent\Converter;
 
 class GamePackageRepository implements GamePackageRepositoryInterface {
   /**
-   * @return array|null
+   * ゲームパッケージ一覧を取得する
+   *
+   * @return GamePackage[]
    */
-  public function list(): ?array
+  public function list(): array
   {
     $gamePackages = EloquentGamePackage::get();
-
-    if (!$gamePackages) {
-      return null;
-    }
 
     return Converter::gamePackages($gamePackages);
   }
 
   /**
-   * ゲームパッケージを取得する
+   * 特定のゲームパッケージを取得する
    *
    * @param GamePackageId $gamePackageId
    * @throws Exception

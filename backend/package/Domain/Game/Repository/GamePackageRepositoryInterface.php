@@ -6,12 +6,14 @@ use Package\Domain\Game\Entity\GamePackage;
 
 interface GamePackageRepositoryInterface {
   /**
-   * @return array|null
+   * ゲームパッケージ一覧を取得する
+   *
+   * @return GamePackage[]
    */
-  public function list(): ?array;
+  public function list(): array;
 
   /**
-   * ゲームパッケージを取得する
+   * 特定のゲームパッケージを取得する
    *
    * @param GamePackageId $gamePackageId
    * @return GamePackage

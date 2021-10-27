@@ -16,12 +16,10 @@ class GamePackageListService implements GamePackageListServiceInterface {
     $this->gamePackageRepository = $gamePackageRepository;
   }
 
-  public function handle(): ?GamePackageData
+  public function handle(): GamePackageData
   {
     $gamePackages = $this->gamePackageRepository->list();
-    if (is_null($gamePackages)) {
-      return null;
-    }
+
     return new GamePackageData($gamePackages);
   }
 }

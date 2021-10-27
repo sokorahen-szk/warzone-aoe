@@ -4,11 +4,7 @@ namespace Package\Infrastructure\Eloquent\Game;
 
 use Package\Domain\Game\Repository\GameMapRepositoryInterface;
 use App\Models\MapModel as EloquentGameMap;
-use Package\Domain\Game\ValueObject\GamePackage\GamePackageId;
 use Package\Domain\Game\ValueObject\GameMap\GameMapId;
-use Package\Domain\System\ValueObject\Name;
-use Package\Domain\Game\ValueObject\GameMap\Image;
-use Package\Domain\System\ValueObject\Description;
 use Package\Domain\Game\Entity\GameMap;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Log;
@@ -29,7 +25,7 @@ class GameMapRepository implements GameMapRepositoryInterface
   }
 
   /**
-   * ゲームマップを取得する
+   * 特定のゲームマップを取得する
    *
    * @param GameMapId $gameMapId
    * @return GameMap
