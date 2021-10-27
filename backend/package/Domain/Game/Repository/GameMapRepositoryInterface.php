@@ -7,12 +7,13 @@ use Package\Domain\Game\ValueObject\GameMap\GameMapId;
 
 interface GameMapRepositoryInterface {
   /**
-   * @return array|null
+   * ゲームマップ一覧を取得する
+   * @return GameMap[]
    */
-  public function list(): ?array;
+  public function list(): array;
 
   /**
-   * ゲームマップを取得する
+   * 特定のゲームマップを取得する
    *
    * @param GameMapId $gameMapId
    * @return GameMap

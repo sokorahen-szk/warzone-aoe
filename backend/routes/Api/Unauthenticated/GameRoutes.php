@@ -22,6 +22,12 @@ class GameRoutes {
 			Route::get('map/list', [GameController::class, 'listMap'])->name('game.map.list');
 
 			/**
+			 * ゲームルール一覧取得
+			 * GET /api/game/rule/list
+			 */
+			Route::get('rule/list', [GameController::class, 'listRule'])->name('game.rule.list');
+
+			/**
 			 * ゲーム履歴
 			 * GET /api/game/history/list
 			 */

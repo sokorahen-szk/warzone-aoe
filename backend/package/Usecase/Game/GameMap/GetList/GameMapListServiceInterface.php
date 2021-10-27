@@ -6,5 +6,5 @@ use Package\Usecase\Game\GameMap\GetList\GameMapData;
 
 interface GameMapListServiceInterface
 {
-    public function handle(): ?GameMapData;
+    public function handle(): GameMapData;
 }

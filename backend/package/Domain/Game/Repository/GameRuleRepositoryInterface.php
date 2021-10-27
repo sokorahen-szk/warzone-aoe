@@ -8,7 +8,13 @@ use Package\Domain\Game\Entity\GameRule;
 interface GameRuleRepositoryInterface
 {
   /**
-   * ゲームルールを取得する
+   * ゲームルール一覧を取得する
+   * @return GameRule[]
+   */
+  public function list(): array;
+
+  /**
+   * 特定のゲームルールを取得する
    *
    * @param GameRuleId $gameRuleId
    * @return GameRule

@@ -16,13 +16,9 @@ class GameMapListService implements GameMapListServiceInterface {
     $this->gameMapRepository = $gameMapRepository;
   }
 
-  public function handle(): ?GameMapData
+  public function handle(): GameMapData
   {
     $gameMaps = $this->gameMapRepository->list();
-
-    if (is_null($gameMaps)) {
-      return null;
-    }
 
     return new GameMapData($gameMaps);
   }
