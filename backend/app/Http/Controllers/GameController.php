@@ -18,6 +18,7 @@ use Package\Usecase\Game\TeamDivision\GameTeamDivisionCommand;
 use Package\Usecase\Game\Matching\GameMatchingCommand;
 
 use Auth;
+use Package\Usecase\Game\GameRule\GetList\GameRuleListServiceInterface;
 
 class GameController extends Controller
 {
@@ -44,6 +45,19 @@ class GameController extends Controller
      * @return json(...)
      */
     public function listMap(GameMapListServiceInterface $interactor)
+    {
+        $result = $interactor->handle();
+        return $this->validResponse($result->getVars());
+    }
+
+    /**
+	 * ゲームルール一覧取得
+	 * GET /api/game/rule/list
+     *
+     * @param GameRuleListServiceInterface $interactor
+     * @return json(...)
+     */
+    public function listRule(GameRuleListServiceInterface $interactor)
     {
         $result = $interactor->handle();
         return $this->validResponse($result->getVars());

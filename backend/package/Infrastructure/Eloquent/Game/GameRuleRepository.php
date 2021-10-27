@@ -11,9 +11,21 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 use Package\Infrastructure\Eloquent\Converter;
 
-class GameRuleRepository implements GameRuleRepositoryInterface {
+class GameRuleRepository implements GameRuleRepositoryInterface
+{
   /**
-   * ゲームルールを取得する
+   * ゲームルール一覧を取得
+   * @return GameRule[]
+   */
+  public function list(): array
+  {
+    $gameRules = EloquentGameRule::get();
+
+    return Converter::gameRules($gameRules);
+  }
+
+  /**
+   * 特定のゲームルールを取得する
    *
    * @param GameRuleId $gameRuleId
    * @return GameRule

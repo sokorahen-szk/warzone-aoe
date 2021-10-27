@@ -294,6 +294,21 @@ class Converter {
         return $resources;
     }
 
+    /**
+     * @param Collection $gameMaps
+     * @return GameMap[]
+     */
+    public static function gameMaps($gameMaps): array
+    {
+        $resources = [];
+
+        $gameMaps->each(function($item) use (&$resources) {
+            $resources[] = self::gameMap($item);
+        });
+
+        return $resources;
+    }
+
     public static function gameMap(MapModel $gameMap): GameMap
     {
       return new GameMap([
@@ -303,6 +318,21 @@ class Converter {
         'image'            => new Image($gameMap->image),
         'description'      => new Description($gameMap->description),
       ]);
+    }
+
+    /**
+     * @param Collection $gameRules
+     * @return gameRule[]
+     */
+    public static function gameRules($gameRules): array
+    {
+        $resources = [];
+
+        $gameRules->each(function($item) use (&$resources) {
+            $resources[] = self::gameRule($item);
+        });
+
+        return $resources;
     }
 
     public static function gameRule(RuleModel $gameRule): GameRule

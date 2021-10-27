@@ -15,31 +15,17 @@ use Log;
 
 use Package\Infrastructure\Eloquent\Converter;
 
-class GameMapRepository implements GameMapRepositoryInterface {
+class GameMapRepository implements GameMapRepositoryInterface
+{
   /**
-   * @return array|null
+   * ゲームマップ一覧を取得する
+   * @return GameMap[]
    */
-  public function list(): ?array
+  public function list(): array
   {
     $gameMaps = EloquentGameMap::get();
 
-    if (!$gameMaps) {
-      return null;
-    }
-
-    $results = [];
-
-    foreach ($gameMaps as $gameMap) {
-      $results[] = new GameMap([
-        'gameMapId'        => new GameMapId($gameMap->id),
-        'gamePackageId'    => new GamePackageId($gameMap->game_package_id),
-        'name'             => new Name($gameMap->name),
-        'image'            => new Image($gameMap->image),
-        'description'      => new Description($gameMap->description),
-      ]);
-    }
-
-    return $results;
+    return Converter::gameMaps($gameMaps);
   }
 
   /**
