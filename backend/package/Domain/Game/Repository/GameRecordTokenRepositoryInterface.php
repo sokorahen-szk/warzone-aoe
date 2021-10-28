@@ -14,9 +14,9 @@ interface GameRecordTokenRepositoryInterface
      *
      * @param GameRecordId $gameRecordId
      * @param Datetime $expiresAt
-     * @return GameToken
+     * @return GameRecordToken
      */
-    public function create(GameRecordId $gameRecordId, Datetime $expiresAt): GameToken;
+    public function create(GameRecordId $gameRecordId, Datetime $expiresAt): GameRecordToken;
 
     /**
      * ゲームトークンから情報を取得する

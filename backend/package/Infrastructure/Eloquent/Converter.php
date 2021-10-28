@@ -352,9 +352,9 @@ class Converter {
     public static function gameRecordToken(GameRecordTokenModel $gameRecordToken): gameRecordToken
     {
         return new GameRecordToken([
-            'gameRecordId' => $gameRecordToken->game_record_id,
-            'gameToken' => $gameRecordToken->game_token,
-            'expiresAt' => $gameRecordToken->expires_at,
+            'gameRecordId' => new GameRecordId($gameRecordToken->game_record_id),
+            'gameToken' => new GameToken($gameRecordToken->game_token),
+            'expiresAt' => new Datetime($gameRecordToken->expires_at),
         ]);
     }
 }

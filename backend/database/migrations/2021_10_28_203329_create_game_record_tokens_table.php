@@ -26,7 +26,7 @@ class CreateGameRecordTokensTable extends Migration
             $table->string('game_token', 50)->unique()->comment('試合記録トークン');
 
             // トークンの有効期限
-            // トークン発行日時 + 24時間
+            // トークン発行日時 + 6時間
             $table->dateTime('expires_at');
 
             $table->primary(['game_record_id', 'game_token']);

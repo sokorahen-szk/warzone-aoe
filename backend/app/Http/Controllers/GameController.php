@@ -124,7 +124,7 @@ class GameController extends Controller
             $request->map_id
         );
 
-        $interactor->handle($command);
-        return $this->validResponse([]);
+        $result = $interactor->handle($command);
+        return $this->validResponse($result);
     }
 }

@@ -18,19 +18,17 @@ class GameRecordTokenRepository implements GameRecordTokenRepositoryInterface
      *
      * @param GameRecordId $gameRecordId
      * @param Datetime $expiresAt
-     * @return GameToken
+     * @return GameRecordToken
      */
-    public function create(GameRecordId $gameRecordId, Datetime $expiresAt): GameToken
+    public function create(GameRecordId $gameRecordId, Datetime $expiresAt): GameRecordToken
     {
-        $token = Token::generate();
-
-        EloquentGameRecordToken::create([
+        $gameRecordToken = EloquentGameRecordToken::create([
             'game_record_id' => $gameRecordId->getValue(),
-            'game_token' => $token,
+            'game_token' => Token::generate(),
             'expires_at' => $expiresAt->getDatetime(),
         ]);
 
-        return new GameToken($token);
+        return Converter::gameRecordToken($gameRecordToken);
     }
 
     /**

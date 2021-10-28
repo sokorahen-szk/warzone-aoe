@@ -4,5 +4,5 @@ namespace Package\Usecase\Game\Matching;
 
 interface GameMatchingServiceInterface
 {
-    public function handle(GameMatchingCommand $command): void;
+    public function handle(GameMatchingCommand $command): GameMatchingData;
 }
