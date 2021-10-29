@@ -11,6 +11,8 @@ use Package\Infrastructure\Eloquent\Token;
 use Package\Domain\Game\ValueObject\GameRecord\GameRecordId;
 use Package\Domain\System\ValueObject\Datetime;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 class GameRecordTokenRepository implements GameRecordTokenRepositoryInterface
 {
     /**
@@ -41,6 +43,10 @@ class GameRecordTokenRepository implements GameRecordTokenRepositoryInterface
     {
         $gameRecordToken = EloquentGameRecordToken::where('game_token', $gameToken->getValue())
             ->first();
+
+        if (!$gameRecordToken) {
+            throw new ModelNotFoundException("存在しないゲームレコードです。");
+        }
 
         return Converter::gameRecordToken($gameRecordToken);
     }

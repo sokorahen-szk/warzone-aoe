@@ -138,6 +138,9 @@ class GameMatchingService implements GameMatchingServiceInterface
 			throw $e;
 		}
 
+		// https://github.com/sokorahen-szk/warzone-aoe/issues/85
+        // TODO: ここにゲーム開始の通知をDiscordに送る処理
+
 		return new GameMatchingData($gameRecordToken);
 	}
 

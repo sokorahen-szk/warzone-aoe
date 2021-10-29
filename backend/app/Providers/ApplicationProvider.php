@@ -88,6 +88,10 @@ class ApplicationProvider extends ServiceProvider
             \Package\Usecase\Game\GameRule\GetList\GameRuleListServiceInterface::class,
             \Package\Application\Game\GameRule\GetList\GameRuleListService::class
         );
+        $this->app->bind(
+            \Package\Usecase\Game\Finished\GameFinishedServiceInterface::class,
+            \Package\Application\Game\Finished\GameFinishedService::class
+        );
     }
 
     /**
