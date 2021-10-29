@@ -12,12 +12,15 @@ use Package\Domain\Game\ValueObject\GameRecord\GameStatus;
 use Package\Domain\Game\ValueObject\GameRecord\VictoryPrediction;
 use Package\Domain\User\Entity\User;
 use Package\Domain\Game\Entity\GamePlayerRecord;
-use Package\Domain\Game\Entity\GameRecord;
 use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\System\Entity\Paginator;
 use Package\Domain\Game\ValueObject\GameMap\GameMapId;
 use Package\Domain\Game\ValueObject\GameRule\GameRuleId;
 use Package\Infrastructure\Eloquent\Converter;
+use Package\Domain\Game\Entity\GameRecord;
+
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 
 class GameRecordRepository implements GameRecordRepositoryInterface
 {
@@ -45,6 +48,25 @@ class GameRecordRepository implements GameRecordRepositoryInterface
         ]);
 
         return new GameRecordId($gameRecord->id);
+    }
+
+    /**
+     * ゲームレコードを取得する
+     *
+     * @param GameRecordId $gameRecordId
+     * @return GameRecord
+     */
+    public function getById(GameRecordId $gameRecordId): GameRecord
+    {
+        try {
+            $gameRecord = EloquentGameRecordModel::with('player_memories')
+                ->findOrFail($gameRecordId->getValue());
+        } catch (ModelNotFoundException $e) {
+            Log::Info($e->getMessage());
+            throw new ModelNotFoundException(sprintf("ゲームレコードID %d の情報が存在しません。", $gameRecordId->getValue()));
+        }
+
+        return Converter::gameRecord($gameRecord);
     }
 
     /**

@@ -12,6 +12,7 @@ use Package\Domain\Game\ValueObject\GamePackage\GamePackageId;
 use Package\Domain\Game\ValueObject\GameMap\GameMapId;
 use Package\Domain\Game\ValueObject\GameRule\GameRuleId;
 use Package\Domain\User\ValueObject\UserId;
+use Package\Domain\Game\Entity\GameRecord;
 
 interface GameRecordRepositoryInterface
 {
@@ -28,13 +29,20 @@ interface GameRecordRepositoryInterface
     public function create(?UserId $userId, GamePackageId $gamePackageId, GameMapId $gameMapId,
     GameRuleId $gameRuleId, VictoryPrediction $victoryPrediction): GameRecordId;
 
+    /**
+     * ゲームレコードを取得する
+     *
+     * @param GameRecordId $gameRecordId
+     * @return GameRecord
+     */
+    public function getById(GameRecordId $gameRecordId): GameRecord;
 
     /**
     * 特定ユーザのレーティングを日付範囲で取得する
     * @param User $user
     * @param Date $beginDate
     * @param Date|null $endDate
-    * @return array<GamePlayerRecord>
+    * @return GamePlayerRecord[]
     */
     public function listRaitingByUserWithDateRange(User $user, Date $beginDate, ?Date $endDate): array;
 
@@ -43,7 +51,7 @@ interface GameRecordRepositoryInterface
     * @param Paginator
     * @param Date $beginDate
     * @param Date $endDate
-    * @return array<GameRecord>
+    * @return GameRecord[]
     */
     public function listHistoryByDateRange(Paginator $paginator, Date $beginDate, Date $endDate): array;
 
@@ -61,7 +69,7 @@ interface GameRecordRepositoryInterface
     * @param Paginator $paginator
     * @param Date $beginDate
     * @param Date $endDate
-    * @return array<GamePlayerRecord>
+    * @return GamePlayerRecord[]
     */
     public function listHistoryByUserWithDateRange(User $user, Paginator $paginator, Date $beginDate, Date $endDate): array;
 
@@ -77,7 +85,7 @@ interface GameRecordRepositoryInterface
     /**
      * 特定のステータスでデータを抽出する
      * @param GameStatus $status
-     * @return array<GamePlayerRecord>
+     * @return GamePlayerRecord[]
      */
     public function listHistoryByStatus(GameStatus $status): array;
 }
