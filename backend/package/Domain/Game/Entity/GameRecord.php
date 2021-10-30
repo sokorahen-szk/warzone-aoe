@@ -116,6 +116,14 @@ class GameRecord extends Resource {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function getGameStatusIsMatching(): bool
+	{
+		return $this->status->getValue() === GameStatus::GAME_STATUS_MATCHING;
+	}
+
+	/**
 	 * @return Datetime|null
 	 */
 	public function getStartedAt(): ?Datetime
