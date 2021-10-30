@@ -4,6 +4,7 @@ namespace Package\Infrastructure\Discord;
 
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Config;
+use Exception;
 
 class DiscordClient {
 
@@ -31,26 +32,25 @@ class DiscordClient {
 	/**
 	 *
 	 * @param string $webHook <チャンネルID>/<ランダム数字>
-	 * @param array $data
 	 * @param string $templateName
+	 * @param array $data
 	 * @return void
 	 */
-	public function send(string $webHook, array $data = [], string $templateName = null): bool
+	public function sendMessageOnTemplate(string $webHook, string $templateName, array $data = []): bool
 	{
+		$json = $this->parseTemplateJson($templateName, $data);
 		switch($this->method) {
 			case 'POST':
-				return $this->postEventRequest($webHook, $data, $templateName);
+				return $this->postEventRequest($webHook, $json);
 		}
 
 		return false;
 	}
 
-	private function postEventRequest(string $webHook, array $data, ?string $templateName): bool
+	private function postEventRequest(string $webHook, string $json): bool
 	{
-		$json = $this->parseJson($data, $templateName);
-
 		if (json_last_error() !== JSON_ERROR_NONE) {
-			throw new \Exception("json parse error.");
+			throw new Exception("json parse error.");
 		}
 
 		$response = $this->client->post(
@@ -61,17 +61,18 @@ class DiscordClient {
 		]);
 
 		if (!preg_match("/^2[0-9]{2}$/", (string) $response->getStatusCode())) {
-			throw new \Exception("bad http request code %d", $response->getStatusCode());
+			throw new Exception("bad http request code %d", $response->getStatusCode());
 		}
 
 		return true;
 	}
 
-	private function parseJson(array $data, ?string $templateName): string
+	private function parseTemplateJson(string $templateName, array $data): string
 	{
-		$templateBody = $this->template[$templateName] ?? '';
-		if (!$templateName) {
-			return json_encode($data);
+		$templateBody = $this->template[$templateName] ?? null;
+
+		if (!$templateBody) {
+			throw new Exception('正しいテンプレート名ではありません。');
 		}
 
 		foreach ($data as $key => $value) {

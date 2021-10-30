@@ -8,6 +8,9 @@ return [
 	'register_notification_template'  => "```
 新規登録リクエストがありました。
 
+【申請時間】
+##datetime##
+
 【ユーザ名】
 ##userName##
 
@@ -18,7 +21,8 @@ return [
 ##packages##
 
 ログイン後に「新規登録リクエスト」をご確認ください。
-```
+
 https://warzone-aoe.herokuapp.com/admin/request
+```
 "
 ];
