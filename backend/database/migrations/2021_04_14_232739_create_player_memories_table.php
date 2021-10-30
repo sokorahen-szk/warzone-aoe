@@ -25,6 +25,8 @@ class CreatePlayerMemoriesTable extends Migration
             $table->integer('rate')->comment('レート');
             $table->integer('after_rate')->nullable()->comment('試合後レート');
 
+            $table->unique(['player_id', 'game_record_id']);
+
             $table->foreign('player_id')->references('id')->on('players');
             $table->foreign('game_record_id')->references('id')->on('game_records');
         });

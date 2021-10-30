@@ -4,6 +4,7 @@ namespace App\Http\Requests\Game;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Traits\FailedValidationTrait;
+use Package\Domain\Game\ValueObject\GameRecord\GameStatus;
 
 class GameFinishedRequest extends FormRequest
 {
@@ -25,9 +26,17 @@ class GameFinishedRequest extends FormRequest
      */
     public function rules()
     {
+        $excludeUnlessRuleByTeam = sprintf('exclude_unless:status,%d', GameStatus::GAME_STATUS_FINISHED);
         return [
             // ゲームレコードトークン
-            'token'       => ['required', 'string'],
+            'token'         => ['required', 'string'],
+
+            // ゲーム終了、引き分け or 取り消し
+            'status'        => ['required', 'integer'],
+
+            // ゲーム終了の時に勝利チームを指定する必要がある
+            // 勝利チーム
+            'winning_team'  => [$excludeUnlessRuleByTeam, 'required', 'integer'],
         ];
     }
 }

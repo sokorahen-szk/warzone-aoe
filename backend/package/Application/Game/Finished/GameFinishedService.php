@@ -5,15 +5,19 @@ namespace Package\Application\Game\Finished;
 use Package\Domain\Game\Repository\GameRecordRepositoryInterface;
 use Package\Domain\Game\Repository\GameRecordTokenRepositoryInterface;
 use Package\Domain\Game\ValueObject\GameRecordToken\GameToken;
+use Package\Domain\Game\ValueObject\GameRecord\GameStatus;
+use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
 use Package\Usecase\Game\Finished\GameFinishedServiceInterface;
 use Package\Usecase\Game\Finished\GameFinishedCommand;
 use DB;
 use Exception;
+use Package\Infrastructure\TrueSkill\TrueSkillClient;
 
 class GameFinishedService implements GameFinishedServiceInterface
 {
     private $gameRecordTokenRepository;
     private $gameRecordRepository;
+    private $trueSkillClient;
 
     public function __construct(
         GameRecordTokenRepositoryInterface $gameRecordTokenRepository,
@@ -22,6 +26,9 @@ class GameFinishedService implements GameFinishedServiceInterface
     {
         $this->gameRecordTokenRepository = $gameRecordTokenRepository;
         $this->gameRecordRepository = $GameRecordRepository;
+
+		// TODO: 今後RepositoryからTrueSkillのデータ取り出すように包括するかもしれない
+		$this->trueSkillClient = new TrueSkillClient();
     }
 
     public function handle(GameFinishedCommand $command): void
@@ -30,6 +37,20 @@ class GameFinishedService implements GameFinishedServiceInterface
         $gameRecordToken = $this->gameRecordTokenRepository->getByGameToken($gameToken);
 
         $gameRecord = $this->gameRecordRepository->getById($gameRecordToken->getGameRecordId());
+
+        $winningTeam = null;
+        if ($command->winningTeam) {
+            $winningTeam = new GameTeam($command->winningTeam);
+        }
+        $gameStatus = new GameStatus($command->status);
+
+        /*
+            メモで残している。
+            foreach ($gameRecord->getPlayerMemories() as $playerMemory) {
+                var_dump($playerMemory->getTeam());
+            }
+            exit;
+         */
 
         if (!$gameRecord->getGameStatusIsMatching()) {
             throw new Exception('マッチング中以外はステータスの変更はできません。');

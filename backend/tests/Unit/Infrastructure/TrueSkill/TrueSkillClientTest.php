@@ -83,19 +83,6 @@ class TrueSkillClientTest extends TestCase
     {
         $client = new TrueSkillClient();
 
-        $data = [
-            'teams' => [
-                [
-
-                    ['id' => 1, 'mu' => 3000.5, 'sigma' => 150],
-                ],
-                [
-                    ['id' => 2, 'mu' => 2000, 'sigma' => 200],
-                ],
-            ],
-            'winning_team' => 1,
-        ];
-
         $expectedRes = (object) [
             'teams' => [
                 (object) [
@@ -114,6 +101,20 @@ class TrueSkillClientTest extends TestCase
             'winning_team' => 1,
             'quality' => 0.27135785084305,
             'win_probability' => 0.94097935551412,
+        ];
+
+        $data = [
+            'teams' => [
+                // team1
+                [
+                    ['id' => 1, 'name' => 'titan', 'mu' => 3000.5, 'sigma' => 150],
+                ],
+                // team2
+                [
+                    ['id' => 2, 'name' => 'nagisa', 'mu' => 2000, 'sigma' => 200],
+                ],
+            ],
+            'winning_team' => 1,
         ];
 
         $actualRes = $client->calcSkill($data);

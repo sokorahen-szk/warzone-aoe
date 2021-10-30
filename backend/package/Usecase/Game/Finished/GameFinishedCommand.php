@@ -4,11 +4,17 @@ namespace Package\Usecase\Game\Finished;
 
 class GameFinishedCommand {
   public $token;
+  public $status;
+  public $winningTeam;
 
   public function __construct(
-    string $token
+    string $token,
+    int $status,
+    ?int $winningTeam
   )
   {
     $this->token = $token;
+    $this->status = $status;
+    $this->winningTeam = $winningTeam;
   }
 }

@@ -16,4 +16,13 @@ interface PlayerMemoryRepositoryInterface {
      * @return void
      */
     public function create(GameRecordId $gameRecordId, Player $player, GameTeam $gameTeam): void;
+
+    /**
+     * 個別記録更新（試合終了後）
+     *
+     * @param GameRecordId $gameRecordId
+     * @param Player $player
+     * @return void
+     */
+    public function update(GameRecordId $gameRecordId, Player $player): void;
 }

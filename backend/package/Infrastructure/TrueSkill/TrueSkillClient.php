@@ -163,7 +163,7 @@ class TrueSkillClient {
 
 		} else {
 			// TODO: Exceptionの型修正予定
-			throw new \Exception('method が不正です。');
+			throw new Exception('method が不正です。');
 		}
 
 		return $this;
@@ -184,7 +184,7 @@ class TrueSkillClient {
 
 		if (json_last_error() !== JSON_ERROR_NONE) {
 			// TODO: Exceptionの型修正予定
-			throw new \Exception("json parse error.");
+			throw new Exception("json parse error.");
 		}
 
 		return $data;

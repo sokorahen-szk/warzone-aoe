@@ -135,6 +135,8 @@ class GameController extends Controller
     {
         $command = new GameFinishedCommand(
             $request->token,
+            $request->status,
+            $request->input('winning_team', null)
         );
 
         $interactor->handle($command);
