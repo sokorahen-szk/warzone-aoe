@@ -68,9 +68,27 @@ class TrueSkillClient {
 	/**
 	 * 試合データからスキルを計算する
 	 *
+	 * @param array @params
 	 * @param string $token
+	 * @return Object
 	 */
-	public function calcSkill($token = null) {}
+	public function calcSkill(array $params, $token = null) {
+		$token = $token ?: $this->token();
+
+		if (!$token) {
+			throw new Exception("トークンエラー");
+		}
+
+		$data = [
+			'auth'  	=> true,
+			'token' 	=> $token,
+			'json'		=> true,
+		];
+
+		$resource = $this->request('calc_skill', array_merge($data, $params))->toArray();
+
+		return $resource;
+	}
 
 	/**
 	 * チーム分けパターンを取得を取得する
