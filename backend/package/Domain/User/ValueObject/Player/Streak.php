@@ -20,6 +20,11 @@ class Streak {
     $this->value++;
   }
 
+  public function decrement(): void
+  {
+    $this->value--;
+  }
+
   public function clear(): void
   {
     $this->value = 0;

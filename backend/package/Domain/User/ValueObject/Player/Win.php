@@ -19,9 +19,4 @@ class Win {
   {
     $this->value++;
   }
-
-  public function decrement(): void
-  {
-    $this->value--;
-  }
 }

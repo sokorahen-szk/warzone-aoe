@@ -19,9 +19,4 @@ class Defeat {
   {
     $this->value++;
   }
-
-  public function decrement(): void
-  {
-    $this->value--;
-  }
 }
