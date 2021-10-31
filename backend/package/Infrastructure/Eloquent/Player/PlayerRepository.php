@@ -74,4 +74,32 @@ class PlayerRepository implements PlayerRepositoryInterface {
       throw new \Exception("更新に失敗しました。");
     }
   }
+
+  /**
+   * プレイヤー 更新
+   *
+   * @param Player $player
+   * @return void
+   */
+  public function update(Player $player): void
+  {
+    try {
+      EloquentPlayer::findOrFail($player->getPlayerId()->getValue())
+          ->update([
+              'mu' => $player->getMu()->getValue(),
+              'sigma' => $player->getSigma()->getValue(),
+              'rate' => $player->getRate()->getValue(),
+              'min_rate' => $player->getMinRate()->getValue(),
+              'max_rate' => $player->getMaxRate()->getValue(),
+              'win' => $player->getWin()->getValue(),
+              'defeat' => $player->getDefeat()->getValue(),
+              'games' => $player->getGames()->getValue(),
+              'streak' =>  $player->getStreak()->getValue(),
+              'last_game_at' => $player->getLastGameAt()->getDatetime(),
+          ]);
+    } catch (ModelNotFoundException $e) {
+        Log::Info($e->getMessage());
+        throw new ModelNotFoundException(sprintf("プレイヤーID %d の情報が存在しません。", $player->getPlayerId()->getValue()));
+    }
+  }
 }

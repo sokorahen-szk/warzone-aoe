@@ -5,6 +5,9 @@ namespace Package\Domain\System\ValueObject;
 use Carbon\Carbon;
 
 class Datetime {
+  /**
+   * @var Carbon
+   */
   private $value;
 
   public function __construct($value)
@@ -29,5 +32,20 @@ class Datetime {
   public function getDate(): ?string
   {
     return $this->value ? $this->value->format('Y-m-d') : null;
+  }
+
+  public function addHours(int $hours): void
+  {
+    $this->value->addHours($hours);
+  }
+
+  public function Lte(Datetime $datetime): bool
+  {
+    return $this->value->lte($datetime->getValue());
+  }
+
+  public function Gte(Datetime $datetime): bool
+  {
+    return $this->value->Gte($datetime->getValue());
   }
 }

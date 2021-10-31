@@ -30,4 +30,12 @@ interface PlayerRepositoryInterface {
    * @param Player $player
    */
   public function updateEnabled(Player $player): void;
+
+  /**
+   * プレイヤー 更新
+   *
+   * @param Player $player
+   * @return void
+   */
+  public function update(Player $player): void;
 }

@@ -9,9 +9,12 @@ use Package\Usecase\Game\TeamDivision\GameTeamDivisionServiceInterface;
 use Package\Usecase\Game\GameMap\GetList\GameMapListServiceInterface;
 use Package\Usecase\Game\GameHistory\GetList\GameHistoryListCommand;
 use Package\Usecase\Game\Matching\GameMatchingServiceInterface;
+use Package\Usecase\Game\Finished\GameFinishedCommand;
+use Package\Usecase\Game\Finished\GameFinishedServiceInterface;
 
 use App\Http\Requests\Game\GameHistoryListRequest;
 use App\Http\Requests\Game\GameCreateTeamDivisionRequest;
+use App\Http\Requests\Game\GameFinishedRequest;
 use App\Http\Requests\Game\GameMatchingRequest;
 
 use Package\Usecase\Game\TeamDivision\GameTeamDivisionCommand;
@@ -122,6 +125,18 @@ class GameController extends Controller
             $request->game_package_id,
             $request->rule_id,
             $request->map_id
+        );
+
+        $result = $interactor->handle($command);
+        return $this->validResponse($result);
+    }
+
+    public function finished(GameFinishedServiceInterface $interactor, GameFinishedRequest $request)
+    {
+        $command = new GameFinishedCommand(
+            $request->token,
+            $request->status,
+            $request->input('winning_team', null)
         );
 
         $interactor->handle($command);

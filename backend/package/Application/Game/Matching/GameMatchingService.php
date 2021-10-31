@@ -2,9 +2,11 @@
 
 namespace Package\Application\Game\Matching;
 
-use Package\Usecase\Game\Matching\GameMatchingCommand;
 use Package\Infrastructure\TrueSkill\TrueSkillClient;
 use Package\Usecase\Game\Matching\GameMatchingServiceInterface;
+use Package\Usecase\Game\Matching\GameMatchingData;
+use Package\Usecase\Game\Matching\GameMatchingCommand;
+
 
 use Package\Domain\Game\Exceptions\AlreadyMatchingGamingException;
 use Package\Domain\Game\Exceptions\SelectePlayerDuplicateException;
@@ -13,6 +15,7 @@ use Package\Domain\User\Repository\PlayerRepositoryInterface;
 use Package\Domain\User\Repository\PlayerMemoryRepositoryInterface;
 use Package\Domain\Game\Service\GameRecordServiceInterface;
 use Package\Domain\Game\Repository\GameRecordRepositoryInterface;
+use Package\Domain\Game\Repository\GameRecordTokenRepositoryInterface;
 use Package\Domain\Game\Repository\GamePackageRepositoryInterface;
 use Package\Domain\Game\Repository\GameMapRepositoryInterface;
 use Package\Domain\Game\Repository\GameRuleRepositoryInterface;
@@ -23,11 +26,10 @@ use Package\Domain\Game\ValueObject\GameMap\GameMapId;
 use Package\Domain\Game\ValueObject\GameRule\GameRuleId;
 use Package\Domain\Game\ValueObject\GameRecord\VictoryPrediction;
 
-use Package\Domain\User\ValueObject\Player\Mu;
-use Package\Domain\User\ValueObject\Player\Sigma;
 use Package\Domain\User\ValueObject\Player\PlayerId;
 use Package\Domain\Game\ValueObject\GameRecord\GameRecordId;
 use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
+use Package\Domain\System\ValueObject\Datetime;
 
 use Package\Domain\User\Entity\Player;
 
@@ -42,6 +44,7 @@ class GameMatchingService implements GameMatchingServiceInterface
 	private $playerMemoryRepository;
 	private $trueSkillClient;
 	private $gameRecordRepository;
+	private $gameRecordTokenRepository;
 	private $gamePackageRepository;
 	private $gameMapRepository;
 	private $gameRuleRepository;
@@ -52,6 +55,7 @@ class GameMatchingService implements GameMatchingServiceInterface
 		PlayerRepositoryInterface $playerRepository,
 		PlayerMemoryRepositoryInterface $playerMemoryRepository,
 		GameRecordRepositoryInterface $gameRecordRepository,
+		GameRecordTokenRepositoryInterface $gameRecordTokenRepository,
 		GamePackageRepositoryInterface $gamePackageRepository,
 		GameMapRepositoryInterface $gameMapRepository,
 		GameRuleRepositoryInterface $gameRuleRepository
@@ -62,6 +66,7 @@ class GameMatchingService implements GameMatchingServiceInterface
 		$this->playerRepository = $playerRepository;
 		$this->playerMemoryRepository = $playerMemoryRepository;
 		$this->gameRecordRepository = $gameRecordRepository;
+		$this->gameRecordTokenRepository = $gameRecordTokenRepository;
 		$this->gamePackageRepository = $gamePackageRepository;
 		$this->gameMapRepository = $gameMapRepository;
 		$this->gameRuleRepository = $gameRuleRepository;
@@ -70,7 +75,7 @@ class GameMatchingService implements GameMatchingServiceInterface
 		$this->trueSkillClient = new TrueSkillClient();
 	}
 
-    public function handle(GameMatchingCommand $command): void
+    public function handle(GameMatchingCommand $command): GameMatchingData
 	{
 		if ($this->playerService->isDuplicatePlayer($command->playerIds)) {
 			throw new SelectePlayerDuplicateException('選択されたユーザが重複しています。');
@@ -107,6 +112,10 @@ class GameMatchingService implements GameMatchingServiceInterface
 			$userId = new UserId($command->userId);
 		}
 		$victoryPrediction = new VictoryPrediction($trueSkillResponse->quality);
+
+		$expiresAt = new Datetime(now());
+		$expiresAt->addHours(6); // トークンの有効期限は6時間
+
 		try {
 			DB::beginTransaction();
 
@@ -121,11 +130,18 @@ class GameMatchingService implements GameMatchingServiceInterface
 			$this->createPlayerMemories($team1Players, $gameRecordId, new GameTeam(1));
 			$this->createPlayerMemories($team2Players, $gameRecordId, new GameTeam(2));
 
+			$gameRecordToken = $this->gameRecordTokenRepository->create($gameRecordId, $expiresAt);
+
 			DB::commit();
 		} catch (Exception $e) {
 			DB::rollback();
 			throw $e;
 		}
+
+		// https://github.com/sokorahen-szk/warzone-aoe/issues/85
+        // TODO: ここにゲーム開始の通知をDiscordに送る処理
+
+		return new GameMatchingData($gameRecordToken);
 	}
 
 	/**

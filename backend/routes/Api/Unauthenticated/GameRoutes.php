@@ -44,6 +44,12 @@ class GameRoutes {
 			 * POST /api/game/create/matching
 			 */
 			Route::post('/create/matching', [GameController::class, 'matching'])->name('game.create.matching');
+
+			/**
+			 * 勝敗記録
+			 * POST /api/game/create/finished
+			 */
+			Route::post('/create/finished', [GameController::class, 'finished'])->name('game.create.finished');
 		});
 	}
 }

@@ -12,7 +12,7 @@ use App\Models\PlayerMemoryModel as EloquentPlayerMemory;
 
 class PlayerMemoryRepository implements PlayerMemoryRepositoryInterface {
     /**
-     * 個別記録作成
+     * 個別記録作成（試合開始）
      *
      * @param GameRecordId $gameRecordId
      * @param Player $player
@@ -29,5 +29,23 @@ class PlayerMemoryRepository implements PlayerMemoryRepositoryInterface {
             'sigma' => $player->getSigma()->getValue(),
             'rate' => $player->getRate()->getValue(),
         ]);
+    }
+
+    /**
+     * 個別記録更新（試合終了）
+     *
+     * @param GameRecordId $gameRecordId
+     * @param Player $player
+     * @return void
+     */
+    public function update(GameRecordId $gameRecordId, Player $player): void
+    {
+        EloquentPlayerMemory::where('player_id', $player->getPlayerId()->getValue())
+            ->where('game_record_id', $gameRecordId->getValue())
+            ->update([
+                'after_mu' => $player->getMu()->getValue(),
+                'after_sigma' => $player->getSigma()->getValue(),
+                'after_rate' => $player->getRate()->getValue(),
+            ]);
     }
 }

@@ -14,4 +14,9 @@ class Defeat {
   {
     return $this->value;
   }
+
+  public function increment(): void
+  {
+    $this->value++;
+  }
 }

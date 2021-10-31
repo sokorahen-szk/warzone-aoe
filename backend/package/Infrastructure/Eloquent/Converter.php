@@ -11,6 +11,7 @@ use App\Models\PlayerMemoryModel;
 use App\Models\GamePackageModel;
 use App\Models\MapModel;
 use App\Models\RuleModel;
+use App\Models\GameRecordTokenModel;
 
 use Package\Domain\User\Entity\Role;
 use Package\Domain\User\Entity\Player;
@@ -22,6 +23,7 @@ use Package\Domain\Game\Entity\GameRecord;
 use Package\Domain\Game\Entity\GamePackage;
 use Package\Domain\Game\Entity\GameMap;
 use Package\Domain\Game\Entity\GameRule;
+use Package\Domain\Game\Entity\GameRecordToken;
 
 use Package\Domain\User\ValueObject\Role\RoleId;
 use Package\Domain\User\ValueObject\Role\RoleName;
@@ -64,6 +66,8 @@ use Package\Domain\Game\ValueObject\GameMap\GameMapId;
 use Package\Domain\Game\ValueObject\GameMap\Image;
 
 use Package\Domain\Game\ValueObject\GameRule\GameRuleId;
+
+use Package\Domain\Game\ValueObject\GameRecordToken\GameToken;
 
 use Package\Domain\User\ValueObject\PlayerMemory\PlayerMemoryId;
 
@@ -343,5 +347,14 @@ class Converter {
         'name'             => new Name($gameRule->name),
         'description'      => new Description($gameRule->description),
       ]);
+    }
+
+    public static function gameRecordToken(GameRecordTokenModel $gameRecordToken): gameRecordToken
+    {
+        return new GameRecordToken([
+            'gameRecordId' => new GameRecordId($gameRecordToken->game_record_id),
+            'gameToken' => new GameToken($gameRecordToken->game_token),
+            'expiresAt' => new Datetime($gameRecordToken->expires_at),
+        ]);
     }
 }

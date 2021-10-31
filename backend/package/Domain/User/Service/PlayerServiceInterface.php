@@ -2,6 +2,8 @@
 
 namespace Package\Domain\User\Service;
 
+use Package\Domain\User\Entity\Player;
+
 interface PlayerServiceInterface {
 	/**
 	 * 選択されたプレイヤーIDから、プレイヤーの情報を取得する
@@ -18,4 +20,28 @@ interface PlayerServiceInterface {
 	 * @return boolean
 	 */
 	public function isDuplicatePlayer(array $playerIds): bool;
+
+	/**
+	 * 勝利プレイヤー更新
+	 *
+	 * @param Player $player
+	 * @return Player
+	 */
+	public function changeWinnerPlayer(Player $player): Player;
+
+	/**
+	 * 敗北プレイヤー更新
+	 *
+	 * @param Player $player
+	 * @return Player
+	 */
+	public function changeDefeatPlayer(Player $player): Player;
+
+	/**
+	 * 引き分け 更新
+	 *
+	 * @param Player $player
+	 * @return Player
+	 */
+	public function changeDrawPlayer(Player $player): Player;
 }

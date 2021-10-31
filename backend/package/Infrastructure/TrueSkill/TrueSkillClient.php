@@ -68,9 +68,27 @@ class TrueSkillClient {
 	/**
 	 * 試合データからスキルを計算する
 	 *
+	 * @param array @params
 	 * @param string $token
+	 * @return Object
 	 */
-	public function calcSkill($token = null) {}
+	public function calcSkill(array $params, $token = null) {
+		$token = $token ?: $this->token();
+
+		if (!$token) {
+			throw new Exception("トークンエラー");
+		}
+
+		$data = [
+			'auth'  	=> true,
+			'token' 	=> $token,
+			'json'		=> true,
+		];
+
+		$resource = $this->request('calc_skill', array_merge($data, $params))->toArray();
+
+		return $resource;
+	}
 
 	/**
 	 * チーム分けパターンを取得を取得する
@@ -145,7 +163,7 @@ class TrueSkillClient {
 
 		} else {
 			// TODO: Exceptionの型修正予定
-			throw new \Exception('method が不正です。');
+			throw new Exception('method が不正です。');
 		}
 
 		return $this;
@@ -166,7 +184,7 @@ class TrueSkillClient {
 
 		if (json_last_error() !== JSON_ERROR_NONE) {
 			// TODO: Exceptionの型修正予定
-			throw new \Exception("json parse error.");
+			throw new Exception("json parse error.");
 		}
 
 		return $data;
