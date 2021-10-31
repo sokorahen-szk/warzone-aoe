@@ -18,17 +18,17 @@ class GameRecordToken extends Resource
 	  parent::__construct($data);
 	}
 
-    public function getGameRecordId(): ?GameRecordId
+    public function getGameRecordId(): GameRecordId
     {
         return $this->gameRecordId;
     }
 
-    public function getGameToken(): ?GameToken
+    public function getGameToken(): GameToken
     {
         return $this->gameToken;
     }
 
-    public function getExpiresAt(): ?Datetime
+    public function getExpiresAt(): Datetime
     {
         return $this->expiresAt;
     }

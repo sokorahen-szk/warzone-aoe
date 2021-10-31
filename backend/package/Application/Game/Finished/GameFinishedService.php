@@ -9,8 +9,6 @@ use Package\Domain\Game\ValueObject\GameRecord\GameStatus;
 use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
 use Package\Usecase\Game\Finished\GameFinishedServiceInterface;
 use Package\Usecase\Game\Finished\GameFinishedCommand;
-use DB;
-use Exception;
 use Package\Infrastructure\TrueSkill\TrueSkillClient;
 use Package\Domain\User\Entity\PlayerMemory;
 use Package\Domain\User\Entity\Player;
@@ -19,6 +17,11 @@ use Package\Domain\Game\ValueObject\GameRecord\GameRecordId;
 use Package\Domain\User\Repository\PlayerRepositoryInterface;
 use Package\Domain\System\ValueObject\Datetime;
 use Package\Domain\User\Service\PlayerServiceInterface;
+use Package\Domain\User\ValueObject\Player\Mu;
+use Package\Domain\User\ValueObject\Player\Rate;
+use Package\Domain\User\ValueObject\Player\Sigma;
+use DB;
+use Exception;
 
 class GameFinishedService implements GameFinishedServiceInterface
 {
@@ -44,8 +47,8 @@ class GameFinishedService implements GameFinishedServiceInterface
         $this->playerRepository = $playerRepository;
         $this->playerService = $playerService;
 
-		// TODO: 今後RepositoryからTrueSkillのデータ取り出すように包括するかもしれない
-		$this->trueSkillClient = new TrueSkillClient();
+        // TODO: 今後RepositoryからTrueSkillのデータ取り出すように包括するかもしれない
+        $this->trueSkillClient = new TrueSkillClient();
     }
 
     public function handle(GameFinishedCommand $command): void
@@ -77,9 +80,10 @@ class GameFinishedService implements GameFinishedServiceInterface
             $players = $this->pluckPlayer($gameRecord->getPlayerMemories(), $winningTeam, $gameStatus);
 
             if ($gameStatus->isFinished()) {
-                // TODO: https://github.com/sokorahen-szk/warzone-aoe/issues/85
-                // TrueSkill問合せして、対戦あとの情報をtrueskillから取得
-                // playersの情報を書き換え。
+                $trueSkillRequestData = $this->trueSkillRequestData($gameRecord->getPlayerMemories(), $winningTeam);
+                $trueSkillResponse = $this->trueSkillClient->calcSkill($trueSkillRequestData);
+
+                $players = $this->toPlayerFromCalcSkillResponse($players, $trueSkillResponse['teams']);
 
                 $gameRecord->changeWinningTeam($winningTeam);
             }
@@ -93,7 +97,7 @@ class GameFinishedService implements GameFinishedServiceInterface
             $this->updatePlayerMemories($gameRecord->getGameRecordId(), $players);
 
             // プレイヤー更新
-            $this->updatePlayer($players, $currentDatetime);
+            $this->updatePlayerFromRepository($players, $currentDatetime);
 
 			DB::commit();
 		} catch (Exception $e) {
@@ -139,7 +143,7 @@ class GameFinishedService implements GameFinishedServiceInterface
      */
     private function updatePlayerMemories(GameRecordId $gameRecordId, array $players): void
     {
-        foreach($players as $player) {
+        foreach ($players as $player) {
             $this->playerMemoryRepository->update($gameRecordId, $player);
         }
     }
@@ -148,11 +152,55 @@ class GameFinishedService implements GameFinishedServiceInterface
      * @param Player[] $players
      * @return void
      */
-    private function updatePlayer(array $players, Datetime $currentDatetime): void
+    private function updatePlayerFromRepository(array $players, Datetime $currentDatetime): void
     {
-        foreach($players as $player) {
+        foreach ($players as $player) {
             $player->changeLastGameAt($currentDatetime);
             $this->playerRepository->update($player);
         }
+    }
+
+    /**
+     * @param Player[] $players
+     * @param $trueSkillRequestTeams
+     * @return Player[]
+     */
+    private function toPlayerFromCalcSkillResponse(array $players, $trueSkillRequestTeams): array
+    {
+        foreach ($trueSkillRequestTeams as $trueSkillRequestTeam) {
+            foreach ($trueSkillRequestTeam as $data) {
+                foreach ($players as &$player) {
+                    if ($player->getPlayerId()->getValue() === $data->id) {
+                        $player->changeMu(new Mu($data->mu));
+                        $player->changeSigma(new Sigma($data->sigma));
+                        $player->changeRate(new Rate($data->rating_exposure));
+                    }
+                }
+            }
+        }
+
+        return $players;
+    }
+
+    private function trueSkillRequestData(array $playerMemories, GameTeam $gameTeam): array
+    {
+        $data = [
+            'teams' => [[],[]],
+            'winning_team' =>  $gameTeam->getValue(),
+        ];
+
+        foreach ($playerMemories as $playerMemory) {
+            $teamNo = $playerMemory->getTeam()->getValue() - 1;
+
+            $player = $playerMemory->getPlayer();
+            $data['teams'][$teamNo][] = [
+                'id' => $player->getPlayerId()->getValue(),
+                'name' => $player->getPlayerName()->getValue(),
+                'mu' => $player->getMu()->getValue(),
+                'sigma' => $player->getSigma()->getValue(),
+            ];
+        }
+
+        return $data;
     }
 }

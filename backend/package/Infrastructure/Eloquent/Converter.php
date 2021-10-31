@@ -68,7 +68,6 @@ use Package\Domain\Game\ValueObject\GameMap\Image;
 use Package\Domain\Game\ValueObject\GameRule\GameRuleId;
 
 use Package\Domain\Game\ValueObject\GameRecordToken\GameToken;
-
 use Package\Domain\User\ValueObject\PlayerMemory\PlayerMemoryId;
 
 use Package\Domain\System\ValueObject\Description;
