@@ -6,6 +6,8 @@ use Package\Domain\User\Entity\Player;
 use Package\Domain\User\Repository\PlayerRepositoryInterface;
 use Package\Domain\User\ValueObject\Player\Defeat;
 use Package\Domain\User\ValueObject\Player\Games;
+use Package\Domain\User\ValueObject\Player\MaxRate;
+use Package\Domain\User\ValueObject\Player\MinRate;
 use Package\Domain\User\ValueObject\Player\PlayerId;
 use Package\Domain\User\ValueObject\Player\Streak;
 use Package\Domain\User\ValueObject\Player\Win;
@@ -78,7 +80,7 @@ class PlayerService implements PlayerServiceInterface {
 		$player->changeGames($games);
 
 		$player = $this->updateStreak($player, true);
-
+		$player = $this->updateRateMaxOrMin($player);
 		return $player;
 	}
 
@@ -100,7 +102,22 @@ class PlayerService implements PlayerServiceInterface {
 		$player->changeGames($games);
 
 		$player = $this->updateStreak($player, false);
+		$player = $this->updateRateMaxOrMin($player);
+		return $player;
+	}
 
+	/**
+	 * 引き分け 更新
+	 *
+	 * @param Player $player
+	 * @return Player
+	 */
+	public function changeDrawPlayer(Player $player): Player
+	{
+		$games = new Games($player->getGames()->getValue());
+
+		$games->increment();
+		$player->changeGames($games);
 		return $player;
 	}
 
@@ -129,6 +146,23 @@ class PlayerService implements PlayerServiceInterface {
 		}
 
 		$player->changeStreak($streak);
+		return $player;
+	}
+
+	/**
+	 * @param Player $player
+	 * @return Player
+	 */
+	private function updateRateMaxOrMin(Player $player): Player
+	{
+		if ($player->getRate()->getValue() > $player->getMaxRate()->getValue()) {
+			$player->changeMaxRate(new MaxRate($player->getRate()->getValue()));
+		}
+
+		if ($player->getRate()->getValue() < $player->getMinRate()->getValue()) {
+			$player->changeMinRate(new MinRate($player->getRate()->getValue()));
+		}
+
 		return $player;
 	}
 }

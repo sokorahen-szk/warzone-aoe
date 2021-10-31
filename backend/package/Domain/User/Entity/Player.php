@@ -235,6 +235,14 @@ class Player extends Resource {
   }
 
   /**
+   * @param Datetime
+   */
+  public function changeLastGameAt(Datetime $lastGameAt): void
+  {
+    $this->lastGameAt = $lastGameAt;
+  }
+
+  /**
    * @return Enabled|null
    */
   public function getEnabled(): ?Enabled

@@ -11,24 +11,38 @@ use Package\Usecase\Game\Finished\GameFinishedServiceInterface;
 use Package\Usecase\Game\Finished\GameFinishedCommand;
 use DB;
 use Exception;
-use Package\Domain\System\ValueObject\Datetime;
 use Package\Infrastructure\TrueSkill\TrueSkillClient;
 use Package\Domain\User\Entity\PlayerMemory;
 use Package\Domain\User\Entity\Player;
+use Package\Domain\User\Repository\PlayerMemoryRepositoryInterface;
+use Package\Domain\Game\ValueObject\GameRecord\GameRecordId;
+use Package\Domain\User\Repository\PlayerRepositoryInterface;
+use Package\Domain\System\ValueObject\Datetime;
+use Package\Domain\User\Service\PlayerServiceInterface;
 
 class GameFinishedService implements GameFinishedServiceInterface
 {
     private $gameRecordTokenRepository;
     private $gameRecordRepository;
+    private $playerMemoryRepository;
+    private $playerRepository;
+    private $playerService;
+
     private $trueSkillClient;
 
     public function __construct(
         GameRecordTokenRepositoryInterface $gameRecordTokenRepository,
-        GameRecordRepositoryInterface $GameRecordRepository
-        )
+        GameRecordRepositoryInterface $GameRecordRepository,
+        PlayerMemoryRepositoryInterface $playerMemoryRepository,
+        PlayerRepositoryInterface $playerRepository,
+        PlayerServiceInterface $playerService
+    )
     {
         $this->gameRecordTokenRepository = $gameRecordTokenRepository;
         $this->gameRecordRepository = $GameRecordRepository;
+        $this->playerMemoryRepository = $playerMemoryRepository;
+        $this->playerRepository = $playerRepository;
+        $this->playerService = $playerService;
 
 		// TODO: 今後RepositoryからTrueSkillのデータ取り出すように包括するかもしれない
 		$this->trueSkillClient = new TrueSkillClient();
@@ -57,31 +71,29 @@ class GameFinishedService implements GameFinishedServiceInterface
             throw new Exception('ゲームトークンの有効期限が切れています。');
         }
 
-        $players = $this->pluckPlayer($gameRecord->getPlayerMemories());
-
 		try {
 			DB::beginTransaction();
+
+            $players = $this->pluckPlayer($gameRecord->getPlayerMemories(), $winningTeam, $gameStatus);
 
             if ($gameStatus->isFinished()) {
                 // TrueSkill問合せ
 
                 // GameRecordからplayer情報取得して、mu, sigma, rate書き換え
-            } else {
-                //
-            }
 
-            if ($winningTeam) {
                 $gameRecord->changeWinningTeam($winningTeam);
             }
 
             $gameRecord->changeGameStatus($gameStatus);
 
             // ゲームレコード更新
-            // $this->gameRecordRepository->update($gameRecord);
+            $this->gameRecordRepository->update($gameRecord);
 
-            // game_record.idに紐づく、player_memoriesのデータを更新する。
+            // プレイヤー記録更新
+            $this->updatePlayerMemories($gameRecord->getGameRecordId(), $players);
 
-            // 各プレイヤーのplayers情報を更新する。rate, mu, sigma, 勝ち負け数、ゲーム数、連勝、連敗など。
+            // プレイヤー更新
+            $this->updatePlayer($players, $currentDatetime);
 
 			DB::commit();
 		} catch (Exception $e) {
@@ -95,16 +107,52 @@ class GameFinishedService implements GameFinishedServiceInterface
 
     /**
      * @param PlayerMemory[] $playerMemories
+     * @param GameTeam|null $winningTeam
      * @return Player[]
      */
-    private function pluckPlayer(array $playerMemories): array
+    private function pluckPlayer(array $playerMemories, ?GameTeam $winningTeam, GameStatus $gameStatus): array
     {
         $players = [];
         foreach ($playerMemories as $playerMemory) {
-            $players[] = $playerMemory->getPlayer();
+            $player = $playerMemory->getPlayer();
+
+            if ($gameStatus->isFinished()) {
+                if ($winningTeam->getValue() === $playerMemory->getTeam()->getValue()) {
+                    $player = $this->playerService->changeWinnerPlayer($player);
+                } else {
+                    $player = $this->playerService->changeDefeatPlayer($player);
+                }
+            } else if ($gameStatus->isDraw()) {
+                $player = $this->playerService->changeDrawPlayer($player);
+            }
+
+            $players[] = $player;
         }
 
         return $players;
     }
 
+    /**
+     * @param GameRecordId $gameRecordId
+     * @param Player[] $players
+     * @return void
+     */
+    private function updatePlayerMemories(GameRecordId $gameRecordId, array $players): void
+    {
+        foreach($players as $player) {
+            $this->playerMemoryRepository->update($gameRecordId, $player);
+        }
+    }
+
+    /**
+     * @param Player[] $players
+     * @return void
+     */
+    private function updatePlayer(array $players, Datetime $currentDatetime): void
+    {
+        foreach($players as $player) {
+            $player->changeLastGameAt($currentDatetime);
+            $this->playerRepository->update($player);
+        }
+    }
 }

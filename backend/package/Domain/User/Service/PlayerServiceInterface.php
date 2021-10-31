@@ -36,4 +36,12 @@ interface PlayerServiceInterface {
 	 * @return Player
 	 */
 	public function changeDefeatPlayer(Player $player): Player;
+
+	/**
+	 * 引き分け 更新
+	 *
+	 * @param Player $player
+	 * @return Player
+	 */
+	public function changeDrawPlayer(Player $player): Player;
 }

@@ -124,11 +124,11 @@ class GameRecord extends Resource {
 	}
 
 	/**
-	 * @param GameStatus $gameStatus
+	 * @param GameStatus $status
 	 */
-	public function changeGameStatus(GameStatus $gameStatus): void
+	public function changeGameStatus(GameStatus $status): void
 	{
-		$this->gameStatus = $gameStatus;
+		$this->status = $status;
 	}
 
 	/**
