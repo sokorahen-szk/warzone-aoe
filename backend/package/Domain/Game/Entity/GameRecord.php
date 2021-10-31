@@ -100,6 +100,14 @@ class GameRecord extends Resource {
 	}
 
 	/**
+	 * @param GameTeam $gameTeam
+	 */
+	public function changeWinningTeam(GameTeam $winningTeam): void
+	{
+		$this->winningTeam = $winningTeam;
+	}
+
+	/**
 	 * @return VictoryPrediction|null
 	 */
 	public function getVictoryPrediction(): ?VictoryPrediction
@@ -116,11 +124,19 @@ class GameRecord extends Resource {
 	}
 
 	/**
+	 * @param GameStatus $gameStatus
+	 */
+	public function changeGameStatus(GameStatus $gameStatus): void
+	{
+		$this->gameStatus = $gameStatus;
+	}
+
+	/**
 	 * @return bool
 	 */
 	public function getGameStatusIsMatching(): bool
 	{
-		return $this->status->getValue() === GameStatus::GAME_STATUS_MATCHING;
+		return $this->status->isMatching();
 	}
 
 	/**

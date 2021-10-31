@@ -32,4 +32,9 @@ class GameRecordToken extends Resource
     {
         return $this->expiresAt;
     }
+
+    public function isValidExpires(Datetime $datetime): bool
+    {
+        return $this->expiresAt->Gte($datetime);
+    }
 }

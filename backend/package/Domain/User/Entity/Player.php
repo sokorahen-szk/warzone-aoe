@@ -91,11 +91,27 @@ class Player extends Resource {
   }
 
   /**
+   * @param Sigma
+   */
+  public function changeSigma(Sigma $sigma): void
+  {
+    $this->sigma = $sigma;
+  }
+
+  /**
    * @return Rate|null
    */
   public function getRate(): ?Rate
   {
     return $this->rate;
+  }
+
+  /**
+   * @param Rate
+   */
+  public function changeRate(Rate $rate): void
+  {
+    $this->rate = $rate;
   }
 
   /**
@@ -107,11 +123,27 @@ class Player extends Resource {
   }
 
   /**
+   * @param MinRate
+   */
+  public function changeMinRate(MinRate $minRate): void
+  {
+    $this->minRate = $minRate;
+  }
+
+  /**
    * @return MaxRate|null
    */
   public function getMaxRate(): ?MaxRate
   {
     return $this->maxRate;
+  }
+
+  /**
+   * @param MaxRate
+   */
+  public function changeMaxRate(MaxRate $maxRate): void
+  {
+    $this->maxRate = $maxRate;
   }
 
   /**
@@ -123,11 +155,27 @@ class Player extends Resource {
   }
 
   /**
+   * @param Win
+   */
+  public function changeWin(Win $win): void
+  {
+    $this->win = $win;
+  }
+
+  /**
    * @return Defeat|null
    */
   public function getDefeat(): ?Defeat
   {
     return $this->defeat;
+  }
+
+  /**
+   * @param Defeat
+   */
+  public function changeDefeat(Defeat $defeat): void
+  {
+    $this->defeat = $defeat;
   }
 
   /**
@@ -139,11 +187,27 @@ class Player extends Resource {
   }
 
   /**
+   * @param Games
+   */
+  public function changeGames(Games $games): void
+  {
+    $this->games = $games;
+  }
+
+  /**
    * @return Streak|null
    */
   public function getStreak(): ?Streak
   {
     return $this->streak;
+  }
+
+  /**
+   * @param Streak
+   */
+  public function changeStreak(Streak $streak): void
+  {
+    $this->streak = $streak;
   }
 
   /**

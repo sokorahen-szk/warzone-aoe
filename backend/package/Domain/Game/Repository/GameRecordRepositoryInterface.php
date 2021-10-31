@@ -13,6 +13,7 @@ use Package\Domain\Game\ValueObject\GameMap\GameMapId;
 use Package\Domain\Game\ValueObject\GameRule\GameRuleId;
 use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\Game\Entity\GameRecord;
+use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
 
 interface GameRecordRepositoryInterface
 {
@@ -36,6 +37,14 @@ interface GameRecordRepositoryInterface
      * @return GameRecord
      */
     public function getById(GameRecordId $gameRecordId): GameRecord;
+
+    /**
+     * 試合記録更新
+     *
+     * @param GameRecord $gameRecord
+     * @return void
+     */
+    public  function update(GameRecord $gameRecord): void;
 
     /**
     * 特定ユーザのレーティングを日付範囲で取得する

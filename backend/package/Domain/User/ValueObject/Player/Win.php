@@ -14,4 +14,14 @@ class Win {
   {
     return $this->value;
   }
+
+  public function increment(): void
+  {
+    $this->value++;
+  }
+
+  public function decrement(): void
+  {
+    $this->value--;
+  }
 }

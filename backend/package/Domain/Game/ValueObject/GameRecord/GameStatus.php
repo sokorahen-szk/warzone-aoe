@@ -35,4 +35,14 @@ class GameStatus
         }
         return $this->enums[$this->value];
     }
+
+    public function isMatching(): bool
+    {
+        return $this->value === self::GAME_STATUS_MATCHING;
+    }
+
+    public function isFinished(): bool
+    {
+        return $this->value === self::GAME_STATUS_FINISHED;
+    }
 }

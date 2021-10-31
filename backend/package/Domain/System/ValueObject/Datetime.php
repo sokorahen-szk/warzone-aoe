@@ -38,4 +38,14 @@ class Datetime {
   {
     $this->value->addHours($hours);
   }
+
+  public function Lte(Datetime $datetime): bool
+  {
+    return $this->value->lte($datetime->getValue());
+  }
+
+  public function Gte(Datetime $datetime): bool
+  {
+    return $this->value->Gte($datetime->getValue());
+  }
 }

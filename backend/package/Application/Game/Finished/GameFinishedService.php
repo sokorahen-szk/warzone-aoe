@@ -11,7 +11,10 @@ use Package\Usecase\Game\Finished\GameFinishedServiceInterface;
 use Package\Usecase\Game\Finished\GameFinishedCommand;
 use DB;
 use Exception;
+use Package\Domain\System\ValueObject\Datetime;
 use Package\Infrastructure\TrueSkill\TrueSkillClient;
+use Package\Domain\User\Entity\PlayerMemory;
+use Package\Domain\User\Entity\Player;
 
 class GameFinishedService implements GameFinishedServiceInterface
 {
@@ -33,38 +36,48 @@ class GameFinishedService implements GameFinishedServiceInterface
 
     public function handle(GameFinishedCommand $command): void
     {
+		$currentDatetime = new Datetime(now());
         $gameToken = new GameToken($command->token);
         $gameRecordToken = $this->gameRecordTokenRepository->getByGameToken($gameToken);
 
-        $gameRecord = $this->gameRecordRepository->getById($gameRecordToken->getGameRecordId());
+        $gameStatus = new GameStatus($command->status);
 
         $winningTeam = null;
         if ($command->winningTeam) {
             $winningTeam = new GameTeam($command->winningTeam);
         }
-        $gameStatus = new GameStatus($command->status);
 
-        /*
-            メモで残している。
-            foreach ($gameRecord->getPlayerMemories() as $playerMemory) {
-                var_dump($playerMemory->getTeam());
-            }
-            exit;
-         */
+        $gameRecord = $this->gameRecordRepository->getById($gameRecordToken->getGameRecordId());
 
         if (!$gameRecord->getGameStatusIsMatching()) {
             throw new Exception('マッチング中以外はステータスの変更はできません。');
         }
 
+        if (!$gameRecordToken->isValidExpires($currentDatetime)) {
+            throw new Exception('ゲームトークンの有効期限が切れています。');
+        }
+
+        $players = $this->pluckPlayer($gameRecord->getPlayerMemories());
+
 		try {
 			DB::beginTransaction();
 
-            // https://github.com/sokorahen-szk/warzone-aoe/issues/85
-            // TODO: ここにゲームレコードの情報を更新する処理
-            // ステータスの状態を更新時にチェックする。マッチング中のステータスのみ書き換えるようにする。
-            // これはRepositoryの責務。
+            if ($gameStatus->isFinished()) {
+                // TrueSkill問合せ
 
-            // プレイヤーの情報をtrueSkillに問合せし、それを元にUpdate後のデータを得る
+                // GameRecordからplayer情報取得して、mu, sigma, rate書き換え
+            } else {
+                //
+            }
+
+            if ($winningTeam) {
+                $gameRecord->changeWinningTeam($winningTeam);
+            }
+
+            $gameRecord->changeGameStatus($gameStatus);
+
+            // ゲームレコード更新
+            // $this->gameRecordRepository->update($gameRecord);
 
             // game_record.idに紐づく、player_memoriesのデータを更新する。
 
@@ -79,4 +92,19 @@ class GameFinishedService implements GameFinishedServiceInterface
         // https://github.com/sokorahen-szk/warzone-aoe/issues/85
         // TODO: ここにゲーム終了の通知をDiscordに送る処理
     }
+
+    /**
+     * @param PlayerMemory[] $playerMemories
+     * @return Player[]
+     */
+    private function pluckPlayer(array $playerMemories): array
+    {
+        $players = [];
+        foreach ($playerMemories as $playerMemory) {
+            $players[] = $playerMemory->getPlayer();
+        }
+
+        return $players;
+    }
+
 }

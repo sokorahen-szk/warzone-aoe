@@ -18,6 +18,7 @@ use Package\Domain\Game\ValueObject\GameMap\GameMapId;
 use Package\Domain\Game\ValueObject\GameRule\GameRuleId;
 use Package\Infrastructure\Eloquent\Converter;
 use Package\Domain\Game\Entity\GameRecord;
+use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -67,6 +68,27 @@ class GameRecordRepository implements GameRecordRepositoryInterface
         }
 
         return Converter::gameRecord($gameRecord);
+    }
+
+    /**
+     * 試合記録更新
+     *
+     * @param GameRecord $gameRecord
+     * @return void
+     */
+    public  function update(GameRecord $gameRecord): void
+    {
+        try {
+            EloquentGameRecordModel::findOrFail($gameRecord->getGameRecordId()->getValue())
+                ->update([
+                    'status' => $gameRecord->getGameStatus()->getValue(),
+                    'winning_team' => $gameRecord->getWinningTeam()->getValue(),
+                    'finished_at' => $gameRecord->getFinishedAt()->getDatetime(),
+                ]);
+        } catch (ModelNotFoundException $e) {
+            Log::Info($e->getMessage());
+            throw new ModelNotFoundException(sprintf("ゲームレコードID %d の情報が存在しません。", $gameRecord->getGameRecordId()->getValue()));
+        }
     }
 
     /**
