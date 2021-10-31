@@ -77,9 +77,9 @@ class GameFinishedService implements GameFinishedServiceInterface
             $players = $this->pluckPlayer($gameRecord->getPlayerMemories(), $winningTeam, $gameStatus);
 
             if ($gameStatus->isFinished()) {
-                // TrueSkill問合せ
-
-                // GameRecordからplayer情報取得して、mu, sigma, rate書き換え
+                // TODO: https://github.com/sokorahen-szk/warzone-aoe/issues/85
+                // TrueSkill問合せして、対戦あとの情報をtrueskillから取得
+                // playersの情報を書き換え。
 
                 $gameRecord->changeWinningTeam($winningTeam);
             }
