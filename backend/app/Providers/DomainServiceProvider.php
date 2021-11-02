@@ -30,6 +30,11 @@ class DomainServiceProvider extends ServiceProvider
             \Package\Domain\Game\Service\GameRecordServiceInterface::class,
             \Package\Domain\Game\Service\GameRecordService::class
         );
+
+        $this->app->bind(
+            \Package\Infrastructure\Discord\DiscordClient::class,
+            \Package\Infrastructure\Discord\DiscordClientInterface::class
+        );
     }
 
     /**
