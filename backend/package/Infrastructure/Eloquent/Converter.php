@@ -210,10 +210,20 @@ class Converter {
 
     public static function gameRecord(GameRecordModel $gameRecord): GameRecord
     {
+        $userId = null;
+        if ($gameRecord->user_id) {
+            $userId = new UserId($gameRecord->user_id);
+        }
         return new GameRecord([
             'gameRecordId'      => new GameRecordId($gameRecord->id),
+            'gamePackageId'     => new GamePackageId($gameRecord->game_package_id),
             'gamePackage'       => self::gamePackage($gameRecord->game_package),
             'playerMemories'    => self::playerMemories($gameRecord->player_memories),
+            'userId'            => $userId,
+            'ruleId'            => new GameRuleId($gameRecord->rule_id),
+            'rule'              => self::gameRule($gameRecord->rule),
+            'mapId'             => new GameMapId($gameRecord->map_id),
+            'map'               => self::gameMap($gameRecord->map),
             'winningTeam'       => new GameTeam($gameRecord->winning_team),
             'victoryPrediction' => new VictoryPrediction($gameRecord->victory_prediction),
             'status'            => new GameStatus($gameRecord->status),

@@ -53,6 +53,8 @@ class DiscordClientTest extends TestCase
 
     public function test_send_message_embeds()
     {
+        $this->markTestSkipped('skip');
+
         $client = new DiscordClient();
 
         $packageName = 'AoE2DE';
