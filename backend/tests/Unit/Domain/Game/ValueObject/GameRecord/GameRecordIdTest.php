@@ -3,7 +3,7 @@
 namespace Tests\Unit\Domain\Game\ValueObject\GameRecord;
 
 use Package\Domain\Game\ValueObject\GameRecord\GameRecordId;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class GameRecordIdTest extends TestCase
 {

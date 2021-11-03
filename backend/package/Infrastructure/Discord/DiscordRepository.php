@@ -4,7 +4,6 @@ namespace Package\Infrastructure\Discord;
 
 use Package\Domain\Game\Entity\GameRecord;
 use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
-use Package\Domain\User\Entity\PlayerMemory;
 use Package\Domain\User\Entity\User;
 
 class DiscordRepository implements DiscordRepositoryInterface {
@@ -43,7 +42,7 @@ class DiscordRepository implements DiscordRepositoryInterface {
     public function startGameNotification(GameRecord $gameRecord): void
     {
         $gamePackageName = $gameRecord->getGamePackage()->getName()->getValue();
-        $gameMapName = $gameRecord->getMap()->getName()->getValue();
+        $gameMapName = $gameRecord->getGameMap()->getName()->getValue();
         $notificationTitle = sprintf('%s %s', $gamePackageName, $gameMapName);
         $gameStartDatetime = $gameRecord->getStartedAt()->getDatetime();
         $team1RateSum = $gameRecord->getRateSum(new GameTeam(1));
@@ -81,5 +80,6 @@ class DiscordRepository implements DiscordRepositoryInterface {
                 ]
             ],
         );
+
     }
 }

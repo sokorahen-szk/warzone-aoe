@@ -32,8 +32,8 @@ class DomainServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            \Package\Infrastructure\Discord\DiscordClient::class,
-            \Package\Infrastructure\Discord\DiscordClientInterface::class
+            \Package\Infrastructure\Discord\DiscordClientInterface::class,
+            \Package\Infrastructure\Discord\DiscordClient::class
         );
     }
 

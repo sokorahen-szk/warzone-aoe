@@ -19,6 +19,7 @@ use Package\Domain\Game\Repository\GameRecordTokenRepositoryInterface;
 use Package\Domain\Game\Repository\GamePackageRepositoryInterface;
 use Package\Domain\Game\Repository\GameMapRepositoryInterface;
 use Package\Domain\Game\Repository\GameRuleRepositoryInterface;
+use Package\Infrastructure\Discord\DiscordRepositoryInterface;
 
 use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\Game\ValueObject\GamePackage\GamePackageId;
@@ -48,6 +49,7 @@ class GameMatchingService implements GameMatchingServiceInterface
 	private $gamePackageRepository;
 	private $gameMapRepository;
 	private $gameRuleRepository;
+	private $discordRepository;
 
 	public function __construct(
 		GameRecordServiceInterface $gameRecordService,
@@ -58,7 +60,8 @@ class GameMatchingService implements GameMatchingServiceInterface
 		GameRecordTokenRepositoryInterface $gameRecordTokenRepository,
 		GamePackageRepositoryInterface $gamePackageRepository,
 		GameMapRepositoryInterface $gameMapRepository,
-		GameRuleRepositoryInterface $gameRuleRepository
+		GameRuleRepositoryInterface $gameRuleRepository,
+		DiscordRepositoryInterface $discordRepository
 	)
 	{
 		$this->gameRecordService = $gameRecordService;
@@ -70,6 +73,8 @@ class GameMatchingService implements GameMatchingServiceInterface
 		$this->gamePackageRepository = $gamePackageRepository;
 		$this->gameMapRepository = $gameMapRepository;
 		$this->gameRuleRepository = $gameRuleRepository;
+
+		$this->discordRepository = $discordRepository;
 
 		// TODO: 今後RepositoryからTrueSkillのデータ取り出すように包括するかもしれない
 		$this->trueSkillClient = new TrueSkillClient();
@@ -131,6 +136,10 @@ class GameMatchingService implements GameMatchingServiceInterface
 			$this->createPlayerMemories($team2Players, $gameRecordId, new GameTeam(2));
 
 			$gameRecordToken = $this->gameRecordTokenRepository->create($gameRecordId, $expiresAt);
+
+			$gameRecord = $this->gameRecordRepository->getById($gameRecordId);
+
+			$this->discordRepository->startGameNotification($gameRecord);
 
 			DB::commit();
 		} catch (Exception $e) {
