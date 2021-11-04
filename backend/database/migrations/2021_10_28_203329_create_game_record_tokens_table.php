@@ -14,7 +14,6 @@ class CreateGameRecordTokensTable extends Migration
     public function up()
     {
         Schema::create('game_record_tokens', function (Blueprint $table) {
-            $table->unsignedBigInteger('game_record_id')->comment('試合記録ID');
             /**
              * 試合記録トークンは常にユニークになる。このトークンを使って勝敗を付けれるようになっている。
              * 未ログイン者ユーザ向け。ログイン済みユーザはマイページから勝敗つけれるため、このトークンは使っても
@@ -25,11 +24,13 @@ class CreateGameRecordTokensTable extends Migration
              */
             $table->string('game_token', 50)->unique()->comment('試合記録トークン');
 
+            $table->unsignedBigInteger('game_record_id')->comment('試合記録ID');
+
             // トークンの有効期限
             // トークン発行日時 + 6時間
-            $table->dateTime('expires_at');
+            $table->dateTime('expires_at')->comment('有効期限');
 
-            $table->primary(['game_record_id', 'game_token']);
+            $table->primary('game_token');
         });
     }
 

@@ -127,5 +127,4 @@ class PlayerMemory extends Resource {
   {
     return $this->afterRate;
   }
-
 }

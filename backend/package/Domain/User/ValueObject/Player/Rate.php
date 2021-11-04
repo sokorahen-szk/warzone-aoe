@@ -14,4 +14,25 @@ class Rate {
   {
     return $this->value;
   }
+
+  /**
+   * @param Rate $rate
+   * @return int
+   */
+  public function diff(Rate $rate): int
+  {
+    return $this->value - $rate->getValue();
+  }
+
+  /**
+   * @return string
+   */
+  public function getValueInSign(): string
+  {
+    if ($this->value < 0) {
+      return sprintf('%d', $this->value);
+    }
+
+    return sprintf('+%d', $this->value);
+  }
 }

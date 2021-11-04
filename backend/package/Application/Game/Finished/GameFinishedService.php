@@ -9,16 +9,20 @@ use Package\Domain\Game\ValueObject\GameRecord\GameStatus;
 use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
 use Package\Usecase\Game\Finished\GameFinishedServiceInterface;
 use Package\Usecase\Game\Finished\GameFinishedCommand;
-use DB;
-use Exception;
 use Package\Infrastructure\TrueSkill\TrueSkillClient;
 use Package\Domain\User\Entity\PlayerMemory;
 use Package\Domain\User\Entity\Player;
 use Package\Domain\User\Repository\PlayerMemoryRepositoryInterface;
+use Package\Infrastructure\Discord\DiscordRepositoryInterface;
 use Package\Domain\Game\ValueObject\GameRecord\GameRecordId;
 use Package\Domain\User\Repository\PlayerRepositoryInterface;
 use Package\Domain\System\ValueObject\Datetime;
 use Package\Domain\User\Service\PlayerServiceInterface;
+use Package\Domain\User\ValueObject\Player\Mu;
+use Package\Domain\User\ValueObject\Player\Rate;
+use Package\Domain\User\ValueObject\Player\Sigma;
+use DB;
+use Exception;
 
 class GameFinishedService implements GameFinishedServiceInterface
 {
@@ -27,6 +31,7 @@ class GameFinishedService implements GameFinishedServiceInterface
     private $playerMemoryRepository;
     private $playerRepository;
     private $playerService;
+    private $discordRepository;
 
     private $trueSkillClient;
 
@@ -35,7 +40,8 @@ class GameFinishedService implements GameFinishedServiceInterface
         GameRecordRepositoryInterface $GameRecordRepository,
         PlayerMemoryRepositoryInterface $playerMemoryRepository,
         PlayerRepositoryInterface $playerRepository,
-        PlayerServiceInterface $playerService
+        PlayerServiceInterface $playerService,
+        DiscordRepositoryInterface $discordRepository
     )
     {
         $this->gameRecordTokenRepository = $gameRecordTokenRepository;
@@ -43,9 +49,10 @@ class GameFinishedService implements GameFinishedServiceInterface
         $this->playerMemoryRepository = $playerMemoryRepository;
         $this->playerRepository = $playerRepository;
         $this->playerService = $playerService;
+        $this->discordRepository = $discordRepository;
 
-		// TODO: 今後RepositoryからTrueSkillのデータ取り出すように包括するかもしれない
-		$this->trueSkillClient = new TrueSkillClient();
+        // TODO: 今後RepositoryからTrueSkillのデータ取り出すように包括するかもしれない
+        $this->trueSkillClient = new TrueSkillClient();
     }
 
     public function handle(GameFinishedCommand $command): void
@@ -77,13 +84,14 @@ class GameFinishedService implements GameFinishedServiceInterface
             $players = $this->pluckPlayer($gameRecord->getPlayerMemories(), $winningTeam, $gameStatus);
 
             if ($gameStatus->isFinished()) {
-                // TODO: https://github.com/sokorahen-szk/warzone-aoe/issues/85
-                // TrueSkill問合せして、対戦あとの情報をtrueskillから取得
-                // playersの情報を書き換え。
+                $trueSkillRequestData = $this->trueSkillRequestData($gameRecord->getPlayerMemories(), $winningTeam);
+                $trueSkillResponse = $this->trueSkillClient->calcSkill($trueSkillRequestData);
 
+                $players = $this->toPlayerFromCalcSkillResponse($players, $trueSkillResponse['teams']);
                 $gameRecord->changeWinningTeam($winningTeam);
             }
 
+            $gameRecord->changeFinishedAt($currentDatetime);
             $gameRecord->changeGameStatus($gameStatus);
 
             // ゲームレコード更新
@@ -93,7 +101,7 @@ class GameFinishedService implements GameFinishedServiceInterface
             $this->updatePlayerMemories($gameRecord->getGameRecordId(), $players);
 
             // プレイヤー更新
-            $this->updatePlayer($players, $currentDatetime);
+            $this->updatePlayerFromRepository($players, $currentDatetime);
 
 			DB::commit();
 		} catch (Exception $e) {
@@ -101,8 +109,9 @@ class GameFinishedService implements GameFinishedServiceInterface
 			throw $e;
 		}
 
-        // https://github.com/sokorahen-szk/warzone-aoe/issues/85
-        // TODO: ここにゲーム終了の通知をDiscordに送る処理
+        // TODO: 今後ここは、Discord通知を非同期で行うようにコード修正する
+        $afterGameRecord = $this->gameRecordRepository->getById($gameRecordToken->getGameRecordId());
+        $this->discordRepository->endGameNotification($afterGameRecord);
     }
 
     /**
@@ -139,7 +148,7 @@ class GameFinishedService implements GameFinishedServiceInterface
      */
     private function updatePlayerMemories(GameRecordId $gameRecordId, array $players): void
     {
-        foreach($players as $player) {
+        foreach ($players as $player) {
             $this->playerMemoryRepository->update($gameRecordId, $player);
         }
     }
@@ -148,11 +157,58 @@ class GameFinishedService implements GameFinishedServiceInterface
      * @param Player[] $players
      * @return void
      */
-    private function updatePlayer(array $players, Datetime $currentDatetime): void
+    private function updatePlayerFromRepository(array $players, Datetime $currentDatetime): void
     {
-        foreach($players as $player) {
+        foreach ($players as $player) {
             $player->changeLastGameAt($currentDatetime);
             $this->playerRepository->update($player);
         }
+    }
+
+    /**
+     * @param Player[] $players
+     * @param $trueSkillRequestTeams
+     * @return Player[]
+     */
+    private function toPlayerFromCalcSkillResponse(array $players, $trueSkillRequestTeams): array
+    {
+        $changedPlayers = [];
+        foreach ($trueSkillRequestTeams as $trueSkillRequestTeam) {
+            foreach ($trueSkillRequestTeam as $data) {
+                foreach ($players as $player) {
+                    if ($player->getPlayerId()->getValue() === $data->id) {
+                        $player->changeMu(new Mu($data->mu));
+                        $player->changeSigma(new Sigma($data->sigma));
+                        $player->changeRate(new Rate($data->rating_exposure));
+                    }
+
+                    $changedPlayers[] = $player;
+                }
+            }
+        }
+
+        return $changedPlayers;
+    }
+
+    private function trueSkillRequestData(array $playerMemories, GameTeam $gameTeam): array
+    {
+        $data = [
+            'teams' => [[],[]],
+            'winning_team' =>  $gameTeam->getValue(),
+        ];
+
+        foreach ($playerMemories as $playerMemory) {
+            $teamNo = $playerMemory->getTeam()->getValue() - 1;
+
+            $player = $playerMemory->getPlayer();
+            $data['teams'][$teamNo][] = [
+                'id' => $player->getPlayerId()->getValue(),
+                'name' => $player->getPlayerName()->getValue(),
+                'mu' => $player->getMu()->getValue(),
+                'sigma' => $player->getSigma()->getValue(),
+            ];
+        }
+
+        return $data;
     }
 }

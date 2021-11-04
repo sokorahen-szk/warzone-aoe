@@ -79,7 +79,7 @@ class Player extends Resource {
    */
   public function changeMu(Mu $mu): void
   {
-    $this->enabled = $mu;
+    $this->mu = $mu;
   }
 
   /**

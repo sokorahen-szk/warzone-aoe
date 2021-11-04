@@ -17,7 +17,7 @@ class CreateMapsTable extends Migration
             $table->id()->comment('マップID');
             $table->unsignedBigInteger('game_package_id')->comment('ゲーム種別ID');
             $table->string('name', 50)->comment('マップ名');
-            $table->string('image')->comment('マップ画像');
+            $table->string('image')->nullable()->comment('マップ画像');
             $table->string('description')->nullable()->comment('マップ説明');
 
             $table->foreign('game_package_id')->references('id')->on('game_packages');

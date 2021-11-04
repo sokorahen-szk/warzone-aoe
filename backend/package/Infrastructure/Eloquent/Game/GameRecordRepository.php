@@ -18,7 +18,6 @@ use Package\Domain\Game\ValueObject\GameMap\GameMapId;
 use Package\Domain\Game\ValueObject\GameRule\GameRuleId;
 use Package\Infrastructure\Eloquent\Converter;
 use Package\Domain\Game\Entity\GameRecord;
-use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -60,7 +59,12 @@ class GameRecordRepository implements GameRecordRepositoryInterface
     public function getById(GameRecordId $gameRecordId): GameRecord
     {
         try {
-            $gameRecord = EloquentGameRecordModel::with('player_memories')
+            $gameRecord = EloquentGameRecordModel::with([
+                'game_package',
+                'player_memories.player.user',
+                'map',
+                'rule',
+            ])
                 ->findOrFail($gameRecordId->getValue());
         } catch (ModelNotFoundException $e) {
             Log::Info($e->getMessage());
@@ -196,7 +200,12 @@ class GameRecordRepository implements GameRecordRepositoryInterface
      */
     public function listHistoryByStatus(GameStatus $status): array
     {
-        $gameRecords = EloquentGameRecordModel::with('player_memories')
+        $gameRecords = EloquentGameRecordModel::with([
+            'game_package',
+            'player_memories.player.user',
+            'map',
+            'rule',
+        ])
         ->where('status', $status->getValue())
         ->get();
 

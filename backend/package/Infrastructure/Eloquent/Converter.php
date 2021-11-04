@@ -68,7 +68,6 @@ use Package\Domain\Game\ValueObject\GameMap\Image;
 use Package\Domain\Game\ValueObject\GameRule\GameRuleId;
 
 use Package\Domain\Game\ValueObject\GameRecordToken\GameToken;
-
 use Package\Domain\User\ValueObject\PlayerMemory\PlayerMemoryId;
 
 use Package\Domain\System\ValueObject\Description;
@@ -211,10 +210,20 @@ class Converter {
 
     public static function gameRecord(GameRecordModel $gameRecord): GameRecord
     {
+        $userId = null;
+        if ($gameRecord->user_id) {
+            $userId = new UserId($gameRecord->user_id);
+        }
         return new GameRecord([
             'gameRecordId'      => new GameRecordId($gameRecord->id),
+            'gamePackageId'     => new GamePackageId($gameRecord->game_package_id),
             'gamePackage'       => self::gamePackage($gameRecord->game_package),
             'playerMemories'    => self::playerMemories($gameRecord->player_memories),
+            'userId'            => $userId,
+            'ruleId'            => new GameRuleId($gameRecord->rule_id),
+            'rule'              => self::gameRule($gameRecord->rule),
+            'mapId'             => new GameMapId($gameRecord->map_id),
+            'map'               => self::gameMap($gameRecord->map),
             'winningTeam'       => new GameTeam($gameRecord->winning_team),
             'victoryPrediction' => new VictoryPrediction($gameRecord->victory_prediction),
             'status'            => new GameStatus($gameRecord->status),
@@ -251,11 +260,11 @@ class Converter {
             'user'              => $user,
             'team'              => new GameTeam($playerMemory->team),
             'mu'                => new Mu($playerMemory->mu),
-            'afterMu'           => new Mu($playerMemory->afterMu),
+            'afterMu'           => new Mu($playerMemory->after_mu),
             'sigma'             => new Sigma($playerMemory->sigma),
-            'afterSigma'        => new Sigma($playerMemory->afterSigma),
+            'afterSigma'        => new Sigma($playerMemory->after_sigma),
             'rate'              => new Rate($playerMemory->rate),
-            'afterRate'         => new Rate($playerMemory->afterRate),
+            'afterRate'         => new Rate($playerMemory->after_rate),
         ]);
     }
 

@@ -52,6 +52,11 @@ class RepositoryProvider extends ServiceProvider
             \Package\Domain\Game\Repository\GameRecordTokenRepositoryInterface::class,
             \Package\Infrastructure\Eloquent\Game\GameRecordTokenRepository::class
         );
+
+        $this->app->singleton(
+            \Package\Infrastructure\Discord\DiscordRepositoryInterface::class,
+            \Package\Infrastructure\Discord\DiscordRepository::class
+        );
     }
 
     /**

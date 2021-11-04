@@ -1,8 +1,16 @@
 <?php
 
-return [
+return (object) [
 	// Webhook ベースURL
 	'discord_base_url' => 'https://discord.com/api/webhooks',
+
+	// BOT
+	'bot_name' => 'WARZONE通知',
+
+	'embed_color' => (object)[
+		'info' => 0x94c5ca,
+		'success' => 0x94c529,
+	],
 
 	// 新規登録　通知するテンプレート
 	'register_notification_template'  => "```

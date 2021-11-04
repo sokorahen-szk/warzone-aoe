@@ -3,28 +3,20 @@
 namespace Package\Infrastructure\Discord;
 
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Config;
+use Config;
 use Exception;
 
-class DiscordClient {
-
+class DiscordClient implements DiscordClientInterface {
 	private $client;
-	private $method;
 	private $template;
 
 	// テンプレート内で置換するワードの区切り
 	// 例: ##userName## -> ユーザ名　に置換する区切り
 	const REPLACE_DELIMIT = '##';
 
-	const DEFAULT_METHOD = 'POST';
-
 	public function __construct()
 	{
 		$this->client = new Client();
-        $this->options = [
-            'http_errors' => true,
-        ];
-		$this->method = self::DEFAULT_METHOD;
 
 		$this->template = Config::get('notification');
 	}
@@ -39,22 +31,29 @@ class DiscordClient {
 	public function sendMessageOnTemplate(string $webHook, string $templateName, array $data = []): bool
 	{
 		$json = $this->parseTemplateJson($templateName, $data);
-		switch($this->method) {
-			case 'POST':
-				return $this->postEventRequest($webHook, $json);
-		}
-
-		return false;
+		return $this->eventRequest($webHook, $json);
 	}
 
-	private function postEventRequest(string $webHook, string $json): bool
+	/**
+	 * @param string $webHook <チャンネルID>/<ランダム数字>
+	 * @param string $embeds
+	 * @return boolean
+	 */
+	public function sendMessageEmbeds(string $webHook, array $embeds): bool
 	{
+		$json = json_encode($embeds);
+
 		if (json_last_error() !== JSON_ERROR_NONE) {
 			throw new Exception("json parse error.");
 		}
 
+		return $this->eventRequest($webHook, $json);
+	}
+
+	private function eventRequest(string $webHook, string $json): bool
+	{
 		$response = $this->client->post(
-			sprintf("%s/%s", $this->template['discord_base_url'], $webHook), [
+			sprintf("%s/%s", $this->template->discord_base_url, $webHook), [
 			'future' 		=> true,
 			'headers' 		=> ['Content-Type' => 'application/json'],
 			'body' 			=> $json,
@@ -69,7 +68,7 @@ class DiscordClient {
 
 	private function parseTemplateJson(string $templateName, array $data): string
 	{
-		$templateBody = $this->template[$templateName] ?? null;
+		$templateBody = $this->template->{$templateName} ?? null;
 
 		if (!$templateBody) {
 			throw new Exception('正しいテンプレート名ではありません。');
@@ -84,8 +83,16 @@ class DiscordClient {
 			$templateBody = str_replace($v, $value, $templateBody);
 		}
 
-		$content = ['content' => $templateBody];
+		$content = [
+			'content' => $templateBody,
+			'username' => $this->template->bot_name,
+		];
+		$json  = json_encode($content);
 
-		return json_encode($content);
+		if (json_last_error() !== JSON_ERROR_NONE) {
+			throw new Exception("json parse error.");
+		}
+
+		return $json;
 	}
 }

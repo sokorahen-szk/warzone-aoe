@@ -13,6 +13,8 @@ use Package\Domain\Game\ValueObject\GameRecord\GameStatus;
 use Package\Domain\Game\ValueObject\GameRecord\VictoryPrediction;
 use Package\Domain\User\Entity\PlayerMemory;
 use Package\Domain\Game\Entity\GamePackage;
+use Package\Domain\Game\Entity\GameMap;
+use Package\Domain\Game\Entity\GameRule;
 
 use Package\Domain\System\ValueObject\Datetime;
 
@@ -23,7 +25,9 @@ class GameRecord extends Resource {
 	protected $playerMemories;
 	protected $userId;
 	protected $ruleId;
+	protected $rule;
 	protected $mapId;
+	protected $map;
 	protected $winningTeam;
 	protected $victoryPrediction;
 	protected $status;
@@ -84,11 +88,27 @@ class GameRecord extends Resource {
 	}
 
 	/**
+	 * @return GameRule
+	 */
+	public function getGameRule(): GameRule
+	{
+		return $this->rule;
+	}
+
+	/**
 	 * @return GameMapId|null
 	 */
 	public function getGameMapId(): ?GameMapId
 	{
 		return $this->mapId;
+	}
+
+	/**
+	 * @return GameMap
+	 */
+	public function getGameMap(): GameMap
+	{
+		return $this->map;
 	}
 
 	/**
@@ -153,5 +173,41 @@ class GameRecord extends Resource {
 	public function getFinishedAt(): ?Datetime
 	{
 		return $this->finishedAt;
+	}
+
+	/**
+	 * @param Datetime
+	 */
+	public function changeFinishedAt(Datetime $finishedAt): void
+	{
+		$this->finishedAt = $finishedAt;
+	}
+
+	/**
+	 * チーム別のレート合計
+	 *
+	 * @param GameTeam $team
+	 * @return int
+	 */
+	public function getRateSum(GameTeam $team): int
+	{
+		$sum = 0;
+		foreach($this->pluckPlayerMemoriesByTeam($team) as $playerMemory) {
+			$sum += $playerMemory->getRate()->getValue();
+		}
+
+		return $sum;
+	}
+
+	public function pluckPlayerMemoriesByTeam(GameTeam $team): array
+	{
+		$playerMemories = [];
+		foreach($this->playerMemories as $playerMemory) {
+			if ($playerMemory->getTeam()->getValue() === $team->getValue()) {
+				$playerMemories[] = $playerMemory;
+			}
+		}
+
+		return $playerMemories;
 	}
 }
