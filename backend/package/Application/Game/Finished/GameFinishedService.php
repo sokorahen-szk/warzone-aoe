@@ -13,6 +13,7 @@ use Package\Infrastructure\TrueSkill\TrueSkillClient;
 use Package\Domain\User\Entity\PlayerMemory;
 use Package\Domain\User\Entity\Player;
 use Package\Domain\User\Repository\PlayerMemoryRepositoryInterface;
+use Package\Infrastructure\Discord\DiscordRepositoryInterface;
 use Package\Domain\Game\ValueObject\GameRecord\GameRecordId;
 use Package\Domain\User\Repository\PlayerRepositoryInterface;
 use Package\Domain\System\ValueObject\Datetime;
@@ -30,6 +31,7 @@ class GameFinishedService implements GameFinishedServiceInterface
     private $playerMemoryRepository;
     private $playerRepository;
     private $playerService;
+    private $discordRepository;
 
     private $trueSkillClient;
 
@@ -38,7 +40,8 @@ class GameFinishedService implements GameFinishedServiceInterface
         GameRecordRepositoryInterface $GameRecordRepository,
         PlayerMemoryRepositoryInterface $playerMemoryRepository,
         PlayerRepositoryInterface $playerRepository,
-        PlayerServiceInterface $playerService
+        PlayerServiceInterface $playerService,
+        DiscordRepositoryInterface $discordRepository
     )
     {
         $this->gameRecordTokenRepository = $gameRecordTokenRepository;
@@ -46,6 +49,7 @@ class GameFinishedService implements GameFinishedServiceInterface
         $this->playerMemoryRepository = $playerMemoryRepository;
         $this->playerRepository = $playerRepository;
         $this->playerService = $playerService;
+        $this->discordRepository = $discordRepository;
 
         // TODO: 今後RepositoryからTrueSkillのデータ取り出すように包括するかもしれない
         $this->trueSkillClient = new TrueSkillClient();
@@ -84,10 +88,10 @@ class GameFinishedService implements GameFinishedServiceInterface
                 $trueSkillResponse = $this->trueSkillClient->calcSkill($trueSkillRequestData);
 
                 $players = $this->toPlayerFromCalcSkillResponse($players, $trueSkillResponse['teams']);
-
                 $gameRecord->changeWinningTeam($winningTeam);
             }
 
+            $gameRecord->changeFinishedAt($currentDatetime);
             $gameRecord->changeGameStatus($gameStatus);
 
             // ゲームレコード更新
@@ -105,8 +109,9 @@ class GameFinishedService implements GameFinishedServiceInterface
 			throw $e;
 		}
 
-        // https://github.com/sokorahen-szk/warzone-aoe/issues/85
-        // TODO: ここにゲーム終了の通知をDiscordに送る処理
+        // TODO: 今後ここは、Discord通知を非同期で行うようにコード修正する
+        $afterGameRecord = $this->gameRecordRepository->getById($gameRecordToken->getGameRecordId());
+        $this->discordRepository->endGameNotification($afterGameRecord);
     }
 
     /**
@@ -167,19 +172,22 @@ class GameFinishedService implements GameFinishedServiceInterface
      */
     private function toPlayerFromCalcSkillResponse(array $players, $trueSkillRequestTeams): array
     {
+        $changedPlayers = [];
         foreach ($trueSkillRequestTeams as $trueSkillRequestTeam) {
             foreach ($trueSkillRequestTeam as $data) {
-                foreach ($players as &$player) {
+                foreach ($players as $player) {
                     if ($player->getPlayerId()->getValue() === $data->id) {
                         $player->changeMu(new Mu($data->mu));
                         $player->changeSigma(new Sigma($data->sigma));
                         $player->changeRate(new Rate($data->rating_exposure));
                     }
+
+                    $changedPlayers[] = $player;
                 }
             }
         }
 
-        return $players;
+        return $changedPlayers;
     }
 
     private function trueSkillRequestData(array $playerMemories, GameTeam $gameTeam): array

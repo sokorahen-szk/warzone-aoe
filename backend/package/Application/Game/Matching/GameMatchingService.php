@@ -137,18 +137,15 @@ class GameMatchingService implements GameMatchingServiceInterface
 
 			$gameRecordToken = $this->gameRecordTokenRepository->create($gameRecordId, $expiresAt);
 
-			$gameRecord = $this->gameRecordRepository->getById($gameRecordId);
-
-			$this->discordRepository->startGameNotification($gameRecord);
-
 			DB::commit();
 		} catch (Exception $e) {
 			DB::rollback();
 			throw $e;
 		}
 
-		// https://github.com/sokorahen-szk/warzone-aoe/issues/85
-        // TODO: ここにゲーム開始の通知をDiscordに送る処理
+		// TODO: 今後ここは、Discord通知を非同期で行うようにコード修正する
+		$gameRecord = $this->gameRecordRepository->getById($gameRecordId);
+		$this->discordRepository->startGameNotification($gameRecord);
 
 		return new GameMatchingData($gameRecordToken);
 	}

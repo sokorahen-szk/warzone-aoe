@@ -176,6 +176,14 @@ class GameRecord extends Resource {
 	}
 
 	/**
+	 * @param Datetime
+	 */
+	public function changeFinishedAt(Datetime $finishedAt): void
+	{
+		$this->finishedAt = $finishedAt;
+	}
+
+	/**
 	 * チーム別のレート合計
 	 *
 	 * @param GameTeam $team

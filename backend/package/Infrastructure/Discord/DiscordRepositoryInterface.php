@@ -21,4 +21,12 @@ interface DiscordRepositoryInterface {
      * @return void
      */
     public function startGameNotification(GameRecord $gameRecord): void;
+
+    /**
+     * ゲーム終了時にDiscord通知する
+     *
+     * @param GameRecord $gameRecord
+     * @return void
+     */
+    public function endGameNotification(GameRecord $gameRecord): void;
 }

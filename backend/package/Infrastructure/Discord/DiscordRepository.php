@@ -6,12 +6,18 @@ use Package\Domain\Game\Entity\GameRecord;
 use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
 use Package\Domain\User\Entity\User;
 use Config;
+use Package\Domain\User\ValueObject\Player\Rate;
 
 class DiscordRepository implements DiscordRepositoryInterface {
     private  $discordClient;
 
-    const GAME_START = 'ゲーム開始';
-    const GAME_END = 'ゲーム終了';
+    const GAME_START = 'game_start';
+    const GAME_END = 'game_end';
+
+    private static $gameTypes = [
+        self::GAME_START => 'ゲーム開始',
+        self::GAME_END => 'ゲーム終了',
+    ];
 
     public function __construct(DiscordClientInterface $discordClient)
     {
@@ -83,7 +89,7 @@ class DiscordRepository implements DiscordRepositoryInterface {
         $gamePackageName = $gameRecord->getGamePackage()->getName()->getValue();
         $gameMapName = $gameRecord->getGameMap()->getName()->getValue();
         $notificationTitle = sprintf('%s %s', $gamePackageName, $gameMapName);
-        $notificationColor = $this->config->embed_color->info;
+        $notificationColor = $this->config->embed_color->success;
         $gameEndDatetime = $gameRecord->getFinishedAt()->getDatetime();
 
         $team1 = new GameTeam(1);
@@ -123,10 +129,10 @@ class DiscordRepository implements DiscordRepositoryInterface {
                 'embeds'    => [
                     [
                         'title' => $notificationTitle,
-                        'description' => $gameMode,
+                        'description' => self::$gameTypes[$gameMode],
                         'color' => $notificationColor,
                         'footer' => [
-                            'text' => sprintf('%s日時：%s', $gameMode, $gameDatetime),
+                            'text' => sprintf('%s日時：%s', self::$gameTypes[$gameMode], $gameDatetime),
                         ],
                         'fields' => [
                             [
@@ -155,11 +161,23 @@ class DiscordRepository implements DiscordRepositoryInterface {
     {
         $teamList = [];
         foreach ($playerMemories as $idx => $playerMemory) {
-            $teamList[] = sprintf('%d　%s(%d)',
-                $idx + 1,
-                $playerMemory->getPlayer()->getPlayerName()->getValue(),
-                $playerMemory->getRate()->getValue(),
-            );
+            if ($gameMode == self::GAME_START) {
+                $teamList[] = sprintf(
+                    '%d　%s(%d)',
+                    $idx + 1,
+                    $playerMemory->getPlayer()->getPlayerName()->getValue(),
+                    $playerMemory->getRate()->getValue(),
+                );
+            } else {
+                $rate = new Rate($playerMemory->getRate()->diff($playerMemory->getAfterRate()));
+                $teamList[] = sprintf(
+                    '%d　%s(%d)<%s>',
+                    $idx + 1,
+                    $playerMemory->getPlayer()->getPlayerName()->getValue(),
+                    $playerMemory->getRate()->getValue(),
+                    $rate->getValueInSign()
+                );
+            }
         }
 
         return implode("\n", $teamList);

@@ -260,11 +260,11 @@ class Converter {
             'user'              => $user,
             'team'              => new GameTeam($playerMemory->team),
             'mu'                => new Mu($playerMemory->mu),
-            'afterMu'           => new Mu($playerMemory->afterMu),
+            'afterMu'           => new Mu($playerMemory->after_mu),
             'sigma'             => new Sigma($playerMemory->sigma),
-            'afterSigma'        => new Sigma($playerMemory->afterSigma),
+            'afterSigma'        => new Sigma($playerMemory->after_sigma),
             'rate'              => new Rate($playerMemory->rate),
-            'afterRate'         => new Rate($playerMemory->afterRate),
+            'afterRate'         => new Rate($playerMemory->after_rate),
         ]);
     }
 
