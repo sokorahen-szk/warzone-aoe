@@ -3,7 +3,7 @@
 namespace Package\Infrastructure\Discord;
 
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Config;
+use Config;
 use Exception;
 
 class DiscordClient implements DiscordClientInterface {

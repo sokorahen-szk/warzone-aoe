@@ -5,13 +5,19 @@ namespace Package\Infrastructure\Discord;
 use Package\Domain\Game\Entity\GameRecord;
 use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
 use Package\Domain\User\Entity\User;
+use Config;
 
 class DiscordRepository implements DiscordRepositoryInterface {
     private  $discordClient;
 
+    const GAME_START = 'ゲーム開始';
+    const GAME_END = 'ゲーム終了';
+
     public function __construct(DiscordClientInterface $discordClient)
     {
         $this->discordClient = $discordClient;
+
+        $this->config = Config::get('notification');
     }
 
     /**
@@ -44,35 +50,93 @@ class DiscordRepository implements DiscordRepositoryInterface {
         $gamePackageName = $gameRecord->getGamePackage()->getName()->getValue();
         $gameMapName = $gameRecord->getGameMap()->getName()->getValue();
         $notificationTitle = sprintf('%s %s', $gamePackageName, $gameMapName);
+        $notificationColor = $this->config->embed_color->info;
         $gameStartDatetime = $gameRecord->getStartedAt()->getDatetime();
-        $team1RateSum = $gameRecord->getRateSum(new GameTeam(1));
-        $team2RateSum = $gameRecord->getRateSum(new GameTeam(2));
 
-        // TODO:
-        $team1 = 'impl';
-        $team2 = 'impl';
+        $team1 = new GameTeam(1);
+        $team2 = new GameTeam(2);
+        $team1RateSum = $gameRecord->getRateSum($team1);
+        $team2RateSum = $gameRecord->getRateSum($team2);
+        $team1List = $gameRecord->pluckPlayerMemoriesByTeam($team1);
+        $team2List = $gameRecord->pluckPlayerMemoriesByTeam($team2);
 
+        $this->sendGameNotidication(
+            self::GAME_START,
+            $notificationTitle,
+            $notificationColor,
+            $gameStartDatetime,
+            $team1RateSum,
+            $team2RateSum,
+            $team1List,
+            $team2List
+        );
+    }
+
+    /**
+     * ゲーム終了時にDiscord通知する
+     *
+     * @param GameRecord $gameRecord
+     * @return void
+     */
+    public function endGameNotification(GameRecord $gameRecord): void
+    {
+        $gamePackageName = $gameRecord->getGamePackage()->getName()->getValue();
+        $gameMapName = $gameRecord->getGameMap()->getName()->getValue();
+        $notificationTitle = sprintf('%s %s', $gamePackageName, $gameMapName);
+        $notificationColor = $this->config->embed_color->info;
+        $gameEndDatetime = $gameRecord->getFinishedAt()->getDatetime();
+
+        $team1 = new GameTeam(1);
+        $team2 = new GameTeam(2);
+        $team1RateSum = $gameRecord->getRateSum($team1);
+        $team2RateSum = $gameRecord->getRateSum($team2);
+        $team1List = $gameRecord->pluckPlayerMemoriesByTeam($team1);
+        $team2List = $gameRecord->pluckPlayerMemoriesByTeam($team2);
+
+        $this->sendGameNotidication(
+            self::GAME_END,
+            $notificationTitle,
+            $notificationColor,
+            $gameEndDatetime,
+            $team1RateSum,
+            $team2RateSum,
+            $team1List,
+            $team2List
+        );
+    }
+
+    private function sendGameNotidication(
+        string $gameMode,
+        string $notificationTitle,
+        int $notificationColor,
+        string $gameDatetime,
+        int $team1RateSum,
+        int $team2RateSum,
+        array $team1List,
+        array $team2List
+    )
+    {
         $this->discordClient->sendMessageEmbeds(
-            env('DISCORD_REGISTER_NOTIFICATION_WEBHOOK'),
+            env('DISCORD_GAME_NOTIFICATION_WEBHOOK'),
             [
                 'content'   => '',
                 'embeds'    => [
                     [
                         'title' => $notificationTitle,
-                        'description' => 'ゲーム開始',
-                        'color' => 0x94c529,
+                        'description' => $gameMode,
+                        'color' => $notificationColor,
                         'footer' => [
-                            'text' => "ゲーム開始日時：$gameStartDatetime",
+                            'text' => sprintf('%s日時：%s', $gameMode, $gameDatetime),
                         ],
                         'fields' => [
                             [
                                 'name' => "チーム１【 $team1RateSum 】",
-                                'value' => $team1,
+                                'value' => $this->generateTeamListToString($gameMode, $team1List),
                                 'inline' => false
                             ],
                             [
                                 'name' => "チーム２【 $team2RateSum 】",
-                                'value' => $team2,
+                                'value' => $this->generateTeamListToString($gameMode, $team2List),
                                 'inline' => false
                             ],
                         ]
@@ -80,6 +144,24 @@ class DiscordRepository implements DiscordRepositoryInterface {
                 ]
             ],
         );
+    }
 
+    /**
+     * @param string $gameMode
+     * @param PlayerMemory[] $playerMemories
+     * @return string
+     */
+    private function generateTeamListToString(string $gameMode, array $playerMemories): string
+    {
+        $teamList = [];
+        foreach ($playerMemories as $idx => $playerMemory) {
+            $teamList[] = sprintf('%d　%s(%d)',
+                $idx + 1,
+                $playerMemory->getPlayer()->getPlayerName()->getValue(),
+                $playerMemory->getRate()->getValue(),
+            );
+        }
+
+        return implode("\n", $teamList);
     }
 }
