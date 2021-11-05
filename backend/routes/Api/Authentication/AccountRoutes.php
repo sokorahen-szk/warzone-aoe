@@ -44,6 +44,12 @@ class AccountRoutes {
              * GET /api/account/raiting
              */
             Route::get('raiting', [AccountController::class, 'raiting'])->name('account.raiting');
+
+            /**
+             * 自己対戦履歴一覧取得
+             * GET /api/account/games
+             */
+            Route::get('games', [AccountController::class, 'gameList'   ])->name('account.games.index');
         });
     }
 }

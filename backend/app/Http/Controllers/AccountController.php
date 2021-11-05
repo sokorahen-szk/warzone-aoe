@@ -23,8 +23,10 @@ use Package\Usecase\Account\Withdrawal\AccountWithdrawalServiceInterface;
 use Package\Usecase\Account\Withdrawal\AccountWithdrawalCommand;
 use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeServiceInterface;
 use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeCommand;
+use Package\Usecase\Account\Game\GetList\AccountGameListServiceInterface;
 
 use Auth;
+use Package\Usecase\Account\Game\GetList\AccountGameListCommand;
 
 class AccountController extends Controller
 {
@@ -155,5 +157,16 @@ class AccountController extends Controller
         $result = $interactor->handle($command);
 
         return $this->validResponse($result, '個人レーティングを取得しました。');
+    }
+
+    public function gameList(AccountGameListServiceInterface $interactor)
+    {
+        $command = new AccountGameListCommand(
+            Auth::user()->id
+        );
+
+        $result = $interactor->handle($command);
+
+        return $this->validResponse($result, '試合中の対戦履歴を取得しました。');
     }
 }

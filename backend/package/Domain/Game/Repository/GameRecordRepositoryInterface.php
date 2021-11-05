@@ -97,4 +97,13 @@ interface GameRecordRepositoryInterface
      * @return GamePlayerRecord[]
      */
     public function listHistoryByStatus(GameStatus $status): array;
+
+    /**
+     * 特定ユーザとステータスでデータを抽出する
+     *
+     * @param User $user
+     * @param GameStatus $status
+     * @return GamePlayerRecord[]
+     */
+    public function listHistoryByUsserWithStatus(User $user, GameStatus $status): array;
 }

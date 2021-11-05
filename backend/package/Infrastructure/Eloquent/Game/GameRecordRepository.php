@@ -211,4 +211,27 @@ class GameRecordRepository implements GameRecordRepositoryInterface
 
         return Converter::gameRecords($gameRecords);
     }
+
+    /**
+     * 特定ユーザとステータスでデータを抽出する
+     *
+     * @param User $user
+     * @param GameStatus $status
+     * @return GamePlayerRecord[]
+     */
+    public function listHistoryByUsserWithStatus(User $user, GameStatus $status): array
+    {
+        $gameRecords = EloquentGameRecordModel::with([
+            'game_package',
+            'player_memories.player.user',
+            'map',
+            'rule',
+        ])
+        ->where('status', $status->getValue())
+        ->whereHasByPlayerMemory($user->getPlayer()->getPlayerId())
+        ->orderBy('id', 'DESC')
+        ->get();
+
+        return Converter::gameRecords($gameRecords);
+    }
 }
