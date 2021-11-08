@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Account\AccountGameStatusUpdateRequest;
 use App\Traits\ApiResponser;
 use App\Http\Requests\Account\AccountRegistrationRequest;
 use App\Http\Requests\Account\AccountUpdateAvatorRequest;
@@ -24,9 +25,11 @@ use Package\Usecase\Account\Withdrawal\AccountWithdrawalCommand;
 use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeServiceInterface;
 use Package\Usecase\Game\GameRecord\GetList\GameRecordListByDateRangeCommand;
 use Package\Usecase\Account\Game\GetList\AccountGameListServiceInterface;
+use Package\Usecase\Account\Game\StatusUpdate\AccountGameStatusUpdateServiceInterface;
+use Package\Usecase\Account\Game\GetList\AccountGameListCommand;
+use Package\Usecase\Account\Game\StatusUpdate\AccountGameStatusUpdateCommand;
 
 use Auth;
-use Package\Usecase\Account\Game\GetList\AccountGameListCommand;
 
 class AccountController extends Controller
 {
@@ -168,5 +171,20 @@ class AccountController extends Controller
         $result = $interactor->handle($command);
 
         return $this->validResponse($result, '試合中の対戦履歴を取得しました。');
+    }
+
+    public function gameUpdate(AccountGameStatusUpdateServiceInterface $interactor, AccountGameStatusUpdateRequest $request,
+    int $gameRecordId)
+    {
+        $command = new AccountGameStatusUpdateCommand(
+            Auth::user()->id,
+            $gameRecordId,
+            $request->status,
+            $request->input('winning_team', null)
+        );
+
+        $result = $interactor->handle($command);
+
+        return $this->validResponse($result, '試合中の対戦履歴を更新しました。');
     }
 }
