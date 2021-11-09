@@ -49,7 +49,15 @@ class AccountRoutes {
              * 自己対戦履歴一覧取得
              * GET /api/account/games
              */
-            Route::get('games', [AccountController::class, 'gameList'   ])->name('account.games.index');
+            Route::get('games', [AccountController::class, 'gameList'])->name('account.games.index');
+
+            /**
+             * 対戦履歴を更新する
+             * POST /api/account/games/{gameRecordId}
+             */
+            Route::post('games/{gameRecordId}', [AccountController::class, 'gameUpdate'])
+            ->name('account.games.update')
+            ->where('gameRecordId', '^[0-9]+$');
         });
     }
 }

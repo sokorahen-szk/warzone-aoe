@@ -2,6 +2,7 @@
 
 namespace Package\Domain\User\Service;
 
+use Package\Domain\System\ValueObject\Datetime;
 use Package\Domain\User\Entity\Player;
 
 interface PlayerServiceInterface {
@@ -44,4 +45,11 @@ interface PlayerServiceInterface {
 	 * @return Player
 	 */
 	public function changeDrawPlayer(Player $player): Player;
+
+    /**
+     * @param Player[] $players
+	 * Datetime $currentDatetime
+     * @return void
+     */
+    public function updatePlayerFromRepository(array $players, Datetime $currentDatetime): void;
 }

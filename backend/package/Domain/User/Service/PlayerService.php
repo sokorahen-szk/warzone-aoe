@@ -2,6 +2,7 @@
 
 namespace Package\Domain\User\Service;
 
+use Package\Domain\System\ValueObject\Datetime;
 use Package\Domain\User\Entity\Player;
 use Package\Domain\User\Repository\PlayerRepositoryInterface;
 use Package\Domain\User\ValueObject\Player\Defeat;
@@ -120,6 +121,18 @@ class PlayerService implements PlayerServiceInterface {
 		$player->changeGames($games);
 		return $player;
 	}
+
+    /**
+     * @param Player[] $players
+     * @return void
+     */
+    public function updatePlayerFromRepository(array $players, Datetime $currentDatetime): void
+    {
+        foreach ($players as $player) {
+            $player->changeLastGameAt($currentDatetime);
+            $this->playerRepository->update($player);
+        }
+    }
 
 	/**
 	 * 連勝・連敗を更新する

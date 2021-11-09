@@ -1,61 +1,57 @@
 <?php declare(strict_types=1);
 
-namespace Package\Application\Game\Finished;
+namespace Package\Application\Account\Game\StatusUpdate;
 
 use Package\Domain\Game\Repository\GameRecordRepositoryInterface;
-use Package\Domain\Game\Repository\GameRecordTokenRepositoryInterface;
-use Package\Domain\Game\ValueObject\GameRecordToken\GameToken;
+use Package\Domain\Game\ValueObject\GameRecord\GameRecordId;
 use Package\Domain\Game\ValueObject\GameRecord\GameStatus;
 use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
-use Package\Usecase\Game\Finished\GameFinishedServiceInterface;
-use Package\Usecase\Game\Finished\GameFinishedCommand;
-use Package\Infrastructure\TrueSkill\TrueSkillClient;
-use Package\Domain\User\Entity\PlayerMemory;
+use Package\Domain\User\Repository\UserRepositoryInterface;
+use Package\Domain\User\ValueObject\UserId;
+use Package\Usecase\Account\Game\StatusUpdate\AccountGameStatusUpdateCommand;
+use Package\Usecase\Account\Game\StatusUpdate\AccountGameStatusUpdateServiceInterface;
 use Package\Domain\User\Entity\Player;
-use Package\Domain\User\Repository\PlayerMemoryRepositoryInterface;
-use Package\Infrastructure\Discord\DiscordRepositoryInterface;
-use Package\Domain\Game\ValueObject\GameRecord\GameRecordId;
+use Package\Infrastructure\TrueSkill\TrueSkillClient;
+
+use Exception;
+use DB;
 use Package\Domain\System\ValueObject\Datetime;
+use Package\Domain\User\Repository\PlayerMemoryRepositoryInterface;
 use Package\Domain\User\Service\PlayerServiceInterface;
 use Package\Domain\User\ValueObject\Player\Mu;
 use Package\Domain\User\ValueObject\Player\Rate;
 use Package\Domain\User\ValueObject\Player\Sigma;
-use DB;
-use Exception;
 
-class GameFinishedService implements GameFinishedServiceInterface
-{
-    private $gameRecordTokenRepository;
+class AccountGameStatusUpdateService implements AccountGameStatusUpdateServiceInterface {
+    private $userRepository;
     private $gameRecordRepository;
-    private $playerMemoryRepository;
     private $playerService;
-    private $discordRepository;
+    private $playerMemoryRepository;
 
     private $trueSkillClient;
 
     public function __construct(
-        GameRecordTokenRepositoryInterface $gameRecordTokenRepository,
-        GameRecordRepositoryInterface $GameRecordRepository,
-        PlayerMemoryRepositoryInterface $playerMemoryRepository,
+        UserRepositoryInterface $userRepository,
+        GameRecordRepositoryInterface $gameRecordRepository,
         PlayerServiceInterface $playerService,
-        DiscordRepositoryInterface $discordRepository
+        PlayerMemoryRepositoryInterface $playerMemoryRepository
     )
     {
-        $this->gameRecordTokenRepository = $gameRecordTokenRepository;
-        $this->gameRecordRepository = $GameRecordRepository;
-        $this->playerMemoryRepository = $playerMemoryRepository;
+        $this->userRepository = $userRepository;
+        $this->gameRecordRepository = $gameRecordRepository;
         $this->playerService = $playerService;
-        $this->discordRepository = $discordRepository;
+        $this->playerMemoryRepository = $playerMemoryRepository;
 
         // TODO: 今後RepositoryからTrueSkillのデータ取り出すように包括するかもしれない
         $this->trueSkillClient = new TrueSkillClient();
     }
 
-    public function handle(GameFinishedCommand $command): void
+    public function handle(AccountGameStatusUpdateCommand $command): void
     {
 		$currentDatetime = new Datetime(now());
-        $gameToken = new GameToken($command->token);
-        $gameRecordToken = $this->gameRecordTokenRepository->getByGameToken($gameToken);
+
+        $user = $this->userRepository->findUserById(new UserId($command->userId));
+        $gameRecordId = new GameRecordId($command->gameRecordId);
 
         $gameStatus = new GameStatus($command->status);
 
@@ -64,14 +60,14 @@ class GameFinishedService implements GameFinishedServiceInterface
             $winningTeam = new GameTeam($command->winningTeam);
         }
 
-        $gameRecord = $this->gameRecordRepository->getById($gameRecordToken->getGameRecordId());
+        $gameRecord = $this->gameRecordRepository->getById($gameRecordId);
+
+        if ($user->getId()->getValue() !== $gameRecord->getUserId()->getValue()) {
+            throw new Exception('試合作成ユーザのみ、ゲーム記録を付ける事が可能です。');
+        }
 
         if (!$gameRecord->getGameStatusIsMatching()) {
             throw new Exception('マッチング中以外はステータスの変更はできません。');
-        }
-
-        if (!$gameRecordToken->isValidExpires($currentDatetime)) {
-            throw new Exception('ゲームトークンの有効期限が切れています。');
         }
 
 		try {
@@ -104,10 +100,6 @@ class GameFinishedService implements GameFinishedServiceInterface
 			DB::rollback();
 			throw $e;
 		}
-
-        // TODO: 今後ここは、Discord通知を非同期で行うようにコード修正する
-        $afterGameRecord = $this->gameRecordRepository->getById($gameRecordToken->getGameRecordId());
-        $this->discordRepository->endGameNotification($afterGameRecord);
     }
 
     /**

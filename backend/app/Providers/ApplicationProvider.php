@@ -96,6 +96,10 @@ class ApplicationProvider extends ServiceProvider
             \Package\Usecase\Account\Game\GetList\AccountGameListServiceInterface::class,
             \Package\Application\Account\Game\GetList\AccountGameListService::class
         );
+        $this->app->bind(
+            \Package\Usecase\Account\Game\StatusUpdate\AccountGameStatusUpdateServiceInterface::class,
+            \Package\Application\Account\Game\StatusUpdate\AccountGameStatusUpdateService::class
+        );
     }
 
     /**
