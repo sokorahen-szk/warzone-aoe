@@ -15,7 +15,6 @@ use Package\Domain\User\Entity\Player;
 use Package\Domain\User\Repository\PlayerMemoryRepositoryInterface;
 use Package\Infrastructure\Discord\DiscordRepositoryInterface;
 use Package\Domain\Game\ValueObject\GameRecord\GameRecordId;
-use Package\Domain\User\Repository\PlayerRepositoryInterface;
 use Package\Domain\System\ValueObject\Datetime;
 use Package\Domain\User\Service\PlayerServiceInterface;
 use Package\Domain\User\ValueObject\Player\Mu;
@@ -29,7 +28,6 @@ class GameFinishedService implements GameFinishedServiceInterface
     private $gameRecordTokenRepository;
     private $gameRecordRepository;
     private $playerMemoryRepository;
-    private $playerRepository;
     private $playerService;
     private $discordRepository;
 
@@ -39,7 +37,6 @@ class GameFinishedService implements GameFinishedServiceInterface
         GameRecordTokenRepositoryInterface $gameRecordTokenRepository,
         GameRecordRepositoryInterface $GameRecordRepository,
         PlayerMemoryRepositoryInterface $playerMemoryRepository,
-        PlayerRepositoryInterface $playerRepository,
         PlayerServiceInterface $playerService,
         DiscordRepositoryInterface $discordRepository
     )
@@ -47,7 +44,6 @@ class GameFinishedService implements GameFinishedServiceInterface
         $this->gameRecordTokenRepository = $gameRecordTokenRepository;
         $this->gameRecordRepository = $GameRecordRepository;
         $this->playerMemoryRepository = $playerMemoryRepository;
-        $this->playerRepository = $playerRepository;
         $this->playerService = $playerService;
         $this->discordRepository = $discordRepository;
 
@@ -101,7 +97,7 @@ class GameFinishedService implements GameFinishedServiceInterface
             $this->updatePlayerMemories($gameRecord->getGameRecordId(), $players);
 
             // プレイヤー更新
-            $this->updatePlayerFromRepository($players, $currentDatetime);
+            $this->playerService->updatePlayerFromRepository($players, $currentDatetime);
 
 			DB::commit();
 		} catch (Exception $e) {
@@ -150,18 +146,6 @@ class GameFinishedService implements GameFinishedServiceInterface
     {
         foreach ($players as $player) {
             $this->playerMemoryRepository->update($gameRecordId, $player);
-        }
-    }
-
-    /**
-     * @param Player[] $players
-     * @return void
-     */
-    private function updatePlayerFromRepository(array $players, Datetime $currentDatetime): void
-    {
-        foreach ($players as $player) {
-            $player->changeLastGameAt($currentDatetime);
-            $this->playerRepository->update($player);
         }
     }
 
