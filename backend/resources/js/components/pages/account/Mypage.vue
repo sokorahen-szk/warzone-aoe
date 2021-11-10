@@ -42,7 +42,35 @@
         tile
         outlined
       >
-        ここにダッシュボードとか？
+        <v-row no-gutters>
+          <v-col cols="12">
+            <div class="py-2">自分が建てたゲーム</div>
+            <v-row no-gutters no-wrap class="blue-grey lighten-5 py-1">
+              <v-col cols="3">ゲームID</v-col>
+              <v-col cols="3">マップ</v-col>
+              <v-col cols="3">ルール</v-col>
+              <v-col cols="3">プレイヤー</v-col>
+            </v-row>
+            <v-row no-gutters no-wrap class="py-3">
+              <v-col cols="3">1100</v-col>
+              <v-col cols="3">アラビア</v-col>
+              <v-col cols="3">ESUDAルール</v-col>
+              <v-col cols="3">8 人</v-col>
+            </v-row>
+            <v-row no-gutters no-wrap class="py-1">
+              <v-col cols="6" class="blue-grey lighten-5">開始時間</v-col>
+              <v-col cols="6">2021-11-10 00:00:00</v-col>
+            </v-row>
+            <v-row no-gutters class="py-3">
+              <v-col cols="12" class="text-center">
+                <Button color="info" label="チーム1勝利" depressed/>
+                <Button color="info" label="チーム2勝利" depressed/>
+                <Button color="warning" label="引き分け" depressed/>
+                <Button color="error" label="取り消し" depressed/>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
       </v-card>
     </template>
   </CommonWithRightColumnTransportTemplate>
@@ -54,6 +82,7 @@ import CommonWithRightColumnTransportTemplate from '@templates/CommonWithRightCo
 import AccountRightMenu from '@organisms/AccountRightMenu'
 import TextMark from '@atoms/TextMark'
 import Status from '@atoms/Status'
+import Button from '@atoms/Button'
 import {objCopy} from '@/services/helper'
 import { profileViewTemplate } from '@/config/account'
 
@@ -63,7 +92,8 @@ export default {
     CommonWithRightColumnTransportTemplate,
     AccountRightMenu,
     TextMark,
-    Status
+    Status,
+    Button,
   },
   data() {
     return {
