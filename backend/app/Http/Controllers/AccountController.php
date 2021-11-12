@@ -173,8 +173,7 @@ class AccountController extends Controller
         return $this->validResponse($result, '試合中の対戦履歴を取得しました。');
     }
 
-    public function gameUpdate(AccountGameStatusUpdateServiceInterface $interactor, AccountGameStatusUpdateRequest $request,
-    int $gameRecordId)
+    public function gameUpdate(AccountGameStatusUpdateServiceInterface $interactor, AccountGameStatusUpdateRequest $request, int $gameRecordId)
     {
         $command = new AccountGameStatusUpdateCommand(
             Auth::user()->id,

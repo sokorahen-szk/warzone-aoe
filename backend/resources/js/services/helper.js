@@ -1,5 +1,3 @@
-import {playerProfileTabs} from '@/config/player'
-
 export const objCopy = (o, c) => {
   let obj = {}
   Object.keys(o).forEach( (key) => {

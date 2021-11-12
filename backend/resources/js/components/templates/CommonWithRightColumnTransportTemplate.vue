@@ -1,5 +1,6 @@
 <template>
   <v-container :class="{'pa-0 ma-0': device === 'sp'}" class="container">
+    <slot name="header"></slot>
     <v-row no-gutters>
       <v-col cols="12" sm="12" md="5" lg="4" xl="3" v-if="device != 'sp'">
         <slot name="right"></slot>
