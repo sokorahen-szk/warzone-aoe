@@ -228,7 +228,7 @@ class GameRecordRepository implements GameRecordRepositoryInterface
             'rule',
         ])
         ->where('status', $status->getValue())
-        ->whereHasByPlayerMemory($user->getPlayer()->getPlayerId())
+        ->where('user_id', $user->getId()->getValue())
         ->orderBy('id', 'DESC')
         ->get();
 

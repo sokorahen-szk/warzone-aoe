@@ -25,7 +25,6 @@ class AccountGameListService implements AccountGameListServiceInterface {
     public function handle(AccountGameListCommand $command): AccountGameListData
     {
         $user = $this->userRepository->findUserById(new UserId($command->userId));
-
         $gameMatchingStatus = new GameStatus(GameStatus::GAME_STATUS_MATCHING);
 
         $gameRecords = $this->gameRecordRepository->listHistoryByUsserWithStatus($user, $gameMatchingStatus);

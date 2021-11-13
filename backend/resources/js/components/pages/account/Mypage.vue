@@ -88,6 +88,7 @@
                   <Button
                     v-for="t in gameWarsChangeStatusButtons"
                     class="ml-2"
+                    :disabled="gameStatusUpdateButtonDisabled"
                     :color="t.color"
                     :label="t.label"
                     :key="t.label"
@@ -100,9 +101,20 @@
           </v-col>
         </v-row>
       </v-card>
-      <div v-else>
-        <Loading size="64" />
-      </div>
+      <v-card
+        class="pa-3 mb-4"
+        tile
+        outlined
+        v-else
+      >
+        <Loading
+          size="64"
+          v-if="myGameRecordLoading"
+        />
+        <div v-else>
+          現在、建てた部屋がありません。
+        </div>
+      </v-card>
     </template>
   </CommonWithRightColumnTransportTemplate>
 </template>
@@ -138,6 +150,8 @@ export default {
     return {
       profileView: profileViewTemplate,
       gameWarsChangeStatusButtons: gameWarsChangeStatusButtonTemplates,
+      gameStatusUpdateButtonDisabled: false,
+      myGameRecordLoading: false,
       myGameRecords: [],
       alert: alertTemplate,
     }
@@ -159,11 +173,13 @@ export default {
   methods: {
     ...mapActions('accountStore', ['myGameList', 'myGameStatusUpdate']),
     fetchMyGameList() {
+      this.myGameRecordLoading = true;
       new Promise((resolve) => {
         resolve(this.myGameList())
       })
       .then( (res) => {
         this.$set(this, 'myGameRecords', res);
+        this.myGameRecordLoading = false;
       })
       .catch( (err) => {
         this.alert = Object.assign(alertTemplate, {
@@ -178,6 +194,8 @@ export default {
         return;
       }
 
+      this.gameStatusUpdateButtonDisabled = true;
+
       new Promise((resolve) => {
         resolve(this.myGameStatusUpdate({
           gameRecordId: gameRecordId,
@@ -191,6 +209,9 @@ export default {
           type: 'info',
           message: res,
         })
+
+        this.gameStatusUpdateButtonDisabled = false;
+        this.fetchMyGameList();
       })
       .catch( (err) => {
         this.alert = Object.assign(alertTemplate, {
