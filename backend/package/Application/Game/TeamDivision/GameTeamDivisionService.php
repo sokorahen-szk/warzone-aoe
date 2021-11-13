@@ -42,16 +42,31 @@ class GameTeamDivisionService implements GameTeamDivisionServiceInterface
 			throw new AlreadyMatchingGamingException('ゲーム中のユーザは選択できません。');
 		}
 
-		$selectedPlayers = $this->playerService->selectedPlayers($command->playerIds);
-
-		if (count($selectedPlayers) < 2) {
+		$players = $this->playerService->playerIdsToPlayerEntities($command->playerIds);
+		if (count($players) < 2) {
 			// TODO: 独自Exception化する
 			throw new Exception('選択プレイヤー数は2人以上である必要があります。');
 		}
 
-		$trueSkilRequestData = ['players' => $selectedPlayers];
-		$trueSkillResponse = $this->trueSkillClient->teamDivisionPattern($trueSkilRequestData);
+		$trueSkillRequest = $this->toTrueSkillAsDivisionPatternRequest($players);
+		$trueSkillResponse = $this->trueSkillClient->teamDivisionPattern($trueSkillRequest);
 
 		return new GameTeamDivisionData($trueSkillResponse);
+	}
+
+	// TODO: 今後、TrueSkillのRequest/Response作ったらそっちに移動する予定。
+	private function toTrueSkillAsDivisionPatternRequest(array $players): array
+	{
+		$data = [];
+		foreach ($players as $player) {
+			$data[] = [
+				'id'	=> $player->getPlayerId()->getValue(),
+				'name'	=> $player->getPlayerName()->getValue(),
+				'mu'	=> $player->getMu()->getValue(),
+				'sigma'	=> $player->getSigma()->getValue(),
+			];
+		}
+
+		return ['players' => $data];
 	}
 }

@@ -87,7 +87,6 @@
               >
                 プレイヤーを選択
               </v-card>
-
               <v-row no-gutters justify="center" align-content="center" style="height:100px;">
                 <Button
                   class="mr-2"
@@ -96,6 +95,7 @@
                   width="200"
                   height="55"
                   :disabled="selectedPlayers.length < 2"
+                  @click="teamDivisionDialog = true"
                 />
                 <Button
                   class="ml-2"
@@ -109,9 +109,37 @@
             </v-card>
           </v-col>
         </v-row>
-
       </v-col>
     </v-row>
+
+<Modal
+  title="チーム分け"
+  :show="teamDivisionDialog"
+  @update="teamDivisionDialog = $event"
+>
+
+<v-row>
+  <v-col cols="6">
+    <div class="py-2 text-center">チーム1</div>
+    <v-list flat>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title>titan</v-list-item-title>
+          <v-list-item-subtitle>ID: 1 / </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item>
+        a
+      </v-list-item>
+    </v-list>
+  </v-col>
+  <v-col cols="6">
+    <div class="py-2 text-center">チーム2</div>
+    a
+  </v-col>
+</v-row>
+
+</Modal>
 
   </template>
   </CommonOneColumnTemplate>
@@ -122,6 +150,7 @@ import CommonOneColumnTemplate from '@templates/CommonOneColumnTemplate'
 import PlayerSearchBox from '@organisms/PlayerSearchBox'
 import Select from '@atoms/Select'
 import Button from '@atoms/Button'
+import Modal from '@atoms/Modal'
 import { playerListTemplate } from '@/config/player'
 import { mapGetters } from 'vuex'
 import { selectParser, addStyleParser } from '@/services/helper'
@@ -132,6 +161,7 @@ export default {
     PlayerSearchBox,
     Select,
     Button,
+    Modal,
   },
   mounted() {
     this.$store.subscribe((mutation) => {
@@ -151,6 +181,7 @@ export default {
       }
     })
 
+    this.$set(this, 'players', this.getPlayers || [])
     this.$set(this, 'gamePackages', selectParser(this.getPackageList || [], {label: 'name', value: 'id'}))
     this.$set(this, 'gameMaps', selectParser(this.getMapList || [], {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
     this.$set(this, 'gameRules', selectParser(this.getRuleList || [], {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
@@ -214,6 +245,8 @@ export default {
       gamePackages: [],
       gameMaps: [],
       gameRules: [],
+
+      teamDivisionDialog: false,
     }
   }
 }

@@ -42,25 +42,18 @@ class PlayerService implements PlayerServiceInterface {
 	}
 
 	/**
-	 * 選択されたプレイヤーIDから、プレイヤーの情報を取得する
+	 * 選択されたプレイヤーID一覧から、プレイヤー一覧を作成する
 	 *
 	 * @param array $playerIds
-	 * @return array
+	 * @return Player[]
 	 */
-	public function selectedPlayers(array $playerIds): array
+	public function playerIdsToPlayerEntities(array $playerIds): array
 	{
-		$resource = [];
-		foreach ($playerIds as $id) {
-			$player = $this->playerRepository->getById(new PlayerId($id));
-			$resource[] = [
-				'id'	=> $player->getPlayerId()->getValue(),
-				'name'	=> $player->getPlayerName()->getValue(),
-				'mu'	=> $player->getMu()->getValue(),
-				'sigma'	=> $player->getSigma()->getValue(),
-			];
+		$players = [];
+		foreach ($playerIds as $playerId) {
+			$players[] = $this->playerRepository->getById(new PlayerId($playerId));
 		}
-
-		return $resource;
+		return $players;
 	}
 
 	/**
