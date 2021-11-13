@@ -4,17 +4,24 @@ import { excludeNullParams } from '@/services/api_helper';
 const state = {
   user: userTemplate,
   raiting: [],
+  myGameList: null,
 }
 const getters ={
   getProfile: (state) => {
     return state.user
   },
+
   getUserId: (state) => {
     return state.user.id
   },
+
   getRaiting: (state) => {
     return state.raiting
-  }
+  },
+
+  getMyGameList: (state) => {
+    return state.myGameList
+  },
 }
 const mutations = {
   setProfile (state, val) {
@@ -25,11 +32,44 @@ const mutations = {
     state.raiting = val.$gameRecords
   },
 
+  setmyGameList (state, val) {
+    state.myGameList = val.$myGameList
+  },
+
   reset( state ) {
     state.user = userTemplate;
   }
 }
 const actions = {
+  myGameList ({ commit }) {
+    return new Promise( (resolve, reject) => {
+      axios.get('/api/account/games')
+      .then( (res) => {
+        if (res.data && res.data.isSuccess) {
+          commit('setmyGameList', {$myGameList: res.data.body.gameRecords})
+          resolve(res.data.body.gameRecords)
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
+    })
+  },
+  myGameStatusUpdate ({ commit }, payload) {
+    const params = excludeNullParams({
+      status: payload.status,
+      winning_team: payload.winningTeam
+    })
+    return new Promise( (resolve, reject) => {
+      axios.post(`/api/account/games/${payload.gameRecordId}`, params)
+      .then( (res) => {
+        if (res.data && res.data.isSuccess) {
+          resolve(res.data.messages)
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
+    })
+  },
   profile ({ commit }) {
     axios.get('/api/account/profile')
     .then( (res) => {

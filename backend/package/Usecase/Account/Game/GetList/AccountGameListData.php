@@ -25,6 +25,7 @@ class AccountGameListData extends Data {
                 'gameMap' => [
                     'id' => $source->getGameMap()->getGameMapId()->getValue(),
                     'name' => $source->getGameMap()->getName()->getValue(),
+                    'imagePath' => $source->getGameMap()->getImage()->getValue(),
                 ],
                 'gameRule' => [
                     'id' => $source->getGameRule()->getGameRuleId()->getValue(),

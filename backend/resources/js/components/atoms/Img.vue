@@ -1,9 +1,10 @@
 <template>
   <img
     :class="['img', {thumbnail: thumbnail}]"
-    :style="addStyle"
     :src="src"
     :alt="alt"
+    :width="width"
+    :height="height"
   />
 </template>
 
@@ -24,7 +25,8 @@ export default {
   props: {
     src: {type: String, required: false, default: null},
     alt: {type: String, default: ''},
-    styles: {type: Object, required: false, default: null},
+    width: {type: [String, Number], default: '100%'},
+    height: {type: [String, Number], default: 'auto'},
     thumbnail: {type: Boolean, default: false},
   },
   data() {
@@ -32,10 +34,5 @@ export default {
       //
     }
   },
-  computed: {
-    addStyle() {
-      return addStyleParser(this.styles)
-    }
-  }
 }
 </script>
