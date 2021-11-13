@@ -38,13 +38,16 @@ export default {
 
     this.packageList()
     this.mapList()
+    this.ruleList()
+    this.playerList()
   },
   computed: {
     ...mapGetters('accountStore', ['getProfile']),
     ...mapGetters('authStore', ['isLogin']),
   },
   methods: {
-    ...mapActions('gameStore', ['packageList', 'mapList']),
+    ...mapActions('gameStore', ['packageList', 'mapList', 'ruleList']),
+    ...mapActions('playerStore', ['playerList']),
   },
 }
 </script>

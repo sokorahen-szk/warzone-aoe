@@ -33,6 +33,7 @@
               :items="gameRules"
               :selectedIndex="selectedRuleId"
               @input="selectedRuleId = $event"
+              :disabled="gameRules.length < 1"
             />
           </v-col>
           <v-col cols="12">
@@ -122,7 +123,7 @@ import PlayerSearchBox from '@organisms/PlayerSearchBox'
 import Select from '@atoms/Select'
 import Button from '@atoms/Button'
 import { playerListTemplate } from '@/config/player'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import { selectParser, addStyleParser } from '@/services/helper'
 export default {
   name: 'Newgame',
@@ -130,32 +131,34 @@ export default {
     CommonOneColumnTemplate,
     PlayerSearchBox,
     Select,
-    Button
+    Button,
   },
   mounted() {
-    this.playerList();
-
     this.$store.subscribe((mutation) => {
-      if (mutation.type === 'playerStore/setPlayers') {
-        this.$set(this, 'players', this.getPlayers)
-      } else if (mutation.type === 'gameStore/setPackageList') {
-        this.$set(this, 'gamePackages', selectParser(this.getPackageList, {label: 'name', value: 'id'}))
-      } else if (mutation.type === 'gameStore/setMapList') {
-        this.$set(this, 'gameMaps', selectParser(this.getMapList, {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
+      switch (mutation.type) {
+        case 'playerStore/setPlayers':
+          this.$set(this, 'players', this.getPlayers)
+          break
+        case 'gameStore/setPackageList':
+          this.$set(this, 'gamePackages', selectParser(this.getPackageList, {label: 'name', value: 'id'}))
+          break
+        case 'gameStore/setMapList':
+           this.$set(this, 'gameMaps', selectParser(this.getMapList, {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
+          break
+        case 'gameStore/setRuleList':
+           this.$set(this, 'gameRules', selectParser(this.getRuleList, {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
+          break
       }
     })
 
-    if (this.getPackageList) { this.$set(this, 'gamePackages', selectParser(this.getPackageList, {label: 'name', value: 'id'})) }
-    if (this.getPackageList) { this.$set(this, 'gameMaps', selectParser(this.getMapList, {label: 'name', value: 'id', gamePackageId: 'gamePackageId'})) }
+    this.$set(this, 'gamePackages', selectParser(this.getPackageList || [], {label: 'name', value: 'id'}))
+    this.$set(this, 'gameMaps', selectParser(this.getMapList || [], {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
+    this.$set(this, 'gameRules', selectParser(this.getRuleList || [], {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
   },
   computed: {
     ...mapGetters('playerStore', ['getPlayers']),
-    ...mapGetters('gameStore', ['getPackageList', 'getMapList']),
+    ...mapGetters('gameStore', ['getPackageList', 'getMapList', 'getRuleList']),
     ...mapGetters('breakpointStore', ['getDeviceType']),
-    getGameMap() {
-      if (!this.selectedGamePackageId) return this.gameMaps
-      return this.gameMaps.map( item => item.gamePackageId === this.selectedGamePackageId)
-    },
     addStyle() {
       if (this.getDeviceType !== 'sp') {
         return addStyleParser({
@@ -165,7 +168,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions('playerStore', ['playerList']),
     updatePlayer(e) {
       if (!e) return;
       if (this.selectedPlayers.find( player => player.id == e.id )) return;
@@ -194,11 +196,10 @@ export default {
     selectedGamePackageId(val) {
       if (val) {
         const maps = this.getMapList.find( map => map.id == val)
-        if (maps) {
-          this.$set(this, 'gameMaps', selectParser(maps, {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
-        } else {
-          this.$set(this, 'gameMaps', selectParser([], {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
-        }
+        const rules = this.getRuleList.find( rule => rule.id == val)
+
+        this.$set(this, 'gameMaps', selectParser(maps ? maps : [], {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
+        this.$set(this, 'gameRules', selectParser(rules ? rules : [], {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
       }
     }
   },
@@ -212,11 +213,7 @@ export default {
       selectedRuleId: 0,
       gamePackages: [],
       gameMaps: [],
-
-      // TODO: ルールのAPIがまだのため、ダミーデータを渡しておく
-      gameRules: [
-        {id: 1, value: 1, label: "サンプル"}
-      ]
+      gameRules: [],
     }
   }
 }
