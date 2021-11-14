@@ -186,22 +186,24 @@
         </v-col>
         <v-col class="px-2 text-h4" cols="auto">悪</v-col>
       </v-row>
-      <v-row no-gutters justify="center" align-content="center" style="height:100px;">
-        <Button
-          class="mr-2"
-          color="success"
-          label="ゲーム開始"
-          width="200"
-          height="55"
-        />
-        <Button
-          class="ml-2"
-          color="normal"
-          label="キャンセル"
-          width="200"
-          height="55"
-          @click="teamDivisionDialog = false"
-        />
+      <v-row no-gutters>
+        <v-col cols="12" sm="12" md="6" lg="6" xl="6" :class="getDeviceType === 'pc' ? 'text-right': 'text-center'" class="mt-2">
+          <Button
+            color="success"
+            label="ゲーム開始"
+            width="200"
+            height="55"
+          />
+        </v-col>
+        <v-col cols="12" sm="12" md="6" lg="6" xl="6" :class="{'text-center': getDeviceType === 'sp'}" class="mt-2">
+          <Button
+            color="normal"
+            label="キャンセル"
+            width="200"
+            height="55"
+            @click="teamDivisionDialog = false"
+          />
+        </v-col>
       </v-row>
     </v-col>
   </v-row>
