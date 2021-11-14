@@ -11,6 +11,7 @@ use Package\Infrastructure\TrueSkill\TrueSkillClient;
 
 use Package\Domain\User\Service\PlayerServiceInterface;
 use Package\Domain\Game\Service\GameRecordServiceInterface;
+use Package\Domain\Game\ValueObject\GameRecord\VictoryPrediction;
 
 use Exception;
 
@@ -48,10 +49,18 @@ class GameTeamDivisionService implements GameTeamDivisionServiceInterface
 			throw new Exception('選択プレイヤー数は2人以上である必要があります。');
 		}
 
+		// TODO: このあたりリファクタしたい
 		$trueSkillRequest = $this->toTrueSkillAsDivisionPatternRequest($players);
 		$trueSkillResponse = $this->trueSkillClient->teamDivisionPattern($trueSkillRequest);
 
-		return new GameTeamDivisionData($trueSkillResponse);
+		$team1 = $this->trueSkillResponseFromPlayersToPlayerEntities($trueSkillResponse->team1, $players);
+		$team2 = $this->trueSkillResponseFromPlayersToPlayerEntities($trueSkillResponse->team2, $players);
+
+		return new GameTeamDivisionData((object) [
+			'victoryPrediction' => new VictoryPrediction($trueSkillResponse->quality),
+			'team1' => $team1,
+			'team2' => $team2,
+		]);
 	}
 
 	// TODO: 今後、TrueSkillのRequest/Response作ったらそっちに移動する予定。
@@ -68,5 +77,18 @@ class GameTeamDivisionService implements GameTeamDivisionServiceInterface
 		}
 
 		return ['players' => $data];
+	}
+
+	private function trueSkillResponseFromPlayersToPlayerEntities($trueSkillResponseFromPlayers, array $players): array
+	{
+		$resource = [];
+		foreach ($trueSkillResponseFromPlayers as $trueSkillResponseFromPlayer) {
+			foreach ($players as $player) {
+				if ($trueSkillResponseFromPlayer->id === $player->getPlayerId()->getValue()) {
+					$resource[] = $player;
+				}
+			}
+		}
+		return $resource;
 	}
 }
