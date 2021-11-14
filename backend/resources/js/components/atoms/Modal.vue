@@ -2,7 +2,8 @@
     <v-dialog
         v-model="dialog"
         persistent
-        :max-width="`${width}%`"
+        :width="`${width}%`"
+        :max-width="maxWidth"
     >
       <v-card tile>
         <v-container>
@@ -26,6 +27,7 @@ export default {
     title: {type: String},
     show: {type: Boolean, default: false},
     width: {type: [Number, String], default: 80},
+    maxWidth: {type: [Number, String], default: 650},
   },
   data() {
     return {

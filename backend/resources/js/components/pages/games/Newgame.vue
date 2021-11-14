@@ -5,7 +5,6 @@
     :sheetPaClass="'pa-3'"
   >
   <template slot="container">
-
     <v-row no-gutters>
       <v-col cols="12" sm="12" md="5" lg="4" class="px-2" :style="addStyle">
         <div class="py-2 text-h6">プレイヤー選択</div>
@@ -117,28 +116,111 @@
   :show="teamDivisionDialog"
   @update="teamDivisionDialog = $event"
 >
-
-<v-row>
-  <v-col cols="6">
-    <div class="py-2 text-center">チーム1</div>
-    <v-list flat>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title>titan</v-list-item-title>
-          <v-list-item-subtitle>ID: 1 / </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        a
-      </v-list-item>
-    </v-list>
-  </v-col>
-  <v-col cols="6">
-    <div class="py-2 text-center">チーム2</div>
-    a
-  </v-col>
-</v-row>
-
+  <v-row>
+    <v-col cols="6">
+      <div class="py-2 text-center">チーム1</div>
+      <v-divider />
+      <v-list flat>
+        <v-list-item>
+          <v-list-item-content>
+            <v-row no-gutters>
+              <v-col cols="8">プレイヤー名</v-col>
+              <v-col cols="4" class="text-center">ランク</v-col>
+            </v-row>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-row no-gutters>
+              <v-col cols="8">titan</v-col>
+              <v-col cols="4" class="text-center">20</v-col>
+            </v-row>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-row no-gutters>
+              <v-col cols="8">なぎさ</v-col>
+              <v-col cols="4" class="text-center">20</v-col>
+            </v-row>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-row no-gutters>
+              <v-col cols="8">合計ランク</v-col>
+              <v-col cols="4" class="text-center">60</v-col>
+            </v-row>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-col>
+    <v-col cols="6">
+      <div class="py-2 text-center">チーム2</div>
+      <v-divider />
+      <v-list flat>
+        <v-list-item>
+          <v-list-item-content>
+            <v-row no-gutters>
+              <v-col cols="8">プレイヤー名</v-col>
+              <v-col cols="4" class="text-center">ランク</v-col>
+            </v-row>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-row no-gutters>
+              <v-col cols="8">sasaki</v-col>
+              <v-col cols="4" class="text-center">20</v-col>
+            </v-row>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-row no-gutters>
+              <v-col cols="8">yamada</v-col>
+              <v-col cols="4" class="text-center">20</v-col>
+            </v-row>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-row no-gutters>
+              <v-col cols="8">合計ランク</v-col>
+              <v-col cols="4" class="text-center">60</v-col>
+            </v-row>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-col>
+    <v-col cols="12">
+      <div class="text-center">quality：20%</div>
+      <v-row no-gutters>
+        <v-col class="px-2 text-h4" cols="auto">良</v-col>
+        <v-col>
+          <QualityBar quality="20" height="35" />
+        </v-col>
+        <v-col class="px-2 text-h4" cols="auto">悪</v-col>
+      </v-row>
+      <v-row no-gutters justify="center" align-content="center" style="height:100px;">
+        <Button
+          class="mr-2"
+          color="success"
+          label="ゲーム開始"
+          width="200"
+          height="55"
+        />
+        <Button
+          class="ml-2"
+          color="normal"
+          label="キャンセル"
+          width="200"
+          height="55"
+          @click="teamDivisionDialog = false"
+        />
+      </v-row>
+    </v-col>
+  </v-row>
 </Modal>
 
   </template>
@@ -151,6 +233,7 @@ import PlayerSearchBox from '@organisms/PlayerSearchBox'
 import Select from '@atoms/Select'
 import Button from '@atoms/Button'
 import Modal from '@atoms/Modal'
+import QualityBar from '@molecules/QualityBar'
 import { playerListTemplate } from '@/config/player'
 import { mapGetters } from 'vuex'
 import { selectParser, addStyleParser } from '@/services/helper'
@@ -162,6 +245,7 @@ export default {
     Select,
     Button,
     Modal,
+    QualityBar,
   },
   mounted() {
     this.$store.subscribe((mutation) => {
