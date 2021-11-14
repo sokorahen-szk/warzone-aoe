@@ -294,8 +294,10 @@ export default {
     clearEvent() {
       this.search = null
       this.$set(this, 'selectedPlayers', [])
+
       this.selectedGamePackageId = 0
       this.selectedMapId = 0
+      this.selectedRuleId = 0
     },
     division() {
       this.teamDivisionDialog = true
