@@ -38,7 +38,7 @@ export default {
       if (this.path) {
         router.push({path: this.path})
       } else if (this.href) {
-        location.href=this.href
+        location.href = this.href
       }
     }
   }

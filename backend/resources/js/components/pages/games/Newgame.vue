@@ -5,7 +5,6 @@
     :sheetPaClass="'pa-3'"
   >
   <template slot="container">
-
     <v-row no-gutters>
       <v-col cols="12" sm="12" md="5" lg="4" class="px-2" :style="addStyle">
         <div class="py-2 text-h6">プレイヤー選択</div>
@@ -33,6 +32,7 @@
               :items="gameRules"
               :selectedIndex="selectedRuleId"
               @input="selectedRuleId = $event"
+              :disabled="gameRules.length < 1"
             />
           </v-col>
           <v-col cols="12">
@@ -86,7 +86,6 @@
               >
                 プレイヤーを選択
               </v-card>
-
               <v-row no-gutters justify="center" align-content="center" style="height:100px;">
                 <Button
                   class="mr-2"
@@ -95,6 +94,7 @@
                   width="200"
                   height="55"
                   :disabled="selectedPlayers.length < 2"
+                  @click="division"
                 />
                 <Button
                   class="ml-2"
@@ -108,9 +108,108 @@
             </v-card>
           </v-col>
         </v-row>
-
       </v-col>
     </v-row>
+
+<Modal
+  title="チーム分け"
+  :show="teamDivisionDialog"
+  @update="teamDivisionDialog = $event"
+>
+  <v-row v-if="teamDivisionResponse">
+    <v-col cols="6">
+      <div class="py-2 text-center">チーム1</div>
+      <v-divider />
+      <v-list flat>
+        <v-list-item>
+          <v-list-item-content>
+            <v-row no-gutters>
+              <v-col cols="8">プレイヤー名</v-col>
+              <v-col cols="4" class="text-center">ランク</v-col>
+            </v-row>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item v-for="data in teamDivisionResponse.team1" :key="`player-id-${data.id}`">
+          <v-list-item-content>
+            <v-row no-gutters>
+              <v-col cols="8">{{data.name}}</v-col>
+              <v-col cols="4" class="text-center">{{data.rank}}</v-col>
+            </v-row>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-row no-gutters>
+              <v-col cols="8">合計ランク</v-col>
+              <v-col cols="4" class="text-center">{{teamDivisionResponse.team1RankSum}}</v-col>
+            </v-row>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-col>
+    <v-col cols="6">
+      <div class="py-2 text-center">チーム2</div>
+      <v-divider />
+      <v-list flat>
+        <v-list-item>
+          <v-list-item-content>
+            <v-row no-gutters>
+              <v-col cols="8">プレイヤー名</v-col>
+              <v-col cols="4" class="text-center">ランク</v-col>
+            </v-row>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item v-for="data in teamDivisionResponse.team2" :key="`player-id-${data.id}`">
+          <v-list-item-content>
+            <v-row no-gutters>
+              <v-col cols="8">{{data.name}}</v-col>
+              <v-col cols="4" class="text-center">{{data.rank}}</v-col>
+            </v-row>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-row no-gutters>
+              <v-col cols="8">合計ランク</v-col>
+              <v-col cols="4" class="text-center">{{teamDivisionResponse.team2RankSum}}</v-col>
+            </v-row>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-col>
+    <v-col cols="12">
+      <div class="text-center">quality：{{teamDivisionResponse.quality}}%</div>
+      <v-row no-gutters>
+        <v-col class="px-2 text-h4" cols="auto">良</v-col>
+        <v-col>
+          <QualityBar :quality="teamDivisionResponse.quality" height="35" />
+        </v-col>
+        <v-col class="px-2 text-h4" cols="auto">悪</v-col>
+      </v-row>
+      <v-row no-gutters justify="center" align-content="center" style="height:100px;">
+        <Button
+          class="mr-2"
+          color="success"
+          label="ゲーム開始"
+          width="200"
+          height="55"
+        />
+        <Button
+          class="ml-2"
+          color="normal"
+          label="キャンセル"
+          width="200"
+          height="55"
+          @click="teamDivisionDialog = false"
+        />
+      </v-row>
+    </v-col>
+  </v-row>
+  <Loading
+    size="64"
+    v-else
+  />
+</Modal>
 
   </template>
   </CommonOneColumnTemplate>
@@ -121,6 +220,9 @@ import CommonOneColumnTemplate from '@templates/CommonOneColumnTemplate'
 import PlayerSearchBox from '@organisms/PlayerSearchBox'
 import Select from '@atoms/Select'
 import Button from '@atoms/Button'
+import Modal from '@atoms/Modal'
+import QualityBar from '@molecules/QualityBar'
+import Loading from '@atoms/Loading'
 import { playerListTemplate } from '@/config/player'
 import { mapGetters, mapActions } from 'vuex'
 import { selectParser, addStyleParser } from '@/services/helper'
@@ -130,32 +232,38 @@ export default {
     CommonOneColumnTemplate,
     PlayerSearchBox,
     Select,
-    Button
+    Button,
+    Modal,
+    QualityBar,
+    Loading,
   },
   mounted() {
-    this.playerList();
-
     this.$store.subscribe((mutation) => {
-      if (mutation.type === 'playerStore/setPlayers') {
-        this.$set(this, 'players', this.getPlayers)
-      } else if (mutation.type === 'gameStore/setPackageList') {
-        this.$set(this, 'gamePackages', selectParser(this.getPackageList, {label: 'name', value: 'id'}))
-      } else if (mutation.type === 'gameStore/setMapList') {
-        this.$set(this, 'gameMaps', selectParser(this.getMapList, {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
+      switch (mutation.type) {
+        case 'playerStore/setPlayers':
+          this.$set(this, 'players', this.getPlayers)
+          break
+        case 'gameStore/setPackageList':
+          this.$set(this, 'gamePackages', selectParser(this.getPackageList, {label: 'name', value: 'id'}))
+          break
+        case 'gameStore/setMapList':
+           this.$set(this, 'gameMaps', selectParser(this.getMapList, {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
+          break
+        case 'gameStore/setRuleList':
+           this.$set(this, 'gameRules', selectParser(this.getRuleList, {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
+          break
       }
     })
 
-    if (this.getPackageList) { this.$set(this, 'gamePackages', selectParser(this.getPackageList, {label: 'name', value: 'id'})) }
-    if (this.getPackageList) { this.$set(this, 'gameMaps', selectParser(this.getMapList, {label: 'name', value: 'id', gamePackageId: 'gamePackageId'})) }
+    this.$set(this, 'players', this.getPlayers || [])
+    this.$set(this, 'gamePackages', selectParser(this.getPackageList || [], {label: 'name', value: 'id'}))
+    this.$set(this, 'gameMaps', selectParser(this.getMapList || [], {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
+    this.$set(this, 'gameRules', selectParser(this.getRuleList || [], {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
   },
   computed: {
     ...mapGetters('playerStore', ['getPlayers']),
-    ...mapGetters('gameStore', ['getPackageList', 'getMapList']),
+    ...mapGetters('gameStore', ['getPackageList', 'getMapList', 'getRuleList']),
     ...mapGetters('breakpointStore', ['getDeviceType']),
-    getGameMap() {
-      if (!this.selectedGamePackageId) return this.gameMaps
-      return this.gameMaps.map( item => item.gamePackageId === this.selectedGamePackageId)
-    },
     addStyle() {
       if (this.getDeviceType !== 'sp') {
         return addStyleParser({
@@ -165,7 +273,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('playerStore', ['playerList']),
+    ...mapActions('gameStore', ['teamDivision']),
     updatePlayer(e) {
       if (!e) return;
       if (this.selectedPlayers.find( player => player.id == e.id )) return;
@@ -189,18 +297,43 @@ export default {
       this.selectedGamePackageId = 0
       this.selectedMapId = 0
     },
+    division() {
+      this.teamDivisionDialog = true
+
+      new Promise ( reslve => {
+        reslve(this.teamDivision({
+          playerIds: this.selectedPlayers.map((item) => item.id),
+          gamePackageId: Number(this.selectedGamePackageId),
+          gameRuleId: Number(this.selectedRuleId),
+          gameMapId: Number(this.selectedMapId),
+        }))
+      })
+      .then( (res) => {
+        this.teamDivisionResponse = res
+      })
+      .catch( (err) => {
+        this.teamDivisionDialog = false
+
+        alert(err)
+      })
+    }
   },
   watch: {
     selectedGamePackageId(val) {
       if (val) {
         const maps = this.getMapList.find( map => map.id == val)
-        if (maps) {
-          this.$set(this, 'gameMaps', selectParser(maps, {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
-        } else {
-          this.$set(this, 'gameMaps', selectParser([], {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
-        }
+        const rules = this.getRuleList.find( rule => rule.id == val)
+
+        this.$set(this, 'gameMaps', selectParser(maps ? maps : [], {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
+        this.$set(this, 'gameRules', selectParser(rules ? rules : [], {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
       }
-    }
+    },
+    teamDivisionDialog(val) {
+      // dialogが閉じられた時
+      if (!val) {
+        this.$set(this, 'teamDivisionResponse', null)
+      }
+    },
   },
   data() {
     return {
@@ -212,11 +345,11 @@ export default {
       selectedRuleId: 0,
       gamePackages: [],
       gameMaps: [],
+      gameRules: [],
 
-      // TODO: ルールのAPIがまだのため、ダミーデータを渡しておく
-      gameRules: [
-        {id: 1, value: 1, label: "サンプル"}
-      ]
+      teamDivisionDialog: false,
+
+      teamDivisionResponse: null,
     }
   }
 }

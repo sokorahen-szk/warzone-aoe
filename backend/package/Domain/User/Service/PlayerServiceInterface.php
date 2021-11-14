@@ -7,12 +7,12 @@ use Package\Domain\User\Entity\Player;
 
 interface PlayerServiceInterface {
 	/**
-	 * 選択されたプレイヤーIDから、プレイヤーの情報を取得する
+	 * 選択されたプレイヤーID一覧から、プレイヤー一覧を作成する
 	 *
 	 * @param array $playerIds
-	 * @return array
+	 * @return Player[]
 	 */
-	public function selectedPlayers(array $playerIds): array;
+	public function playerIdsToPlayerEntities(array $playerIds): array;
 
 	/**
 	 * 選択されたプレイヤーIDから、重複して選択されていないかどうか

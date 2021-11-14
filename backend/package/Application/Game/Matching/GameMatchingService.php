@@ -90,9 +90,8 @@ class GameMatchingService implements GameMatchingServiceInterface
 			throw new AlreadyMatchingGamingException('ゲーム中のユーザは選択できません。');
 		}
 
-		$selectedPlayers = $this->playerService->selectedPlayers($command->playerIds);
-
-		if (count($selectedPlayers) < 2) {
+		$players = $this->playerService->playerIdsToPlayerEntities($command->playerIds);
+		if (count($players) < 2) {
 			// TODO: 独自Exception化する
 			throw new Exception('選択プレイヤー数は2人以上である必要があります。');
 		}
@@ -106,8 +105,8 @@ class GameMatchingService implements GameMatchingServiceInterface
 		$gameRuleId = new GameRuleId($command->ruleId);
 		$this->gameRuleRepository->get($gameRuleId);
 
-		$trueSkilRequestData = ['players' => $selectedPlayers];
-		$trueSkillResponse = $this->trueSkillClient->teamDivisionPattern($trueSkilRequestData);
+		$trueSkillRequest = $this->toTrueSkillAsDivisionPatternRequest($players);
+		$trueSkillResponse = $this->trueSkillClient->teamDivisionPattern($trueSkillRequest);
 
 		$team1Players = $this->toPlayers($trueSkillResponse->team1);
 		$team2Players = $this->toPlayers($trueSkillResponse->team2);
@@ -175,5 +174,21 @@ class GameMatchingService implements GameMatchingServiceInterface
 		foreach ($players as $player) {
 			$this->playerMemoryRepository->create($gameRecordId, $player, $gameTeam);
 		}
+	}
+
+	// TODO: 今後、TrueSkillのRequest/Response作ったらそっちに移動する予定。
+	private function toTrueSkillAsDivisionPatternRequest(array $players): array
+	{
+		$data = [];
+		foreach ($players as $player) {
+			$data[] = [
+				'id'	=> $player->getPlayerId()->getValue(),
+				'name'	=> $player->getPlayerName()->getValue(),
+				'mu'	=> $player->getMu()->getValue(),
+				'sigma'	=> $player->getSigma()->getValue(),
+			];
+		}
+
+		return ['players' => $data];
 	}
 }
