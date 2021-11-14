@@ -66,6 +66,23 @@ const actions = {
         }
       })
     })
+  },
+  teamDivision({ commit }, payload) {
+    return new Promise( (resolve, reject) => {
+      axios.post('/api/game/create/team_division', {
+        'player_ids': payload.playerIds,
+        'game_package_id': payload.gamePackageId,
+        'rule_id': payload.gameRuleId,
+        'map_id': payload.gameMapId,
+      })
+      .then( (res) => {
+        if (res.data && res.data.isSuccess) {
+          resolve(res.data.body.divisions)
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
+    })
   }
 }
 const gameStore = {

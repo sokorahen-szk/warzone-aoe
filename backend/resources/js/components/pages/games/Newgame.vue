@@ -94,7 +94,7 @@
                   width="200"
                   height="55"
                   :disabled="selectedPlayers.length < 2"
-                  @click="teamDivisionDialog = true"
+                  @click="division"
                 />
                 <Button
                   class="ml-2"
@@ -116,7 +116,7 @@
   :show="teamDivisionDialog"
   @update="teamDivisionDialog = $event"
 >
-  <v-row>
+  <v-row v-if="teamDivisionResponse">
     <v-col cols="6">
       <div class="py-2 text-center">チーム1</div>
       <v-divider />
@@ -129,19 +129,11 @@
             </v-row>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item>
+        <v-list-item v-for="data in teamDivisionResponse.team1" :key="`player-id-${data.id}`">
           <v-list-item-content>
             <v-row no-gutters>
-              <v-col cols="8">titan</v-col>
-              <v-col cols="4" class="text-center">20</v-col>
-            </v-row>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-content>
-            <v-row no-gutters>
-              <v-col cols="8">なぎさ</v-col>
-              <v-col cols="4" class="text-center">20</v-col>
+              <v-col cols="8">{{data.name}}</v-col>
+              <v-col cols="4" class="text-center">{{data.rank}}</v-col>
             </v-row>
           </v-list-item-content>
         </v-list-item>
@@ -149,7 +141,7 @@
           <v-list-item-content>
             <v-row no-gutters>
               <v-col cols="8">合計ランク</v-col>
-              <v-col cols="4" class="text-center">60</v-col>
+              <v-col cols="4" class="text-center">{{teamDivisionResponse.team1RankSum}}</v-col>
             </v-row>
           </v-list-item-content>
         </v-list-item>
@@ -167,19 +159,11 @@
             </v-row>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item>
+        <v-list-item v-for="data in teamDivisionResponse.team2" :key="`player-id-${data.id}`">
           <v-list-item-content>
             <v-row no-gutters>
-              <v-col cols="8">sasaki</v-col>
-              <v-col cols="4" class="text-center">20</v-col>
-            </v-row>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-content>
-            <v-row no-gutters>
-              <v-col cols="8">yamada</v-col>
-              <v-col cols="4" class="text-center">20</v-col>
+              <v-col cols="8">{{data.name}}</v-col>
+              <v-col cols="4" class="text-center">{{data.rank}}</v-col>
             </v-row>
           </v-list-item-content>
         </v-list-item>
@@ -187,18 +171,18 @@
           <v-list-item-content>
             <v-row no-gutters>
               <v-col cols="8">合計ランク</v-col>
-              <v-col cols="4" class="text-center">60</v-col>
+              <v-col cols="4" class="text-center">{{teamDivisionResponse.team2RankSum}}</v-col>
             </v-row>
           </v-list-item-content>
         </v-list-item>
       </v-list>
     </v-col>
     <v-col cols="12">
-      <div class="text-center">quality：20%</div>
+      <div class="text-center">quality：{{teamDivisionResponse.quality}}%</div>
       <v-row no-gutters>
         <v-col class="px-2 text-h4" cols="auto">良</v-col>
         <v-col>
-          <QualityBar quality="20" height="35" />
+          <QualityBar :quality="teamDivisionResponse.quality" height="35" />
         </v-col>
         <v-col class="px-2 text-h4" cols="auto">悪</v-col>
       </v-row>
@@ -221,6 +205,10 @@
       </v-row>
     </v-col>
   </v-row>
+  <Loading
+    size="64"
+    v-else
+  />
 </Modal>
 
   </template>
@@ -234,8 +222,9 @@ import Select from '@atoms/Select'
 import Button from '@atoms/Button'
 import Modal from '@atoms/Modal'
 import QualityBar from '@molecules/QualityBar'
+import Loading from '@atoms/Loading'
 import { playerListTemplate } from '@/config/player'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { selectParser, addStyleParser } from '@/services/helper'
 export default {
   name: 'Newgame',
@@ -246,6 +235,7 @@ export default {
     Button,
     Modal,
     QualityBar,
+    Loading,
   },
   mounted() {
     this.$store.subscribe((mutation) => {
@@ -283,6 +273,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('gameStore', ['teamDivision']),
     updatePlayer(e) {
       if (!e) return;
       if (this.selectedPlayers.find( player => player.id == e.id )) return;
@@ -306,6 +297,26 @@ export default {
       this.selectedGamePackageId = 0
       this.selectedMapId = 0
     },
+    division() {
+      this.teamDivisionDialog = true
+
+      new Promise ( reslve => {
+        reslve(this.teamDivision({
+          playerIds: this.selectedPlayers.map((item) => item.id),
+          gamePackageId: Number(this.selectedGamePackageId),
+          gameRuleId: Number(this.selectedRuleId),
+          gameMapId: Number(this.selectedMapId),
+        }))
+      })
+      .then( (res) => {
+        this.teamDivisionResponse = res
+      })
+      .catch( (err) => {
+        this.teamDivisionDialog = false
+
+        alert(err)
+      })
+    }
   },
   watch: {
     selectedGamePackageId(val) {
@@ -316,7 +327,13 @@ export default {
         this.$set(this, 'gameMaps', selectParser(maps ? maps : [], {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
         this.$set(this, 'gameRules', selectParser(rules ? rules : [], {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
       }
-    }
+    },
+    teamDivisionDialog(val) {
+      // dialogが閉じられた時
+      if (!val) {
+        this.$set(this, 'teamDivisionResponse', null)
+      }
+    },
   },
   data() {
     return {
@@ -331,6 +348,8 @@ export default {
       gameRules: [],
 
       teamDivisionDialog: false,
+
+      teamDivisionResponse: null,
     }
   }
 }
