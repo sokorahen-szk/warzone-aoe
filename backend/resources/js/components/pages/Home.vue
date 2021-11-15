@@ -7,10 +7,7 @@
 				aaa
 			</template>
 			<template slot="left">
-				<RankingColumn
-					icon="mdi-format-list-bulleted"
-					title="ゲーム数ランキング"
-				/>
+				a
 			</template>
 		</CommonWithLeftColumnTemplate>
 	</v-container>
@@ -18,13 +15,11 @@
 
 <script>
 import CommonWithLeftColumnTemplate from '@templates/CommonWithLeftColumnTemplate'
-import RankingColumn from '@organisms/RankingColumn'
 import { mapGetters } from 'vuex'
 export default {
 	name: 'Home',
 	components: {
 		CommonWithLeftColumnTemplate,
-		RankingColumn
 	},
 	computed: {
 		...mapGetters('breakpointStore', ['getDeviceType']),
