@@ -6,6 +6,7 @@
       placeholder="プレイヤー名を検索する"
       outlined
       required
+      :disabled="players.length < 1"
     />
     <div class="suggestion">
       <PlayerList

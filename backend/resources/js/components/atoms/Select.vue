@@ -1,7 +1,7 @@
 <template>
   <label>
     <select @change="updateValue" :disabled="disabled" :class="[{disabled: disabled}]" :style="addStyle">
-      <option>{{ label }}</option>
+      <option :value="defaultOptionNumber" :selected="defaultOptionNumber == selectedItemId">{{ label }}</option>
       <template v-for="(item, index) in items">
         <option :value="item.value" :key="item['id'] ? item['id'] : index" :selected="item['id'] == selectedItemId">
           {{ item.label }}
@@ -18,6 +18,7 @@ export default {
   props: {
     items: {type: [Array, Object], default: []},
     selectedIndex: {type: [Number, String]},
+    defaultOptionNumber: {type: [Number, String], default: 0},
     disabled: {type: Boolean, default: false},
     label: {type: String, default: '' },
     width: {type: String, default: '100%' },
