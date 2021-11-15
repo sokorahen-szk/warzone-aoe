@@ -6,10 +6,10 @@
   >
   <v-list flat class="pa-0 ma-0" dense>
     <template v-for="(player, index) in players">
-      <v-list-item :key="index" @click="link(player)">
-        <v-list-item-avatar v-show="player.image">
+      <v-list-item :key="index" @click="click(player)" :class="{'blue-grey lighten-5': selectedList.indexOf(player.id) !== -1}">
+        <v-list-item-avatar v-show="player.avatorImage">
           <v-img
-            :src="player.image"
+            :src="player.avatorImage"
           ></v-img>
         </v-list-item-avatar>
         <v-list-item-content>
@@ -30,18 +30,32 @@ import router from '@/router/index'
 export default {
   name: 'PlayerList',
   props: {
-    players: {type: Array, default: []}
+    players: {type: Array, default: []},
   },
   methods: {
-    link(player) {
+    click(player) {
       if (player['link']) {
         router.push({path: `player/${player.id}`})
       }
-      return this.$emit('click', player)
+
+      let isAdded = false
+      const index = this.selectedList.indexOf(player.id)
+      if (index !== -1) {
+        this.selectedList.splice(index, 1)
+      } else {
+        isAdded = true
+        this.selectedList.push(player.id)
+      }
+
+      return this.$emit('click', {
+        player: player,
+        isAdded: isAdded,
+      })
     }
   },
   data() {
     return {
+      selectedList: [],
     }
   }
 }
