@@ -1,5 +1,5 @@
 <template>
-  <v-container :class="{'pa-0 ma-0': device === 'sp'}" class="container">
+  <v-container :class="{'pa-0 ma-0': device === 'sp'}">
     <slot name="header"></slot>
     <v-row no-gutters>
       <v-col cols="12">
@@ -22,7 +22,7 @@ export default {
   name: 'CommonOneColumnTemplate',
   extends: ComponentTemplate,
   props: {
-    backGround: {type: String, default: 'grey lighten-4'},
+    backGround: {type: String, default: '#eee'},
     elevation: {type: [String, Number], default: 0},
     device: {type: String},
     sheetPaClass: {type: String, default: null}

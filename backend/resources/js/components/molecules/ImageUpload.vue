@@ -2,20 +2,13 @@
   <div>
     <FileUpload :accept="setAccept" @update="view" :disabled="disabled">
       <v-card outlined tile :color="setColor">
-        <v-row justify="center" align-content="center" style="height: 200px;">
+        <v-row justify="center" align-content="center" style="height: 300px;">
           <v-icon size="32" v-if="!setImage">mdi-camera-plus-outline</v-icon>
-          <div class="pa-2">
-            <Img
-                v-if="setImage"
-                :styles="{
-                  'max-height': '200px',
-                  'min-height': '200px',
-                  'min-width': '60px'
-                }"
-                :src="setImage"
-                thumbnail
-            />
-          </div>
+          <Img
+            v-if="setImage"
+            :src="setImage"
+            height="90%"
+          />
         </v-row>
       </v-card>
     </FileUpload>

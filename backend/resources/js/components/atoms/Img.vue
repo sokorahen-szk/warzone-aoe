@@ -1,6 +1,5 @@
 <template>
   <img
-    :class="['img', {thumbnail: thumbnail}]"
     :src="src"
     :alt="alt"
     :width="width"
@@ -9,17 +8,12 @@
 </template>
 
 <style scoped>
-.thumbnail {
-  margin: 0;
-  padding: 14px;
-  vertical-align: top;
+img {
   object-fit: contain;
-  width: 100%;
 }
 </style>
 
 <script>
-import {addStyleParser} from '@/services/helper'
 export default {
   name: 'Img',
   props: {
@@ -27,7 +21,6 @@ export default {
     alt: {type: String, default: ''},
     width: {type: [String, Number], default: '100%'},
     height: {type: [String, Number], default: 'auto'},
-    thumbnail: {type: Boolean, default: false},
   },
   data() {
     return {

@@ -5,6 +5,7 @@
     @click="clickButton"
     :color="color"
     :disabled="disabled"
+    :loading="loading"
     :text="text"
     :width="width"
     :height="height"
@@ -35,6 +36,7 @@ export default {
     depressed: {type: Boolean, default: false},
     color: {type: String, default: ''},
     disabled: {type: Boolean, default: false},
+    loading: {type: Boolean, default: false},
     text: {type: Boolean, default: false},
     icon: {type: Boolean, default: false},
     tile: {type: Boolean, default: false},

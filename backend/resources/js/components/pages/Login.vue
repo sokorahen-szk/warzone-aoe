@@ -1,6 +1,5 @@
 <template>
   <CommonOneColumnTemplate
-    elevation="2"
     :device="getDeviceType"
     :sheetPaClass="'pa-3'"
   >
@@ -54,6 +53,7 @@
                         color="success"
                         @click="loginEvent"
                         :disabled="!valid"
+                        :loading="loading"
                         height="65"
                         width="200"
                         font-size="22"
@@ -102,6 +102,9 @@ export default {
       valid: true,
       userName: null,
       password: null,
+
+      loading: false,
+
       alert: alertTemplate,
     }
   },
@@ -113,6 +116,9 @@ export default {
     ...mapActions('authStore', ['login']),
     loginEvent() {
       if(!this.$refs.form.validate()) return;
+
+      this.loading = true
+
       new Promise((resolve) => {
         resolve(this.login({name: this.userName, password: this.password}))
       })
@@ -125,6 +131,8 @@ export default {
           type: 'error',
           message: err,
         })
+
+        this.loading = false
       })
     }
   }
