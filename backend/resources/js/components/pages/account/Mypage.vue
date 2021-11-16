@@ -88,7 +88,7 @@
                   <Button
                     v-for="t in gameWarsChangeStatusButtons"
                     class="ml-2"
-                    :disabled="gameStatusUpdateButtonDisabled"
+                    :disabled="isGameStatusUpdateButtonDisabled"
                     :color="t.color"
                     :label="t.label"
                     :key="t.label"
@@ -150,7 +150,7 @@ export default {
     return {
       profileView: profileViewTemplate,
       gameWarsChangeStatusButtons: gameWarsChangeStatusButtonTemplates,
-      gameStatusUpdateButtonDisabled: false,
+      isGameStatusUpdateButtonDisabled: false,
       myGameRecordLoading: false,
       myGameRecords: [],
       alert: alertTemplate,
@@ -194,7 +194,7 @@ export default {
         return;
       }
 
-      this.gameStatusUpdateButtonDisabled = true;
+      this.isGameStatusUpdateButtonDisabled = true;
 
       new Promise((resolve) => {
         resolve(this.myGameStatusUpdate({
@@ -210,7 +210,6 @@ export default {
           message: res,
         })
 
-        this.gameStatusUpdateButtonDisabled = false;
         this.fetchMyGameList();
       })
       .catch( (err) => {
@@ -219,6 +218,9 @@ export default {
           type: 'error',
           message: err,
         })
+      })
+      .finally( () => {
+        this.isGameStatusUpdateButtonDisabled = false;
       })
     },
   },

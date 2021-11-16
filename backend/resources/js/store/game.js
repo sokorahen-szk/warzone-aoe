@@ -1,3 +1,5 @@
+import { excludeNullParams } from '@/services/api_helper';
+
 const state = {
   game: {
     packages: null,
@@ -83,7 +85,41 @@ const actions = {
         }
       })
     })
-  }
+  },
+  gameMatching({ commit }, payload) {
+    return new Promise( (resolve, reject) => {
+      axios.post('/api/game/create/matching', {
+        'player_ids': payload.playerIds,
+        'game_package_id': payload.gamePackageId,
+        'rule_id': payload.gameRuleId,
+        'map_id': payload.gameMapId,
+      })
+      .then( (res) => {
+        if (res.data && res.data.isSuccess) {
+          resolve(res.data.body)
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
+    })
+  },
+  gameFinished({ commit }, payload) {
+    const params = excludeNullParams({
+      token: payload.token,
+      status: payload.status,
+      winning_team: payload.winningTeam
+    })
+    return new Promise( (resolve, reject) => {
+      axios.post('/api/game/create/finished', params)
+      .then( (res) => {
+        if (res.data && res.data.isSuccess) {
+          resolve()
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
+    })
+  },
 }
 const gameStore = {
   namespaced: true,

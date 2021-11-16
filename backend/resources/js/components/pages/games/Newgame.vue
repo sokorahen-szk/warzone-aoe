@@ -114,8 +114,8 @@
 
 <Modal
   title="チーム分け"
-  :show="teamDivisionDialog"
-  @update="teamDivisionDialog = $event"
+  :show="isTeamDivision"
+  @update="isTeamDivision = $event"
 >
   <v-row v-if="teamDivisionResponse">
     <v-col cols="6">
@@ -194,6 +194,7 @@
             label="ゲーム開始"
             width="200"
             height="55"
+            @click="matching"
           />
         </v-col>
         <v-col cols="12" sm="12" md="6" lg="6" xl="6" :class="{'text-center': getDeviceType === 'sp'}" class="mt-2">
@@ -202,7 +203,7 @@
             label="キャンセル"
             width="200"
             height="55"
-            @click="teamDivisionDialog = false"
+            @click="isTeamDivision = false"
           />
         </v-col>
       </v-row>
@@ -212,6 +213,32 @@
     size="64"
     v-else
   />
+</Modal>
+<Modal
+  title="マッチング"
+  :show="isMatching"
+  @update="isMatching = $event"
+>
+  <div v-if="isFinished">
+    試合が終了しました。お疲れ様でした。
+  </div>
+  <div v-else>
+    ゲームが開始されました。
+    <v-row no-gutters>
+      <v-col cols="12">
+        <Button
+          v-for="t in gameWarsChangeStatusButtons"
+          class="ml-2"
+          :disabled="isGameStatusUpdateButtonDisabled"
+          :color="t.color"
+          :label="t.label"
+          :key="t.label"
+          @click="updateGameRecord(t.label, matchingResponse.gameToken, t.game_status, t.winningTeam)"
+          depressed
+        />
+      </v-col>
+    </v-row>
+  </div>
 </Modal>
 
   </template>
@@ -229,6 +256,7 @@ import Loading from '@atoms/Loading'
 import { playerListTemplate } from '@/config/player'
 import { mapGetters, mapActions } from 'vuex'
 import { selectParser, addStyleParser } from '@/services/helper'
+import { gameWarsChangeStatusButtonTemplates } from '@/config/game'
 export default {
   name: 'Newgame',
   components: {
@@ -276,7 +304,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('gameStore', ['teamDivision']),
+    ...mapActions('gameStore', ['teamDivision', 'gameMatching', 'gameFinished']),
     updatePlayer(e) {
       if (!e) return;
       if (this.selectedPlayers.length >= 8) return;
@@ -305,9 +333,13 @@ export default {
       this.selectedGamePackageId = 0
       this.selectedMapId = 0
       this.selectedRuleId = 0
+
+      this.isGameStatusUpdateButtonDisabled = true
+      this.teamDivisionResponse = null
+      this.matchingResponse = null
     },
     division() {
-      this.teamDivisionDialog = true
+      this.isTeamDivision = true
 
       new Promise ( reslve => {
         reslve(this.teamDivision({
@@ -321,11 +353,61 @@ export default {
         this.teamDivisionResponse = res
       })
       .catch( (err) => {
-        this.teamDivisionDialog = false
+        this.isTeamDivision = false
 
         alert(err)
       })
-    }
+    },
+    matching() {
+      this.isTeamDivision = false
+      this.isMatching = true
+
+      new Promise ( reslve => {
+        reslve(this.gameMatching({
+          playerIds: this.selectedPlayers.map((item) => item.id),
+          gamePackageId: Number(this.selectedGamePackageId),
+          gameRuleId: Number(this.selectedRuleId),
+          gameMapId: Number(this.selectedMapId),
+        }))
+      })
+      .then( (res) => {
+        this.matchingResponse = res
+        this.isGameStatusUpdateButtonDisabled = false
+      })
+      .catch( (err) => {
+        this.isMatching = false
+
+        alert(err)
+      })
+    },
+    updateGameRecord(label, token, status, winningTeam) {
+      if(!confirm(`${label}で記録を付けます。よろしいでしょうか？`)) {
+        return;
+      }
+
+      this.isGameStatusUpdateButtonDisabled = true;
+
+      new Promise((resolve) => {
+        resolve(this.gameFinished({
+          token: token,
+          status: status,
+          winningTeam: winningTeam
+        }))
+      })
+      .then( () => {
+        this.isFinished = true
+      })
+      .catch( (err) => {
+        this.alert = Object.assign(alertTemplate, {
+          show: true,
+          type: 'error',
+          message: err,
+        })
+      })
+      .finally( () => {
+        this.isGameStatusUpdateButtonDisabled = false;
+      })
+    },
   },
   watch: {
     selectedGamePackageId(val) {
@@ -337,7 +419,7 @@ export default {
         this.$set(this, 'gameRules', selectParser(rules ? rules : [], {label: 'name', value: 'id', gamePackageId: 'gamePackageId'}))
       }
     },
-    teamDivisionDialog(val) {
+    isTeamDivision(val) {
       // dialogが閉じられた時
       if (!val) {
         this.$set(this, 'teamDivisionResponse', null)
@@ -356,9 +438,14 @@ export default {
       gameMaps: [],
       gameRules: [],
 
-      teamDivisionDialog: false,
+      gameWarsChangeStatusButtons: gameWarsChangeStatusButtonTemplates,
 
+      isTeamDivision: false,
+      isMatching: false,
+      isFinished: false,
+      isGameStatusUpdateButtonDisabled: true,
       teamDivisionResponse: null,
+      matchingResponse: null,
     }
   }
 }
