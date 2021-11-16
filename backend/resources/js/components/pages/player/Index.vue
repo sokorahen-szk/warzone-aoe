@@ -91,7 +91,7 @@ import GamePackageList from '@molecules/GamePackageList'
 import Icon from '@atoms/Icon'
 import Tabs from '@molecules/Tabs'
 import { mapActions, mapGetters } from 'vuex'
-import {playerProfileTab, findBySpecificKey} from '@/services/helper';
+import { findBySpecificKey } from '@/services/helper';
 import {playerProfileTabs} from '@/config/player';
 
 export default {

@@ -1,7 +1,7 @@
 <template>
   <CommonOneColumnTemplate :device="deviceType">
     <template slot="container">
-      <Loading v-if="isLoading" />
+      <Loading v-if="isLoading" size="64" class="pt-4" />
       <div v-else>
         <GameRecordTablePc
           v-if="deviceType == 'pc'"
@@ -28,8 +28,8 @@
 import CommonOneColumnTemplate from '@templates/CommonOneColumnTemplate'
 import GameRecordTablePc from '@organisms/pc/GameRecordTable'
 import GameRecordTableSp from '@organisms/sp/GameRecordTable'
-import { mapGetters, mapActions } from 'vuex'
 import Loading from '@atoms/Loading'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'Index',

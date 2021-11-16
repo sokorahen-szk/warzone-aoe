@@ -1,7 +1,7 @@
 <template>
   <CommonOneColumnTemplate :device="deviceType">
     <template slot="container">
-      <Loading v-if="isLoading" />
+      <Loading v-if="isLoading" size="64" class="pt-4" />
       <div v-else>
         <GameRecordTablePc
           v-if="deviceType == 'pc'"

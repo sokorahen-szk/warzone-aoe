@@ -9,13 +9,13 @@
 
 <script>
 import PlayerRateChart from '@organisms/PlayerRateChart'
-import { mapGetters, mapActions } from 'vuex'
-import {filterScopeDateFilter} from '@/services/api_helper'
+import { mapActions } from 'vuex'
+import { filterScopeDateFilter } from '@/services/api_helper'
 
 export default {
   name: 'IndexRatePlayerHisyory',
   components: {
-    PlayerRateChart
+    PlayerRateChart,
   },
   props: {
     id: {type: [Number, String]}
@@ -26,41 +26,48 @@ export default {
         dateList: [],
         rateList: [],
       },
+
+      isLoading: false,
     }
   },
   methods: {
     ...mapActions('playerStore', ['playerRaitingList']),
-    ...mapGetters('playerStore', ['getPlayerRaitings']),
     updateFilter(filter) {
       let params = filterScopeDateFilter(filter, this.$dayjs())
-      this.playerRaitingList({id: this.id, options: params});
-    }
+      this.fetchPlayerRaitingList(params);
+    },
+    toColumns(raiting) {
+      let dateList = ["date"]
+      let rateList = ["rating"]
+
+      raiting.forEach( (item) => {
+        dateList.push(item.startedAt)
+        rateList.push(item.rate)
+      })
+      this.columns.dateList = Object.assign([], dateList)
+      this.columns.rateList = Object.assign([], rateList)
+    },
+    fetchPlayerRaitingList(options) {
+      this.isLoading = true
+
+      new Promise((resolve) => {
+        resolve(this.playerRaitingList({id: this.id, options: options}))
+      })
+      .then( (res) => {
+        this.toColumns(res)
+      })
+      .catch(err => {
+        alert(err)
+      })
+      .finally(() => {
+        this.isLoading = false
+      })
+    },
   },
   mounted() {
-    this.playerRaitingList({
-      id: this.id,
-      options: {
-        begin_date: this.$dayjs().startOf('month').format('YYYY-MM-DD')
-      }
+    this.fetchPlayerRaitingList({
+      begin_date: this.$dayjs().startOf('month').format('YYYY-MM-DD')
     });
-
-    this.$store.subscribe((mutation) => {
-      if (mutation.type === 'playerStore/setPlayerRaitings') {
-        this.$nextTick( () => {
-          const raiting = this.getPlayerRaitings()
-
-          let dateList = ["date"]
-          let rateList = ["rating"]
-
-          raiting.forEach( (item) => {
-            dateList.push(item.startedAt)
-            rateList.push(item.rate)
-          })
-          this.columns.dateList = Object.assign([], dateList)
-          this.columns.rateList = Object.assign([], rateList)
-        })
-      }
-    })
   }
 }
 </script>

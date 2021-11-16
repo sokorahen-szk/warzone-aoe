@@ -2,40 +2,44 @@
   <v-container>
     <v-row no-gutters>
       <v-col cols="6" sm="6" md="3" lg="3" class="pa-1 mb-2">
-        <v-row no-gutters class="text-center">
-          <v-col class="py-3 subtitle-1">
-            <div>ゲーム数</div>
-            {{ profile && profile.player.games || 0 }}
-          </v-col>
-        </v-row>
-        <v-divider />
+        <v-card tile elevation="1">
+          <v-row no-gutters class="text-center">
+            <v-col class="py-3 subtitle-1">
+              <div>ゲーム数</div>
+              {{ profile && profile.player.games || 0 }}
+            </v-col>
+          </v-row>
+        </v-card>
       </v-col>
       <v-col cols="6" sm="6" md="3" lg="3" class="pa-1 mb-2">
-        <v-row no-gutters class="text-center">
-          <v-col class="py-3 subtitle-1">
-            <div>勝ち</div>
-            {{ profile && profile.player.win || 0 }}
-          </v-col>
-        </v-row>
-        <v-divider />
+        <v-card tile elevation="1">
+          <v-row no-gutters class="text-center">
+            <v-col class="py-3 subtitle-1">
+              <div>勝ち</div>
+              {{ profile && profile.player.win || 0 }}
+            </v-col>
+          </v-row>
+        </v-card>
       </v-col>
       <v-col cols="6" sm="6" md="3" lg="3" class="pa-1 mb-2">
-        <v-row no-gutters class="text-center">
-          <v-col class="py-3 subtitle-1">
-            <div>負け</div>
-            {{ profile && profile.player.defeat || 0 }}
-          </v-col>
-        </v-row>
-        <v-divider />
+        <v-card tile elevation="1">
+          <v-row no-gutters class="text-center">
+            <v-col class="py-3 subtitle-1">
+              <div>負け</div>
+              {{ profile && profile.player.defeat || 0 }}
+            </v-col>
+          </v-row>
+        </v-card>
       </v-col>
       <v-col cols="6" sm="6" md="3" lg="3" class="pa-1 mb-2">
-        <v-row no-gutters class="text-center">
-          <v-col class="py-3 subtitle-1">
-            <div>勝率</div>
-            {{ profile && profile.player.wp || 0 }} %
-          </v-col>
-        </v-row>
-        <v-divider />
+        <v-card tile elevation="1">
+          <v-row no-gutters class="text-center">
+            <v-col class="py-3 subtitle-1">
+              <div>勝率</div>
+              {{ profile && profile.player.wp || 0 }} %
+            </v-col>
+          </v-row>
+        </v-card>
       </v-col>
     </v-row>
     <v-row no-gutters class="pa-3">

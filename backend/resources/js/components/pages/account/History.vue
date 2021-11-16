@@ -8,7 +8,7 @@
       <AccountRightMenu />
     </template>
     <template slot="container">
-      <Loading v-if="isLoading" />
+      <Loading v-if="isLoading" size="64" class="py-4" />
       <div v-else>
         <GameRecordTablePc
           v-if="breakPoint == 'lg' || breakPoint == 'xl'"
