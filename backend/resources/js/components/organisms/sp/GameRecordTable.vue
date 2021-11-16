@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<v-card class="mb-1 thead">
+		<v-card tile class="mb-1 thead">
 			<v-row no-gutters class="py-1">
 				<v-col cols="2"></v-col>
 				<v-col cols="5" class="py-1 text-left">プレイヤー</v-col>
@@ -132,7 +132,8 @@ export default {
 
 <style scoped>
 	.thead {
-		background: #cccddd;
+		background: rgb(99, 99, 99);
+		color: #ddd !important;
 	}
 
 	.w20 {

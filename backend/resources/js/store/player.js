@@ -41,7 +41,7 @@ const actions = {
       axios.get(`/api/player/raiting/${payload.id}`, { params: excludeNullParams(payload.options) }).then( (res) => {
         if(res.data && res.data.isSuccess) {
           commit('setPlayerRaitings', {$gameRecords: res.data.body.gameRecords})
-          resolve(res.data.messages)
+          resolve(res.data.body.gameRecords)
         } else {
           reject(res.data.errorMessages)
         }

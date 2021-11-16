@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-progress-circular
       indeterminate
-      color="primary"
+      color="#aaa"
       :size="size"
     ></v-progress-circular>
   </div>

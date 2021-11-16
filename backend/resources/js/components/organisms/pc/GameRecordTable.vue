@@ -32,7 +32,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr class="tr py-2" v-for="gameRecord in gameRecordList" :key="gameRecord.gameId">
+				<tr class="tr" v-for="gameRecord in gameRecordList" :key="gameRecord.gameId">
 					<td class="text-center">
 						<div>{{gameRecord.gameStartDate}}</div>
 						<div>{{gameRecord.gameStartTime}}</div>
@@ -155,11 +155,12 @@ export default {
 
 <style scoped>
 	thead > tr {
-		background: #cccddd;
+		background: rgb(99, 99, 99);
 	}
 
 	thead > tr > th {
 		height: 45px !important;
+		color: #ddd !important;
 	}
 
 	.w20 {
