@@ -22,6 +22,12 @@ class AdminRoutes {
             Route::post('request/{registerId}', [AdminController::class, 'updateNewCreateRequest'])
             ->name('admin.request.update')
             ->where('registerId', '^[0-9]+$');
+
+            /**
+             * ユーザ一覧取得
+             * GET /api/admin/user
+             */
+            Route::get('user', [AdminController::class, 'listUser'])->name('admin.user');
         });
 	}
 }

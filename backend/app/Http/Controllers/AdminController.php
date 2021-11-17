@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\RegisterRequestUpdateRequest;
 use Package\Usecase\Admin\RegisterRequest\GetList\AdminRegisterRequestGetListServiceInterface;
 use Package\Usecase\Admin\RegisterRequest\Update\AdminRegisterRequestUpdateServiceInterface;
 use Package\Usecase\Admin\RegisterRequest\Update\AdminRegisterRequestUpdateCommand;
+use Package\Usecase\Admin\User\ListData\AdminUserListServiceInterface;
 
 class AdminController extends Controller
 {
@@ -28,5 +29,11 @@ class AdminController extends Controller
         ));
 
         return $this->validResponse($result, '新規登録リクエストを更新しました。');
+    }
+
+    public function listUser(AdminUserListServiceInterface $interactor)
+    {
+        $result = $interactor->handle();
+        return $this->validResponse($result->getVars(), '取得しました。');
     }
 }
