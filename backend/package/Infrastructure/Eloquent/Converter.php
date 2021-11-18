@@ -157,6 +157,24 @@ class Converter {
     }
 
     /**
+     * @param Collection $users
+     * @return User[]
+     */
+    public static function users($users): array
+    {
+        $resources = [];
+
+        $users->each(function($item) use (&$resources) {
+            $player =  self::player($item->player);
+            $role =  self::role($item->role);
+
+            $resources[] = self::user($item, $player, $role);
+        });
+
+        return $resources;
+    }
+
+    /**
      * @param UserModel $user
      * @return User
      */

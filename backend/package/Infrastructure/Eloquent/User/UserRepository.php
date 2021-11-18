@@ -17,7 +17,7 @@ class UserRepository implements UserRepositoryInterface {
    * @return User|null
    */
   public function findUserById(UserId $userId): ?User
-  { 
+  {
     $user = EloquentUser::where('id', $userId->getValue())
       ->with(['player', 'role'])
       ->first();
@@ -124,5 +124,14 @@ class UserRepository implements UserRepositoryInterface {
     ->update([
       'status'  => $user->getStatus()->getValue(),
     ]);
+  }
+
+  /**
+   * @return User[]
+   */
+  public function list(): array
+  {
+    $users = EloquentUser::get();
+    return Converter::users($users);
   }
 }

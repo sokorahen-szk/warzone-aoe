@@ -44,4 +44,9 @@ interface UserRepositoryInterface {
    * @param User $user
    */
   public function withdrawal(User $user): void;
+
+  /**
+   * @return User[]
+   */
+  public function list(): array;
 }
