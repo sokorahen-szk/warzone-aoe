@@ -10,6 +10,7 @@ use Package\Domain\User\Entity\UserAvator;
 
 use App\Models\UserModel as EloquentUser;
 use Package\Infrastructure\Eloquent\Converter;
+use Package\Domain\System\Entity\Paginator;
 
 class UserRepository implements UserRepositoryInterface {
   /**
@@ -127,11 +128,24 @@ class UserRepository implements UserRepositoryInterface {
   }
 
   /**
+   * @param Paginator $paginator
    * @return User[]
    */
-  public function list(): array
+  public function list(Paginator $paginator): array
   {
-    $users = EloquentUser::get();
+    $users = EloquentUser::offset($paginator->getNextOffset())
+      ->limit($paginator->getLimit()->getValue())
+      ->get();
+
     return Converter::users($users);
+  }
+
+  /**
+   * @return int
+   */
+  public function listCount(): int
+  {
+    $count = EloquentUser::count();
+    return $count;
   }
 }

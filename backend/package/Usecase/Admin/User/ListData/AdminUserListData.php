@@ -2,6 +2,7 @@
 
 namespace Package\Usecase\Admin\User\ListData;
 
+use Package\Domain\System\Entity\ApiPaginator;
 use Package\Usecase\Data;
 
 /**
@@ -10,8 +11,9 @@ use Package\Usecase\Data;
 
 class AdminUserListData extends Data {
   public $users = [];
+	public $paginator;
 
-  public function __construct(array $sources)
+  public function __construct(array $sources, ApiPaginator $apiPaginator)
   {
       foreach ($sources as $source) {
         $this->users[] = [
@@ -34,5 +36,7 @@ class AdminUserListData extends Data {
           ],
         ];
       }
+
+      $this->paginator = $apiPaginator->getPaginator();
   }
 }

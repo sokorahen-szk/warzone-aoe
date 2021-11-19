@@ -2,9 +2,15 @@
 
 namespace Package\Application\Admin\User\ListData;
 
+use Package\Domain\System\Entity\ApiPaginator;
 use Package\Domain\User\Repository\UserRepositoryInterface;
 use Package\Usecase\Admin\User\ListData\AdminUserListServiceInterface;
 use Package\Usecase\Admin\User\ListData\AdminUserListData;
+
+use Package\Domain\System\ValueObject\Offset;
+use Package\Domain\System\ValueObject\Limit;
+use Package\Domain\System\Entity\Paginator;
+use Package\Usecase\Admin\User\ListData\AdminUserListCommand;
 
 class AdminUserListService implements AdminUserListServiceInterface {
 
@@ -15,9 +21,22 @@ class AdminUserListService implements AdminUserListServiceInterface {
         $this->userRepository = $userRepository;
     }
 
-    public function handle(): AdminUserListData
+    public function handle(AdminUserListCommand $command): AdminUserListData
     {
-        $users = $this->userRepository->list();
-        return new AdminUserListData($users);
+		$paginator = new Paginator([
+			'offset' 	=> 	new Offset($command->page),
+			'limit' 	=>	new Limit($command->limit),
+		]);
+
+        $users = $this->userRepository->list($paginator);
+		$userTotalCount = $this->userRepository->listCount($paginator);
+
+		$apiPaginator = new ApiPaginator([
+			'currentPage' 	=> $command->page,
+			'totalCount' 	=> $userTotalCount,
+			'limit' 		=> $command->limit,
+		]);
+
+        return new AdminUserListData($users, $apiPaginator);
     }
 }

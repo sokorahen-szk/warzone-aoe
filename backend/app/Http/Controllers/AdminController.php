@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\AdminUserListRequest;
 use App\Traits\ApiResponser;
 use App\Http\Requests\Admin\RegisterRequestUpdateRequest;
 use Package\Usecase\Admin\RegisterRequest\GetList\AdminRegisterRequestGetListServiceInterface;
 use Package\Usecase\Admin\RegisterRequest\Update\AdminRegisterRequestUpdateServiceInterface;
 use Package\Usecase\Admin\RegisterRequest\Update\AdminRegisterRequestUpdateCommand;
+use Package\Usecase\Admin\User\ListData\AdminUserListCommand;
 use Package\Usecase\Admin\User\ListData\AdminUserListServiceInterface;
 
 class AdminController extends Controller
@@ -31,9 +33,13 @@ class AdminController extends Controller
         return $this->validResponse($result, '新規登録リクエストを更新しました。');
     }
 
-    public function listUser(AdminUserListServiceInterface $interactor)
+    public function listUser(AdminUserListServiceInterface $interactor, AdminUserListRequest $request)
     {
-        $result = $interactor->handle();
+        $result = $interactor->handle(new AdminUserListCommand(
+            $request->input('page', 1),
+            $request->input('limit', 10)
+        ));
+
         return $this->validResponse($result->getVars(), '取得しました。');
     }
 }

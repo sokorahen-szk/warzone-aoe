@@ -3,5 +3,5 @@
 namespace Package\Usecase\Admin\User\ListData;
 
 interface AdminUserListServiceInterface {
-  public function handle(): AdminUserListData;
+  public function handle(AdminUserListCommand $command): AdminUserListData;
 }

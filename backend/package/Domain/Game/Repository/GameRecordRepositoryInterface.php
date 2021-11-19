@@ -13,7 +13,6 @@ use Package\Domain\Game\ValueObject\GameMap\GameMapId;
 use Package\Domain\Game\ValueObject\GameRule\GameRuleId;
 use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\Game\Entity\GameRecord;
-use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
 
 interface GameRecordRepositoryInterface
 {
