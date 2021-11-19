@@ -6,6 +6,7 @@ use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\User\ValueObject\Name;
 use Package\Domain\User\Entity\User;
 use Package\Domain\User\Entity\UserAvator;
+use Package\Domain\System\Entity\Paginator;
 
 interface UserRepositoryInterface {
   /**
@@ -44,4 +45,15 @@ interface UserRepositoryInterface {
    * @param User $user
    */
   public function withdrawal(User $user): void;
+
+  /**
+   * @param Paginator $paginator
+   * @return User[]
+   */
+  public function list(Paginator $paginator): array;
+
+  /**
+   * @return int
+   */
+  public function listCount(): int;
 }

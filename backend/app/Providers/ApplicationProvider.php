@@ -100,6 +100,10 @@ class ApplicationProvider extends ServiceProvider
             \Package\Usecase\Account\Game\StatusUpdate\AccountGameStatusUpdateServiceInterface::class,
             \Package\Application\Account\Game\StatusUpdate\AccountGameStatusUpdateService::class
         );
+        $this->app->bind(
+            \Package\Usecase\Admin\User\ListData\AdminUserListServiceInterface::class,
+            \Package\Application\Admin\User\ListData\AdminUserListService::class
+        );
     }
 
     /**
