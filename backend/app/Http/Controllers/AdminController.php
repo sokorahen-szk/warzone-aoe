@@ -10,6 +10,8 @@ use Package\Usecase\Admin\RegisterRequest\Update\AdminRegisterRequestUpdateServi
 use Package\Usecase\Admin\RegisterRequest\Update\AdminRegisterRequestUpdateCommand;
 use Package\Usecase\Admin\User\ListData\AdminUserListCommand;
 use Package\Usecase\Admin\User\ListData\AdminUserListServiceInterface;
+use Package\Usecase\Admin\User\Update\AdminUserUpdateCommand;
+use Package\Usecase\Admin\User\Update\AdminUserUpdateServiceInterface;
 
 class AdminController extends Controller
 {
@@ -41,5 +43,19 @@ class AdminController extends Controller
         ));
 
         return $this->validResponse($result->getVars(), '取得しました。');
+    }
+
+    public function createUser() {
+        return "impl me";
+    }
+
+    public function updateUser(AdminUserUpdateServiceInterface $interactor, int $userId, AdminUserUpdateCommand $request)
+    {
+        $interactor->handle(new AdminUserUpdateCommand(
+            $userId,
+            $request->input('status', null),
+        ));
+
+        return $this->validResponse([]);
     }
 }

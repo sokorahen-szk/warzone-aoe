@@ -28,6 +28,20 @@ class AdminRoutes {
              * GET /api/admin/user
              */
             Route::get('user', [AdminController::class, 'listUser'])->name('admin.user');
+
+            /**
+             * ユーザ新規作成
+             * POST /api/admin/user/create
+             */
+            Route::post('user/create', [AdminController::class, 'createUser'])->name('admin.user.create');
+
+            /**
+             * ユーザ更新
+             * POST /api/admin/user/{userId}
+             */
+            Route::post('user/{userId}', [AdminController::class, 'updateUser'])
+            ->name('admin.user.update')
+            ->where('userId', '^[0-9]+$');
         });
 	}
 }
