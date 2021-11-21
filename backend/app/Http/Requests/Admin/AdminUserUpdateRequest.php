@@ -27,7 +27,21 @@ class AdminUserUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'status'              => ['sometimes', 'integer'],
+            'user_name'                 => ['required', 'string'],
+            'email'                     => ['sometimes', 'email'],
+            'password'                  => [
+                                                'sometimes',
+                                                'string',
+                                                'min:8',
+                                                'required_with:password_confirmation',
+                                                'same:password_confirmation'
+                                        ],
+            'password_confirmation'     => ['sometimes', 'string'],
+            'steam_id'                  => ['sometimes', 'string'],
+            'twitter_id'                => ['sometimes', 'string'],
+            'web_site_url'              => ['sometimes', 'url', 'active_url'],
+
+            'status'                    => ['sometimes', 'integer'],
         ];
     }
 }
