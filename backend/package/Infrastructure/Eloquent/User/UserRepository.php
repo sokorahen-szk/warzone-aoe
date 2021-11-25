@@ -11,6 +11,7 @@ use Package\Domain\User\Entity\UserAvator;
 use App\Models\UserModel as EloquentUser;
 use Package\Infrastructure\Eloquent\Converter;
 use Package\Domain\System\Entity\Paginator;
+use Package\Domain\User\ValueObject\Status as UserStatus;
 
 class UserRepository implements UserRepositoryInterface {
   /**
@@ -117,13 +118,14 @@ class UserRepository implements UserRepositoryInterface {
   }
 
   /**
-   * @param User $user
+   * @param UserId $userId
+   * @param UserStatus $userStatus
    */
-  public function withdrawal(User $user): void
+  public function changeStatus(UserId $userId, UserStatus $userStatus): void
   {
-    EloquentUser::where('id', $user->getId()->getValue())
+    EloquentUser::where('id', $userId->getValue())
     ->update([
-      'status'  => $user->getStatus()->getValue(),
+      'status'  => $userStatus->getValue(),
     ]);
   }
 

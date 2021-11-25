@@ -23,6 +23,6 @@ class AccountWithdrawalService implements AccountWithdrawalServiceInterface {
 
     $user->getStatus()->changeWithdrawal();
 
-    $this->userRepository->withdrawal($user);
+    $this->userRepository->changeStatus($user->getId(), $user->getStatus());
   }
 }

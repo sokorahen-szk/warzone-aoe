@@ -178,6 +178,14 @@ class User extends Resource {
   }
 
   /**
+   * @param Status $status
+   */
+  public function changeStatus(Status $status): void
+  {
+    $this->status = $status;
+  }
+
+  /**
    * @return Password|null
    */
   public function getPassword(): ?Password
