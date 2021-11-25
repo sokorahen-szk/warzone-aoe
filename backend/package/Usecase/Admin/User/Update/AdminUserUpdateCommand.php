@@ -2,15 +2,6 @@
 
 namespace Package\Usecase\Admin\User\Update;
 
-/*
-            $request->input('password', null),
-            $request->input('steam_id', null),
-            $request->input('twitter_id', null),
-            $request->input('web_site_url', null),
-            $request->input('status', null)
-*/
-
-
 class AdminUserUpdateCommand {
   public $userId;
   public $userName;
