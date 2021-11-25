@@ -7,6 +7,7 @@ use Package\Domain\User\ValueObject\Name;
 use Package\Domain\User\Entity\User;
 use Package\Domain\User\Entity\UserAvator;
 use Package\Domain\System\Entity\Paginator;
+use Package\Domain\User\ValueObject\Status as UserStatus;
 
 interface UserRepositoryInterface {
   /**
@@ -42,9 +43,10 @@ interface UserRepositoryInterface {
   public function deleteAvator(UserId $userId): void;
 
   /**
-   * @param User $user
+   * @param UserId $userId
+   * @param UserStatus $userStatus
    */
-  public function withdrawal(User $user): void;
+  public function changeStatus(UserId $userId, UserStatus $userStatus): void;
 
   /**
    * @param Paginator $paginator

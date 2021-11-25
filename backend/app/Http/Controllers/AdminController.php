@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Admin\AdminUserListRequest;
+use App\Http\Requests\Admin\AdminUserUpdateRequest;
 use App\Traits\ApiResponser;
 use App\Http\Requests\Admin\RegisterRequestUpdateRequest;
 use Package\Usecase\Admin\RegisterRequest\GetList\AdminRegisterRequestGetListServiceInterface;
@@ -49,11 +50,17 @@ class AdminController extends Controller
         return "impl me";
     }
 
-    public function updateUser(AdminUserUpdateServiceInterface $interactor, int $userId, AdminUserUpdateCommand $request)
+    public function updateUser(AdminUserUpdateServiceInterface $interactor, int $userId, AdminUserUpdateRequest $request)
     {
         $interactor->handle(new AdminUserUpdateCommand(
             $userId,
-            $request->input('status', null),
+            $request->user_name,
+            $request->input('email', null),
+            $request->input('password', null),
+            $request->input('steam_id', null),
+            $request->input('twitter_id', null),
+            $request->input('web_site_url', null),
+            $request->input('status', null)
         ));
 
         return $this->validResponse([]);

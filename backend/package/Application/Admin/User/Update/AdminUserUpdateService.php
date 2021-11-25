@@ -13,6 +13,7 @@ use Exception;
 use DB;
 use Package\Domain\User\ValueObject\Email;
 use Package\Domain\User\ValueObject\Password;
+use Package\Domain\User\ValueObject\Status;
 use Package\Domain\User\ValueObject\SteamId;
 use Package\Domain\User\ValueObject\TwitterId;
 use Package\Domain\User\ValueObject\WebSiteUrl;
@@ -50,12 +51,14 @@ class AdminUserUpdateService implements AdminUserUpdateServiceInterface {
             $user->changeTwitterId(new TwitterId($command->twitterId));
             $user->changeWebSiteUrl(new WebSiteUrl($command->webSiteUrl));
             $user->changeEmail(new Email($command->email));
+            $user->changeStatus(new Status($command->status));
 
             if ($command->password) {
                 $user->changePassword(new Password($command->password));
             }
 
             $this->userRepository->changeProfile($user);
+            $this->userRepository->changeStatus($user->getId(), $user->getStatus());
 
 			DB::commit();
         } catch (Exception $e) {
