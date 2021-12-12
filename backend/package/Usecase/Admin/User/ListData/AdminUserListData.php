@@ -33,6 +33,7 @@ class AdminUserListData extends Data {
             'status' => $source->getPlayer()->getEnabled()->getValue(),
             'joinedAt' => $source->getPlayer()->getJoinedAt()->getDatetime(),
             'lastGameAt' => $source->getPlayer()->getLastGameAt()->getDatetime(),
+            'gamePackages' => $source->getPlayer()->getGamePackages()->getList(),
           ],
         ];
       }

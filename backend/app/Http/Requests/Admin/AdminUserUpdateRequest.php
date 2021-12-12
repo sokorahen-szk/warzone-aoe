@@ -39,6 +39,7 @@ class AdminUserUpdateRequest extends FormRequest
             'web_site_url'              => ['sometimes', 'url', 'active_url'],
 
             'status'                    => ['sometimes', 'integer'],
+            'role_id'                   => ['sometimes', 'integer'],
         ];
     }
 }

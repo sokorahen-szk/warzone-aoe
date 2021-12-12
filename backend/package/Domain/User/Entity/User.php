@@ -82,6 +82,14 @@ class User extends Resource {
   }
 
   /**
+   * @param RoleId $roleId
+   */
+  public function changeRoleId(RoleId $roleId): void
+  {
+    $this->roleId = $roleId;
+  }
+
+  /**
    * @return Name|null
    */
   public function getName(): ?Name

@@ -11,6 +11,7 @@ use Package\Domain\User\Entity\UserAvator;
 use App\Models\UserModel as EloquentUser;
 use Package\Infrastructure\Eloquent\Converter;
 use Package\Domain\System\Entity\Paginator;
+use Package\Domain\User\ValueObject\Role\RoleId;
 use Package\Domain\User\ValueObject\Status as UserStatus;
 
 class UserRepository implements UserRepositoryInterface {
@@ -123,9 +124,21 @@ class UserRepository implements UserRepositoryInterface {
    */
   public function changeStatus(UserId $userId, UserStatus $userStatus): void
   {
-    EloquentUser::where('id', $userId->getValue())
+    EloquentUser::findOrFail($userId->getValue())
     ->update([
       'status'  => $userStatus->getValue(),
+    ]);
+  }
+
+  /**
+   * @param UserId $userId
+   * @param RoleId $roleId
+   */
+  public function changeRoleId(UserId $userId, RoleId $roleId): void
+  {
+    EloquentUser::findOrFail($userId->getValue())
+    ->update([
+      'role_id'  => $roleId->getValue(),
     ]);
   }
 
