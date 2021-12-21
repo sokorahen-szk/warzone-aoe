@@ -9,7 +9,7 @@ use Routes\Api\Authentication\AuthRoutes;
 
 class AuthenticationRoutes {
 	public static function routes() {
-		Route::group(['middleware' => 'auth:api'], function () {
+		Route::middleware(['auth:api', 'role'])->group( function () {
             AccountRoutes::routes();
             AdminRoutes::routes();
             AuthRoutes::routes();

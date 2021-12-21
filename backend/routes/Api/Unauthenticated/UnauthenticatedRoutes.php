@@ -10,7 +10,7 @@ use Routes\Api\Unauthenticated\GameRoutes;
 class UnauthenticatedRoutes {
 	public static function routes()
 	{
-		Route::group(['middleware' => 'api'], function() {
+		Route::middleware('api')->group( function () {
 			AuthRoutes::routes();
 			PlayerRoutes::routes();
 			GameRoutes::routes();
