@@ -12,6 +12,7 @@ class AdminUserUpdateCommand {
   public $webSiteUrl;
   public $status;
   public $roleId;
+  public $gamePackages;
 
   public function __construct(
     int $userId,
@@ -22,7 +23,8 @@ class AdminUserUpdateCommand {
     ?string $twitterId,
     ?string $webSiteUrl,
     ?int $status,
-    ?int $roleId
+    ?int $roleId,
+    ?string $gamePackages
   )
   {
     $this->userId = $userId;
@@ -34,5 +36,6 @@ class AdminUserUpdateCommand {
     $this->webSiteUrl = $webSiteUrl;
     $this->status = $status;
     $this->roleId = $roleId;
+    $this->gamePackages = $gamePackages;
   }
 }

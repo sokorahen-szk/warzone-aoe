@@ -219,6 +219,14 @@ class Player extends Resource {
   }
 
   /**
+   * @param GamePackages
+   */
+  public function updateGamePackages(GamePackages $gamePackages): void
+  {
+    $this->gamePackages = $gamePackages;
+  }
+
+  /**
    * @return Datetime|null
    */
   public function getJoinedAt(): ?Datetime

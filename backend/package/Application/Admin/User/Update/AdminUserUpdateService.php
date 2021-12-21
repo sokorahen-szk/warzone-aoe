@@ -14,6 +14,7 @@ use DB;
 use Package\Domain\User\Repository\PlayerRepositoryInterface;
 use Package\Domain\User\ValueObject\Email;
 use Package\Domain\User\ValueObject\Password;
+use Package\Domain\User\ValueObject\Player\GamePackages;
 use Package\Domain\User\ValueObject\Role\RoleId;
 use Package\Domain\User\ValueObject\Status;
 use Package\Domain\User\ValueObject\SteamId;
@@ -59,6 +60,9 @@ class AdminUserUpdateService implements AdminUserUpdateServiceInterface {
             $user->changeStatus(new Status($command->status));
             $user->changeRoleId(new RoleId($command->roleId));
 
+            $player = $user->getPlayer();
+            $player->updateGamePackages(new GamePackages($command->gamePackages));
+
             if ($command->password) {
                 $user->changePassword(new Password($command->password));
             }
@@ -66,9 +70,7 @@ class AdminUserUpdateService implements AdminUserUpdateServiceInterface {
             $this->userRepository->changeProfile($user);
             $this->userRepository->changeStatus($user->getId(), $user->getStatus());
             $this->userRepository->changeRoleId($user->getId(), $user->getRoleId());
-
-            // TODO: ゲームパッケージ変更
-            // ここにcoding...
+            $this->playerRepository->updateGamePackage($player->getPlayerId(), $player->getGamePackages());
 
 			DB::commit();
         } catch (Exception $e) {

@@ -8,7 +8,6 @@ use Package\Domain\User\Entity\Player;
 use App\Models\PlayerModel as EloquentPlayer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Log;
-use Package\Domain\Game\Entity\GamePackage;
 use Package\Domain\User\ValueObject\Player\GamePackages;
 use Package\Infrastructure\Eloquent\Converter;
 

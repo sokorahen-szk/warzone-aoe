@@ -40,6 +40,7 @@ class AdminUserUpdateRequest extends FormRequest
 
             'status'                    => ['sometimes', 'integer'],
             'role_id'                   => ['sometimes', 'integer'],
+            'game_packages'             => ['sometimes', 'string'],
         ];
     }
 }
