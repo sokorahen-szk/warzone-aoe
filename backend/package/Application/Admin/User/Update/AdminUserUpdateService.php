@@ -11,8 +11,11 @@ use Package\Usecase\Admin\User\Update\AdminUserUpdateCommand;
 use Package\Usecase\Admin\User\Update\AdminUserUpdateServiceInterface;
 use Exception;
 use DB;
+use Package\Domain\User\Repository\PlayerRepositoryInterface;
 use Package\Domain\User\ValueObject\Email;
 use Package\Domain\User\ValueObject\Password;
+use Package\Domain\User\ValueObject\Player\GamePackages;
+use Package\Domain\User\ValueObject\Role\RoleId;
 use Package\Domain\User\ValueObject\Status;
 use Package\Domain\User\ValueObject\SteamId;
 use Package\Domain\User\ValueObject\TwitterId;
@@ -22,14 +25,17 @@ class AdminUserUpdateService implements AdminUserUpdateServiceInterface {
 
     private $userRepository;
     private $userService;
+    private $playerRepository;
 
     public function __construct(
         UserRepositoryInterface $userRepository,
-        UserServiceInterface $userService
+        UserServiceInterface $userService,
+        PlayerRepositoryInterface $playerRepository
     )
     {
         $this->userRepository = $userRepository;
         $this->userService = $userService;
+        $this->playerRepository = $playerRepository;
     }
 
     public function handle(AdminUserUpdateCommand $command): void
@@ -52,6 +58,10 @@ class AdminUserUpdateService implements AdminUserUpdateServiceInterface {
             $user->changeWebSiteUrl(new WebSiteUrl($command->webSiteUrl));
             $user->changeEmail(new Email($command->email));
             $user->changeStatus(new Status($command->status));
+            $user->changeRoleId(new RoleId($command->roleId));
+
+            $player = $user->getPlayer();
+            $player->updateGamePackages(new GamePackages($command->gamePackages));
 
             if ($command->password) {
                 $user->changePassword(new Password($command->password));
@@ -59,6 +69,8 @@ class AdminUserUpdateService implements AdminUserUpdateServiceInterface {
 
             $this->userRepository->changeProfile($user);
             $this->userRepository->changeStatus($user->getId(), $user->getStatus());
+            $this->userRepository->changeRoleId($user->getId(), $user->getRoleId());
+            $this->playerRepository->updateGamePackage($player->getPlayerId(), $player->getGamePackages());
 
 			DB::commit();
         } catch (Exception $e) {

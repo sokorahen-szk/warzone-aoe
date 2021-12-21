@@ -7,6 +7,7 @@ use Package\Domain\User\ValueObject\Name;
 use Package\Domain\User\Entity\User;
 use Package\Domain\User\Entity\UserAvator;
 use Package\Domain\System\Entity\Paginator;
+use Package\Domain\User\ValueObject\Role\RoleId;
 use Package\Domain\User\ValueObject\Status as UserStatus;
 
 interface UserRepositoryInterface {
@@ -47,6 +48,12 @@ interface UserRepositoryInterface {
    * @param UserStatus $userStatus
    */
   public function changeStatus(UserId $userId, UserStatus $userStatus): void;
+
+  /**
+   * @param UserId $userId
+   * @param RoleId $roleId
+   */
+  public function changeRoleId(UserId $userId, RoleId $roleId): void;
 
   /**
    * @param Paginator $paginator

@@ -8,7 +8,7 @@ use Package\Domain\User\Entity\Player;
 use App\Models\PlayerModel as EloquentPlayer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Log;
-
+use Package\Domain\User\ValueObject\Player\GamePackages;
 use Package\Infrastructure\Eloquent\Converter;
 
 class PlayerRepository implements PlayerRepositoryInterface {
@@ -100,6 +100,26 @@ class PlayerRepository implements PlayerRepositoryInterface {
     } catch (ModelNotFoundException $e) {
         Log::Info($e->getMessage());
         throw new ModelNotFoundException(sprintf("プレイヤーID %d の情報が存在しません。", $player->getPlayerId()->getValue()));
+    }
+  }
+
+  /**
+   * プレイヤーのゲームパッケージ修正
+   *
+   * @param PlayerId $playerId
+   * @param GamePackages $gamePackages
+   * @return void
+   */
+  public function updateGamePackage(PlayerId $playerId, GamePackages $gamePackages): void
+  {
+    try {
+      EloquentPlayer::findOrFail($playerId->getValue())
+        ->update([
+          'game_packages' => $gamePackages->getValue(),
+        ]);
+    } catch (ModelNotFoundException $e) {
+        Log::Info($e->getMessage());
+        throw new ModelNotFoundException(sprintf("プレイヤーID %d の情報が存在しません。", $playerId->getValue()));
     }
   }
 }

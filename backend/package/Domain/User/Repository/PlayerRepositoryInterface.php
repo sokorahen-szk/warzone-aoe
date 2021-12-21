@@ -3,6 +3,7 @@
 namespace Package\Domain\User\Repository;
 
 use Package\Domain\User\Entity\Player;
+use Package\Domain\User\ValueObject\Player\GamePackages;
 use Package\Domain\User\ValueObject\Player\PlayerId;
 
 interface PlayerRepositoryInterface {
@@ -30,6 +31,15 @@ interface PlayerRepositoryInterface {
    * @param Player $player
    */
   public function updateEnabled(Player $player): void;
+
+  /**
+   * プレイヤーのゲームパッケージ修正
+   *
+   * @param PlayerId $playerId
+   * @param GamePackages $gamePackages
+   * @return void
+   */
+  public function updateGamePackage(PlayerId $playerId, GamePackages $gamePackages): void;
 
   /**
    * プレイヤー 更新

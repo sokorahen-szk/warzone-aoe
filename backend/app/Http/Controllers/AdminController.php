@@ -60,7 +60,9 @@ class AdminController extends Controller
             $request->input('steam_id', null),
             $request->input('twitter_id', null),
             $request->input('web_site_url', null),
-            $request->input('status', null)
+            $request->input('status', null),
+            $request->input('role_id', null),
+            $request->input('game_packages', null),
         ));
 
         return $this->validResponse([]);
