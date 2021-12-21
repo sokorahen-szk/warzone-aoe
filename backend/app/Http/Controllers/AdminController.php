@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Admin\AdminUserListRequest;
 use App\Http\Requests\Admin\AdminUserUpdateRequest;
+use App\Http\Requests\Admin\AdminUserCreateRequest;
 use App\Traits\ApiResponser;
 use App\Http\Requests\Admin\RegisterRequestUpdateRequest;
 use Package\Usecase\Admin\RegisterRequest\GetList\AdminRegisterRequestGetListServiceInterface;
 use Package\Usecase\Admin\RegisterRequest\Update\AdminRegisterRequestUpdateServiceInterface;
 use Package\Usecase\Admin\RegisterRequest\Update\AdminRegisterRequestUpdateCommand;
+use Package\Usecase\Admin\User\Create\AdminUserCreateServiceInterface;
+use Package\Usecase\Admin\User\Create\AdminUserCreateCommand;
 use Package\Usecase\Admin\User\ListData\AdminUserListCommand;
 use Package\Usecase\Admin\User\ListData\AdminUserListServiceInterface;
 use Package\Usecase\Admin\User\Update\AdminUserUpdateCommand;
@@ -46,8 +49,17 @@ class AdminController extends Controller
         return $this->validResponse($result->getVars(), '取得しました。');
     }
 
-    public function createUser() {
-        return "impl me";
+    public function createUser(AdminUserCreateServiceInterface $interactor, AdminUserCreateRequest $request) {
+        $interactor->handle(new AdminUserCreateCommand(
+            $request->user_name,
+            $request->player_name,
+            $request->role_id,
+            $request->password,
+            $request->input('game_packages', null),
+            $request->input('steam_id', null)
+        ));
+
+        return $this->validResponse([]);
     }
 
     public function updateUser(AdminUserUpdateServiceInterface $interactor, int $userId, AdminUserUpdateRequest $request)
