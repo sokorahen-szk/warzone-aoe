@@ -8,7 +8,7 @@ return [
     ],
     [
         'label' => '新規登録リクエスト更新',
-        'path' => 'admin/request/[0-9]*',
+        'path' => 'admin/request/[0-9]+',
         'level' => 50,
     ],
     [
@@ -18,7 +18,7 @@ return [
     ],
     [
         'label' => 'ユーザ管理更新',
-        'path' => 'admin/user/[0-9]*',
+        'path' => 'admin/user/[0-9]+',
         'level' => 100,
     ],
     [
