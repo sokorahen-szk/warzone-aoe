@@ -6,54 +6,31 @@
 			<template slot="container">
 				<div>試合中のゲームルーム</div>
 				<v-row no-gutters class="mt-3" :class="{'mr-3': getDeviceType === 'pc'}">
-					<v-col>
+					<v-col cols="12">
 						<v-card tile>
-							<v-row no-gutters>
-								<v-col cols="12">
-									<v-row class="pa-3">
-										<v-col cols="4">
-											<v-row no-gutters>
-												<v-col cols="12">人数</v-col>
-												<v-col cols="12" class="pa-2">8 人</v-col>
-											</v-row>
+							<v-row no-gutters class="pa-4">
+								<v-col cols="3">
+									<v-row no-gutters>
+										<v-col cols="12">
+											<v-icon>mdi-account</v-icon><span class="pl-2">人数</span>
 										</v-col>
-										<v-col cols="4">
-											<v-row no-gutters>
-												<v-col cols="12">マップ</v-col>
-												<v-col cols="12" class="pa-2">アラビア</v-col>
-											</v-row>
-										</v-col>
-										<v-col cols="4">
-											<v-row no-gutters>
-												<v-col cols="12">ルール</v-col>
-												<v-col cols="12" class="pa-2">ESUDAルール</v-col>
-											</v-row>
-										</v-col>
+										<v-col cols="12" class="pl-2">8 人</v-col>
 									</v-row>
 								</v-col>
-								<v-col cols="12">
-									<v-row class="pa-3">
-										<v-col cols="4">
-											<v-row no-gutters>
-												<v-col cols="12">経過時間</v-col>
-												<v-col cols="12" class="pa-2">
-													<Timer
-														l-datetime="2021-12-23 14:12:00"
-														:r-datetime="now"
-													/>
-												</v-col>
-											</v-row>
-										</v-col>
-									</v-row>
+								<v-col cols="5">
+									マップ
+									<div>
+										アラビア
+									</div>
 								</v-col>
-								<v-col cols="12" class="text-right">
-									<Label tag>AoE2DE</Label>
+								<v-col cols="4">
+									<v-icon>mdi-timer-outline</v-icon><span class="pl-2">経過時間</span>
+									<Timer l-datetime="2021-12-24 21:16:00" :r-datetime="now" />
 								</v-col>
 							</v-row>
 						</v-card>
 					</v-col>
 				</v-row>
-
 
 			</template>
 			<template slot="left">
