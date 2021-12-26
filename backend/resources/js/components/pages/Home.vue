@@ -25,8 +25,38 @@
 								</v-col>
 								<v-col cols="4">
 									<v-icon>mdi-timer-outline</v-icon><span class="pl-2">経過時間</span>
-									<Timer l-datetime="2021-12-24 21:16:00" :r-datetime="now" />
+									<Timer l-datetime="2021-12-25 20:16:00" :r-datetime="now" />
 								</v-col>
+							</v-row>
+							<v-row no-gutters class="py-3">
+								<v-col class="text-center" cols="12" sm="12" md="6" lg="6" xl="6">
+									チーム1
+									<v-divider class="ma-3" />
+									<v-list>
+										<v-list-item>
+											<v-list-item-avatar>
+												<v-img src="https://placehold.jp/150x150.png"></v-img>
+											</v-list-item-avatar>
+											<v-list-item-content>a</v-list-item-content>
+										</v-list-item>
+										<v-list-item>a</v-list-item>
+										<v-list-item>a</v-list-item>
+										<v-list-item>a</v-list-item>
+									</v-list>
+								</v-col>
+								<v-col class="text-center" cols="12" sm="12" md="6" lg="6" xl="6">
+									チーム2
+									<v-divider class="ma-3" />
+									<v-list>
+										<v-list-item>a</v-list-item>
+										<v-list-item>a</v-list-item>
+										<v-list-item>a</v-list-item>
+										<v-list-item>a</v-list-item>
+									</v-list>
+								</v-col>
+							</v-row>
+							<v-row no-gutters>
+								<v-col cols="12"><Label tag>AoE2DE</Label></v-col>
 							</v-row>
 						</v-card>
 					</v-col>
@@ -90,6 +120,7 @@ export default {
 	data() {
 		return {
 			nowDatetime: this.$dayjs(),
+			// TODO: カレンダーのデータを作る events
             events: [
                 {
 					name: 'あいうえお',
@@ -132,6 +163,7 @@ export default {
                     start: '2022-01-01',
                 },
             ],
+			// TODO: ダミーデータを削除し、DBからデータを参照するように修正する
 			informations: [
 				{
 					id: 3,

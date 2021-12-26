@@ -31,6 +31,7 @@ class GameHistoryListRequest extends FormRequest
             'offset'            => ['integer'],
             'begin_date'        => ['sometimes', 'date'],
             'end_date'          => ['sometimes', 'date'],
+            'status'            => ['sometimes', 'integer'],
         ];
     }
 }

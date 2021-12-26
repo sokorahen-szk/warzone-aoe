@@ -59,17 +59,19 @@ interface GameRecordRepositoryInterface
     * @param Paginator
     * @param Date $beginDate
     * @param Date $endDate
+    * @param GameStatus|null $gameStatus
     * @return GameRecord[]
     */
-    public function listHistoryByDateRange(Paginator $paginator, Date $beginDate, Date $endDate): array;
+    public function listHistoryByDateRange(Paginator $paginator, Date $beginDate, Date $endDate, ?GameStatus $gameStatus): array;
 
     /**
     * 対戦履歴を日付範囲で取得し、総件数を返す
     * @param Date $beginDate
     * @param Date $endDate
+    * @param GameStatus|null $gameStatus
     * @return int
     */
-    public function listHistoryByDateRangeCount(Date $beginDate, Date $endDate): int;
+    public function listHistoryByDateRangeCount(Date $beginDate, Date $endDate, ?GameStatus $gameStatus): int;
 
     /**
     * 特定ユーザの対戦履歴を日付範囲で取得する
