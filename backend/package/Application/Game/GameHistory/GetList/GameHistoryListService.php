@@ -3,6 +3,7 @@
 namespace Package\Application\Game\GameHistory\GetList;
 
 use Package\Domain\Game\Repository\GameRecordRepositoryInterface;
+use Package\Domain\Game\ValueObject\GameRecord\GameStatus;
 use Package\Usecase\Game\GameHistory\GetList\GameHistoryListServiceInterface;
 use Package\Usecase\Game\GameHistory\GetList\GameHistoryListData;
 use Package\Usecase\Game\GameHistory\GetList\GameHistoryListCommand;
@@ -30,11 +31,16 @@ class GameHistoryListService implements GameHistoryListServiceInterface {
 		$beginDate = new Date($command->beginDate);
 		$endDate = new Date($command->endDate);
 
+		$gameStatus = null;
+		if ($command->gameStatus) {
+			$gameStatus = new GameStatus($command->gameStatus);
+		}
+
 		$gameRecords = $this->gameRecordRepository->listHistoryByDateRange(
-			$paginator, $beginDate, $endDate
+			$paginator, $beginDate, $endDate, $gameStatus
 		);
 
-		$gameRecordTotalCount = $this->gameRecordRepository->listHistoryByDateRangeCount($beginDate, $endDate);
+		$gameRecordTotalCount = $this->gameRecordRepository->listHistoryByDateRangeCount($beginDate, $endDate, $gameStatus);
 
 		$apiPaginator = new ApiPaginator([
 			'currentPage' 	=> $command->page,

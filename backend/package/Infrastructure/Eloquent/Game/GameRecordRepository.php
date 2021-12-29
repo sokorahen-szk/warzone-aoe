@@ -118,9 +118,10 @@ class GameRecordRepository implements GameRecordRepositoryInterface
     * @param Paginator
     * @param Date $beginDate
     * @param Date $endDate
+    * @param GameStatus|null $gameStatus
     * @return GameRecord[]
     */
-    public function listHistoryByDateRange(Paginator $paginator, Date $beginDate, Date $endDate): array
+    public function listHistoryByDateRange(Paginator $paginator, Date $beginDate, Date $endDate, ?GameStatus $gameStatus): array
     {
         $gameRecords = EloquentGameRecordModel::with([
             'game_package',
@@ -129,6 +130,7 @@ class GameRecordRepository implements GameRecordRepositoryInterface
             'rule',
         ])
         ->whereStartedAtByDateRange($beginDate, $endDate)
+        ->whereGameStatus($gameStatus)
         ->orderBy('id', 'DESC')
         ->offset($paginator->getNextOffset())
         ->limit($paginator->getLimit()->getValue())
@@ -141,11 +143,13 @@ class GameRecordRepository implements GameRecordRepositoryInterface
     * 対戦履歴を日付範囲で取得し、総件数を返す
     * @param Date $beginDate
     * @param Date $endDate
+    * @param GameStatus|null $gameStatus
     * @return int
     */
-    public function listHistoryByDateRangeCount(Date $beginDate, Date $endDate): int
+    public function listHistoryByDateRangeCount(Date $beginDate, Date $endDate, ?GameStatus $gameStatus): int
     {
         $count = EloquentGameRecordModel::whereStartedAtByDateRange($beginDate, $endDate)
+        ->whereGameStatus($gameStatus)
         ->count();
 
         return $count;

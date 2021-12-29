@@ -72,6 +72,14 @@ class GameRecordModel extends Model
         });
     }
 
+    public function scopeWhereGameStatus($query, ?GameStatus $gameStatus)
+    {
+        if ($gameStatus) {
+            $query->where('status', $gameStatus->getValue());
+        }
+        return $query;
+    }
+
     /**
      * ################################################
      * リレーション

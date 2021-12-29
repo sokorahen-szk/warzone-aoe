@@ -19,7 +19,16 @@ class GameHistoryListData extends Data {
           'id'                      => $source->getGamePackage()->getGamePackageId()->getValue(),
           'name'                    => $source->getGamePackage()->getName()->getValue(),
         ],
+        'gameMap' => [
+          'id'                      => $source->getGameMap()->getGameMapId()->getValue(),
+          'name'                    => $source->getGameMap()->getName()->getValue(),
+        ],
+        'gameRule' => [
+          'id'                      => $source->getGameRule()->getGameRuleId()->getValue(),
+          'name'                    => $source->getGameRule()->getName()->getValue(),
+        ],
         'playerMemories'      => $this->toPlayerMemories($source->getPlayerMemories()),
+        'playerCount'         => count($source->getPlayerMemories()),
         'winningTeam'         => $source->getWinningTeam()->getValue(),
         'victoryPrediction'   => $source->getVictoryPrediction()->getValue(),
         'status'              => $source->getGameStatus()->getValue(),

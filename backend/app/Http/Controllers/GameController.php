@@ -79,7 +79,8 @@ class GameController extends Controller
             $request->input('page', 1),
             $request->input('limit', 10),
             $request->input('begin_date', null),
-            $request->input('end_date', null)
+            $request->input('end_date', null),
+            $request->input('status', null),
         );
         $result = $interactor->handle($command);
         return $this->validResponse($result->getVars());
