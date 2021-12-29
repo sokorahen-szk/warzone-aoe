@@ -6,59 +6,62 @@
 			<template slot="container">
 				<div>試合中のゲームルーム</div>
 				<v-row no-gutters class="mt-3" :class="{'mr-3': getDeviceType === 'pc'}">
-					<v-col cols="12">
-						<v-card tile>
+					<Loading v-if="isLoading" :size="32" />
+					<v-col cols="12" v-else-if="warMatchingHistories.length > 0 && !isLoading">
+						<v-card tile v-for="warHistory in warMatchingHistories" :key="warHistory.gameRecordId">
 							<v-row no-gutters class="pa-4">
 								<v-col cols="3">
 									<v-row no-gutters>
 										<v-col cols="12">
 											<v-icon>mdi-account</v-icon><span class="pl-2">人数</span>
 										</v-col>
-										<v-col cols="12" class="pl-2">8 人</v-col>
+										<v-col cols="12" class="pl-2">{{warHistory.playerCount}} 人</v-col>
 									</v-row>
 								</v-col>
 								<v-col cols="5">
 									マップ
 									<div>
-										アラビア
+										{{warHistory.gameMap.name}}
 									</div>
 								</v-col>
 								<v-col cols="4">
 									<v-icon>mdi-timer-outline</v-icon><span class="pl-2">経過時間</span>
-									<Timer l-datetime="2021-12-25 20:16:00" :r-datetime="now" />
+									<Timer :l-datetime="warHistory.startedAt" :r-datetime="now" />
 								</v-col>
 							</v-row>
 							<v-row no-gutters class="py-3">
 								<v-col class="text-center" cols="12" sm="12" md="6" lg="6" xl="6">
 									チーム1
 									<v-divider class="ma-3" />
-									<v-list>
+									<v-list v-for="playerMemory in warHistory.playerMemories.team1" :key="playerMemory.playerMemoryId">
 										<v-list-item>
 											<v-list-item-avatar>
-												<v-img src="https://placehold.jp/150x150.png"></v-img>
+												<v-img :src="playerMemory.avatorImage"></v-img>
 											</v-list-item-avatar>
-											<v-list-item-content>a</v-list-item-content>
+											<v-list-item-content>{{playerMemory.playerName}}({{playerMemory.rank}})</v-list-item-content>
 										</v-list-item>
-										<v-list-item>a</v-list-item>
-										<v-list-item>a</v-list-item>
-										<v-list-item>a</v-list-item>
 									</v-list>
 								</v-col>
 								<v-col class="text-center" cols="12" sm="12" md="6" lg="6" xl="6">
 									チーム2
 									<v-divider class="ma-3" />
-									<v-list>
-										<v-list-item>a</v-list-item>
-										<v-list-item>a</v-list-item>
-										<v-list-item>a</v-list-item>
-										<v-list-item>a</v-list-item>
+									<v-list v-for="playerMemory in warHistory.playerMemories.team2" :key="playerMemory.playerMemoryId">
+										<v-list-item>
+											<v-list-item-avatar>
+												<v-img :src="playerMemory.avatorImage"></v-img>
+											</v-list-item-avatar>
+											<v-list-item-content>{{playerMemory.playerName}}({{playerMemory.rank}})</v-list-item-content>
+										</v-list-item>
 									</v-list>
 								</v-col>
 							</v-row>
 							<v-row no-gutters>
-								<v-col cols="12"><Label tag>AoE2DE</Label></v-col>
+								<v-col cols="12"><Label tag>{{warHistory.gamePackage.name}}</Label></v-col>
 							</v-row>
 						</v-card>
+					</v-col>
+					<v-col cols="12" v-else>
+						<div class="pa-1">現在、部屋はありません。</div>
 					</v-col>
 				</v-row>
 
@@ -98,7 +101,9 @@ import Calendar from '@molecules/Calendar'
 import Label from '@atoms/Label'
 import Button from '@atoms/Button'
 import Timer from '@atoms/Timer'
-import { mapGetters } from 'vuex'
+import Loading from '@atoms/Loading'
+import { mapGetters, mapActions } from 'vuex'
+import { gameStatus } from '@/config/game'
 export default {
 	name: 'Home',
 	components: {
@@ -107,6 +112,7 @@ export default {
 		Label,
 		Button,
 		Timer,
+		Loading,
 	},
 	computed: {
 		...mapGetters('breakpointStore', ['getDeviceType']),
@@ -117,50 +123,61 @@ export default {
 			return this.nowDatetime.format('YYYY-MM-DD HH:mm:ss')
 		}
 	},
+	methods: {
+    	...mapActions('warStore', ['fetchAllWarHistoryList']),
+		fetchWarMatchingHistories() {
+			this.isLoading = true
+			new Promise((resolve) => {
+				resolve(this.fetchAllWarHistoryList({
+					status: gameStatus.matching,
+					page: 1, // マッチング中のゲームは１ページ（10件）で収まる件数のため、ページ1を明示的に指定
+				}))
+			})
+			.then(res => {
+				this.warMatchingHistories = this.spliTeamtWarHistories(res)
+			})
+			.finally(() => {
+				this.isLoading = false
+			})
+		},
+		spliTeamtWarHistories(warHistories) {
+			let splitedTeamWarHistories = []
+
+			warHistories.forEach( (warHistory) => {
+				let splitedTeamPlayerMemories = {
+					team1: [],
+					team2: [],
+				}
+
+				_.forEach(warHistory.playerMemories, (m, i) => {
+					_.forEach(m, playerMemory => {
+						if (i == 1) {
+							splitedTeamPlayerMemories.team1.push(playerMemory)
+						} else {
+							splitedTeamPlayerMemories.team2.push(playerMemory)
+						}
+					})
+				})
+				warHistory.playerMemories = splitedTeamPlayerMemories
+				splitedTeamWarHistories.push(warHistory)
+			})
+			return splitedTeamWarHistories
+		}
+	},
+	mounted() {
+		this.fetchWarMatchingHistories()
+	},
 	data() {
 		return {
+			warMatchingHistories: [],
 			nowDatetime: this.$dayjs(),
+			isLoading: false,
 			// TODO: カレンダーのデータを作る events
             events: [
                 {
 					name: 'あいうえお',
 					color: "cyan",
-                    start: '2021-12-02',
-                },
-                {
-					name: 'aaa',
-					color: "cyan",
-                    start: '2021-12-02',
-                },
-                {
-					name: 'aaa',
-					color: "cyan",
-                    start: '2021-12-10',
-                },
-                {
-					name: 'aaa',
-					color: "cyan",
-                    start: '2021-12-10',
-                },
-                {
-					name: 'aaa',
-					color: "cyan",
-                    start: '2021-12-05',
-                },
-                {
-					name: 'aaa',
-					color: "cyan",
-                    start: '2021-12-05',
-                },
-                {
-					name: 'aaa',
-					color: "cyan",
-                    start: '2021-12-05',
-                },
-                {
-					name: 'aaa',
-					color: "cyan",
-                    start: '2022-01-01',
+                    start: '2021-12-31',
                 },
             ],
 			// TODO: ダミーデータを削除し、DBからデータを参照するように修正する

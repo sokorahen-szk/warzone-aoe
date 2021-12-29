@@ -63,14 +63,11 @@ export default {
         return
       }
       this.isLoading = true
-      new Promise((resolve, reject) => {
-        resolve(this.fetchWarHistoryListToStore(page))
+      new Promise((resolve) => {
+        resolve(this.fetchWarHistoryListToStore({page: page}))
       })
       .then(res => {
         this.setGameRecordList(page)
-      })
-      .catch(err => {
-        reject(err)
       })
       .finally(() => {
         this.isLoading = false

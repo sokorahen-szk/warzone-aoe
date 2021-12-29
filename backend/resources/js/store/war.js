@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import { excludeNullParams } from '@/services/api_helper';
 
 const state = {
   // 全対戦履歴
@@ -133,18 +134,23 @@ const mutations = {
 }
 
 const actions = {
-  // 全対戦履歴を取得
-  fetchAllWarHistoryList (context, page) {
+  fetchAllWarHistoryList ({ commit }, payload) {
+    const params = excludeNullParams({
+      page: payload.page,
+      status: payload.status
+    })
     return new Promise((resolve, reject) => {
       axios.get('/api/game/history/list', {
-        params: {
-          page: page
-        }
+        params: params
       })
       .then((res) => {
-        context.commit('setAllWarHistoryList', {'value': res.data.body.gameHistories, 'page': page})
-        context.commit('setAllTotalPage', res.data.body.paginator.totalPage)
-        resolve()
+        if (res.data.isSuccess) {
+          commit('setAllWarHistoryList', {'value': res.data.body.gameHistories, 'page': payload.page})
+          commit('setAllTotalPage', res.data.body.paginator.totalPage)
+          resolve(res.data.body.gameHistories)
+        } else {
+          reject(res.data.message)
+        }
       })
       .catch(err => {
         reject(err)
