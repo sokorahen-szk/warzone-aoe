@@ -2,11 +2,13 @@ import Vue from 'vue'
 import Vuetify from 'vuetify';
 import Dayjs from 'dayjs'
 
+import bootstrap from './bootstrap'
+
 // Import CSS
 import 'vuetify/dist/vuetify.min.css';
 import '@mdi/font/css/materialdesignicons.css'
 
-import '@/bootstrap';
+bootstrap()
 
 import 'dayjs/locale/ja';
 
