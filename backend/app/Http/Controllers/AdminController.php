@@ -67,13 +67,13 @@ class AdminController extends Controller
         $interactor->handle(new AdminUserUpdateCommand(
             $userId,
             $request->user_name,
+            $request->role_id,
             $request->input('email', null),
             $request->input('password', null),
             $request->input('steam_id', null),
             $request->input('twitter_id', null),
             $request->input('web_site_url', null),
             $request->input('status', null),
-            $request->input('role_id', null),
             $request->input('game_packages', null),
         ));
 
