@@ -9,10 +9,12 @@
       :lists="rightMenuOther.lists"
     />
     <ListWithSubHeader
+      v-if="['owner', 'administrator', 'moderator'].indexOf(role.name) !== -1"
       :sub-header="rightMenuModeleter.subHeader"
       :lists="rightMenuModeleter.lists"
     />
     <ListWithSubHeader
+      v-if="['owner', 'administrator'].indexOf(role.name) !== -1"
       :sub-header="rightMenuAdmin.subHeader"
       :lists="rightMenuAdmin.lists"
     />
@@ -41,6 +43,9 @@ export default {
   components: {
     ListWithSubHeader,
     Button,
+  },
+  props: {
+    role: {type: Object},
   },
   data() {
     return {

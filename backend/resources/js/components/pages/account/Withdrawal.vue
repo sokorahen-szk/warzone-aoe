@@ -4,7 +4,7 @@
     :device="getDeviceType"
   >
     <template slot="right">
-      <AccountRightMenu />
+      <AccountRightMenu :role="profileView.role" />
     </template>
     <template slot="container">
       <v-row no-gutters>
@@ -45,6 +45,9 @@ import AccountRightMenu from '@organisms/AccountRightMenu'
 import Button from '@atoms/Button'
 import CheckBoxList from '@molecules/CheckBoxList'
 import router from '@/router/index'
+import { profileViewTemplate } from '@/config/account'
+import { objCopy } from '@/services/helper'
+
 export default {
   name: 'Withdrawal',
   components: {
@@ -55,6 +58,7 @@ export default {
   },
   data() {
     return {
+      profileView: profileViewTemplate,
       valid: false,
       question: [{selected: false, label: "アカウントを停止することに同意する", value: true}],
     }
@@ -77,7 +81,16 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('accountStore', ['getProfile']),
     ...mapGetters('breakpointStore', ['getDeviceType']),
+  },
+  mounted() {
+    this.$store.subscribe((mutation) => {
+      if (mutation.type === 'accountStore/setProfile') {
+        this.$set(this, 'profileView', objCopy(this.profileView, this.getProfile))
+      }
+    })
+    this.$set(this, 'profileView', objCopy(this.profileView, this.getProfile))
   },
 }
 </script>
