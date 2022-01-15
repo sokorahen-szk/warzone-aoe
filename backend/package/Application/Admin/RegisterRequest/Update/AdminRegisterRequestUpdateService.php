@@ -6,7 +6,6 @@ use Package\Usecase\Admin\RegisterRequest\Update\AdminRegisterRequestUpdateComma
 use Package\Usecase\Admin\RegisterRequest\Update\AdminRegisterRequestUpdateServiceInterface;
 use Package\Domain\User\Repository\RegisterRequestRepositoryInterface;
 use Package\Domain\User\Repository\PlayerRepositoryInterface;
-use Package\Domain\User\Entity\RegisterRequest;
 use Package\Domain\User\ValueObject\Register\RegisterId;
 use Package\Domain\User\ValueObject\UserId;
 use Package\Domain\User\ValueObject\Register\RegisterStatus;

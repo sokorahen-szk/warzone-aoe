@@ -5,7 +5,7 @@
     cardPaClass="pa-0"
   >
     <template slot="right">
-      <AccountRightMenu />
+      <AccountRightMenu :role="profileView.role" />
     </template>
     <template slot="container">
       <Loading v-if="isLoading" size="64" class="py-4" />
@@ -38,6 +38,8 @@ import AccountRightMenu from '@organisms/AccountRightMenu'
 import GameRecordTablePc from '@organisms/pc/GameRecordTable'
 import GameRecordTableSp from '@organisms/sp/GameRecordTable'
 import Loading from '@atoms/Loading'
+import { profileViewTemplate } from '@/config/account'
+import { objCopy } from '@/services/helper'
 
 export default {
   name: 'AccountHistory',
@@ -50,12 +52,14 @@ export default {
   },
   data() {
     return {
+      profileView: profileViewTemplate,
       isLoading: false,
       currentPage: 1,
       gameRecordList: []
     }
   },
   computed: {
+    ...mapGetters('accountStore', ['getProfile']),
     ...mapGetters({
       deviceType: 'breakpointStore/getDeviceType',
       breakPoint: 'breakpointStore/getBreakPoint',
@@ -109,6 +113,14 @@ export default {
     gameRecordList() {
       window.scrollTo(0, 0)
     }
+  },
+  mounted() {
+    this.$store.subscribe((mutation) => {
+      if (mutation.type === 'accountStore/setProfile') {
+        this.$set(this, 'profileView', objCopy(this.profileView, this.getProfile))
+      }
+    })
+    this.$set(this, 'profileView', objCopy(this.profileView, this.getProfile))
   },
 }
 </script>

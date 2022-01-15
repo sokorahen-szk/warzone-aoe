@@ -5,7 +5,7 @@
     :zoom="zoom"
   >
     <template slot="right">
-      <AccountRightMenu />
+      <AccountRightMenu :role="profileView.role" />
     </template>
     <template slot="container">
       <v-container>
@@ -24,6 +24,8 @@ import CommonWithRightColumnTemplate from '@templates/CommonWithRightColumnTempl
 import AccountRightMenu from '@organisms/AccountRightMenu'
 import PlayerRateChart from '@organisms/PlayerRateChart'
 import {filterScopeDateFilter} from '@/services/api_helper'
+import { profileViewTemplate } from '@/config/account'
+import { objCopy } from '@/services/helper'
 
 export default {
   name: 'AccountRating',
@@ -34,6 +36,7 @@ export default {
   },
   data() {
     return {
+      profileView: profileViewTemplate,
       columns: {
         dateList: [],
         rateList: [],
@@ -43,6 +46,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('accountStore', ['getProfile']),
     ...mapGetters('breakpointStore', ['getDeviceType']),
   },
   methods: {
@@ -77,6 +81,13 @@ export default {
         })
       }
     })
+
+    this.$store.subscribe((mutation) => {
+      if (mutation.type === 'accountStore/setProfile') {
+        this.$set(this, 'profileView', objCopy(this.profileView, this.getProfile))
+      }
+    })
+    this.$set(this, 'profileView', objCopy(this.profileView, this.getProfile))
   }
 }
 </script>

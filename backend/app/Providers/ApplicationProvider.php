@@ -108,6 +108,10 @@ class ApplicationProvider extends ServiceProvider
             \Package\Usecase\Admin\User\Update\AdminUserUpdateServiceInterface::class,
             \Package\Application\Admin\User\Update\AdminUserUpdateService::class
         );
+        $this->app->bind(
+            \Package\Usecase\Admin\User\Create\AdminUserCreateServiceInterface::class,
+            \Package\Application\Admin\User\Create\AdminUserCreateService::class
+        );
     }
 
     /**

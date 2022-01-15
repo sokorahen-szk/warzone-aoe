@@ -7,7 +7,7 @@
       <Alert :properties="alert" dense />
     </template>
     <template slot="right">
-      <AccountRightMenu />
+      <AccountRightMenu :role="profileView.role" />
     </template>
     <template slot="container">
       <v-row no-gutters>

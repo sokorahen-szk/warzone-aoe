@@ -7,7 +7,7 @@
       <Alert :properties="alert" dense />
     </template>
     <template slot="right">
-      <AccountRightMenu />
+      <AccountRightMenu :role="profileView.role" />
     </template>
     <template slot="container">
       <v-card
@@ -130,7 +130,7 @@ import Button from '@atoms/Button'
 import Img from '@atoms/Img'
 import Loading from '@atoms/Loading'
 import Alert from '@atoms/Alert'
-import {objCopy} from '@/services/helper'
+import { objCopy } from '@/services/helper'
 import { profileViewTemplate } from '@/config/account'
 import { gameWarsChangeStatusButtonTemplates } from '@/config/game'
 

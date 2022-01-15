@@ -7,7 +7,7 @@
       <Alert :properties="alert" dense />
     </template>
     <template slot="right">
-      <AccountRightMenu />
+      <AccountRightMenu :role="profileView.role" />
     </template>
     <template slot="container">
       <v-container>
@@ -81,6 +81,9 @@ import Alert from '@atoms/Alert'
 import { mapActions, mapGetters } from 'vuex'
 import { alertTemplate } from '@/config/global'
 import { registerRequestEnum } from '@/config/admin'
+import { profileViewTemplate } from '@/config/account'
+import { objCopy } from '@/services/helper'
+
 export default {
   name: 'Request',
   components: {
@@ -92,6 +95,7 @@ export default {
   },
   data() {
     return {
+      profileView: profileViewTemplate,
       req: [],
       requests: [],
       alert: alertTemplate,
@@ -114,11 +118,18 @@ export default {
             })
           })
         })
-
       }
     })
+
+    this.$store.subscribe((mutation) => {
+      if (mutation.type === 'accountStore/setProfile') {
+        this.$set(this, 'profileView', objCopy(this.profileView, this.getProfile))
+      }
+    })
+    this.$set(this, 'profileView', objCopy(this.profileView, this.getProfile))
   },
   computed: {
+    ...mapGetters('accountStore', ['getProfile']),
     ...mapGetters('adminStore', ['getRegisterRequests']),
     ...mapGetters('breakpointStore', ['getDeviceType']),
   },

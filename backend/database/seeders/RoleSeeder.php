@@ -18,19 +18,19 @@ class RoleSeeder extends Seeder
         SeederHelper::truncate('roles');
 
         RoleModel::create([
-            'name'      => 'オーナー',
+            'name'      => 'owner',
             'level'     => 100,
         ]);
         RoleModel::create([
-            'name'      => '管理者',
+            'name'      => 'administrator',
             'level'     => 50,
         ]);
         RoleModel::create([
-            'name'      => '編集者',
+            'name'      => 'moderator',
             'level'     => 5,
         ]);
         RoleModel::create([
-            'name'      => '一般ユーザ',
+            'name'      => 'user',
             'level'     => 1,
         ]);
     }

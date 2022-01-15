@@ -130,8 +130,7 @@ class TrueSkillClient {
 		$json = isset($data['json']);
 		$data = $this->excludeKeyFromData($data, ['auth', 'token', 'json']);
 
-		$paramData = $this->generateParamDara($data, $json);
-
+		$paramData = $this->generateParamData($data, $json);
 		if ($request['method'] == 'POST') {
 			try {
 				$options = [
@@ -231,7 +230,7 @@ class TrueSkillClient {
 	 * @param bool $json
 	 * @return array
 	 */
-	private function generateParamDara(array $data, bool $json = false): array
+	private function generateParamData(array $data, bool $json = false): array
 	{
 		$params = [];
 		if ($json) {
