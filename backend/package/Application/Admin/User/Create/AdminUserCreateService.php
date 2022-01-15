@@ -13,27 +13,35 @@ use Package\Domain\User\ValueObject\Player\PlayerName;
 use Package\Domain\User\ValueObject\Role\RoleId;
 use Package\Usecase\Admin\User\Create\AdminUserCreateCommand;
 use Package\Usecase\Admin\User\Create\AdminUserCreateServiceInterface;
-use DB;
 use Package\Domain\User\Exceptions\CanNotRegisterUserException;
 use Package\Domain\User\Service\UserServiceInterface;
 use Package\Domain\User\ValueObject\Email;
 use Package\Domain\User\ValueObject\Player\Enabled;
+use Package\Infrastructure\TrueSkill\TrueSkillClient;
+
+use DB;
+use Package\Domain\User\ValueObject\Player\Mu;
+use Package\Domain\User\ValueObject\Player\Rate;
+use Package\Domain\User\ValueObject\Player\Sigma;
 
 class AdminUserCreateService implements AdminUserCreateServiceInterface {
 
     private $userRepository;
     private $userService;
     private $playerRepository;
+    private $trueSkillClient;
 
     public function __construct(
         UserRepositoryInterface $userRepository,
         UserServiceInterface $userService,
-        PlayerRepositoryInterface $playerRepository
+        PlayerRepositoryInterface $playerRepository,
+        TrueSkillClient $trueSkillClient
     )
     {
         $this->userRepository = $userRepository;
         $this->userService = $userService;
         $this->playerRepository = $playerRepository;
+        $this->trueSkillClient = $trueSkillClient;
     }
 
     public function handle(AdminUserCreateCommand $command): void
@@ -63,8 +71,16 @@ class AdminUserCreateService implements AdminUserCreateServiceInterface {
             $this->userRepository->register($user);
 
             $player = $this->playerRepository->getById($playerId);
+
+            $trueSkillDefaultSkillResponse = $this->trueSkillClient->defaultSkill();
+            $player->changeMu(new Mu($trueSkillDefaultSkillResponse['mu']));
+            $player->changeSigma(new Sigma($trueSkillDefaultSkillResponse['sigma']));
+            $player->changeRate(new Rate($trueSkillDefaultSkillResponse['rating_exposure']));
+
             $player->changeEnabled(new Enabled(true));
+
             $this->playerRepository->updateEnabled($player);
+            $this->playerRepository->update($player);
 
             DB::commit();
         } catch (Exception $e) {
