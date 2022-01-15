@@ -12,18 +12,21 @@ class TrueSkillClientTest extends TestCase
 
     public function test_new_instance()
     {
+        $this->markTestSkipped();
         $client = new TrueSkillClient();
         $this->assertInstanceOf(TrueSkillClient::class, $client);
     }
 
     public function test_get_token()
     {
+        $this->markTestSkipped();
         $client = new TrueSkillClient();
         $this->assertNotNull($client->token());
     }
 
     public function test_default_skill()
     {
+        $this->markTestSkipped();
         $client = new TrueSkillClient();
         $res = $client->defaultSkill();
         $this->assertCount(3, $res);
@@ -81,6 +84,7 @@ class TrueSkillClientTest extends TestCase
 
     public function test_calc_skill()
     {
+        $this->markTestSkipped();
         $client = new TrueSkillClient();
 
         $expectedRes = (object) [

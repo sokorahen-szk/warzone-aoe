@@ -33,5 +33,6 @@ class DiscordRepositoryTest extends TestCase {
     {
         $discordRepository = new DiscordRepository(new DiscordClient());
         $discordRepository->registrationUserNotification($this->user);
+        $this->assertTrue(true);
     }
 }

@@ -15,8 +15,6 @@ class DiscordClientTest extends TestCase
 
     public function test_send_message_on_template_from_register_notification_template()
     {
-        $this->markTestSkipped('skip');
-
         $client = new DiscordClient();
 
         $result = $client->sendMessageOnTemplate(
@@ -35,8 +33,6 @@ class DiscordClientTest extends TestCase
 
     public function test_invalid_template_name()
     {
-        $this->markTestSkipped('skip');
-
         try {
             $client = new DiscordClient();
 
@@ -53,8 +49,6 @@ class DiscordClientTest extends TestCase
 
     public function test_send_message_embeds()
     {
-        $this->markTestSkipped('skip');
-
         $client = new DiscordClient();
 
         $packageName = 'AoE2DE';
@@ -67,7 +61,7 @@ class DiscordClientTest extends TestCase
         $team1RateSum = 5000;
         $team2RateSum = 6000;
 
-        $client->sendMessageEmbeds(
+        $actual = $client->sendMessageEmbeds(
             env('DISCORD_REGISTER_NOTIFICATION_WEBHOOK'),
             [
                 'content'   => '',
@@ -95,5 +89,7 @@ class DiscordClientTest extends TestCase
                 ]
             ],
         );
+
+        $this->assertTrue($actual);
     }
 }
