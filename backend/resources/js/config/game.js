@@ -15,7 +15,7 @@ export const gameStatus = {
   matching: 1,
   draw: 2,
   canceled: 3,
-  finished: 3,
+  finished: 4,
 }
 
 export const gameWarsChangeStatusButtonTemplates = [

@@ -169,12 +169,12 @@ class DiscordRepository implements DiscordRepositoryInterface {
                     $playerMemory->getRate()->getValue(),
                 );
             } else {
-                $rate = new Rate($playerMemory->getRate()->diff($playerMemory->getAfterRate()));
+                $rate = new Rate($playerMemory->getAfterRate()->diff($playerMemory->getRate()));
                 $teamList[] = sprintf(
                     '%d　%s(%d)<%s>',
                     $idx + 1,
                     $playerMemory->getPlayer()->getPlayerName()->getValue(),
-                    $playerMemory->getRate()->getValue(),
+                    $playerMemory->getAfterRate()->getValue(),
                     $rate->getValueInSign()
                 );
             }
