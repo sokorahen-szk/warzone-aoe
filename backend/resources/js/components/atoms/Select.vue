@@ -24,6 +24,7 @@ export default {
     width: {type: String, default: '100%' },
     height: {type: String, default: '35px' },
     background: {type: String, default: '#fff' },
+    required: {type: Boolean, default: false},
   },
   data() {
     return {
@@ -66,8 +67,7 @@ select {
   padding: 5px 0 5px 0;
   width: 100%;
   height: 100%;
-  max-height: 55px;
-  min-height: 40px;
+  max-height: 40px;
   font-size: 12px;
 }
 .white {

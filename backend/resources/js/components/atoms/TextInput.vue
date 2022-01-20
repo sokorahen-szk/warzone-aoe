@@ -6,9 +6,10 @@
     :filled="filled"
     :outlined="outlined"
     dense
+    :solo="solo"
     class="pa-0 ma-0 text"
     :placeholder="placeholder"
-    flat
+    :flat="flat"
     :rules="setRule"
     :background-color="setColor"
     :disabled="disabled"
@@ -31,6 +32,8 @@ export default {
     color: {type: String, default: '#fffffe'},
     disabled: {type: Boolean, default: false},
     autocomplete: {type: String, default: 'off'},
+    solo: {type: Boolean, default: false},
+    flat: {type: Boolean, default: false},
   },
   data() {
     return {
