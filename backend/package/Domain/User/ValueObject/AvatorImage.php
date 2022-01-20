@@ -5,24 +5,27 @@ namespace Package\Domain\User\ValueObject;
 class AvatorImage {
   private $value;
 
-  const DEFAULT_IMAGE_PATH = '/storage/profile/0.png';
-
   public function __construct($value)
   {
     $this->value = $value;
   }
 
-  public function getValue(): string
+  public function getValue(): ?string
   {
     if (!$this->value) {
-      return self::DEFAULT_IMAGE_PATH;
+      return null;
     }
 
     return $this->value;
   }
 
-  public function getImageFullPath(): string
+  public function getImageFullPath(): ?string
   {
-    return url($this->getValue());
+    $v = $this->getValue();
+    if ($v) {
+      return url($this->getValue());
+    }
+
+    return null;
   }
 }
