@@ -48,6 +48,7 @@ class GameHistoryListData extends Data {
     foreach ($sources as $source) {
       $list[] = [
         'playerMemoryId'  => $source->getPlayerMemoryId()->getValue(),
+        'userId'          => $source->getUser()->getId()->getValue(),
         'playerId'        => $source->getPlayerId()->getValue(),
         'team'            => $source->getTeam()->getValue(),
         'playerName'      => $source->getPlayer()->getPlayerName()->getValue(),

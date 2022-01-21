@@ -4,13 +4,22 @@
     max-height="200"
     outlined
   >
+  <div class="pa-1 text-right">
+    <small>検索結果：{{players.length}} 件</small>
+  </div>
   <v-list flat class="pa-0 ma-0" dense>
     <template v-for="(player, index) in players">
       <v-list-item :key="index" @click="click(player)" :class="{'blue-grey lighten-5': selectedList.indexOf(player.id) !== -1}">
-        <v-list-item-avatar v-show="player.avatorImage">
+        <v-list-item-avatar>
           <v-img
+            v-if="player.avatorImage"
             :src="player.avatorImage"
-          ></v-img>
+          />
+          <v-avatar
+            v-else
+            color="grey lighten-2"
+            size="40"
+          />
         </v-list-item-avatar>
         <v-list-item-content>
           <v-row no-gutters class="ma-0 pa-0">

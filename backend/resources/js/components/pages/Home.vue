@@ -38,7 +38,9 @@
 											<v-list-item-avatar>
 												<v-img :src="playerMemory.avatorImage"></v-img>
 											</v-list-item-avatar>
-											<v-list-item-content>{{playerMemory.playerName}}({{playerMemory.rank}})</v-list-item-content>
+											<v-list-item-content class="text-left">
+												<Link :path="`/player/${playerMemory.userId}`">{{playerMemory.playerName}}({{playerMemory.rank}})</Link>
+											</v-list-item-content>
 										</v-list-item>
 									</v-list>
 								</v-col>
@@ -50,7 +52,9 @@
 											<v-list-item-avatar>
 												<v-img :src="playerMemory.avatorImage"></v-img>
 											</v-list-item-avatar>
-											<v-list-item-content>{{playerMemory.playerName}}({{playerMemory.rank}})</v-list-item-content>
+											<v-list-item-content class="text-left">
+												<Link :path="`/player/${playerMemory.userId}`">{{playerMemory.playerName}}({{playerMemory.rank}})</Link>
+											</v-list-item-content>
 										</v-list-item>
 									</v-list>
 								</v-col>
@@ -102,6 +106,7 @@ import Label from '@atoms/Label'
 import Button from '@atoms/Button'
 import Timer from '@atoms/Timer'
 import Loading from '@atoms/Loading'
+import Link from '@atoms/Link'
 import { mapGetters, mapActions } from 'vuex'
 import { gameStatus } from '@/config/game'
 export default {
@@ -113,6 +118,7 @@ export default {
 		Button,
 		Timer,
 		Loading,
+		Link,
 	},
 	computed: {
 		...mapGetters('breakpointStore', ['getDeviceType']),
