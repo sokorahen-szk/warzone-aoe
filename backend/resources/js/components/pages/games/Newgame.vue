@@ -5,6 +5,11 @@
     :sheetPaClass="'pa-3'"
   >
   <template slot="container">
+  <v-form
+    ref="form"
+    v-model="valid"
+    lazy-validation
+  >
     <v-row no-gutters>
       <v-col cols="12" sm="12" md="5" lg="4" class="px-2" :style="addStyle">
         <div class="py-2 text-h6">プレイヤー選択</div>
@@ -18,31 +23,52 @@
 
         <div class="py-2 text-h6">ゲーム設定</div>
         <v-row no-gutters>
-          <v-col cols="12" class="mb-2">
-            <Select
-              label="ゲームパッケージを選択する"
+          <v-col cols="6" class="mb-2">
+            <small>ゲームパッケージ</small>
+            <SelectBox
+              value="1"
+              :rules="{label:'ゲームパッケージ', types:'required'}"
               :items="gamePackages"
               :selectedIndex="selectedGamePackageId"
               @input="selectedGamePackageId = $event"
               :disabled="gamePackages.length < 1"
+              placeholder="ゲームパッケージを選択する"
+              required
+              solo
+              flat
+              dense
             />
           </v-col>
-          <v-col cols="12" class="mb-2">
-            <Select
-              label="ルールを選択する"
+          <v-col cols="6" class="mb-2 pl-1">
+            <small>ルール</small>
+            <SelectBox
+              value="1"
+              :rules="{label:'ルール', types:'required'}"
               :items="gameRules"
               :selectedIndex="selectedRuleId"
               @input="selectedRuleId = $event"
               :disabled="gameRules.length < 1"
+              placeholder="ルールを選択する"
+              required
+              solo
+              flat
+              dense
             />
           </v-col>
-          <v-col cols="12">
-            <Select
-              label="マップを選択する"
+          <v-col cols="6">
+            <small>マップ</small>
+            <SelectBox
+              value="1"
+              :rules="{label:'マップ', types:'required'}"
               :items="gameMaps"
               :selectedIndex="selectedMapId"
               @input="selectedMapId = $event"
               :disabled="gameMaps.length < 1"
+              placeholder="マップを選択する"
+              required
+              solo
+              flat
+              dense
             />
           </v-col>
         </v-row>
@@ -116,6 +142,7 @@
   title="チーム分け"
   :show="isTeamDivision"
   @update="isTeamDivision = $event"
+  :disabled="!valid"
 >
   <v-row v-if="teamDivisionResponse">
     <v-col cols="6">
@@ -241,6 +268,7 @@
   </div>
 </Modal>
 
+  </v-form>
   </template>
   </CommonOneColumnTemplate>
 </template>
@@ -249,6 +277,7 @@
 import CommonOneColumnTemplate from '@templates/CommonOneColumnTemplate'
 import PlayerSearchBox from '@organisms/PlayerSearchBox'
 import Select from '@atoms/Select'
+import SelectBox from '@atoms/SelectBox'
 import Button from '@atoms/Button'
 import Modal from '@atoms/Modal'
 import QualityBar from '@molecules/QualityBar'
@@ -267,6 +296,7 @@ export default {
     Modal,
     QualityBar,
     Loading,
+    SelectBox,
   },
   mounted() {
     this.$store.subscribe((mutation) => {
@@ -339,6 +369,8 @@ export default {
       this.matchingResponse = null
     },
     division() {
+      if(!this.$refs.form.validate()) return
+
       this.isTeamDivision = true
 
       new Promise ( reslve => {
@@ -446,6 +478,8 @@ export default {
       isGameStatusUpdateButtonDisabled: true,
       teamDivisionResponse: null,
       matchingResponse: null,
+
+      valid: true,
     }
   }
 }

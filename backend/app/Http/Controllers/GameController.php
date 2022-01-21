@@ -132,6 +132,13 @@ class GameController extends Controller
         return $this->validResponse($result);
     }
 
+    /**
+     * ゲーム終了
+     * POST /api/game/create/fi
+     * @param GameFinishedServiceInterface $interactor
+     * @param GameFinishedRequest $request
+     * @return json(...)
+     */
     public function finished(GameFinishedServiceInterface $interactor, GameFinishedRequest $request)
     {
         $command = new GameFinishedCommand(

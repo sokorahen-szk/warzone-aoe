@@ -4,7 +4,8 @@
       :value="search"
       @update="search = $event"
       placeholder="プレイヤー名を検索する"
-      outlined
+      solo
+      flat
       required
       :disabled="players.length < 1"
     />
