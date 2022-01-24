@@ -21,7 +21,7 @@
           <v-divider />
           <v-row no-gutters class="pt-2">
             <v-col cols="6">
-              <div>アカウント状態</div>
+              <div>ユーザ状態</div>
               <TextMark
                 :value="profileView.status"
                 color="light-green"

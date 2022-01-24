@@ -71,7 +71,7 @@
 
 			</template>
 			<template slot="left">
-				<calendar :events="events"/>
+				<Calendar :events="events"/>
 				<v-row no-gutters class="pa-0 ma-0">
 					<v-col cols="12">
 						<div class="py-3">お知らせ</div>
