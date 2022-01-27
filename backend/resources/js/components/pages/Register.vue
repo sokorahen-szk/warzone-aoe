@@ -24,32 +24,35 @@
                   <v-row class="mt-4">
                     <v-col cols="12" class="py-0 ma-0">
                       <div class="py-2">ユーザ名<RequireLabel /></div>
+                      <small>ユーザ名はログイン時に使用します。４文字以上の16文字以内で入力してください。</small>
                       <TextInput
                         :value="userName"
                         @update="userName = $event"
-                        placeholder="ユーザ名はログインに使用します"
+                        placeholder="ユーザ名"
                         outlined
                         required
-                        :rules="{label:'ユーザ名', types:'required,min:4,max:10'}"
+                        :rules="{label:'ユーザ名', types:'required,min:4,max:16'}"
                       />
                     </v-col>
                     <v-col cols="12" class="py-0 ma-0">
                       <div class="py-2">プレイヤー名<RequireLabel /></div>
+                      <small>プレイヤー名はサイトのゲームスコアボードで使用します。2文字以上の30文字以内で入力してください。</small>
                       <TextInput
                         :value="playerName"
                         @update="playerName = $event"
-                        placeholder="プレイヤー名はWarzoneのレートページで使用します"
+                        placeholder="プレイヤー名"
                         outlined
                         required
-                        :rules="{label:'プレイヤー名', types:'required,min:2,max:10'}"
+                        :rules="{label:'プレイヤー名', types:'required,min:2,max:30'}"
                       />
                     </v-col>
                     <v-col cols="12" class="py-0 ma-0">
                       <div class="py-2">パスワード<RequireLabel /></div>
+                      <small>パスワードは8文字以上で入力してください。記号は使用可能。</small>
                       <PasswordTextInput
                         :value="password"
                         @update="password = $event"
-                        placeholder="password"
+                        placeholder="パスワード"
                         outlined
                         required
                         :rules="{label:'パスワード', types:'required,min:8'}"
@@ -60,7 +63,7 @@
                       <PasswordTextInput
                         :value="passwordConfirm"
                         @update="passwordConfirm = $event"
-                        placeholder="passwordConfirm"
+                        placeholder="パスワード再入力"
                         outlined
                         required
                         :rules="{label:'パスワード再入力', types:`required,min:8,confirm:${password}`}"
@@ -68,10 +71,11 @@
                     </v-col>
                     <v-col cols="12" class="py-0 ma-0">
                       <div class="py-2">メールアドレス</div>
+                      <small>メールアドレスはパスワードを失念時に使用します。入力は必須ではありません。</small>
                       <TextInput
                         :value="email"
                         @update="email = $event"
-                        placeholder="email"
+                        placeholder="メールアドレス"
                         outlined
                         :rules="{label:'メールアドレス', types:''}"
                       />

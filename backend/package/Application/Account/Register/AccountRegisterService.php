@@ -25,24 +25,31 @@ use Package\Domain\User\ValueObject\Player\GamePackages;
 use Package\Domain\User\Exceptions\CanNotRegisterUserException;
 
 use DB;
+use Package\Domain\System\ValueObject\Datetime;
+use Package\Infrastructure\Discord\DiscordRepositoryInterface;
 
 class AccountRegisterService implements AccountRegisterServiceInterface {
   private $userRepository;
   private $playerRepository;
   private $registerRequestRepository;
   private $userService;
+  private $discordRepository;
+
+  const DEFAULT_ROLE_ID_NUMBER = 4;
 
   public function __construct(
     UserRepositoryInterface $userRepository,
     PlayerRepositoryInterface $playerRepository,
     RegisterRequestRepositoryInterface $registerRequestRepository,
-    UserServiceInterface $userService
+    UserServiceInterface $userService,
+    DiscordRepositoryInterface $discordRepository
   )
   {
     $this->userRepository = $userRepository;
     $this->playerRepository = $playerRepository;
     $this->registerRequestRepository = $registerRequestRepository;
     $this->userService = $userService;
+    $this->discordRepository = $discordRepository;
   }
 
   public function handle(AccountRegisterCommand $command)
@@ -57,26 +64,30 @@ class AccountRegisterService implements AccountRegisterServiceInterface {
 
       $playerId = $this->playerRepository->register($player);
 
-      $user = new User([
+      $registerUser = new User([
         'playerId'    => $playerId,
-        'roleId'      => new RoleId(4),
+        'roleId'      => new RoleId(self::DEFAULT_ROLE_ID_NUMBER),
         'name'        => new Name($command->userName),
         'email'       => new Email($command->email),
         'password'    => new Password($command->password),
       ]);
 
-      if ($this->userService->exists($user)) {
+      if ($this->userService->exists($registerUser)) {
         throw new CanNotRegisterUserException("ユーザ名が既に存在しています。");
       }
 
-      $this->userRepository->register($user);
+      $userId = $this->userRepository->register($registerUser);
 
       $this->registerRequestRepository->register(new RegisterRequest([
         'playerId'      => $playerId,
       ]));
 
-      DB::commit();
+      $user = $this->userRepository->findUserById($userId);
 
+      $registerDatetime = new Datetime(now());
+      $this->discordRepository->registrationUserNotification($registerDatetime, $user);
+
+      DB::commit();
     } catch (Exception $e) {
       DB::rollback();
       throw $e;

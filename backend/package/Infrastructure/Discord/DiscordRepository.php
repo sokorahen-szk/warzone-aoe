@@ -6,6 +6,7 @@ use Package\Domain\Game\Entity\GameRecord;
 use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
 use Package\Domain\User\Entity\User;
 use Config;
+use Package\Domain\System\ValueObject\Datetime;
 use Package\Domain\User\ValueObject\Player\Rate;
 
 class DiscordRepository implements DiscordRepositoryInterface {
@@ -28,19 +29,21 @@ class DiscordRepository implements DiscordRepositoryInterface {
 
     /**
      * 会員登録時にDiscord通知する
+     * @param Datetime $registerDatetime
      * @param User $user
      * @return void
      */
-    public function registrationUserNotification(User $user): void
+    public function registrationUserNotification(Datetime $registerDatetime, User $user): void
     {
         $this->discordClient->sendMessageOnTemplate(
             env('DISCORD_REGISTER_NOTIFICATION_WEBHOOK'),
             'register_notification_template',
             [
-                'datetime'      => $user->getPlayer()->getJoinedAt()->getDatetime(),
+                'datetime'      => $registerDatetime->getDatetime(),
                 'userName'      => $user->getName()->getValue(),
                 'playerName'    => $user->getPlayer()->getPlayerName()->getValue(),
                 'packages'      => $user->getPlayer()->getGamePackages()->getValue(),
+                'appUrl'        => env('APP_URL'),
             ]
         );
     }

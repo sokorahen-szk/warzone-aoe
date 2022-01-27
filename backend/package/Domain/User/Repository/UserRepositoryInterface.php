@@ -25,8 +25,9 @@ interface UserRepositoryInterface {
 
   /**
    * @param User $user
+   * @return UserId
    */
-  public function register(User $user): void;
+  public function register(User $user): UserId;
 
   /**
    * @param User $user
