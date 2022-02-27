@@ -19,7 +19,7 @@ use Package\Infrastructure\Discord\DiscordRepository;
 use Tests\TestCase;
 
 class DiscordRepositoryTest extends TestCase {
-    private User $user;
+    private $user;
 
     public function setUp(): void
     {
@@ -60,9 +60,9 @@ class DiscordRepositoryTest extends TestCase {
         ];
 
         $registerQuestion = new RegisterQuestion(
-            new RegisterAnswer("バナナ"),
-            new RegisterAnswer("リンゴ"),
-            new RegisterAnswer("パイナップル")
+            new RegisterAnswer("1", RegisterAnswer::ARABIA_GAME_EXPERIENCE_COUNT),
+            new RegisterAnswer("2,3,4", RegisterAnswer::TACTICS),
+            new RegisterAnswer(null, RegisterAnswer::COMMUNITY_JOINED),
         );
 
         $discordRepository = new DiscordRepository(new DiscordClient());

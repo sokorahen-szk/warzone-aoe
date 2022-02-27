@@ -70,9 +70,9 @@ class AccountRegisterService implements AccountRegisterServiceInterface {
       DB::beginTransaction();
 
       $registerQuestion = new RegisterQuestion(
-        new RegisterAnswer($command->answer1),
-        new RegisterAnswer($command->answers2),
-        new RegisterAnswer($command->answers3)
+        new RegisterAnswer($command->answer1, RegisterAnswer::ARABIA_GAME_EXPERIENCE_COUNT),
+        new RegisterAnswer($command->answers2, RegisterAnswer::TACTICS),
+        new RegisterAnswer($command->answers3, RegisterAnswer::COMMUNITY_JOINED)
       );
 
       $playerId = $this->playerRepository->register($player);

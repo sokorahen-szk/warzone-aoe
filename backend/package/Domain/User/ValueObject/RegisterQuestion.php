@@ -17,4 +17,19 @@ class RegisterQuestion {
         $this->answer2 = $answer2;
         $this->answer3 = $answer3;
     }
+
+    public function getAnswer1(): RegisterAnswer
+    {
+        return $this->answer1;
+    }
+
+    public function getAnswer2(): RegisterAnswer
+    {
+        return $this->answer2;
+    }
+
+    public function getAnswer3(): RegisterAnswer
+    {
+        return $this->answer3;
+    }
 }

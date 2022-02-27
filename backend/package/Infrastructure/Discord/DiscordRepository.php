@@ -20,6 +20,9 @@ class DiscordRepository implements DiscordRepositoryInterface {
     const GAME_START = 'game_start';
     const GAME_END = 'game_end';
 
+    const LINE_RETURN_CHAR = '
+';
+
     private static $gameTypes = [
         self::GAME_START => 'ゲーム開始',
         self::GAME_END => 'ゲーム終了',
@@ -52,11 +55,14 @@ class DiscordRepository implements DiscordRepositoryInterface {
             env('DISCORD_REGISTER_NOTIFICATION_WEBHOOK'),
             'register_notification_template',
             [
-                'datetime'      => $registerDatetime->getDatetime(),
-                'userName'      => $user->getName()->getValue(),
-                'playerName'    => $user->getPlayer()->getPlayerName()->getValue(),
-                'packages'      => implode('，', $packages),
-                'appUrl'        => env('APP_URL'),
+                'datetime'                  => $registerDatetime->getDatetime(),
+                'userName'                  => $user->getName()->getValue(),
+                'playerName'                => $user->getPlayer()->getPlayerName()->getValue(),
+                'packages'                  => implode(self::LINE_RETURN_CHAR, $packages),
+                'arabiaGameExperienceCount' => implode(self::LINE_RETURN_CHAR, $registerQuestion->getAnswer1()->getList()),
+                'tactics'                   => implode(self::LINE_RETURN_CHAR, $registerQuestion->getAnswer2()->getList()),
+                'communityJoined'           => implode(self::LINE_RETURN_CHAR, $registerQuestion->getAnswer3()->getList()),
+                'appUrl'                    => env('APP_URL'),
             ]
         );
     }
