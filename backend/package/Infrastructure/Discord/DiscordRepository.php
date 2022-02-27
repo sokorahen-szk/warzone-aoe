@@ -9,6 +9,11 @@ use Config;
 use Package\Domain\System\ValueObject\Datetime;
 use Package\Domain\User\ValueObject\Player\Rate;
 
+use \Package\Domain\Game\Entity\GamePackage;
+use Package\Domain\User\ValueObject\Player\GamePackages;
+
+use Package\Domain\User\ValueObject\RegisterQuestion;
+
 class DiscordRepository implements DiscordRepositoryInterface {
     private  $discordClient;
 
@@ -31,10 +36,18 @@ class DiscordRepository implements DiscordRepositoryInterface {
      * 会員登録時にDiscord通知する
      * @param Datetime $registerDatetime
      * @param User $user
+     * @param RegisterQuestion $registerQuestion
+     * @param GamePackage[] $gamePackages
      * @return void
      */
-    public function registrationUserNotification(Datetime $registerDatetime, User $user): void
+    public function registrationUserNotification(Datetime $registerDatetime, User $user, RegisterQuestion $registerQuestion, array $gamePackages): void
     {
+        $entities = $this->filterGamePackages($user->getPlayer()->getGamePackages(), $gamePackages);
+        $packages = [];
+        foreach ($entities as $entity) {
+            $packages[] =  $entity->getName()->getValue();
+        }
+
         $this->discordClient->sendMessageOnTemplate(
             env('DISCORD_REGISTER_NOTIFICATION_WEBHOOK'),
             'register_notification_template',
@@ -42,7 +55,7 @@ class DiscordRepository implements DiscordRepositoryInterface {
                 'datetime'      => $registerDatetime->getDatetime(),
                 'userName'      => $user->getName()->getValue(),
                 'playerName'    => $user->getPlayer()->getPlayerName()->getValue(),
-                'packages'      => $user->getPlayer()->getGamePackages()->getValue(),
+                'packages'      => implode('，', $packages),
                 'appUrl'        => env('APP_URL'),
             ]
         );
@@ -185,4 +198,25 @@ class DiscordRepository implements DiscordRepositoryInterface {
 
         return implode("\n", $teamList);
     }
+
+    /**
+     * @param GamePackages $gamePackages
+     * @param GamePackage[] $entities
+     * @return GamePackage[]
+     */
+    private function filterGamePackages(GamePackages $gamePackages, array $entities)
+    {
+        $filterdGamePackages = [];
+        $gamePackageIdAsTextList = $gamePackages->getList();
+        foreach ($gamePackageIdAsTextList as $gamePackageIdAsText) {
+            foreach ($entities as $entity) {
+                if ((int) $gamePackageIdAsText === $entity->getGamePackageId()->getValue()) {
+                    $filterdGamePackages[] = $entity;
+                }
+            }
+        }
+
+        return $filterdGamePackages;
+    }
+
 }

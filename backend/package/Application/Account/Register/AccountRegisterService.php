@@ -25,7 +25,11 @@ use Package\Domain\User\ValueObject\Player\GamePackages;
 use Package\Domain\User\Exceptions\CanNotRegisterUserException;
 
 use DB;
+use Package\Domain\Game\Repository\GamePackageRepositoryInterface;
 use Package\Domain\System\ValueObject\Datetime;
+
+use Package\Domain\User\ValueObject\RegisterAnswer;
+use Package\Domain\User\ValueObject\RegisterQuestion;
 use Package\Infrastructure\Discord\DiscordRepositoryInterface;
 
 class AccountRegisterService implements AccountRegisterServiceInterface {
@@ -34,6 +38,7 @@ class AccountRegisterService implements AccountRegisterServiceInterface {
   private $registerRequestRepository;
   private $userService;
   private $discordRepository;
+  private $gamePackageRepository;
 
   const DEFAULT_ROLE_ID_NUMBER = 4;
 
@@ -42,7 +47,8 @@ class AccountRegisterService implements AccountRegisterServiceInterface {
     PlayerRepositoryInterface $playerRepository,
     RegisterRequestRepositoryInterface $registerRequestRepository,
     UserServiceInterface $userService,
-    DiscordRepositoryInterface $discordRepository
+    DiscordRepositoryInterface $discordRepository,
+    GamePackageRepositoryInterface $gamePackageRepository
   )
   {
     $this->userRepository = $userRepository;
@@ -50,6 +56,7 @@ class AccountRegisterService implements AccountRegisterServiceInterface {
     $this->registerRequestRepository = $registerRequestRepository;
     $this->userService = $userService;
     $this->discordRepository = $discordRepository;
+    $this->gamePackageRepository = $gamePackageRepository;
   }
 
   public function handle(AccountRegisterCommand $command)
@@ -61,6 +68,12 @@ class AccountRegisterService implements AccountRegisterServiceInterface {
 
     try {
       DB::beginTransaction();
+
+      $registerQuestion = new RegisterQuestion(
+        new RegisterAnswer($command->answer1),
+        new RegisterAnswer($command->answers2),
+        new RegisterAnswer($command->answers3)
+      );
 
       $playerId = $this->playerRepository->register($player);
 
@@ -84,8 +97,10 @@ class AccountRegisterService implements AccountRegisterServiceInterface {
 
       $user = $this->userRepository->findUserById($userId);
 
+      $gamePackages = $this->gamePackageRepository->list();
+
       $registerDatetime = new Datetime(now());
-      $this->discordRepository->registrationUserNotification($registerDatetime, $user);
+      $this->discordRepository->registrationUserNotification($registerDatetime, $user, $registerQuestion, $gamePackages);
 
       DB::commit();
     } catch (Exception $e) {
