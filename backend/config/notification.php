@@ -16,7 +16,7 @@ return (object) [
 	'register_notification_template'  => "```
 新規登録リクエストがありました。
 
-【申請時間】
+【参加時間】
 ##datetime##
 
 【ユーザ名】
@@ -28,9 +28,17 @@ return (object) [
 【プレイ経験】
 ##packages##
 
-ログイン後に「新規登録リクエスト」をご確認ください。
+【Age of Empires II DE (steam版)のアラビアマップ 8人戦 4 vs 4の経験がありますか？】
+##arabiaGameExperienceCount##
 
-https://warzone-aoe.herokuapp.com/admin/request
+【戦術で実践可能な戦術があれば選択してください。】
+##tactics##
+
+【過去に以下のコミュニティーに参加していた場合選択してください。】
+##communityJoined##
+
 ```
+ログイン後に「新規登録リクエスト」をご確認ください。
+##appUrl##/admin/request
 "
 ];

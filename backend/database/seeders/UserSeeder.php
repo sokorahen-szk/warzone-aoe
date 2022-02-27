@@ -26,7 +26,6 @@ class UserSeeder extends Seeder
             'steam_id'          => "4242424242424242",
             'twitter_id'        => "sokorahen-szk",
             'status'            => 2,
-            'avator_image'      => '/storage/profile/1.jpeg',
             'password'          => bcrypt('password'),
         ]);
 
@@ -38,7 +37,6 @@ class UserSeeder extends Seeder
             'steam_id'          => "4242424242424242",
             'twitter_id'        => "sokorahen-szk",
             'status'            => 2,
-            'avator_image'      => '/storage/profile/1.jpeg',
             'password'          => bcrypt('password'),
         ]);
 
@@ -50,7 +48,6 @@ class UserSeeder extends Seeder
             'steam_id'          => "4242424242424242",
             'twitter_id'        => "sokorahen-szk",
             'status'            => 2,
-            'avator_image'      => '/storage/profile/1.jpeg',
             'password'          => bcrypt('password'),
         ]);
 
@@ -63,7 +60,6 @@ class UserSeeder extends Seeder
             'steam_id'          => "4242424242424242",
             'twitter_id'        => "sokorahen-szk",
             'status'            => 2,
-            'avator_image'      => '/storage/profile/1.jpeg',
             'password'          => bcrypt('password'),
         ]);
 

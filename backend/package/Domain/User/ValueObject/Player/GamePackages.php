@@ -28,8 +28,6 @@ class GamePackages {
     }
 
     $list = explode(',', $this->value);
-    if (!$list) return [];
-
     return $list;
   }
 }

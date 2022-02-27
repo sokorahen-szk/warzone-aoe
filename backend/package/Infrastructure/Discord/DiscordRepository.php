@@ -6,13 +6,22 @@ use Package\Domain\Game\Entity\GameRecord;
 use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
 use Package\Domain\User\Entity\User;
 use Config;
+use Package\Domain\System\ValueObject\Datetime;
 use Package\Domain\User\ValueObject\Player\Rate;
+
+use \Package\Domain\Game\Entity\GamePackage;
+use Package\Domain\User\ValueObject\Player\GamePackages;
+
+use Package\Domain\User\ValueObject\RegisterQuestion;
 
 class DiscordRepository implements DiscordRepositoryInterface {
     private  $discordClient;
 
     const GAME_START = 'game_start';
     const GAME_END = 'game_end';
+
+    const LINE_RETURN_CHAR = '
+';
 
     private static $gameTypes = [
         self::GAME_START => 'ゲーム開始',
@@ -28,19 +37,32 @@ class DiscordRepository implements DiscordRepositoryInterface {
 
     /**
      * 会員登録時にDiscord通知する
+     * @param Datetime $registerDatetime
      * @param User $user
+     * @param RegisterQuestion $registerQuestion
+     * @param GamePackage[] $gamePackages
      * @return void
      */
-    public function registrationUserNotification(User $user): void
+    public function registrationUserNotification(Datetime $registerDatetime, User $user, RegisterQuestion $registerQuestion, array $gamePackages): void
     {
+        $entities = $this->filterGamePackages($user->getPlayer()->getGamePackages(), $gamePackages);
+        $packages = [];
+        foreach ($entities as $entity) {
+            $packages[] =  $entity->getName()->getValue();
+        }
+
         $this->discordClient->sendMessageOnTemplate(
             env('DISCORD_REGISTER_NOTIFICATION_WEBHOOK'),
             'register_notification_template',
             [
-                'datetime'      => $user->getPlayer()->getJoinedAt()->getDatetime(),
-                'userName'      => $user->getName()->getValue(),
-                'playerName'    => $user->getPlayer()->getPlayerName()->getValue(),
-                'packages'      => $user->getPlayer()->getGamePackages()->getValue(),
+                'datetime'                  => $registerDatetime->getDatetime(),
+                'userName'                  => $user->getName()->getValue(),
+                'playerName'                => $user->getPlayer()->getPlayerName()->getValue(),
+                'packages'                  => implode(self::LINE_RETURN_CHAR, $packages),
+                'arabiaGameExperienceCount' => implode(self::LINE_RETURN_CHAR, $registerQuestion->getAnswer1()->getList()),
+                'tactics'                   => implode(self::LINE_RETURN_CHAR, $registerQuestion->getAnswer2()->getList()),
+                'communityJoined'           => implode(self::LINE_RETURN_CHAR, $registerQuestion->getAnswer3()->getList()),
+                'appUrl'                    => env('APP_URL'),
             ]
         );
     }
@@ -182,4 +204,25 @@ class DiscordRepository implements DiscordRepositoryInterface {
 
         return implode("\n", $teamList);
     }
+
+    /**
+     * @param GamePackages $gamePackages
+     * @param GamePackage[] $entities
+     * @return GamePackage[]
+     */
+    private function filterGamePackages(GamePackages $gamePackages, array $entities)
+    {
+        $filterdGamePackages = [];
+        $gamePackageIdAsTextList = $gamePackages->getList();
+        foreach ($gamePackageIdAsTextList as $gamePackageIdAsText) {
+            foreach ($entities as $entity) {
+                if ((int) $gamePackageIdAsText === $entity->getGamePackageId()->getValue()) {
+                    $filterdGamePackages[] = $entity;
+                }
+            }
+        }
+
+        return $filterdGamePackages;
+    }
+
 }

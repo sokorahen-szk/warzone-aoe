@@ -1,0 +1,1 @@
+CREATE DATABASE IF NOT EXISTS warzone_local_test_db;

@@ -57,16 +57,19 @@ class UserRepository implements UserRepositoryInterface {
 
   /**
    * @param User $user
+   * @return UserId
    */
-  public function register(User $user): void
+  public function register(User $user): UserId
   {
-    EloquentUser::create([
+    $user = EloquentUser::create([
       'player_id'   => $user->getPlayerId()->getValue(),
       'role_id'     => $user->getRoleId()->getValue(),
       'name'        => $user->getName()->getValue(),
       'email'       => $user->getEmail()->getValidEmail(),
       'password'    => $user->getPassword()->getEncrypted(),
     ]);
+
+    return new UserId($user->id);
   }
 
   /**
