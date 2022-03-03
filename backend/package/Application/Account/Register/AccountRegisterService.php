@@ -27,10 +27,14 @@ use Package\Domain\User\Exceptions\CanNotRegisterUserException;
 use DB;
 use Package\Domain\Game\Repository\GamePackageRepositoryInterface;
 use Package\Domain\System\ValueObject\Datetime;
-
+use Package\Domain\User\ValueObject\Player\Mu;
+use Package\Domain\User\ValueObject\Player\PlayerId;
+use Package\Domain\User\ValueObject\Player\Rate;
+use Package\Domain\User\ValueObject\Player\Sigma;
 use Package\Domain\User\ValueObject\RegisterAnswer;
 use Package\Domain\User\ValueObject\RegisterQuestion;
 use Package\Infrastructure\Discord\DiscordRepositoryInterface;
+use Package\Infrastructure\TrueSkill\TrueSkillClient;
 
 class AccountRegisterService implements AccountRegisterServiceInterface {
   private $userRepository;
@@ -39,6 +43,7 @@ class AccountRegisterService implements AccountRegisterServiceInterface {
   private $userService;
   private $discordRepository;
   private $gamePackageRepository;
+  private $trueSkillClient;
 
   const DEFAULT_ROLE_ID_NUMBER = 4;
 
@@ -48,7 +53,8 @@ class AccountRegisterService implements AccountRegisterServiceInterface {
     RegisterRequestRepositoryInterface $registerRequestRepository,
     UserServiceInterface $userService,
     DiscordRepositoryInterface $discordRepository,
-    GamePackageRepositoryInterface $gamePackageRepository
+    GamePackageRepositoryInterface $gamePackageRepository,
+    TrueSkillClient $trueSkillClient
   )
   {
     $this->userRepository = $userRepository;
@@ -57,6 +63,7 @@ class AccountRegisterService implements AccountRegisterServiceInterface {
     $this->userService = $userService;
     $this->discordRepository = $discordRepository;
     $this->gamePackageRepository = $gamePackageRepository;
+    $this->trueSkillClient = $trueSkillClient;
   }
 
   public function handle(AccountRegisterCommand $command)
@@ -95,10 +102,10 @@ class AccountRegisterService implements AccountRegisterServiceInterface {
         'playerId'      => $playerId,
       ]));
 
+      $this->changePlayerDefaultSkill($playerId);
+
       $user = $this->userRepository->findUserById($userId);
-
       $gamePackages = $this->gamePackageRepository->list();
-
       $registerDatetime = new Datetime(now());
       $this->discordRepository->registrationUserNotification($registerDatetime, $user, $registerQuestion, $gamePackages);
 
@@ -107,5 +114,17 @@ class AccountRegisterService implements AccountRegisterServiceInterface {
       DB::rollback();
       throw $e;
     }
+  }
+
+  private function changePlayerDefaultSkill(PlayerId $playerId): void
+  {
+    $player = $this->playerRepository->getById($playerId);
+    $trueSkillDefaultSkillResponse = $this->trueSkillClient->defaultSkill();
+
+    $player->changeMu(new Mu($trueSkillDefaultSkillResponse['mu']));
+    $player->changeSigma(new Sigma($trueSkillDefaultSkillResponse['sigma']));
+    $player->changeRate(new Rate($trueSkillDefaultSkillResponse['rating_exposure']));
+
+    $this->playerRepository->update($player);
   }
 }
