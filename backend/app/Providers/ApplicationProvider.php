@@ -112,6 +112,14 @@ class ApplicationProvider extends ServiceProvider
             \Package\Usecase\Admin\User\Create\AdminUserCreateServiceInterface::class,
             \Package\Application\Admin\User\Create\AdminUserCreateService::class
         );
+        $this->app->bind(
+            \Package\Usecase\Admin\Game\Update\AdminGameUpdateServiceInterface::class,
+            \Package\Application\Admin\Game\Update\AdminGameUpdateService::class
+        );
+        $this->app->bind(
+            \Package\Usecase\System\UpdateGameSystemServiceInterface::class,
+            \Package\Application\System\UpdateGameSystemService::class
+        );
     }
 
     /**
