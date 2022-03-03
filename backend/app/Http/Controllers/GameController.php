@@ -134,7 +134,7 @@ class GameController extends Controller
 
     /**
      * ゲーム終了
-     * POST /api/game/create/fi
+     * POST /api/game/create/finished
      * @param GameFinishedServiceInterface $interactor
      * @param GameFinishedRequest $request
      * @return json(...)

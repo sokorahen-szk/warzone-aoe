@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Account\AccountGameStatusUpdateRequest;
 use App\Http\Requests\Admin\AdminUserListRequest;
 use App\Http\Requests\Admin\AdminUserUpdateRequest;
 use App\Http\Requests\Admin\AdminUserCreateRequest;
 use App\Traits\ApiResponser;
 use App\Http\Requests\Admin\RegisterRequestUpdateRequest;
+use Package\Usecase\Admin\Game\Update\AdminGameUpdateCommand;
+use Package\Usecase\Admin\Game\Update\AdminGameUpdateServiceInterface;
 use Package\Usecase\Admin\RegisterRequest\GetList\AdminRegisterRequestGetListServiceInterface;
 use Package\Usecase\Admin\RegisterRequest\Update\AdminRegisterRequestUpdateServiceInterface;
 use Package\Usecase\Admin\RegisterRequest\Update\AdminRegisterRequestUpdateCommand;
@@ -75,6 +78,17 @@ class AdminController extends Controller
             $request->input('web_site_url', null),
             $request->input('status', null),
             $request->input('game_packages', null),
+        ));
+
+        return $this->validResponse([]);
+    }
+
+    public function updateGame(AdminGameUpdateServiceInterface $interactor, AccountGameStatusUpdateRequest $request, int $gameRecordId)
+    {
+        $interactor->handle(new AdminGameUpdateCommand(
+            $gameRecordId,
+            $request->status,
+            $request->input('winningTeam', null)
         ));
 
         return $this->validResponse([]);
