@@ -18,6 +18,13 @@ export const gameStatus = {
   finished: 4,
 }
 
+export const gameStatusLabels = [
+  {id: gameStatus.matching, label: 'ゲーム中'},
+  {id: gameStatus.draw, label: '引き分け'},
+  {id: gameStatus.canceled, label: 'キャンセル'},
+  {id: gameStatus.finished, label: '終了'},
+]
+
 export const gameWarsChangeStatusButtonTemplates = [
   {label: 'チーム1勝利', game_status: gameStatus.finished, winningTeam: 1, color: 'info'},
   {label: 'チーム2勝利', game_status: gameStatus.finished, winningTeam: 2, color: 'info'},

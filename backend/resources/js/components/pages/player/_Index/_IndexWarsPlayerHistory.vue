@@ -9,7 +9,7 @@
           :gameRecordTotalPage="gameRecordTotalPage"
           :currentPage="currentPage"
           :deviceType="deviceType"
-          @pageChange="pageChange"
+          @changePage="changePage"
         />
         <GameRecordTableSp
           v-else
@@ -17,7 +17,7 @@
           :gameRecordTotalPage="gameRecordTotalPage"
           :currentPage="currentPage"
           :deviceType="deviceType"
-          @pageChange="pageChange"
+          @changePage="changePage"
         />
       </div>
     </template>
@@ -77,7 +77,7 @@ export default {
         this.isLoading = false
       })
     },
-    pageChange(val){
+    changePage(val){
       this.currentPage = val
       this.fetchWarHistoryList(this.currentPage)
     },

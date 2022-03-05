@@ -105,7 +105,7 @@
 		<Pagination
 			:current="currentPage"
 			:length="gameRecordTotalPage"
-			@change="(page) => $emit('pageChange', page)"
+			@change="(page) => $emit('changePage', page)"
 		/>
 	</div>
 </template>

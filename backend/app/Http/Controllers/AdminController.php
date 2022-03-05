@@ -88,7 +88,7 @@ class AdminController extends Controller
         $interactor->handle(new AdminGameUpdateCommand(
             $gameRecordId,
             $request->status,
-            $request->input('winningTeam', null)
+            $request->input('winning_team', null)
         ));
 
         return $this->validResponse([]);

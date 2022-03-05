@@ -120,6 +120,22 @@ const actions = {
       })
     })
   },
+  adminGameFinished({ commit }, payload) {
+    const params = excludeNullParams({
+      status: payload.status,
+      winning_team: payload.winningTeam
+    })
+    return new Promise( (resolve, reject) => {
+      axios.post(`/api/admin/game/${payload.gameRecordId}`, params)
+      .then( (res) => {
+        if (res.data && res.data.isSuccess) {
+          resolve()
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
+    })
+  },
 }
 const gameStore = {
   namespaced: true,
