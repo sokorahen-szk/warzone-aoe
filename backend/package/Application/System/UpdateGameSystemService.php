@@ -42,7 +42,7 @@ class UpdateGameSystemService implements UpdateGameSystemServiceInterface {
         $this->trueSkillClient = new TrueSkillClient();
     }
 
-    public function handle(GameRecord $gameRecord, GameTeam $winningTeam, GameStatus $gameStatus, Datetime $currentDatetime): void
+    public function handle(GameRecord $gameRecord, ?GameTeam $winningTeam, GameStatus $gameStatus, Datetime $currentDatetime): void
     {
 		try {
 			DB::beginTransaction();

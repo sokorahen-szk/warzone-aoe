@@ -8,5 +8,5 @@ use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
 use Package\Domain\System\ValueObject\Datetime;
 
 interface UpdateGameSystemServiceInterface {
-    public function handle(GameRecord $gameRecord, GameTeam $winningTeam, GameStatus $gameStatus, Datetime $currentDatetime): void;
+    public function handle(GameRecord $gameRecord, ?GameTeam $winningTeam, GameStatus $gameStatus, Datetime $currentDatetime): void;
 }
