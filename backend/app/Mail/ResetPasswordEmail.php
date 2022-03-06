@@ -51,6 +51,8 @@ class ResetPasswordEmail extends Mailable
             ->to($this->email)
             ->view('mails.password_reset_mail')
             ->with([
+                'supportName' => $this->config->support_name,
+                'email' => $this->email,
                 'url' => $url,
             ]);
     }
