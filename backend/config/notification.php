@@ -40,5 +40,10 @@ return (object) [
 ```
 ログイン後に「新規登録リクエスト」をご確認ください。
 ##appUrl##/admin/request
-"
+",
+
+	'support_name' => 'warzone運営チーム',
+	'support_mail_address' => env('MAIL_FROM_ADDRESS'),
+
+	'password_reset_uri' => 'passowrd/reset'
 ];

@@ -7,6 +7,7 @@ use App\Traits\ApiResponser;
 use App\Http\Requests\Account\AccountRegistrationRequest;
 use App\Http\Requests\Account\AccountUpdateAvatorRequest;
 use App\Http\Requests\Account\AccountProfileEditRequest;
+use App\Http\Requests\Account\AccountResetPasswordSendEmailRequest;
 use App\Http\Requests\Game\GameRaitingRequest;
 
 use Package\Domain\Game\ValueObject\GameRecord\GameRecordMuEnabled;
@@ -28,6 +29,8 @@ use Package\Usecase\Account\Game\GetList\AccountGameListServiceInterface;
 use Package\Usecase\Account\Game\StatusUpdate\AccountGameStatusUpdateServiceInterface;
 use Package\Usecase\Account\Game\GetList\AccountGameListCommand;
 use Package\Usecase\Account\Game\StatusUpdate\AccountGameStatusUpdateCommand;
+use Package\Usecase\Account\ResetPassword\AccountResetPasswordSendEmailCommand;
+use Package\Usecase\Account\ResetPassword\AccountResetPasswordSendEmailServiceInterface;
 
 use Auth;
 
@@ -185,5 +188,15 @@ class AccountController extends Controller
         $result = $interactor->handle($command);
 
         return $this->validResponse($result, '試合中の対戦履歴を更新しました。');
+    }
+
+    public function resetPasswordSendEmail(AccountResetPasswordSendEmailServiceInterface $interactor, AccountResetPasswordSendEmailRequest $request)
+    {
+        $command = new AccountResetPasswordSendEmailCommand(
+            $request->email,
+        );
+
+        $interactor->handle($command);
+        return $this->validResponse([]);
     }
 }

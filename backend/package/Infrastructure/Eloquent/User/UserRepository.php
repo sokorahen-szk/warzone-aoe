@@ -11,6 +11,7 @@ use Package\Domain\User\Entity\UserAvator;
 use App\Models\UserModel as EloquentUser;
 use Package\Infrastructure\Eloquent\Converter;
 use Package\Domain\System\Entity\Paginator;
+use Package\Domain\User\ValueObject\Email;
 use Package\Domain\User\ValueObject\Role\RoleId;
 use Package\Domain\User\ValueObject\Status as UserStatus;
 
@@ -42,6 +43,26 @@ class UserRepository implements UserRepositoryInterface {
   public function findByName(Name $name): ?User
   {
     $user = EloquentUser::where('name', $name->getValue())
+    ->with(['player', 'role'])
+    ->first();
+
+    if (!$user) {
+      return null;
+    }
+
+    $player =  Converter::player($user->player);
+    $role =  Converter::role($user->role);
+
+    return Converter::user($user, $player, $role);
+  }
+
+  /**
+   * @param Email $email
+   * @return User|null
+   */
+  public function findByEmail(Email $email): ?User
+  {
+    $user = EloquentUser::where('email', $email->getValue())
     ->with(['player', 'role'])
     ->first();
 
