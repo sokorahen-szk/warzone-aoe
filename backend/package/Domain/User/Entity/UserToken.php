@@ -14,7 +14,7 @@ class UserToken extends Resource {
   protected $userId;
   protected $email;
   protected $token;
-  protected $expireAt;
+  protected $expiresAt;
   protected $createdAt;
   protected $updatedAt;
 
@@ -57,9 +57,9 @@ class UserToken extends Resource {
   /**
    * @return Datetime
    */
-  public function getExpireAt(): Datetime
+  public function getExpiresAt(): Datetime
   {
-    return $this->expireAt;
+    return $this->expiresAt;
   }
 
   /**
@@ -76,5 +76,10 @@ class UserToken extends Resource {
   public function getUpdatedAt(): Datetime
   {
     return $this->updatedAt;
+  }
+
+  public function isValidExpires(Datetime $datetime): bool
+  {
+      return $this->expiresAt->Gte($datetime);
   }
 }

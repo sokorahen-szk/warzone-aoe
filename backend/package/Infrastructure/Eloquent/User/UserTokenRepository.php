@@ -8,7 +8,11 @@ use Package\Domain\User\Repository\UserTokenRepositoryInterface;
 use Package\Domain\User\ValueObject\UserId;
 
 use App\Models\UserTokenModel as EloquentUserToken;
+use Package\Domain\User\Entity\UserToken;
 use Package\Domain\User\ValueObject\Email;
+use Package\Domain\User\ValueObject\UserToken\UserTokenId;
+use Package\Infrastructure\Eloquent\Converter;
+use Exception;
 
 class UserTokenRepository implements UserTokenRepositoryInterface {
     /**
@@ -18,7 +22,7 @@ class UserTokenRepository implements UserTokenRepositoryInterface {
      * @param Datetime $expireAt
      * @return void
      */
-    public function save(UserId $userId, Email $email, Token $token, Datetime $expireAt)
+    public function save(UserId $userId, Email $email, Token $token, Datetime $expiresAt)
     {
         EloquentUserToken::updateOrCreate(
             [
@@ -26,9 +30,33 @@ class UserTokenRepository implements UserTokenRepositoryInterface {
             ],
             [
                 'email' => $email->getValue(),
-                'token' => $token->getValue(),
-                'expire_at' => $expireAt->getDatetime(),
+                'token' => $token->getEncrypted(),
+                'expires_at' => $expiresAt->getDatetime(),
             ],
         );
+    }
+
+    /**
+     * @param Token $token
+     * @return UserToken
+     */
+    public function getByToken(Token $token): UserToken
+    {
+        $userToken = EloquentUserToken::where('token', $token->getValue())->first();
+
+        if (!$userToken) {
+            throw new Exception('パスワード再発行に必要なデータが存在しません。');
+        }
+
+        return Converter::userToken($userToken);
+    }
+
+    /**
+     * @param UserTokenId $userTokenId
+     * @return void
+     */
+    public function delete(UserTokenId $userTokenId): void
+    {
+        EloquentUserToken::where('id', $userTokenId->getValue())->delete();
     }
 }

@@ -45,15 +45,21 @@ class AccountResetPasswordSendEmailService implements AccountResetPasswordSendEm
 
     $token = new Token($expireAt->getDatetime());
 
-    //try {
-    //  DB::beginTransaction();
-      $this->userTokenRepository->save($user->getId(), $email, $token, $expireAt);
+    try {
+      DB::beginTransaction();
 
-      Mail::send(new ResetPasswordEmail($token->getValue(), $email->getValue()));
+      $this->userTokenRepository->save(
+        $user->getId(),
+        $email,
+        $token,
+        $expireAt
+      );
 
-    //  DB::commit();
-    //} catch (Exception $e) {
-    //  DB::rollback();
-    //}
+      Mail::send(new ResetPasswordEmail($token->getEncrypted(), $email->getValue(), self::DEFAULT_TOKEN_EXPIRE_HOURS));
+
+      DB::commit();
+    } catch (Exception $e) {
+      DB::rollback();
+    }
   }
 }

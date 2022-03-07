@@ -12,12 +12,12 @@ class Token {
 
   public function getValue(): string
   {
-    return $this->generate($this->value);
+    return $this->value;
   }
 
-  public function getPlainText()
+  public function getEncrypted()
   {
-    return $this->value;
+    return $this->generate($this->value);
   }
 
   private function generate($plainText)

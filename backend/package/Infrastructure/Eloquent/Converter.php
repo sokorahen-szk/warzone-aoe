@@ -12,7 +12,7 @@ use App\Models\GamePackageModel;
 use App\Models\MapModel;
 use App\Models\RuleModel;
 use App\Models\GameRecordTokenModel;
-
+use App\Models\UserTokenModel;
 use Package\Domain\User\Entity\Role;
 use Package\Domain\User\Entity\Player;
 use Package\Domain\User\Entity\User;
@@ -73,6 +73,8 @@ use Package\Domain\User\ValueObject\PlayerMemory\PlayerMemoryId;
 use Package\Domain\System\ValueObject\Description;
 use Package\Domain\System\ValueObject\Datetime;
 use Package\Domain\System\ValueObject\Name;
+use Package\Domain\User\Entity\UserToken;
+use Package\Domain\User\ValueObject\UserToken\UserTokenId;
 
 class Converter {
     public static function role(RoleModel $role): Role
@@ -376,12 +378,25 @@ class Converter {
       ]);
     }
 
-    public static function gameRecordToken(GameRecordTokenModel $gameRecordToken): gameRecordToken
+    public static function gameRecordToken(GameRecordTokenModel $gameRecordToken): GameRecordToken
     {
         return new GameRecordToken([
             'gameRecordId' => new GameRecordId($gameRecordToken->game_record_id),
             'gameToken' => new GameToken($gameRecordToken->game_token),
             'expiresAt' => new Datetime($gameRecordToken->expires_at),
+        ]);
+    }
+
+    public static function userToken(UserTokenModel $userToken): UserToken
+    {
+        return new UserToken([
+            'userTokenId' => new UserTokenId($userToken->id),
+            'userId' => new UserId($userToken->user_id),
+            'email' => new Email($userToken->email),
+            'token' => new Token($userToken->token),
+            'expiresAt' => new Datetime($userToken->expires_at),
+            'createdAt' => new Datetime($userToken->created_at),
+            'updatedAt' => new Datetime($userToken->updated_at),
         ]);
     }
 }

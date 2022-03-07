@@ -8,14 +8,13 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
 use Config;
+use URL;
 
-class ResetPasswordEmail extends Mailable
+class ResetPasswordCompleted extends Mailable
 {
     use Queueable, SerializesModels;
 
-    private $token;
     private $email;
-    private $expireHours;
 
     private $config;
 
@@ -24,11 +23,9 @@ class ResetPasswordEmail extends Mailable
      *
      * @return void
      */
-    public function __construct($token, $email, $expireHours)
+    public function __construct($email)
     {
-        $this->token = $token;
         $this->email = $email;
-        $this->expireHours = $expireHours;
 
         $this->config = Config::get('notification');
     }
@@ -40,22 +37,13 @@ class ResetPasswordEmail extends Mailable
      */
     public function build()
     {
-        $url = sprintf(
-            '%s/%s/%s',
-            env('APP_URL'),
-            $this->config->password_reset_uri,
-            $this->token
-        );
-
-        return $this->subject('パスワードリセットのお知らせ')
+        return $this->subject('パスワードリセット完了のお知らせ')
             ->from($this->config->support_mail_address, $this->config->support_name)
             ->to($this->email)
-            ->view('mails.password_reset_mail')
+            ->view('mails.password_completed')
             ->with([
                 'supportName' => $this->config->support_name,
                 'email' => $this->email,
-                'url' => $url,
-                'expireHours' => $this->expireHours,
             ]);
     }
 }

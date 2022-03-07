@@ -7,6 +7,7 @@ use App\Traits\ApiResponser;
 use App\Http\Requests\Account\AccountRegistrationRequest;
 use App\Http\Requests\Account\AccountUpdateAvatorRequest;
 use App\Http\Requests\Account\AccountProfileEditRequest;
+use App\Http\Requests\Account\AccountResetPasswordRequest;
 use App\Http\Requests\Account\AccountResetPasswordSendEmailRequest;
 use App\Http\Requests\Game\GameRaitingRequest;
 
@@ -33,6 +34,8 @@ use Package\Usecase\Account\ResetPassword\AccountResetPasswordSendEmailCommand;
 use Package\Usecase\Account\ResetPassword\AccountResetPasswordSendEmailServiceInterface;
 
 use Auth;
+use Package\Usecase\Account\ResetPassword\AccountResetPasswordCommand;
+use Package\Usecase\Account\ResetPassword\AccountResetPasswordServiceInterface;
 
 class AccountController extends Controller
 {
@@ -197,6 +200,17 @@ class AccountController extends Controller
         );
 
         $interactor->handle($command);
-        return $this->validResponse([]);
+        return $this->validResponse([], 'パスワードリセットメールを送信しました。');
+    }
+
+    public function resetPassword(AccountResetPasswordServiceInterface $interactor, AccountResetPasswordRequest $request, string $token)
+    {
+        $command = new AccountResetPasswordCommand(
+            $request->password,
+            $token,
+        );
+
+        $interactor->handle($command);
+        return $this->validResponse([], 'パスワードリセットが完了しました。');
     }
 }

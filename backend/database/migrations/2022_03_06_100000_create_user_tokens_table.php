@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatUserTokensTable extends Migration
+class CreateUserTokensTable extends Migration
 {
     /**
      * Run the migrations.
@@ -18,7 +18,7 @@ class CreatUserTokensTable extends Migration
             $table->unsignedBigInteger('user_id')->comment('ユーザID');
             $table->string('email')->comment('メールアドレス');
             $table->string('token')->unique()->comment('トークン');
-            $table->dateTime('expire_at')->nullable()->comment('トークンの有効期限');
+            $table->dateTime('expires_at')->nullable()->comment('トークンの有効期限');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
