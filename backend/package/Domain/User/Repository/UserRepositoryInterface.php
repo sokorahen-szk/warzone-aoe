@@ -7,6 +7,7 @@ use Package\Domain\User\ValueObject\Name;
 use Package\Domain\User\Entity\User;
 use Package\Domain\User\Entity\UserAvator;
 use Package\Domain\System\Entity\Paginator;
+use Package\Domain\User\ValueObject\Email;
 use Package\Domain\User\ValueObject\Role\RoleId;
 use Package\Domain\User\ValueObject\Status as UserStatus;
 
@@ -22,6 +23,12 @@ interface UserRepositoryInterface {
    * @return User|null
    */
   public function findByName(Name $name): ?User;
+
+  /**
+   * @param Email $email
+   * @return User|null
+   */
+  public function findByEmail(Email $email): ?User;
 
   /**
    * @param User $user

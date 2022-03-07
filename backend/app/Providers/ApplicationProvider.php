@@ -120,6 +120,14 @@ class ApplicationProvider extends ServiceProvider
             \Package\Usecase\System\UpdateGameSystemServiceInterface::class,
             \Package\Application\System\UpdateGameSystemService::class
         );
+        $this->app->bind(
+            \Package\Usecase\Account\ResetPassword\AccountResetPasswordSendEmailServiceInterface::class,
+            \Package\Application\Account\ResetPassword\AccountResetPasswordSendEmailService::class
+        );
+        $this->app->bind(
+            \Package\Usecase\Account\ResetPassword\AccountResetPasswordServiceInterface::class,
+            \Package\Application\Account\ResetPassword\AccountResetPasswordService::class
+        );
     }
 
     /**
