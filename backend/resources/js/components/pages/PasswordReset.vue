@@ -12,7 +12,6 @@
         v-model="valid"
         lazy-validation
       >
-
         <v-row no-gutters>
           <v-col cols="12">
             <v-row no-gutters justify="center" align-content="center" style="height: 500px;">
@@ -21,37 +20,33 @@
                 <v-col offset-sm="3" offset-md="3" offset-lg="3" offset-xl="3"></v-col>
                 <v-col cols="12" sm="6" md="6" lg="6" xl="6">
 
-                  <div class="text-center my-4 headline">ログイン</div>
+                  <div class="text-center my-4 headline">パスワード再設定</div>
                   <v-divider class="py-2" />
+
+                  <div class="caption">
+                  アカウント作成時にメールアドレスを設定している場合、パスワード再設定が可能です。<br />
+                  入力いただいたメールアドレス宛にメールアドレス再設定のリンクが送られます。
+                  </div>
 
                   <v-row class="mt-4">
                     <v-col cols="12" class="py-0 ma-0">
-                      <div class="py-2">ユーザ名</div>
                       <TextInput
-                        :value="userName"
-                        @update="userName = $event"
-                        placeholder="username"
+                        :value="email"
+                        @update="email = $event"
+                        placeholder="メールアドレス"
                         outlined
                         required
-                        :rules="{label:'ユーザ名', types:'required,min:4,max:10'}"
+                        :rules="{label:'メールアドレス', types:'required'}"
                       />
                     </v-col>
-                    <v-col cols="12" class="py-0 ma-0">
-                      <div class="py-2">パスワード</div>
-                      <PasswordTextInput
-                        :value="password"
-                        @update="password = $event"
-                        placeholder="password"
-                        outlined
-                        required
-                        :rules="{label:'パスワード', types:'required,min:8'}"
-                      />
-                    </v-col>
-                    <v-col cols="12" class="text-center mt-2">
+                  </v-row>
+
+                  <v-row>
+                    <v-col cols="12" class="text-center">
                       <Button
-                        label="ログイン"
+                        label="送信する"
                         color="success"
-                        @click="loginEvent"
+                        @click="reset"
                         :disabled="!valid"
                         :loading="loading"
                         height="65"
@@ -59,15 +54,12 @@
                         font-size="22"
                       />
                     </v-col>
-
-                    <v-col cols="12 text-center">
-                      <Link path="password/reset">パスワードをお忘れの方はこちら</Link>
-                    </v-col>
                   </v-row>
 
                 </v-col>
                 <v-col offset-sm="3" offset-md="3" offset-lg="3" offset-xl="3"></v-col>
               </v-row>
+
 
             </v-row>
           </v-col>
@@ -81,48 +73,41 @@
 import CommonOneColumnTemplate from '@templates/CommonOneColumnTemplate'
 import TextInput from '@atoms/TextInput'
 import Button from '@atoms/Button'
-import PasswordTextInput from '@atoms/PasswordTextInput'
-import Link from '@atoms/Link'
 import Alert from '@atoms/Alert'
-import router from '@/router/index'
 import { mapActions, mapGetters } from 'vuex'
 import { alertTemplate } from '@/config/global'
 export default {
-  name: 'Login',
+	name: 'PasswordReset',
   components: {
-    CommonOneColumnTemplate,
-    TextInput,
-    PasswordTextInput,
-    Button,
-    Link,
-    Alert,
+      CommonOneColumnTemplate,
+      TextInput,
+      Button,
+      Alert,
+  },
+  computed: {
+    ...mapGetters('breakpointStore', ['getDeviceType']),
   },
   data() {
     return {
       valid: true,
-      userName: null,
-      password: null,
+      email: null,
 
       loading: false,
 
       alert: alertTemplate,
     }
   },
-  computed: {
-    ...mapGetters('authStore', ['isLogin']),
-    ...mapGetters('breakpointStore', ['getDeviceType']),
-  },
   methods: {
-    ...mapActions('authStore', ['login']),
-    loginEvent() {
-      if(!this.$refs.form.validate()) return;
+    ...mapActions('accountStore', ['passwordReset']),
+    reset() {
+      if(!this.$refs.form.validate()) return
 
       this.loading = true
       new Promise((resolve) => {
-        resolve(this.login({name: this.userName, password: this.password}))
+        resolve(this.passwordReset({email: this.email}))
       })
       .then( () => {
-        router.push({path: '/account/mypage'})
+        alert("パスワード再設定のリンクを入力いただいたメールアドレス宛に\nお送りしました。メールボックスをご確認ください。")
       })
       .catch( (err) => {
         this.alert = Object.assign(alertTemplate, {
@@ -130,7 +115,8 @@ export default {
           type: 'error',
           message: err,
         })
-
+      })
+      .finally( () => {
         this.loading = false
       })
     }

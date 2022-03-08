@@ -12,32 +12,18 @@
         v-model="valid"
         lazy-validation
       >
-
-        <v-row no-gutters>
+        <v-row no-gutters v-if="isValidToken">
           <v-col cols="12">
             <v-row no-gutters justify="center" align-content="center" style="height: 500px;">
-
               <v-row no-gutters>
                 <v-col offset-sm="3" offset-md="3" offset-lg="3" offset-xl="3"></v-col>
                 <v-col cols="12" sm="6" md="6" lg="6" xl="6">
 
-                  <div class="text-center my-4 headline">ログイン</div>
+                  <div class="text-center my-4 headline">パスワード再設定</div>
                   <v-divider class="py-2" />
 
                   <v-row class="mt-4">
                     <v-col cols="12" class="py-0 ma-0">
-                      <div class="py-2">ユーザ名</div>
-                      <TextInput
-                        :value="userName"
-                        @update="userName = $event"
-                        placeholder="username"
-                        outlined
-                        required
-                        :rules="{label:'ユーザ名', types:'required,min:4,max:10'}"
-                      />
-                    </v-col>
-                    <v-col cols="12" class="py-0 ma-0">
-                      <div class="py-2">パスワード</div>
                       <PasswordTextInput
                         :value="password"
                         @update="password = $event"
@@ -47,11 +33,24 @@
                         :rules="{label:'パスワード', types:'required,min:8'}"
                       />
                     </v-col>
-                    <v-col cols="12" class="text-center mt-2">
+                    <v-col cols="12" class="py-0 ma-0">
+                      <PasswordTextInput
+                        :value="passwordConfirm"
+                        @update="passwordConfirm = $event"
+                        placeholder="パスワード再入力"
+                        outlined
+                        required
+                        :rules="{label:'パスワード再入力', types:`required,min:8,confirm:${password}`}"
+                      />
+                    </v-col>
+                  </v-row>
+
+                  <v-row>
+                    <v-col cols="12" class="text-center">
                       <Button
-                        label="ログイン"
+                        label="再設定する"
                         color="success"
-                        @click="loginEvent"
+                        @click="update"
                         :disabled="!valid"
                         :loading="loading"
                         height="65"
@@ -59,17 +58,17 @@
                         font-size="22"
                       />
                     </v-col>
-
-                    <v-col cols="12 text-center">
-                      <Link path="password/reset">パスワードをお忘れの方はこちら</Link>
-                    </v-col>
                   </v-row>
 
                 </v-col>
                 <v-col offset-sm="3" offset-md="3" offset-lg="3" offset-xl="3"></v-col>
               </v-row>
-
             </v-row>
+          </v-col>
+        </v-row>
+        <v-row no-gutters v-else>
+          <v-col cols="12">
+            パスワード再設定のトークンが無効です。
           </v-col>
         </v-row>
       </v-form>
@@ -79,50 +78,57 @@
 
 <script>
 import CommonOneColumnTemplate from '@templates/CommonOneColumnTemplate'
-import TextInput from '@atoms/TextInput'
+import Alert from '@atoms/Alert'
 import Button from '@atoms/Button'
 import PasswordTextInput from '@atoms/PasswordTextInput'
-import Link from '@atoms/Link'
-import Alert from '@atoms/Alert'
-import router from '@/router/index'
 import { mapActions, mapGetters } from 'vuex'
 import { alertTemplate } from '@/config/global'
+import router from '@/router/index'
 export default {
-  name: 'Login',
+	name: 'PasswordResetConfirm',
   components: {
-    CommonOneColumnTemplate,
-    TextInput,
-    PasswordTextInput,
-    Button,
-    Link,
-    Alert,
+      CommonOneColumnTemplate,
+      Alert,
+      PasswordTextInput,
+      Button,
   },
   data() {
     return {
+      alert: alertTemplate,
+      isValidToken: false,
       valid: true,
-      userName: null,
-      password: null,
-
       loading: false,
 
-      alert: alertTemplate,
+      token: this.$route.params['token'],
+      password: null,
+      passwordConfirm: null,
     }
   },
   computed: {
-    ...mapGetters('authStore', ['isLogin']),
     ...mapGetters('breakpointStore', ['getDeviceType']),
   },
+  mounted() {
+    this.checkToken()
+  },
   methods: {
-    ...mapActions('authStore', ['login']),
-    loginEvent() {
-      if(!this.$refs.form.validate()) return;
-
+    ...mapActions('accountStore', ['passwordResetConfirm']),
+    checkToken() {
+      if (this.token && this.token.length == 64) {
+        this.isValidToken = true
+      }
+    },
+    update() {
+      if(!this.$refs.form.validate()) return
       this.loading = true
       new Promise((resolve) => {
-        resolve(this.login({name: this.userName, password: this.password}))
+        resolve(this.passwordResetConfirm({
+          token: this.token,
+          password: this.password,
+          password_confirmation: this.passwordConfirm,
+        }))
       })
       .then( () => {
-        router.push({path: '/account/mypage'})
+        alert("パスワード再設定が完了しました。")
       })
       .catch( (err) => {
         this.alert = Object.assign(alertTemplate, {
@@ -130,10 +136,13 @@ export default {
           type: 'error',
           message: err,
         })
-
-        this.loading = false
       })
-    }
-  }
+      .finally( () => {
+        this.loading = false
+
+        router.push({path: '/login'})
+      })
+    },
+  },
 }
 </script>
