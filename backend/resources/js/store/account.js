@@ -172,6 +172,17 @@ const actions = {
       })
     })
   },
+  passwordResetConfirm ({ commit }, payload) {
+    return new Promise( (resolve, reject) => {
+      axios.post(`/api/account/password/reset/${payload.token}`, excludeNullParams(payload)).then( (res) => {
+        if(res.data && res.data.isSuccess) {
+          resolve()
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
+    })
+  },
 
   stateReset ({commit}) {
     commit('reset')

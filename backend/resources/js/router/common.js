@@ -4,6 +4,7 @@ import Login from '@pages/Login.vue'
 import Contact from '@pages/Contact.vue'
 import Register from '@pages/Register.vue'
 import PasswordReset from '@pages/PasswordReset.vue'
+import PasswordResetConfirm from '@pages/PasswordResetConfirm.vue'
 
 export const commonRoute = [
   {
@@ -32,5 +33,10 @@ export const commonRoute = [
     path: '/password/reset',
     name: 'PasswordReset',
     component: PasswordReset,
+  },
+  {
+    path: '/password/reset/:token',
+    name: 'PasswordResetConfirm',
+    component: PasswordResetConfirm,
   },
 ]
