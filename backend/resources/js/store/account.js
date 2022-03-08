@@ -133,7 +133,6 @@ const actions = {
       })
     })
   },
-
   withdrawal ({ commit, dispatch }) {
     return new Promise( (resolve, reject) => {
       axios.post('/api/account/withdrawal').then( (res) => {
@@ -149,7 +148,6 @@ const actions = {
       })
     })
   },
-
   raiting ({ commit }, payload) {
     return new Promise( (resolve, reject) => {
       axios.get('/api/account/raiting', { params: excludeNullParams(payload) }).then( (res) => {
@@ -157,6 +155,17 @@ const actions = {
 
           commit('setRaiting', {$gameRecords: res.data.body.gameRecords})
           resolve(res.data.messages)
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
+    })
+  },
+  passwordReset ({ commit }, payload) {
+    return new Promise( (resolve, reject) => {
+      axios.post('/api/account/password/reset', excludeNullParams(payload)).then( (res) => {
+        if(res.data && res.data.isSuccess) {
+          resolve()
         } else {
           reject(res.data.errorMessages)
         }

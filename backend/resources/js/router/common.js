@@ -3,6 +3,7 @@ import Home from '@pages/Home.vue'
 import Login from '@pages/Login.vue'
 import Contact from '@pages/Contact.vue'
 import Register from '@pages/Register.vue'
+import PasswordReset from '@pages/PasswordReset.vue'
 
 export const commonRoute = [
   {
@@ -26,5 +27,10 @@ export const commonRoute = [
     name: 'Register',
     component: Register,
     meta: { complitedAuthRedirect: true }
+  },
+  {
+    path: '/password/reset',
+    name: 'PasswordReset',
+    component: PasswordReset,
   },
 ]

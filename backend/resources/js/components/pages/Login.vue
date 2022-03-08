@@ -61,7 +61,7 @@
                     </v-col>
 
                     <v-col cols="12 text-center">
-                      <Link path="passowrd/reset">パスワードをお忘れの方はこちら</Link>
+                      <Link path="password/reset">パスワードをお忘れの方はこちら</Link>
                     </v-col>
                   </v-row>
 
@@ -118,7 +118,6 @@ export default {
       if(!this.$refs.form.validate()) return;
 
       this.loading = true
-
       new Promise((resolve) => {
         resolve(this.login({name: this.userName, password: this.password}))
       })
