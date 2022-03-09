@@ -26,4 +26,9 @@ return [
         'path' => 'admin/user/create',
         'level' => 50,
     ],
+    [
+        'label' => 'ゲーム管理更新',
+        'path' => 'admin/game/[0-9]+',
+        'level' => 5,
+    ],
 ];
