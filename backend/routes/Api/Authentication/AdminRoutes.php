@@ -50,6 +50,14 @@ class AdminRoutes {
             Route::post('game/{gameRecordId}', [AdminController::class, 'updateGame'])
             ->name('admin.update.game')
             ->where('gameRecordId', '^[0-9]+$');
+
+            /**
+             * プレイヤー更新
+             * POST /api/admin/player/{playerId}
+             */
+            Route::post('player/{playerId}', [AdminController::class, 'updatePlayer'])
+            ->name('admin.update.player')
+            ->where('playerId', '^[0-9]+$');
         });
 	}
 }

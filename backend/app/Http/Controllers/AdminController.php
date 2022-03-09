@@ -93,4 +93,9 @@ class AdminController extends Controller
 
         return $this->validResponse([]);
     }
+
+    public function updatePlayer()
+    {
+        return "A";
+    }
 }
