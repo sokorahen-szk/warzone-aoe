@@ -1,7 +1,7 @@
 <template>
 <v-alert
   v-show="show"
-  dismissible
+  :dismissible="dismissible"
   :type="type"
   :dense="dense"
   @input="closed"
@@ -18,6 +18,7 @@ export default {
   props: {
     properties: {type: [Object, Array], default: {}},
     dense: {type: Boolean, default: false},
+    dismissible: {type: Boolean, default: true},
   },
   watch: {
     properties: {

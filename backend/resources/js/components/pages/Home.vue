@@ -75,7 +75,7 @@
 				<v-row no-gutters class="pa-0 ma-0">
 					<v-col cols="12">
 						<div class="py-3">お知らせ</div>
-						<v-list class="pa-0 ma-0">
+						<!--v-list class="pa-0 ma-0">
 							<template v-for="information in informations">
 							<v-list-item class="pa-0 ma-0" :to="information.link" :key="information.id">
 								<Label
@@ -88,11 +88,11 @@
 							</v-list-item>
 							<v-divider :key="`information-divider-${information.id}`" />
 							</template>
-						</v-list>
+						</v-list-->
 					</v-col>
-					<v-col cols="12">
+					<!--v-col cols="12">
 						<Button label="続きを見る" depressed block />
-					</v-col>
+					</v-col-->
 				</v-row>
 			</template>
 		</CommonWithLeftColumnTemplate>

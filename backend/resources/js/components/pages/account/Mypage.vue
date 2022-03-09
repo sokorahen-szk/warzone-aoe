@@ -38,6 +38,14 @@
           </v-row>
         </v-col>
       </v-row>
+      <div class="pt-4">
+        <Alert
+          :dismissible="false"
+          :properties="emailNotRegisteredAlert"
+          v-if="!profileView.email"
+          dense
+        ></Alert>
+      </div>
       </v-card>
       <v-card
         class="pa-3 mb-4"
@@ -154,6 +162,7 @@ export default {
       myGameRecordLoading: false,
       myGameRecords: [],
       alert: alertTemplate,
+      emailNotRegisteredAlert: null,
     }
   },
   mounted() {
@@ -165,6 +174,8 @@ export default {
     this.$set(this, 'profileView', objCopy(this.profileView, this.getProfile))
 
     this.fetchMyGameList()
+
+    this.check()
   },
   computed: {
     ...mapGetters('accountStore', ['getProfile']),
@@ -172,6 +183,13 @@ export default {
   },
   methods: {
     ...mapActions('accountStore', ['myGameList', 'myGameStatusUpdate']),
+    check() {
+      this.emailNotRegisteredAlert = {
+        show: true,
+        type: 'error',
+        message: 'メールアドレスが設定されていません。',
+      }
+    },
     fetchMyGameList() {
       this.myGameRecordLoading = true;
       new Promise((resolve) => {

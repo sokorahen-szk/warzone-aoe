@@ -65,6 +65,7 @@ export const rightMenuAdminList = {
 export const profileViewTemplate = {
   id: null,
   status: null,
+  email: null,
   player: {
     joinedAt: null,
     enabled: null,
