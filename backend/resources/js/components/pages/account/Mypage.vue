@@ -42,6 +42,7 @@
         <Alert
           :dismissible="false"
           :properties="emailNotRegisteredAlert"
+          :auto-closed="false"
           v-if="!profileView.email"
           dense
         ></Alert>
@@ -129,7 +130,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { alertTemplate } from '@/config/global'
 import CommonWithRightColumnTransportTemplate from '@templates/CommonWithRightColumnTransportTemplate'
 import AccountRightMenu from '@organisms/AccountRightMenu'
 import TextMark from '@atoms/TextMark'
@@ -161,7 +161,7 @@ export default {
       isGameStatusUpdateButtonDisabled: false,
       myGameRecordLoading: false,
       myGameRecords: [],
-      alert: alertTemplate,
+      alert: null,
       emailNotRegisteredAlert: null,
     }
   },
@@ -200,11 +200,11 @@ export default {
         this.myGameRecordLoading = false;
       })
       .catch( (err) => {
-        this.alert = Object.assign(alertTemplate, {
+        this.alert = {
           show: true,
           type: 'error',
           message: err,
-        })
+        }
       })
     },
     updateGameRecord(label, gameRecordId, status, winningTeam) {
@@ -222,20 +222,20 @@ export default {
         }))
       })
       .then( (res) => {
-        this.alert = Object.assign(alertTemplate, {
+        this.alert = {
           show: true,
           type: 'info',
           message: res,
-        })
+        }
 
         this.fetchMyGameList();
       })
       .catch( (err) => {
-        this.alert = Object.assign(alertTemplate, {
+        this.alert = {
           show: true,
           type: 'error',
           message: err,
-        })
+        }
       })
       .finally( () => {
         this.isGameStatusUpdateButtonDisabled = false;

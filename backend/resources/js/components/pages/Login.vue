@@ -86,7 +86,7 @@ import Link from '@atoms/Link'
 import Alert from '@atoms/Alert'
 import router from '@/router/index'
 import { mapActions, mapGetters } from 'vuex'
-import { alertTemplate } from '@/config/global'
+
 export default {
   name: 'Login',
   components: {
@@ -105,7 +105,7 @@ export default {
 
       loading: false,
 
-      alert: alertTemplate,
+      alert: null,
     }
   },
   computed: {
@@ -115,6 +115,7 @@ export default {
   methods: {
     ...mapActions('authStore', ['login']),
     loginEvent() {
+
       if(!this.$refs.form.validate()) return;
 
       this.loading = true
@@ -125,11 +126,11 @@ export default {
         router.push({path: '/account/mypage'})
       })
       .catch( (err) => {
-        this.alert = Object.assign(alertTemplate, {
+        this.alert = {
           show: true,
           type: 'error',
           message: err,
-        })
+        }
 
         this.loading = false
       })

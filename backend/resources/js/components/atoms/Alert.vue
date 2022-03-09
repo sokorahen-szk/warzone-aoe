@@ -13,12 +13,15 @@
 </style>
 
 <script>
+const interval = 5000
+
 export default {
   name: 'Alert',
   props: {
     properties: {type: [Object, Array], default: {}},
     dense: {type: Boolean, default: false},
     dismissible: {type: Boolean, default: true},
+    autoClosed: {type: Boolean, default: true},
   },
   watch: {
     properties: {
@@ -26,6 +29,12 @@ export default {
         this.$set(this, 'show', newValue.show)
         this.$set(this, 'type', newValue.type)
         this.$set(this, 'message', newValue.message)
+
+        if (this.autoClosed) {
+          setInterval(() => {
+            this.show = false
+          }, interval)
+        }
       },
       deep: true
     },
