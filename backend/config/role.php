@@ -31,4 +31,9 @@ return [
         'path' => 'admin/game/[0-9]+',
         'level' => 5,
     ],
+    [
+        'label' => 'プレイヤー更新',
+        'path' => 'admin/player/[0-9]+',
+        'level' => 5,
+    ],
 ];
