@@ -1,3 +1,5 @@
+import { excludeNullParams } from '@/services/api_helper';
+
 const state = {
   registerRequests: null,
 }
@@ -37,7 +39,24 @@ const actions = {
         }
       })
     })
-  }
+  },
+  userList ({ commit }, payload) {
+    const params = excludeNullParams({
+      page: payload.page,
+    })
+
+    return new Promise( (resolve, reject) => {
+      axios.get('/api/admin/user', {
+        params: params
+      }).then( (res) => {
+        if(res.data && res.data.isSuccess) {
+          resolve(res.data.messages)
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
+    })
+  },
 }
 const adminStore = {
   namespaced: true,

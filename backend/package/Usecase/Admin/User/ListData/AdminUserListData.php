@@ -25,6 +25,7 @@ class AdminUserListData extends Data {
           'steamId' => $source->getSteamId()->getValue(),
           'twitterId' => $source->getTwitterId()->getValue(),
           'webSiteUrl' => $source->getWebSiteUrl()->getValue(),
+          'avatorImage' => $source->getAvatorImage()->getImageFullPath(),
           'role' => [
             'id' => $source->getRole()->getRoleId()->getValue(),
             'name' => $source->getRole()->getRoleName()->getValue(),
