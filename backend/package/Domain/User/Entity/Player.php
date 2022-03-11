@@ -67,6 +67,14 @@ class Player extends Resource {
   }
 
   /**
+   * @return PlayerName
+   */
+  public function changePlayerName(PlayerName $playerName): void
+  {
+    $this->playerName = $playerName;
+  }
+
+  /**
    * @return Mu|null
    */
   public function getMu(): ?Mu

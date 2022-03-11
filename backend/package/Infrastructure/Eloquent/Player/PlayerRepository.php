@@ -86,6 +86,7 @@ class PlayerRepository implements PlayerRepositoryInterface {
     try {
       EloquentPlayer::findOrFail($player->getPlayerId()->getValue())
           ->update([
+              'name' => $player->getPlayerName()->getValue(),
               'mu' => $player->getMu()->getValue(),
               'sigma' => $player->getSigma()->getValue(),
               'rate' => $player->getRate()->getValue(),

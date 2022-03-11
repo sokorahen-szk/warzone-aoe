@@ -128,6 +128,10 @@ class ApplicationProvider extends ServiceProvider
             \Package\Usecase\Account\ResetPassword\AccountResetPasswordServiceInterface::class,
             \Package\Application\Account\ResetPassword\AccountResetPasswordService::class
         );
+        $this->app->bind(
+            \Package\Usecase\Admin\Player\Update\AdminPlayerUpdateServiceInterface::class,
+            \Package\Application\Admin\Player\Update\AdminPlayerUpdateService::class
+        );
     }
 
     /**
