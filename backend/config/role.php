@@ -34,6 +34,6 @@ return [
     [
         'label' => 'プレイヤー更新',
         'path' => 'admin/player/[0-9]+',
-        'level' => 5,
+        'level' => 50,
     ],
 ];

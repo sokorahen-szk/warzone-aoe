@@ -32,7 +32,7 @@ class AdminPlayerUpdateService implements AdminPlayerUpdateServiceInterface {
         $player->changeMu(new Mu($command->mu));
         $player->changeSigma(new Sigma($command->sigma));
         $player->changeRate(new Rate($command->rate));
-        $player->changeEnabled(new Enabled(Enabled::PLAYER_ACCOUNT_ENABLED));
+        $player->changeEnabled(new Enabled($command->enabled));
 
 		try {
 			DB::beginTransaction();
