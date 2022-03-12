@@ -1,7 +1,7 @@
 // Common...
 import AdminRequest from '@pages/admin/Request.vue'
 import AdminGame from '@pages/admin/Game.vue'
-import AdminUser from '@pages/account/User.vue'
+import AdminUser from '@pages/admin/User.vue'
 
 export const adminRoute = [
   {
