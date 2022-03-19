@@ -94,9 +94,6 @@ export default {
 
       return userStatusLabel && userStatusLabel.label
     },
-    view(user) {
-      console.log(user)
-    }
   }
 }
 </script>

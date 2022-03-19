@@ -13,6 +13,7 @@
         @change="updateValue"
         :hide-details="hideDetails"
         :flat="flat"
+        :outlined="outlined"
     ></v-select>
 </template>
 
@@ -32,6 +33,7 @@ export default {
         solo: {type: Boolean, default: false},
         hideDetails: {type: Boolean, default: false},
         flat: {type: Boolean, default: false},
+        outlined: {type: Boolean, default: false},
     },
     data() {
         return {

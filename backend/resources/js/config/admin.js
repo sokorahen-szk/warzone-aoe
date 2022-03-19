@@ -10,3 +10,10 @@ export const registerRequestTemplate = {
   status: 0,
   remarks: null
 }
+
+export const roles = [
+  {id: 1, label: 'オーナー'},
+  {id: 2, label: '管理者'},
+  {id: 3, label: '編集者'},
+  {id: 4, label: '一般'},
+]
