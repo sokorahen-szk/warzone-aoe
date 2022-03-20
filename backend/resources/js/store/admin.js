@@ -64,7 +64,7 @@ const actions = {
       })
     })
   },
-  userList ({ commit }, payload) {
+  listUser ({ commit }, payload) {
     const params = excludeNullParams(payload)
     return new Promise( (resolve, reject) => {
       axios.get('/api/admin/user', {
@@ -74,6 +74,46 @@ const actions = {
           commit('setUsers', {$users: res.data.body.users})
           commit('setUsersTotalCount', {$totalCount: res.data.body.paginator.totalCount})
           commit('setUsersTotalPage', {$totalPage: res.data.body.paginator.totalPage})
+          resolve(res.data.messages)
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
+    })
+  },
+  updateUser ({ commit }, payload) {
+    const params = excludeNullParams({
+      user_name: payload.userName,
+      password: payload.password,
+      email: payload.email,
+      steam_id: payload.steamId,
+      twitter_id: payload.twitterId,
+      web_site_url: payload.webSiteUrl,
+      status: payload.status,
+      role_id: payload.roleId,
+      game_packages: payload.gamePackages,
+    })
+    return new Promise( (resolve, reject) => {
+      axios.post(`/api/admin/user/${payload.id}`, params).then( (res) => {
+        if(res.data && res.data.isSuccess) {
+          resolve(res.data.messages)
+        } else {
+          reject(res.data.errorMessages)
+        }
+      })
+    })
+  },
+  createUser ({ commit }, payload) {
+    const params = excludeNullParams({
+      user_name: payload.userName,
+      player_name: payload.playerName,
+      role_id: payload.roleId,
+      password: payload.password,
+      steam_id: payload.steamId,
+    })
+    return new Promise( (resolve, reject) => {
+      axios.post(`/api/admin/user/create`, params).then( (res) => {
+        if(res.data && res.data.isSuccess) {
           resolve(res.data.messages)
         } else {
           reject(res.data.errorMessages)
