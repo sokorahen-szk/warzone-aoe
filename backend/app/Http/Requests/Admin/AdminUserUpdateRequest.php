@@ -38,7 +38,7 @@ class AdminUserUpdateRequest extends FormRequest
             'twitter_id'                => ['sometimes', 'string'],
             'web_site_url'              => ['sometimes', 'url', 'active_url'],
 
-            'status'                    => ['sometimes', 'integer'],
+            'status'                    => ['required', 'integer'],
             'role_id'                   => ['required', 'integer'],
             'game_packages'             => ['sometimes', 'string'],
         ];

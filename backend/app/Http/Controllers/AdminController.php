@@ -65,7 +65,7 @@ class AdminController extends Controller
             $request->input('steam_id', null)
         ));
 
-        return $this->validResponse([]);
+        return $this->validResponse([], 'ユーザ情報を作成しました。');
     }
 
     public function updateUser(AdminUserUpdateServiceInterface $interactor, AdminUserUpdateRequest $request, int $userId)
@@ -79,11 +79,11 @@ class AdminController extends Controller
             $request->input('steam_id', null),
             $request->input('twitter_id', null),
             $request->input('web_site_url', null),
-            $request->input('status', null),
+            $request->status,
             $request->input('game_packages', null),
         ));
 
-        return $this->validResponse([]);
+        return $this->validResponse([], 'ユーザ情報を更新しました。');
     }
 
     public function updateGame(AdminGameUpdateServiceInterface $interactor, AccountGameStatusUpdateRequest $request, int $gameRecordId)
