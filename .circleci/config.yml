@@ -1,0 +1,58 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: circleci/node:12.8.0
+    working_directory: ~/build
+    steps:
+      - checkout
+      - run:
+          name: npm install
+          command: npm install
+          working_directory: backend
+      - run:
+          name: npm run production
+          command: npm run production
+          working_directory: backend
+      - persist_to_workspace:
+          root: ~/build
+          paths:
+              - backend/public
+  deploy:
+    machine:
+      image: circleci/classic:edge
+    working_directory: ~/deploy
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /tmp
+      - add_ssh_keys:
+          fingerprints:
+            - "${FINGERPRINT}"
+      - run:
+          name: scp deploy.sh to remote server
+          command: |
+            scp -o StrictHostKeyChecking=no deploy.sh ${DEPLOY_DIST_USER}@${DEPLOY_DIST_HOST}:~/
+      - run:
+          name: exec deploy.sh pre_deploy
+          command: |
+            ssh -o StrictHostKeyChecking=no ${DEPLOY_DIST_USER}@${DEPLOY_DIST_HOST} 'bash ~/deploy.sh pre_deploy dev'
+      - run:
+          name: scp /tmp/backend/public to remote server
+          command: |
+            scp -o StrictHostKeyChecking=no -r /tmp/backend/public ${DEPLOY_DIST_USER}@${DEPLOY_DIST_HOST}:~/tmp
+      - run:
+          name: exec deploy.sh deploy
+          command: |
+            ssh -o StrictHostKeyChecking=no ${DEPLOY_DIST_USER}@${DEPLOY_DIST_HOST} 'bash ~/deploy.sh deploy dev'
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: main
