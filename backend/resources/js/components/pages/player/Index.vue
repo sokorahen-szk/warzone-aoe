@@ -42,7 +42,7 @@
                   class="pa-2"
                   height="100"
                 >
-                  初心者です。よろしくお願いします。
+                  よろしくお願いします。
                 </v-card>
               </div>
               <div>登録日 {{ profile && toStringYYYYMM(profile.player.joinedAt) }}</div>

@@ -55,6 +55,13 @@
 							</v-col>
 						</v-row>
 						</template>
+						<v-row
+							no-gutters class="py-2"
+							v-for="i in (Math.ceil(gameRecord.playerCount / 2) - gameRecord.playerMemories[1].length)"
+							:key="`table-tema1-dummy-${i}`"
+						>
+							<v-col cols="12" class="py-2">&nbsp;</v-col>
+						</v-row>
 						<v-divider />
 						<v-row no-gutters class="py-2">
 							<v-col cols="7">
@@ -71,7 +78,7 @@
 					</td>
 					<td>
 						<template v-for="player in gameRecord.playerMemories[2]">
-						<v-row no-gutters class="py-2" :key="`table-team1-${player.playerId}`">
+						<v-row no-gutters class="py-2" :key="`table-team2-${player.playerId}`">
 							<v-col cols="2" class="text-center"><Avator :src="player.avatorImage"/></v-col>
 							<v-col cols="5" class="py-2">{{player.playerName}}</v-col>
 							<v-col cols="2" class="py-2">
@@ -84,6 +91,13 @@
 							</v-col>
 						</v-row>
 						</template>
+						<v-row
+							no-gutters class="py-2"
+							v-for="i in (Math.ceil(gameRecord.playerCount / 2) - gameRecord.playerMemories[2].length)"
+							:key="`table-tema2-dummy-${i}`"
+						>
+							<v-col cols="12" class="py-2">&nbsp;</v-col>
+						</v-row>
 						<v-divider />
 						<v-row no-gutters class="py-2">
 							<v-col cols="7">
