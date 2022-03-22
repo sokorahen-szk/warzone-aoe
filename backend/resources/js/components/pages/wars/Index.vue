@@ -57,11 +57,6 @@ export default {
       fetchWarHistoryListToStore: 'warStore/fetchAllWarHistoryList'
     }),
     fetchWarHistoryList(page) {
-      // 対象ページがキャッシュ済みなら、キャッシュデータを使用する
-      if(this.existTargetPage(page)){
-        this.setGameRecordList(page)
-        return
-      }
       this.isLoading = true
       new Promise((resolve) => {
         resolve(this.fetchWarHistoryListToStore({page: page}))
@@ -83,12 +78,6 @@ export default {
       }
       this.gameRecordList = this.$store.getters['warStore/getAllWarHistoryList'](page)
     },
-    existTargetPage(page) {
-      if(!page){
-        return false
-      }
-      return this.$store.getters['warStore/existAllTargetPage'](page)
-    }
   },
   created() {
     this.fetchWarHistoryList(this.currentPage)

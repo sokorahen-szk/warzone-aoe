@@ -24,6 +24,7 @@ class PlayerListHistoryData extends Data
 				'name'                    => $source->getGamePackage()->getName()->getValue(),
 			],
 			'playerMemories'      => $this->toPlayerMemories($source->getPlayerMemories()),
+			'playerCount'         => count($source->getPlayerMemories()),
 			'winningTeam'         => $source->getWinningTeam()->getValue(),
 			'victoryPrediction'   => $source->getVictoryPrediction()->getValue(),
 			'status'              => $source->getGameStatus()->getValue(),
