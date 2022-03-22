@@ -50,23 +50,11 @@ const getters = {
    * プレイヤー詳細の対戦履歴ページのパラメータ取得
    */
   getPlayerWarHistoryList: (state) => (params) => {
-    const playerKey = params.playerId
-    const pageKey = params.page
-    return state.playerWarHistoryList.value[playerKey][pageKey]
+    return state.playerWarHistoryList.value
   },
   getPlayerTotalPage (state) {
     return state.playerWarHistoryList.totalPage
   },
-  existPlayerTargetPage: (state) => (params) => {
-    const playerKey = params.playerId
-    const pageKey = params.page
-    if(playerKey in state.playerWarHistoryList.value){
-      // ここうまくいってない
-      return (pageKey in state.playerWarHistoryList.value[playerKey])
-    }else{
-      return false
-    }
-  }
 }
 
 const mutations = {
@@ -124,9 +112,7 @@ const mutations = {
       warHistory.playerMemories = playerMemories
       return warHistory
     })
-    const playerKey = warHistoryList.playerId
-    const pageKey = warHistoryList.page
-    state.playerWarHistoryList.value[playerKey] = {[pageKey]: value}
+    state.playerWarHistoryList.value = value
   },
   setPlayerTotalPage (state, totalPage) {
     state.playerWarHistoryList.totalPage = totalPage
