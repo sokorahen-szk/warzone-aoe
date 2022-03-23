@@ -27,9 +27,9 @@ class MapSeeder extends Seeder
                 'image'             => '/storage/maps/1/arabia.jpg',
             ],
             (object) [
-                'game_package_id'   => 2,
-                'name'              => 'アラビア',
-                'image'             => '/storage/maps/2/arabia.jpg',
+                'game_package_id'   => 1,
+                'name'              => 'その他',
+                'image'             => null,
             ],
         ];
 

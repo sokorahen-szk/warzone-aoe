@@ -17,16 +17,8 @@ class GamePackageSeeder extends Seeder
         SeederHelper::truncate('game_packages');
 
         GamePackageModel::create([
-            'name'          => 'AoE2HD',
-            'description'   => 'Age Of Empires 2 Home Edition',
-        ]);
-        GamePackageModel::create([
             'name'          => 'AoE2DE',
             'description'   => 'Age Of Empires 2 Definitive Edition',
-        ]);
-        GamePackageModel::create([
-            'name'          => 'AoE2',
-            'description'   => 'Age of Empires II (パッケージ版)',
         ]);
     }
 }
