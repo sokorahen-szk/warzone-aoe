@@ -33,25 +33,30 @@
 			</thead>
 			<tbody>
 				<tr class="tr" v-for="gameRecord in gameRecordList" :key="gameRecord.gameId">
-					<td class="text-center">
+					<td class="text-center mb-3">
 						<div>{{gameRecord.gameStartDate}}</div>
 						<div>{{gameRecord.gameStartTime}}</div>
 						<div>
-							<Label :color="'success'">{{gameRecord.gamePackage.name}}</Label>
+							<Label>{{gameRecord.gamePackage.name}}</Label>
+						</div>
+						<div>
+							{{ gameStatus(gameRecord.status) }}
 						</div>
 					</td>
 					<td>
 						<template v-for="player in gameRecord.playerMemories[1]">
 						<v-row no-gutters class="py-2" :key="`table-team1-${player.playerId}`">
 							<v-col cols="2" class="text-center"><Avator :src="player.avatorImage"/></v-col>
-							<v-col cols="5" class="py-2">{{player.playerName}}</v-col>
+							<v-col cols="5" class="py-2">
+								<Link :path="`/player/${player.userId}`">{{player.playerName}}</Link>
+							</v-col>
 							<v-col cols="2" class="py-2">
 								{{player.rank}}
-								<span v-if="player.afterRank !== null">({{ addSign(player.afterRank) }})</span>
+								<span v-if="player.afterRank !== null">({{ calc(player.rank, player.afterRank) }})</span>
 							</v-col>
 							<v-col cols="3" class="py-2">
 								{{player.rate}}
-								<span v-if="player.afterRate !== null">({{ addSign(player.afterRate) }})</span>
+								<span v-if="player.afterRate !== null">({{ calc(player.rate, player.afterRate) }})</span>
 							</v-col>
 						</v-row>
 						</template>
@@ -66,10 +71,10 @@
 						<v-row no-gutters class="py-2">
 							<v-col cols="7">
 								<Label
-									:color="status(gameRecord.winningTeam, 1) ? 'primary' : 'error'"
+									:color="status(gameRecord.winningTeam, 1) ? 'success' : 'error'"
 									v-if="gameRecord.winningTeam"
 								>
-									{{ status(gameRecord.winningTeam, 1) ? 'WIN' : 'LOSE' }}
+									{{ status(gameRecord.winningTeam, 1) ? '勝ち' : '負け' }}
 								</Label>
 							</v-col>
 							<v-col cols="2" class="py-2">{{sum(gameRecord.playerMemories[1], 'rank')}}</v-col>
@@ -80,14 +85,16 @@
 						<template v-for="player in gameRecord.playerMemories[2]">
 						<v-row no-gutters class="py-2" :key="`table-team2-${player.playerId}`">
 							<v-col cols="2" class="text-center"><Avator :src="player.avatorImage"/></v-col>
-							<v-col cols="5" class="py-2">{{player.playerName}}</v-col>
+							<v-col cols="5" class="py-2">
+								<Link :path="`/player/${player.userId}`">{{player.playerName}}</Link>
+							</v-col>
 							<v-col cols="2" class="py-2">
 								{{player.rank}}
-								<span v-if="player.afterRank !== null">({{ addSign(player.afterRank) }})</span>
+								<span v-if="player.afterRank !== null">({{ calc(player.rank, player.afterRank) }})</span>
 							</v-col>
 							<v-col cols="3" class="py-2">
 								{{player.rate}}
-								<span v-if="player.afterRate !== null">({{ addSign(player.afterRate) }})</span>
+								<span v-if="player.afterRate !== null">({{ calc(player.rate, player.afterRate) }})</span>
 							</v-col>
 						</v-row>
 						</template>
@@ -102,10 +109,10 @@
 						<v-row no-gutters class="py-2">
 							<v-col cols="7">
 								<Label
-									:color="status(gameRecord.winningTeam, 2) ? 'primary' : 'error' "
+									:color="status(gameRecord.winningTeam, 2) ? 'success' : 'error' "
 									v-if="gameRecord.winningTeam"
 								>
-									{{ status(gameRecord.winningTeam, 2) ? 'WIN' : 'LOSE' }}
+									{{ status(gameRecord.winningTeam, 2) ? '勝ち' : '負け' }}
 								</Label>
 							</v-col>
 							<v-col cols="2" class="py-2">{{sum(gameRecord.playerMemories[2], 'rank')}}</v-col>
@@ -128,12 +135,16 @@
 import Avator from '@atoms/Avator'
 import Label from '@atoms/Label'
 import Pagination from '@atoms/Pagination'
+import Link from '@atoms/Link'
+import { gameStatusLabels } from '@/config/game'
+
 export default {
 	name: 'GameRecordTable',
 	components: {
 		Avator,
 		Label,
-		Pagination
+		Pagination,
+		Link,
 	},
 	props: {
 		gameRecordList: Array,
@@ -160,7 +171,17 @@ export default {
 			} else if (num < 0) {
 				return `-${ Math.abs(num) }`
 			}
-			return '0';
+			return 'ー';
+		},
+		calc(before, after) {
+			return this.addSign(before - after)
+		},
+		gameStatus(status) {
+			const gameStatusLabel = gameStatusLabels.find( (gameStatusLabel) => {
+				return gameStatusLabel.id === status
+			})
+
+			return gameStatusLabel && gameStatusLabel.label
 		},
 	}
 }
@@ -186,9 +207,5 @@ export default {
 
 	.tr:hover {
 		background: transparent !important;
-	}
-
-	.v-data-table td {
-		margin-bottom: 10px;
 	}
 </style>

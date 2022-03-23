@@ -20,11 +20,11 @@ class RuleSeeder extends Seeder
         $data = [
             (object) [
                 'game_package_id'   => 1,
-                'name'              => 'ESUDAルール',
-                'description'       => 'ESUDAルール',
+                'name'              => '基本ルール',
+                'description'       => '基本ルール',
             ],
             (object) [
-                'game_package_id'   => 2,
+                'game_package_id'   => 1,
                 'name'              => 'ESUDAルール',
                 'description'       => 'ESUDAルール',
             ],

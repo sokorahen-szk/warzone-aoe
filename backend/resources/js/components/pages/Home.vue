@@ -75,6 +75,7 @@
 				<v-row no-gutters class="pa-0 ma-0">
 					<v-col cols="12">
 						<div class="py-3">お知らせ</div>
+						<div class="pa-1">-</div>
 						<!--v-list class="pa-0 ma-0">
 							<template v-for="information in informations">
 							<v-list-item class="pa-0 ma-0" :to="information.link" :key="information.id">
