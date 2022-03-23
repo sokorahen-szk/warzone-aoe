@@ -96,7 +96,8 @@ class DiscordRepository implements DiscordRepositoryInterface {
             $team1RateSum,
             $team2RateSum,
             $team1List,
-            $team2List
+            $team2List,
+            null
         );
     }
 
@@ -121,6 +122,12 @@ class DiscordRepository implements DiscordRepositoryInterface {
         $team1List = $gameRecord->pluckPlayerMemoriesByTeam($team1);
         $team2List = $gameRecord->pluckPlayerMemoriesByTeam($team2);
 
+        $winnerTeam = $gameRecord->getWinningTeam();
+        $winnerTeamLabel = null;
+        if ($winnerTeam->getValue() === 1 || $winnerTeam->getValue() === 2) {
+            $winnerTeamLabel = sprintf('チーム%d 勝利', $winnerTeam->getValue());
+        }
+
         $this->sendGameNotidication(
             self::GAME_END,
             $notificationTitle,
@@ -129,7 +136,8 @@ class DiscordRepository implements DiscordRepositoryInterface {
             $team1RateSum,
             $team2RateSum,
             $team1List,
-            $team2List
+            $team2List,
+            $winnerTeamLabel
         );
     }
 
@@ -141,7 +149,8 @@ class DiscordRepository implements DiscordRepositoryInterface {
         int $team1RateSum,
         int $team2RateSum,
         array $team1List,
-        array $team2List
+        array $team2List,
+        ?string $winnerTeamLabel
     )
     {
         $this->discordClient->sendMessageEmbeds(
@@ -151,7 +160,12 @@ class DiscordRepository implements DiscordRepositoryInterface {
                 'embeds'    => [
                     [
                         'title' => $notificationTitle,
-                        'description' => self::$gameTypes[$gameMode],
+                        'description' => $this->generateDescription(
+                            [
+                                self::$gameTypes[$gameMode],
+                                $winnerTeamLabel,
+                            ]
+                        ),
                         'color' => $notificationColor,
                         'footer' => [
                             'text' => sprintf('%s日時：%s', self::$gameTypes[$gameMode], $gameDatetime),
@@ -223,6 +237,28 @@ class DiscordRepository implements DiscordRepositoryInterface {
         }
 
         return $filterdGamePackages;
+    }
+
+    /**
+     * @param array $descriptions
+     * @return string
+     */
+    private function generateDescription(array $descriptions): string
+    {
+        if (count($descriptions) === 1) {
+            return $descriptions[0];
+        }
+
+        $descriptionStr = null;
+        foreach ($descriptions as $description) {
+            if ($description == null) {
+                continue;
+            }
+
+            $descriptionStr .= sprintf('%s%s', $description, self::LINE_RETURN_CHAR);
+        }
+
+        return $descriptionStr;
     }
 
 }
