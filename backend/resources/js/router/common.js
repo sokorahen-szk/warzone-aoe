@@ -2,6 +2,7 @@
 import Home from '@pages/Home.vue'
 import Login from '@pages/Login.vue'
 import Contact from '@pages/Contact.vue'
+import News from '@pages/News.vue'
 import Register from '@pages/Register.vue'
 import PasswordReset from '@pages/PasswordReset.vue'
 import PasswordResetConfirm from '@pages/PasswordResetConfirm.vue'
@@ -11,6 +12,11 @@ export const commonRoute = [
     path: '/',
     name: 'home',
     component: Home
+  },
+  {
+    path: '/news',
+    name: 'News',
+    component: News
   },
   {
     path: '/contact',
