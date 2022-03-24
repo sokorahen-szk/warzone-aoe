@@ -24,11 +24,11 @@
                   <v-row class="mt-4">
                     <v-col cols="12" class="py-0 ma-0">
                       <div class="py-2">ユーザ名<RequireLabel /></div>
-                      <small>ユーザ名はログイン時に使用します。４文字以上の16文字以内で入力してください。</small>
+                      <small>ユーザ名はログイン時に使用します。半角英数字４文字以上の16文字以内で入力してください。</small>
                       <TextInput
                         :value="userName"
                         @update="userName = $event"
-                        placeholder="ユーザ名"
+                        placeholder="username"
                         outlined
                         required
                         :rules="{label:'ユーザ名', types:'required,min:4,max:16'}"
@@ -124,6 +124,7 @@
                         label="新規登録"
                         color="success"
                         @click="registerEvent"
+                        :loading="loading"
                         :disabled="!valid"
                         height="65"
                         width="200"
@@ -192,6 +193,8 @@ export default {
       question1: question1,
       question2: question2,
       question3: question3,
+
+      loading: false,
     }
   },
   computed: {
@@ -201,6 +204,7 @@ export default {
     ...mapActions('accountStore', ['register']),
     registerEvent() {
       if(!this.$refs.form.validate()) return;
+      this.loading = true
 
       new Promise ( reslve => {
         reslve(this.register({
@@ -216,7 +220,6 @@ export default {
         }))
       })
       .then( () => {
-        // TODO: モーダルをだすまではAlertで
         alert("アカウント登録しました。")
 
         router.push({path: '/login'})
@@ -228,7 +231,9 @@ export default {
           message: err,
         })
       })
-
+      .finally( () => {
+        this.loading = false
+      })
     }
   }
 }

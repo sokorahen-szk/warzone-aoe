@@ -41,22 +41,22 @@ class GameHistoryListData extends Data {
 		$this->paginator = $apiPaginator->getPaginator();
   }
 
-  private function toPlayerMemories(array $sources): array
+  private function toPlayerMemories(array $playerMemories): array
   {
     $list = [];
 
-    foreach ($sources as $source) {
+    foreach ($playerMemories as $playerMemory) {
       $list[] = [
-        'playerMemoryId'  => $source->getPlayerMemoryId()->getValue(),
-        'userId'          => $source->getUser()->getId()->getValue(),
-        'playerId'        => $source->getPlayerId()->getValue(),
-        'team'            => $source->getTeam()->getValue(),
-        'playerName'      => $source->getPlayer()->getPlayerName()->getValue(),
-        'avatorImage'     => $source->getUser()->getAvatorImage()->getValue(),
-        'rate'            => $source->getRate()->getValue(),
-        'afterRate'       => $source->getAfterRate()->getValue(),
-        'rank'            => $source->getMu()->getRank(),
-        'afterRank'       => $source->getAfterMu()->getRank(),
+        'playerMemoryId'  => $playerMemory->getPlayerMemoryId()->getValue(),
+        'userId'          => $playerMemory->getUser()->getId()->getValue(),
+        'playerId'        => $playerMemory->getPlayerId()->getValue(),
+        'team'            => $playerMemory->getTeam()->getValue(),
+        'playerName'      => $playerMemory->getPlayer()->getPlayerName()->getValue(),
+        'avatorImage'     => $playerMemory->getUser()->getAvatorImage()->getValue(),
+        'rate'            => $playerMemory->getRate()->getValue(),
+        'afterRate'       => $playerMemory->getAfterRate()->getValue(),
+        'rank'            => $playerMemory->getMu()->getRank(),
+        'afterRank'       => $playerMemory->getAfterMu()->getRank(),
       ];
     }
     return $list;
