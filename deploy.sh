@@ -6,7 +6,7 @@ DEPLOY_TYPE=`basename ${1}`
 ENV=`basename ${2}`
 BRANCH_NAME=main
 APP_DIR=warzone-aoe
-APP_SRC=backend
+APP_SRC=src
 
 function pre_deploy {
     echo "start pre_deploy"
