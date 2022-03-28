@@ -39,14 +39,14 @@ $ docker-compose up -d --build
 
 ## composer install
 ```
-$ cd /path/to/warzone-aoe/backend
+$ cd /path/to/warzone-aoe/src
 
 docker exec web composer install
 ```
 
 ## npm install
 ```
-$ cd /path/to/warzone-aoe/backend
+$ cd /path/to/warzone-aoe/src
 
 # nodeとnpmのバージョンを合わせて下さい。
 # npm -v
@@ -71,7 +71,7 @@ $ docker exec web php artisan migrate:refresh --seed
 
 ## npm run development
 ```
-$ cd /path/to/warzone-aoe/backend
+$ cd /path/to/warzone-aoe/src
 
 $ npm run development
 

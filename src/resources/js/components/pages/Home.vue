@@ -78,7 +78,7 @@
 						<v-list class="pa-0 ma-0">
 							<v-list-item class="pa-0 ma-0" to="/news">
 								<Label
-									:color="info"
+									color="info"
 								>お知らせ</Label>
 								<v-list-item-content>
 									<v-list-item-title>新warzone-aoe リリースしました。</v-list-item-title>
