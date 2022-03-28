@@ -31,7 +31,7 @@
         </UserTable>
 
 <Modal
-  title="ユーザ編集"
+  title="ユーザ管理"
   :show="isEditModal"
   @update="isEditModal = $event"
 >

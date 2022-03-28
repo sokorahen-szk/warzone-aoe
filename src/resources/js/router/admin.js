@@ -2,6 +2,7 @@
 import AdminRequest from '@pages/admin/Request.vue'
 import AdminGame from '@pages/admin/Game.vue'
 import AdminUser from '@pages/admin/User.vue'
+import AdminRate from '@pages/admin/Rate.vue'
 
 export const adminRoute = [
   {
@@ -16,11 +17,16 @@ export const adminRoute = [
     component: AdminGame,
     meta: { requiresAuth: true }
   },
-
   {
     path: '/admin/user',
     name: 'User',
     component: AdminUser,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/rate',
+    name: 'Rate',
+    component: AdminRate,
     meta: { requiresAuth: true }
   },
 ]
