@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Account\AccountGameStatusUpdateRequest;
+use App\Http\Requests\Admin\AdminPlayerListRequest;
 use App\Http\Requests\Admin\AdminPlayerUpdateRequest;
 use App\Http\Requests\Admin\AdminUserListRequest;
 use App\Http\Requests\Admin\AdminUserUpdateRequest;
@@ -11,6 +12,8 @@ use App\Traits\ApiResponser;
 use App\Http\Requests\Admin\RegisterRequestUpdateRequest;
 use Package\Usecase\Admin\Game\Update\AdminGameUpdateCommand;
 use Package\Usecase\Admin\Game\Update\AdminGameUpdateServiceInterface;
+use Package\Usecase\Admin\Player\ListData\AdminPlayerListCommand;
+use Package\Usecase\Admin\Player\ListData\AdminPlayerListServiceInterface;
 use Package\Usecase\Admin\Player\Update\AdminPlayerUpdateCommand;
 use Package\Usecase\Admin\Player\Update\AdminPlayerUpdateServiceInterface;
 use Package\Usecase\Admin\RegisterRequest\GetList\AdminRegisterRequestGetListServiceInterface;
@@ -95,6 +98,16 @@ class AdminController extends Controller
         ));
 
         return $this->validResponse([]);
+    }
+
+    public function listPlayer(AdminPlayerListServiceInterface $interactor, AdminPlayerListRequest $request)
+    {
+        $result = $interactor->handle(new AdminPlayerListCommand(
+            $request->input('page', 1),
+            $request->input('limit', 10)
+        ));
+
+        return $this->validResponse($result->getVars(), '取得しました。');
     }
 
     public function updatePlayer(AdminPlayerUpdateServiceInterface $interactor, AdminPlayerUpdateRequest $request, int $playerId)

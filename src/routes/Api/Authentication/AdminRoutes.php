@@ -52,6 +52,13 @@ class AdminRoutes {
             ->where('gameRecordId', '^[0-9]+$');
 
             /**
+             * プレイヤー　一覧取得
+             * GET /api/admin/player
+             */
+            Route::get('player', [AdminController::class, 'listPlayer'])
+            ->name('admin.list.player');
+
+            /**
              * プレイヤー更新
              * POST /api/admin/player/{playerId}
              */
