@@ -16,6 +16,7 @@ use Package\Infrastructure\Eloquent\User\RegisterRequestRepository;
 use Package\Infrastructure\Eloquent\User\UserRepository;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Package\Infrastructure\TrueSkill\TrueSkillClient;
 
 class AccountRegisterServiceTest extends TestCase {
     use RefreshDatabase;
@@ -36,9 +37,9 @@ class AccountRegisterServiceTest extends TestCase {
             "password123",
             "email@example.com",
             "1,2",
-            "answer1",
-            "answer2",
-            "answer3"
+            "0",
+            "1,2,3",
+            "3,4,5,6"
         );
 
         $userRepository = new UserRepository();
@@ -49,7 +50,8 @@ class AccountRegisterServiceTest extends TestCase {
             new RegisterRequestRepository(),
             new UserService($userRepository),
             new DiscordRepository(new DiscordClient()),
-            new GamePackageRepository()
+            new GamePackageRepository(),
+            new TrueSkillClient()
         );
 
         $instance->handle($command);
