@@ -132,6 +132,10 @@ class ApplicationProvider extends ServiceProvider
             \Package\Usecase\Admin\Player\Update\AdminPlayerUpdateServiceInterface::class,
             \Package\Application\Admin\Player\Update\AdminPlayerUpdateService::class
         );
+        $this->app->bind(
+            \Package\Usecase\Admin\Player\ListData\AdminPlayerListServiceInterface::class,
+            \Package\Application\Admin\Player\ListData\AdminPlayerListService::class
+        );
     }
 
     /**

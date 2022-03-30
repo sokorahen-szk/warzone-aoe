@@ -8,17 +8,21 @@ use Package\Domain\User\Entity\Player;
 use App\Models\PlayerModel as EloquentPlayer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Log;
+use Package\Domain\System\Entity\Paginator;
 use Package\Domain\User\ValueObject\Player\GamePackages;
 use Package\Infrastructure\Eloquent\Converter;
-
+// Paginator
 class PlayerRepository implements PlayerRepositoryInterface {
   /**
+   * プレイヤー 一覧取得
+   * @param Paginator|null $paginator
    * @return Player[]
    */
-  public function list(): array
+  public function list(?Paginator $paginator = null): array
   {
     $players = EloquentPlayer::with('user')
       ->enabled()
+      ->paginator($paginator)
       ->get();
 
     if (!$players) {
@@ -26,6 +30,18 @@ class PlayerRepository implements PlayerRepositoryInterface {
     }
 
     return Converter::players($players);
+  }
+
+  /**
+   * プレイヤー 総件数
+   * @return int
+   */
+  public function listCount(): int
+  {
+    $count = EloquentPlayer::enabled()
+      ->count();
+
+    return $count;
   }
 
   /**

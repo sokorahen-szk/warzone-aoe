@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Package\Domain\System\Entity\Paginator;
 
 class PlayerModel extends Model
 {
@@ -13,6 +14,16 @@ class PlayerModel extends Model
     public function scopeEnabled($query)
     {
         return $query->where('enabled', true);
+    }
+
+    public function scopePaginator($query, ?Paginator $paginator = null)
+    {
+        if ($paginator) {
+            $query->offset($paginator->getNextOffset())
+            ->limit($paginator->getLimit()->getValue());
+        }
+
+        return $query;
     }
 
     // ユーザ情報

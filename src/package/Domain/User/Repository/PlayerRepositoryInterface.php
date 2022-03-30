@@ -2,15 +2,24 @@
 
 namespace Package\Domain\User\Repository;
 
+use Package\Domain\System\Entity\Paginator;
 use Package\Domain\User\Entity\Player;
 use Package\Domain\User\ValueObject\Player\GamePackages;
 use Package\Domain\User\ValueObject\Player\PlayerId;
 
 interface PlayerRepositoryInterface {
   /**
+   * プレイヤー 一覧取得
+   * @param Paginator|null $paginator
    * @return Player[]
    */
-  public function list(): array;
+  public function list(?Paginator $paginator = null): array;
+
+  /**
+   * プレイヤー 総件数
+   * @return int
+   */
+  public function listCount(): int;
 
   /**
    * プレイヤー新規作成
