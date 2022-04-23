@@ -16,7 +16,7 @@ class AdminPlayerListData extends Data {
   public function __construct(array $sources, ApiPaginator $apiPaginator)
   {
       foreach ($sources as $source) {
-        $this->users[] = [
+        $this->players[] = [
           'id' => $source->getPlayerId()->getValue(),
           'avatorImage' => $source->getUser()->getAvatorImage()->getImageFullPath(),
           'name' => $source->getPlayerName()->getValue(),
