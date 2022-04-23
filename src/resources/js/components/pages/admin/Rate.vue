@@ -13,7 +13,162 @@
                     :playerRecordTotalPage="getPlayersTotalPage"
                     :current-page="page"
                     @changePage="currentPage => (page = currentPage)"
+                    @clickShow="show($event)"
                 />
+
+                <Modal
+                    title="プレイヤー管理"
+                    :show="isEditModal"
+                    @update="isEditModal = $event"
+                >
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-row no-gutters v-if="selectedPlayer">
+                            <v-col cols="12" class="py-0 ma-0">
+                                <v-row no-gutters>
+                                    <v-col cols="12">
+                                        <v-row no-gutters>
+                                            <v-col cols="6" class="py-0 ma-0">
+                                                <div>プレイヤーID</div>
+                                                <div class="mb-4">
+                                                    {{ selectedPlayer.id }}
+                                                </div>
+                                            </v-col>
+                                            <v-col cols="6" class="py-0 ma-0">
+                                                <div>ランク</div>
+                                                <div class="mb-4">
+                                                    {{ selectedPlayer.rank }}
+                                                </div>
+                                            </v-col>
+                                        </v-row>
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <v-col cols="12" class="py-0 ma-0">
+                                            <div class="pb-1">
+                                                プレイヤー名<RequireLabel />
+                                            </div>
+                                            <TextInput
+                                                v-model="selectedPlayer.name"
+                                                @update="
+                                                    selectedPlayer.name = $event
+                                                "
+                                                placeholder=""
+                                                outlined
+                                                required
+                                                :rules="{
+                                                    label: 'プレイヤー名',
+                                                    types:
+                                                        'required,min:2,max:30'
+                                                }"
+                                            />
+                                        </v-col>
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <v-col cols="12" class="py-0 ma-0">
+                                            <div class="pb-1">
+                                                Mu<RequireLabel />
+                                            </div>
+                                            <TextInput
+                                                v-model="selectedPlayer.mu"
+                                                @update="
+                                                    selectedPlayer.mu = $event
+                                                "
+                                                placeholder=""
+                                                outlined
+                                                required
+                                                :rules="{
+                                                    label: 'Mu',
+                                                    types: 'required'
+                                                }"
+                                            />
+                                        </v-col>
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <v-col cols="12" class="py-0 ma-0">
+                                            <div class="pb-1">
+                                                Sigma<RequireLabel />
+                                            </div>
+                                            <TextInput
+                                                v-model="selectedPlayer.mu"
+                                                @update="
+                                                    selectedPlayer.mu = $event
+                                                "
+                                                placeholder=""
+                                                outlined
+                                                required
+                                                :rules="{
+                                                    label: 'Sigma',
+                                                    types: 'required'
+                                                }"
+                                            />
+                                        </v-col>
+                                    </v-col>
+                                    <v-col cols="12" class="py-0 ma-0">
+                                        <v-col cols="12" class="py-0 ma-0">
+                                            <div class="pb-1">
+                                                レート<RequireLabel />
+                                            </div>
+                                            <TextInput
+                                                v-model="selectedPlayer.rate"
+                                                @update="
+                                                    selectedPlayer.rate = $event
+                                                "
+                                                placeholder=""
+                                                outlined
+                                                required
+                                                :rules="{
+                                                    label: 'レート',
+                                                    types: 'required'
+                                                }"
+                                            />
+                                        </v-col>
+                                    </v-col>
+                                    <v-col cols="12" class="py-0 ma-0">
+                                        <v-col cols="12" class="py-0 ma-0">
+                                            <div class="pb-1">
+                                                ステータス<RequireLabel />
+                                            </div>
+                                            <SelectBox
+                                                value="1"
+                                                :rules="{
+                                                    label: 'ステータス',
+                                                    types: 'required'
+                                                }"
+                                                :items="setPlayerStatuses"
+                                                :selectedIndex="
+                                                    selectedPlayer.enabled
+                                                        ? 1
+                                                        : 2
+                                                "
+                                                @input="
+                                                    selectedPlayer.enabled = $event
+                                                "
+                                                :disabled="
+                                                    setPlayerStatuses.length < 1
+                                                "
+                                                placeholder="ステータスを選択する"
+                                                required
+                                                outlined
+                                                dense
+                                            />
+                                        </v-col>
+                                    </v-col>
+                                    <v-col cols="12" class="py-3 text-center">
+                                        <Button
+                                            color="success"
+                                            label="保存"
+                                            iconType="mdi-content-save"
+                                            icon
+                                            block
+                                            :height="45"
+                                            :loading="isLoading"
+                                            @click="update"
+                                        />
+                                    </v-col>
+                                </v-row>
+                            </v-col>
+                        </v-row>
+                    </v-form>
+                </Modal>
             </v-container>
         </template>
     </CommonWithRightColumnTemplate>
@@ -24,10 +179,17 @@ import CommonWithRightColumnTemplate from "@templates/CommonWithRightColumnTempl
 import AccountRightMenu from "@organisms/AccountRightMenu";
 import AdminPlayerTable from "@organisms/AdminPlayerTable";
 import Alert from "@atoms/Alert";
+import Modal from "@atoms/Modal";
+import SelectBox from "@atoms/SelectBox";
+import RequireLabel from "@atoms/RequireLabel";
+import TextInput from "@atoms/TextInput";
+import Button from "@atoms/Button";
 import { mapActions, mapGetters } from "vuex";
+import { editPlayerByAdminTemplate } from "@/config/admin";
 import { objCopy } from "@/services/helper";
 import { alertTemplate } from "@/config/global";
 import { profileViewTemplate } from "@/config/account";
+import { playerStatusLabels } from "@/config/player";
 
 export default {
     name: "Rate",
@@ -35,7 +197,12 @@ export default {
         CommonWithRightColumnTemplate,
         AccountRightMenu,
         Alert,
-        AdminPlayerTable
+        AdminPlayerTable,
+        Modal,
+        RequireLabel,
+        TextInput,
+        SelectBox,
+        Button
     },
     data() {
         return {
@@ -43,9 +210,15 @@ export default {
             alert: alertTemplate,
 
             players: null,
+            selectedPlayer: Object.assign({}, editPlayerByAdminTemplate),
 
             playerRecordTotalPage: 0,
-            page: 1
+            page: 1,
+
+            isEditModal: false,
+
+            valid: true,
+            isLoading: false
         };
     },
     watch: {
@@ -83,7 +256,18 @@ export default {
     computed: {
         ...mapGetters("accountStore", ["getProfile"]),
         ...mapGetters("breakpointStore", ["getDeviceType"]),
-        ...mapGetters("adminStore", ["getPlayers", "getPlayersTotalPage"])
+        ...mapGetters("adminStore", ["getPlayers", "getPlayersTotalPage"]),
+        setPlayerStatuses() {
+            let v = [];
+            playerStatusLabels.forEach(item => {
+                v.push({
+                    label: item.label,
+                    value: item.value
+                });
+            });
+
+            return v;
+        }
     },
     methods: {
         ...mapActions("adminStore", ["listPlayer"]),
@@ -99,6 +283,31 @@ export default {
                     message: err
                 });
             });
+        },
+        show(id) {
+            const findPlayer = this.findPlayerById(id);
+
+            if (!findPlayer) {
+                return;
+            }
+
+            this.$set(this, "selectedPlayer", {
+                id: findPlayer.id,
+                name: findPlayer.name,
+                rate: findPlayer.rate,
+                rank: findPlayer.rank,
+                mu: findPlayer.mu,
+                sigma: findPlayer.sigma,
+                enabled: findPlayer.enabled
+            });
+
+            this.isEditModal = true;
+        },
+        update() {
+            // TODO: ここに更新処理
+        },
+        findPlayerById(id) {
+            return this.players.find(user => user.id === id);
         }
     }
 };

@@ -30,7 +30,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="player in players" :key="player.id">
+                    <tr
+                        v-for="player in players"
+                        :key="player.id"
+                        @click="$emit('clickShow', player.id)"
+                    >
                         <td>{{ player.id }}</td>
                         <td>
                             <v-avatar color="grey lighten-2" size="40">
