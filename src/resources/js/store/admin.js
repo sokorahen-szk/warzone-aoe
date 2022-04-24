@@ -182,6 +182,24 @@ const actions = {
                     }
                 });
         });
+    },
+    updatePlayer({ commit }, payload) {
+        const params = excludeNullParams({
+            player_name: payload.playerName,
+            mu: payload.mu,
+            sigma: payload.sigma,
+            rate: payload.rate,
+            enabled: payload.enabled
+        });
+        return new Promise((resolve, reject) => {
+            axios.post(`/api/admin/player/${payload.id}`, params).then(res => {
+                if (res.data && res.data.isSuccess) {
+                    resolve(res.data.messages);
+                } else {
+                    reject(res.data.errorMessages);
+                }
+            });
+        });
     }
 };
 const adminStore = {

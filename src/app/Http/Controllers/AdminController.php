@@ -107,7 +107,7 @@ class AdminController extends Controller
             $request->input('limit', 10)
         ));
 
-        return $this->validResponse($result->getVars(), '取得しました。');
+        return $this->validResponse($result->getVars(), 'プレイヤー情報を取得しました。');
     }
 
     public function updatePlayer(AdminPlayerUpdateServiceInterface $interactor, AdminPlayerUpdateRequest $request, int $playerId)
@@ -121,6 +121,6 @@ class AdminController extends Controller
             $request->enabled
         ));
 
-        return $this->validResponse([]);
+        return $this->validResponse([], 'プレイヤー情報を更新しました。');
     }
 }

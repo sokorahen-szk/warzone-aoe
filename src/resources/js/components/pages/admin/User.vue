@@ -239,6 +239,7 @@
                                 block
                                 :height="45"
                                 :loading="isLoading"
+                                :disabled="!valid"
                                 @click="update"
                             />
                         </v-col>

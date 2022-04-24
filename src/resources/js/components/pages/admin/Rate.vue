@@ -161,6 +161,7 @@
                                             block
                                             :height="45"
                                             :loading="isLoading"
+                                            :disabled="!valid"
                                             @click="update"
                                         />
                                     </v-col>
@@ -270,7 +271,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions("adminStore", ["listPlayer"]),
+        ...mapActions("adminStore", ["listPlayer", "updatePlayer"]),
         fetchList() {
             this.players = null;
 
@@ -304,7 +305,45 @@ export default {
             this.isEditModal = true;
         },
         update() {
-            // TODO: ここに更新処理
+            if (!this.$refs.form.validate()) return;
+
+            new Promise(resolve => {
+                resolve(
+                    this.updatePlayer({
+                        id: this.selectedPlayer.id,
+                        playerName: this.selectedPlayer.name,
+                        mu: this.selectedPlayer.mu,
+                        sigma: this.selectedPlayer.sigma,
+                        rate: this.selectedPlayer.rate,
+                        enabled: this.selectedPlayer.enabled ? 1 : 0
+                    })
+                );
+            })
+                .then(res => {
+                    this.alert = {
+                        show: true,
+                        type: "info",
+                        message: res
+                    };
+                })
+                .catch(err => {
+                    this.alert = {
+                        show: true,
+                        type: "error",
+                        message: err
+                    };
+                })
+                .finally(() => {
+                    this.isEditModal = false;
+                    this.isLoading = false;
+
+                    this.fetchList();
+
+                    this.selectedPlayer = Object.assign(
+                        {},
+                        editPlayerByAdminTemplate
+                    );
+                });
         },
         findPlayerById(id) {
             return this.players.find(user => user.id === id);
