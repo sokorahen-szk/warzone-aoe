@@ -20,6 +20,7 @@ use Package\Domain\User\ValueObject\Status;
 use Package\Domain\User\ValueObject\SteamId;
 use Package\Domain\User\ValueObject\TwitterId;
 use Package\Domain\User\ValueObject\WebSiteUrl;
+use Package\Domain\User\ValueObject\Player\Enabled;
 
 class AdminUserUpdateService implements AdminUserUpdateServiceInterface {
 
@@ -62,6 +63,14 @@ class AdminUserUpdateService implements AdminUserUpdateServiceInterface {
 
             $player = $user->getPlayer();
             $player->updateGamePackages(new GamePackages($command->gamePackages));
+
+            // ユーザのステータスを[有効]以外のに変更した場合、Playerの状態もdisabledに変更する。
+            $enabled = new Enabled(Enabled::PLAYER_ACCOUNT_DISABLED);
+            if ($user->isAvailable()) {
+                $enabled = new Enabled(Enabled::PLAYER_ACCOUNT_ENABLED);
+            }
+            $player->changeEnabled($enabled);
+            $this->playerRepository->updateEnabled($player);
 
             if ($command->password) {
                 $user->changePassword(new Password($command->password));

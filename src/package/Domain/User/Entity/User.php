@@ -209,4 +209,9 @@ class User extends Resource {
     $this->password = $password;
   }
 
+  public function isAvailable(): bool
+  {
+    return $this->status->getValue() === Status::USER_STATUS_ACTIVE;
+  }
+
 }

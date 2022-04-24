@@ -1,7 +1,7 @@
 export const excludeNullParams = obj => {
     if (Object.keys(obj).length < 1) return {};
     Object.keys(obj).forEach(key => {
-        if (obj[key] === undefined || obj[key] === null) {
+        if (obj[key] === undefined || obj[key] === null || obj[key] === "") {
             delete obj[key];
         }
     });
