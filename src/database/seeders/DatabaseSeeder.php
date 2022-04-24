@@ -18,10 +18,10 @@ class DatabaseSeeder extends Seeder
         $this->call(RuleSeeder::class);
         $this->call(MapSeeder::class);
 
-        $this->call(PlayerSeeder::class);
-        $this->call(UserSeeder::class);
-        //$this->call(RegisterRequestSeeder::class);
-        //$this->call(GameRecordSeeder::class);
-        //$this->call(PlayerMemorySeeder::class);
+        // $this->call(PlayerSeeder::class);
+        // $this->call(UserSeeder::class);
+        // $this->call(RegisterRequestSeeder::class);
+        // $this->call(GameRecordSeeder::class);
+        // $this->call(PlayerMemorySeeder::class);
     }
 }
