@@ -155,7 +155,7 @@
                         <v-col
                             cols="12"
                             class="py-0 ma-0"
-                            v-if="selectedEditType === editTypes.edit"
+                            v-show="selectedEditType === editTypes.edit"
                         >
                             <div class="pb-1">ステータス<RequireLabel /></div>
                             <SelectBox
