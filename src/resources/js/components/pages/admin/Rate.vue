@@ -88,9 +88,9 @@
                                                 Sigma<RequireLabel />
                                             </div>
                                             <TextInput
-                                                v-model="selectedPlayer.mu"
+                                                v-model="selectedPlayer.sigma"
                                                 @update="
-                                                    selectedPlayer.mu = $event
+                                                    selectedPlayer.sigma = $event
                                                 "
                                                 placeholder=""
                                                 outlined
