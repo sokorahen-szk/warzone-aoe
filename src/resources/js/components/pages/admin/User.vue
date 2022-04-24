@@ -152,10 +152,25 @@
                                 }"
                             />
                         </v-col>
+                        <v-col cols="12" class="py-0 ma-0">
+                            <div class="pb-1">ロール<RequireLabel /></div>
+                            <SelectBox
+                                value="1"
+                                :rules="{ label: 'ロール', types: 'required' }"
+                                :items="setRoles"
+                                :selectedIndex="selectedUser.roleId"
+                                @input="selectedUser.roleId = $event"
+                                :disabled="setRoles.length < 1"
+                                placeholder="ロールを選択する"
+                                required
+                                outlined
+                                dense
+                            />
+                        </v-col>
                         <v-col
                             cols="12"
                             class="py-0 ma-0"
-                            v-show="selectedEditType === editTypes.edit"
+                            v-if="selectedEditType === editTypes.edit"
                         >
                             <div class="pb-1">ステータス<RequireLabel /></div>
                             <SelectBox
@@ -169,21 +184,6 @@
                                 @input="selectedUser.status = $event"
                                 :disabled="setUserStatuses.length < 1"
                                 placeholder="ステータスを選択する"
-                                required
-                                outlined
-                                dense
-                            />
-                        </v-col>
-                        <v-col cols="12" class="py-0 ma-0">
-                            <div class="pb-1">ロール<RequireLabel /></div>
-                            <SelectBox
-                                value="1"
-                                :rules="{ label: 'ロール', types: 'required' }"
-                                :items="setRoles"
-                                :selectedIndex="selectedUser.roleId"
-                                @input="selectedUser.roleId = $event"
-                                :disabled="setRoles.length < 1"
-                                placeholder="ロールを選択する"
                                 required
                                 outlined
                                 dense
