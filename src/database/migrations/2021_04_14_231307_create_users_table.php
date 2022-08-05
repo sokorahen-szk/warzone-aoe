@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->id()->comment('ユーザID');
             $table->unsignedBigInteger('player_id')->unique()->comment('プレイヤーID');
             $table->unsignedBigInteger('role_id')->comment('ロールID');
-            $table->string('name', 16)->unique()->comment('ユーザ名');
+            $table->string('name', 20)->unique()->comment('ユーザ名');
             $table->string('steam_id', 30)->nullable()->comment('SteamID');
             $table->string('twitter_id', 50)->nullable()->comment('TwitterID');
             $table->string('website_url')->nullable()->comment('WebサイトURL');
