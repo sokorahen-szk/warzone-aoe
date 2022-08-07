@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   # アプリコンテナ
@@ -14,7 +14,6 @@ services:
       - db
     build: ./docker/web
     tty: true
-    restart: always
     networks:
       app_net:
         ipv4_address: 172.26.0.3
@@ -31,7 +30,6 @@ services:
     build: ./docker/mysql
     command: docker-entrypoint.sh mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     tty: true
-    restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -50,7 +48,7 @@ services:
       dockerfile: Dockerfile
     tty: true
     ports:
-        - 8000:8000
+      - 8000:8000
     volumes:
       - ../api/apps:/work
     environment:
@@ -58,7 +56,6 @@ services:
       - API_USER_PASSWORD=${API_USER_PASSWORD}
       - API_USER_INFO=${API_USER_INFO}
     command: python3 manage.py runserver 0.0.0.0:8000
-    restart: always
     networks:
       app_net:
         ipv4_address: 172.26.0.6
@@ -72,5 +69,4 @@ networks:
     ipam:
       driver: default
       config:
-      -
-        subnet: 172.26.0.0/28
+        - subnet: 172.26.0.0/28

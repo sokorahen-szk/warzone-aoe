@@ -18,6 +18,8 @@ class AdminGameUpdateService implements AdminGameUpdateServiceInterface {
     private $gameRecordRepository;
     private $updateGameSystemService;
 
+    private $sendPushNotification = true;
+
     public function __construct(
         GameRecordRepositoryInterface $gameRecordRepository,
         UpdateGameSystemServiceInterface $updateGameSystemService
@@ -48,7 +50,8 @@ class AdminGameUpdateService implements AdminGameUpdateServiceInterface {
             $gameRecord,
             $winningTeam,
             $gameStatus,
-            $currentDatetime
+            $currentDatetime,
+            $this->sendPushNotification
         );
     }
 }

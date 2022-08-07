@@ -19,6 +19,8 @@ class GameFinishedService implements GameFinishedServiceInterface
     private $gameRecordRepository;
     private $updateGameSystemService;
 
+    private $sendPushNotification = true;
+
     public function __construct(
         GameRecordTokenRepositoryInterface $gameRecordTokenRepository,
         GameRecordRepositoryInterface $GameRecordRepository,
@@ -57,7 +59,8 @@ class GameFinishedService implements GameFinishedServiceInterface
             $gameRecord,
             $winningTeam,
             $gameStatus,
-            $currentDatetime
+            $currentDatetime,
+            $this->sendPushNotification,
         );
     }
 }
