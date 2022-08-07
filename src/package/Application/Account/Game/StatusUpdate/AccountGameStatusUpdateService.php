@@ -19,6 +19,8 @@ class AccountGameStatusUpdateService implements AccountGameStatusUpdateServiceIn
     private $gameRecordRepository;
     private $updateGameSystemService;
 
+    private $sendPushNotification = true;
+
     public function __construct(
         UserRepositoryInterface $userRepository,
         GameRecordRepositoryInterface $gameRecordRepository,
@@ -58,7 +60,8 @@ class AccountGameStatusUpdateService implements AccountGameStatusUpdateServiceIn
             $gameRecord,
             $winningTeam,
             $gameStatus,
-            $currentDatetime
+            $currentDatetime,
+            $this->sendPushNotification
         );
     }
 }

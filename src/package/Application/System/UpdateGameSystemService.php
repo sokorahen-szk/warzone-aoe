@@ -42,7 +42,13 @@ class UpdateGameSystemService implements UpdateGameSystemServiceInterface {
         $this->trueSkillClient = new TrueSkillClient();
     }
 
-    public function handle(GameRecord $gameRecord, ?GameTeam $winningTeam, GameStatus $gameStatus, Datetime $currentDatetime): void
+    public function handle(
+        GameRecord $gameRecord,
+        ?GameTeam $winningTeam,
+        GameStatus $gameStatus,
+        Datetime $currentDatetime,
+        bool $isPushNotification
+    ): void
     {
 		try {
 			DB::beginTransaction();
@@ -76,8 +82,7 @@ class UpdateGameSystemService implements UpdateGameSystemServiceInterface {
 		}
 
         // TODO: 今後ここは、Discord通知を非同期で行うようにコード修正する
-        $afterGameRecord = $this->gameRecordRepository->getById($gameRecord->getGameRecordId());
-        $this->discordRepository->endGameNotification($afterGameRecord);
+        $this->sendPushNotification($gameRecord->getGameRecordId(), $isPushNotification);
     }
 
     /**
@@ -164,5 +169,15 @@ class UpdateGameSystemService implements UpdateGameSystemServiceInterface {
         }
 
         return $data;
+    }
+
+    private function sendPushNotification(GameRecordId $gameRecordId, bool $pushNotification): void
+    {
+        if (!$pushNotification) {
+            return;
+        }
+
+        $afterGameRecord = $this->gameRecordRepository->getById($gameRecordId);
+        $this->discordRepository->endGameNotification($afterGameRecord);
     }
 }
