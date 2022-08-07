@@ -168,12 +168,8 @@ class GameRecordRepository implements GameRecordRepositoryInterface
     */
     public function listHistoryByUserWithDateRange(User $user, Paginator $paginator, Date $beginDate, Date $endDate): array
     {
-        $playerId = $user->getPlayer()->getPlayerId();
         $gameRecords = EloquentGameRecordModel::with([
             'game_package',
-            'player_memories' => function($query) use ($playerId) {
-                $query->where("player_id", $playerId->getValue());
-            },
             'player_memories.player.user',
             'map',
             'rule',
