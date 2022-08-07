@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+ini_set("memory_limit", "512M");
+
 use Illuminate\Database\Seeder;
 use Package\Domain\User\ValueObject\Player\PlayerId;
 use Package\Infrastructure\TrueSkill\TrueSkillClient;
