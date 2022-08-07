@@ -17,10 +17,10 @@ jobs:
       - persist_to_workspace:
           root: ~/build
           paths:
-              - src/public
+            - src/public
   deploy:
     machine:
-      image: circleci/classic:edge
+      image: circleci/ubuntu-2204:2022.07.1
     working_directory: ~/deploy
     steps:
       - checkout
