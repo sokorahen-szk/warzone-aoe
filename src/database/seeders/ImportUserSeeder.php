@@ -19,7 +19,7 @@ class ImportUserSeeder extends Seeder
     {
         $dumpHelper = new DumpHelper();
 
-        $userLines = $dumpHelper->loadDumpFile(dirname(__FILE__) . "/dumps/dump_users");
+        $userLines = $dumpHelper->loadDumpFile(dirname(__FILE__) . "/dumps/dump_users.csv");
         $importUsers = [];
 
         foreach ($userLines as $ul) {

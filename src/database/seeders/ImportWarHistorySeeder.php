@@ -5,14 +5,10 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Package\Domain\User\ValueObject\Player\PlayerId;
 use Package\Infrastructure\TrueSkill\TrueSkillClient;
-use Package\Domain\User\Service\PlayerService;
-use Package\Infrastructure\Eloquent\Player\PlayerRepository;
 use Package\Domain\User\Repository\PlayerRepositoryInterface;
 use Package\Domain\Game\ValueObject\GameRecord\GameRecordId;
 use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
-use Package\Domain\User\Repository\PlayerMemoryRepositoryInterface;
 use Package\Domain\Game\ValueObject\GameRecord\VictoryPrediction;
-use Package\Domain\Game\Repository\GameRecordRepositoryInterface;
 use Package\Domain\Game\ValueObject\GameMap\GameMapId;
 use Package\Domain\Game\ValueObject\GameRule\GameRuleId;
 use Package\Domain\Game\ValueObject\GamePackage\GamePackageId;
@@ -20,13 +16,14 @@ use Package\Domain\User\ValueObject\UserId;
 use Package\Infrastructure\Eloquent\Game\GameRecordRepository;
 use Package\Infrastructure\Eloquent\Player\PlayerMemoryRepository;
 use App\Models\GameRecordModel;
-use DB;
 use Package\Domain\System\ValueObject\Datetime;
-use Package\Application\System\UpdateGameSystemService;
 use Package\Domain\Game\ValueObject\GameRecord\GameStatus;
 use Package\Domain\User\Exceptions\UserArgumentException;
 use Package\Domain\User\Service\PlayerServiceInterface;
 use Package\Usecase\System\UpdateGameSystemServiceInterface;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Log;
+use DB;
 
 class ImportWarHistorySeeder extends Seeder
 {
@@ -61,10 +58,11 @@ class ImportWarHistorySeeder extends Seeder
     public function run()
     {
         $dumpHelper = new DumpHelper();
-        $warHistoryLines = $dumpHelper->loadDumpFile(dirname(__FILE__) . "/dumps/dump_war_histories");
+        $warHistoryLines = $dumpHelper->loadDumpFile(dirname(__FILE__) . "/dumps/dump_war_histories.csv");
         $importWarHistories = [];
         foreach ($warHistoryLines as $warHistoryLine) {
             $importWarHistories[] = new ImportWarHistory(
+                (int) $warHistoryLine[0],
                 (int) $warHistoryLine[1],
                 $warHistoryLine[2],
                 $warHistoryLine[3],
@@ -81,15 +79,23 @@ class ImportWarHistorySeeder extends Seeder
         }
 
         DB::transaction(function () use ($importWarHistories) {
-            SeederHelper::truncate(['game_records', 'player_memories']);
-
             foreach ($importWarHistories as $importWarHistory) {
+
+                $existsRecord = GameRecordModel::where("started_at", $importWarHistory->startedDatetime->getDatetime())
+                            ->where("finished_at", $importWarHistory->finishedDatetime->getDatetime())
+                            ->count();
+                if ($existsRecord !== 0) {
+                    Log::info(sprintf("skip %d", $importWarHistory->id));
+                    continue;
+                }
+
                 try {
                     $playerCount = $importWarHistory->getPlayerCount();
 
                     $players = $this->playerService->playerIdsToPlayerEntities($importWarHistory->getPlayerIds());
 
                     if ($playerCount !== count($players)) {
+                        Log::info(sprintf("skip %d", $importWarHistory->id));
                         continue;
                     }
 
@@ -103,12 +109,19 @@ class ImportWarHistorySeeder extends Seeder
                     );
 
                     $this->finishedGame($importWarHistory, $gameRecordId);
+                } catch (ModelNotFoundException $e) {
+                    Log::info(sprintf("skip %d, err: %s", $importWarHistory->id, $e->getMessage()));
+                    continue;
                 } catch (UserArgumentException $e) {
-                    echo $e->getMessage();
+                    Log::info(sprintf("skip %d, err: %s", $importWarHistory->id, $e->getMessage()));
                     continue;
                 }
 
-                echo $gameRecordId->getValue() . PHP_EOL;
+                Log::Info(sprintf(
+                    "oldWarHisId: %d, gameRecordId = %d",
+                    $importWarHistory->id,
+                    $gameRecordId->getValue()
+                ));
             }
         });
     }
@@ -219,6 +232,7 @@ class ImportWarHistorySeeder extends Seeder
 
 class ImportWarHistory {
     public function __construct(
+        int $id,
         int $status,
         string $startedDatetime,
         string $finishedDatetime,
@@ -233,6 +247,7 @@ class ImportWarHistory {
         int $team2p4
     )
     {
+        $this->id = $id;
         $this->status = $status;
         $this->startedDatetime = new Datetime($startedDatetime);
         $this->finishedDatetime = new Datetime($finishedDatetime);
