@@ -20,7 +20,7 @@ jobs:
             - src/public
   deploy:
     machine:
-      image: circleci/ubuntu-2204:2022.07.1
+      image: circleci/ubuntu-2004:202201-02
     working_directory: ~/deploy
     steps:
       - checkout
