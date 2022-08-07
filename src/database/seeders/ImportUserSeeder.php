@@ -54,9 +54,9 @@ class ImportUserSeeder extends Seeder
             foreach ($importUsers as $importUser) {
                 // ownerだけデフォルトパスワードを付与しておく
                 if ($importUser->userName !== "titan") {
-                    $cryptedPassword = bcrypt('gfeExsAeg092@123'); // default password
-                } else {
                     $cryptedPassword = Str::random(20);
+                } else {
+                    $cryptedPassword = bcrypt('gfeExsAeg092@123'); // default password
                 }
                 PlayerModel::create([
                     'id'                => $importUser->userId,
