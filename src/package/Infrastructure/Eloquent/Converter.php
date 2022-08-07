@@ -196,7 +196,7 @@ class Converter {
             'email'         => new Email($user->email),
             'status'        => new Status($user->status),
             'createdAt'     => new Datetime($user->created_at),
-          ]);
+        ]);
     }
 
     public static function gamePlayerRecord(GameRecordModel $gameRecord): GamePlayerRecord

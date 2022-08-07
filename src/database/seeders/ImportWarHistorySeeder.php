@@ -78,15 +78,14 @@ class ImportWarHistorySeeder extends Seeder
             );
         }
 
-        DB::transaction(function () use ($importWarHistories) {
-            foreach ($importWarHistories as $importWarHistory) {
-
+        foreach ($importWarHistories as $importWarHistory) {
+            DB::transaction(function () use ($importWarHistory) {
                 $existsRecord = GameRecordModel::where("started_at", $importWarHistory->startedDatetime->getDatetime())
                             ->where("finished_at", $importWarHistory->finishedDatetime->getDatetime())
                             ->count();
                 if ($existsRecord !== 0) {
                     Log::info(sprintf("skip %d", $importWarHistory->id));
-                    continue;
+                    return;
                 }
 
                 try {
@@ -96,7 +95,7 @@ class ImportWarHistorySeeder extends Seeder
 
                     if ($playerCount !== count($players)) {
                         Log::info(sprintf("skip %d", $importWarHistory->id));
-                        continue;
+                        return;
                     }
 
                     $trueSkillRequest = $this->toTrueSkillAsDivisionPatternRequest($players);
@@ -111,10 +110,10 @@ class ImportWarHistorySeeder extends Seeder
                     $this->finishedGame($importWarHistory, $gameRecordId);
                 } catch (ModelNotFoundException $e) {
                     Log::info(sprintf("skip %d, err: %s", $importWarHistory->id, $e->getMessage()));
-                    continue;
+                    return;
                 } catch (UserArgumentException $e) {
                     Log::info(sprintf("skip %d, err: %s", $importWarHistory->id, $e->getMessage()));
-                    continue;
+                    return;
                 }
 
                 Log::Info(sprintf(
@@ -122,8 +121,8 @@ class ImportWarHistorySeeder extends Seeder
                     $importWarHistory->id,
                     $gameRecordId->getValue()
                 ));
-            }
-        });
+            });
+        }
     }
 
     private function convertGameStatus(int $status): GameStatus

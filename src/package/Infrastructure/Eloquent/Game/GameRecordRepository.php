@@ -104,11 +104,14 @@ class GameRecordRepository implements GameRecordRepositoryInterface
     */
     public function listRaitingByUserWithDateRange(User $user, Date $beginDate, ?Date $endDate): array
     {
-        $gameRecords = EloquentGameRecordModel::with('player_memories')
-            ->whereStartedAtByDateRange($beginDate, $endDate)
-            ->whereIn('status', [GameStatus::GAME_STATUS_DRAW, GameStatus::GAME_STATUS_FINISHED])
-            ->whereHasByPlayerMemory($user->getPlayer()->getPlayerId())
-            ->get();
+        $playerId = $user->getPlayer()->getPlayerId();
+        $gameRecords = EloquentGameRecordModel::with(["player_memories" => function($query) use ($playerId) {
+            $query->where("player_id", $playerId->getValue());
+        }])
+        ->whereStartedAtByDateRange($beginDate, $endDate)
+        ->whereIn('status', [GameStatus::GAME_STATUS_DRAW, GameStatus::GAME_STATUS_FINISHED])
+        ->whereHasByPlayerMemory($playerId)
+        ->get();
 
         return Converter::gamePlayerRecords($gameRecords);
     }
@@ -165,8 +168,12 @@ class GameRecordRepository implements GameRecordRepositoryInterface
     */
     public function listHistoryByUserWithDateRange(User $user, Paginator $paginator, Date $beginDate, Date $endDate): array
     {
+        $playerId = $user->getPlayer()->getPlayerId();
         $gameRecords = EloquentGameRecordModel::with([
             'game_package',
+            'player_memories' => function($query) use ($playerId) {
+                $query->where("player_id", $playerId->getValue());
+            },
             'player_memories.player.user',
             'map',
             'rule',

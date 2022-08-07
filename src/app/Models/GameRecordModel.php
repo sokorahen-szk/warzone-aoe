@@ -63,7 +63,7 @@ class GameRecordModel extends Model
      *
      * @param $query
      * @param PlayerId $playerId
-     * @return void
+     * @return Eloquent
      */
     public function scopeWhereHasByPlayerMemory($query, PlayerId $playerId)
     {
@@ -104,7 +104,6 @@ class GameRecordModel extends Model
         return $this->hasOne(MapModel::class, 'id', 'map_id');
     }
 
-    // ゲームパッケージ
     public function player_memories()
     {
         return $this->hasMany(PlayerMemoryModel::class, 'game_record_id', 'id');
