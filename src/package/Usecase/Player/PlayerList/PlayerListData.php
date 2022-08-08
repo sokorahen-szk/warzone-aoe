@@ -16,6 +16,7 @@ class PlayerListData extends Data {
     foreach ($sources as $source) {
       $response[] = [
         'id' => $source->getPlayerId()->getValue(),
+        'userId' => $source->getUser()->getId()->getValue(),
         'avatorImage' => $source->getUser()->getAvatorImage()->getImageFullPath(),
         'name' => $source->getPlayerName()->getValue(),
         'rate' => $source->getRate()->getValue(),
