@@ -8,23 +8,48 @@
             :headers="headers"
             :items="players"
             :items-per-page="perPage"
+            :search="playerSearch"
             class="player-table"
             @click:row="onClickEvent"
         >
+            <template v-slot:top>
+                <v-row no-gutters>
+                    <v-col cols="12" sm="6" md="4" lg="3" xl="3">
+                        <v-row no-gutters class="pa-4">
+                            <v-col cols="12">
+                                <small>プレイヤー検索</small>
+                            </v-col>
+                            <v-col cols="12">
+                                <TextInput
+                                    :value="playerSearch"
+                                    @update="playerSearch = $event"
+                                    outlined
+                                    flat
+                                    required
+                                />
+                            </v-col>
+                        </v-row>
+                    </v-col>
+                </v-row>
+            </template>
         </v-data-table>
     </v-card>
 </template>
 
 <script>
+import TextInput from "@atoms/TextInput";
 export default {
     name: "PlayerTable",
+    components: {
+        TextInput
+    },
     props: {
         perPage: { type: Number, default: 10 },
         players: { type: Array, default: [] }
     },
     data() {
         return {
-            search: "",
+            playerSearch: "",
             headers: [
                 {
                     text: "プレイヤー名",
