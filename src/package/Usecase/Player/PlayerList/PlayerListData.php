@@ -20,7 +20,7 @@ class PlayerListData extends Data {
         'avatorImage' => $source->getUser()->getAvatorImage()->getImageFullPath(),
         'name' => $source->getPlayerName()->getValue(),
         'rate' => $source->getRate()->getValue(),
-        'rank' => $source->getMu()->getRank(),
+        'mu' => $source->getMu()->getValueAsInt(),
         'sigma' => $source->getSigma()->getValue(),
         'win' => $source->getWin()->getValue(),
         'defeat' => $source->getDefeat()->getValue(),

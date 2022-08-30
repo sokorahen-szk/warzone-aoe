@@ -30,7 +30,8 @@ class PlayerGetProfileData extends Data
 		$this->player = [
 		  'id' 				=> $source->getPlayer()->getPlayerId()->getValue(),
 		  'name' 			=> $source->getPlayer()->getPlayerName()->getValue(),
-		  'rank'    		=> $source->getPlayer()->getMu()->getRank(),
+		  'sigma'    		=> $source->getPlayer()->getSigma()->getValue(),
+		  'mu'    			=> $source->getPlayer()->getMu()->getValueAsInt(),
 		  'minRate' 		=> $source->getPlayer()->getMinRate()->getValue(),
 		  'maxRate' 		=> $source->getPlayer()->getMaxRate()->getValue(),
 		  'win' 			=> $source->getPlayer()->getWin()->getValue(),

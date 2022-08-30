@@ -57,6 +57,8 @@ class GameHistoryListData extends Data {
         'afterRate'       => $playerMemory->getAfterRate()->getValue(),
         'rank'            => $playerMemory->getMu()->getRank(),
         'afterRank'       => $playerMemory->getAfterMu()->getRank(),
+        'mu'              => $playerMemory->getMu()->getValueAsInt(),
+        'afterMu'         => $playerMemory->getAfterMu()->getValueAsInt(),
       ];
     }
     return $list;
