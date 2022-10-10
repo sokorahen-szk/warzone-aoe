@@ -13,7 +13,6 @@ services:
     depends_on:
       - db
     build: ./docker/web
-    tty: true
     networks:
       app_net:
         ipv4_address: 172.26.0.3
@@ -29,7 +28,6 @@ services:
       - ./docker/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     build: ./docker/mysql
     command: docker-entrypoint.sh mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    tty: true
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -46,7 +44,6 @@ services:
     build:
       context: ./docker/django
       dockerfile: Dockerfile
-    tty: true
     ports:
       - 8000:8000
     volumes:
