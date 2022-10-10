@@ -19,7 +19,7 @@ class GameTeamDivisionData extends Data
     private function teams(array $players, int $teamNumber): array
     {
         $t = sprintf("team%d", $teamNumber);
-        $tRankSum = sprintf("team%dRankSum", $teamNumber);
+        $tRankSum = sprintf("team%dMuSum", $teamNumber);
 
         $data = [
             $t          => [],
@@ -30,10 +30,10 @@ class GameTeamDivisionData extends Data
             $data[$t][] = [
                 'id' => $player->getPlayerId()->getValue(),
                 'name' => $player->getPlayerName()->getValue(),
-                'rank' => $player->getMu()->getRank(),
+                'mu' => $player->getMu()->getValueAsInt(),
             ];
 
-            $data[$tRankSum] += $player->getMu()->getRank();
+            $data[$tRankSum] += $player->getMu()->getValueAsInt();
         }
 
         return $data;
