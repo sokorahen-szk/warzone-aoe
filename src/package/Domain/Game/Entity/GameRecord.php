@@ -11,6 +11,7 @@ use Package\Domain\Game\ValueObject\GameMap\GameMapId;
 use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
 use Package\Domain\Game\ValueObject\GameRecord\GameStatus;
 use Package\Domain\Game\ValueObject\GameRecord\VictoryPrediction;
+use Package\Domain\Game\ValueObject\GameRecord\IsRating;
 use Package\Domain\User\Entity\PlayerMemory;
 use Package\Domain\Game\Entity\GamePackage;
 use Package\Domain\Game\Entity\GameMap;
@@ -33,10 +34,11 @@ class GameRecord extends Resource {
 	protected $status;
 	protected $startedAt;
 	protected $finishedAt;
+	protected $isRating;
 
 	public function __construct($data)
 	{
-	  parent::__construct($data);
+		parent::__construct($data);
 	}
 
 	/**
@@ -133,6 +135,14 @@ class GameRecord extends Resource {
 	public function getVictoryPrediction(): ?VictoryPrediction
 	{
 		return $this->victoryPrediction;
+	}
+
+	/**
+	 * @return IsRating|null
+	 */
+	public function getIsRating(): ?IsRating
+	{
+		return $this->isRating;
 	}
 
 	/**

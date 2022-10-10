@@ -8,13 +8,15 @@ class GameMatchingCommand {
   public $gamePackageId;
   public $ruleId;
   public $mapId;
+  public $isRating;
 
   public function __construct(
     ?int $userId,
     array $playerIds,
-	  int $gamePackageId,
+    int $gamePackageId,
     int $ruleId,
-    int $mapId
+    int $mapId,
+    bool $isRating
   )
   {
     $this->userId = $userId;
@@ -22,5 +24,6 @@ class GameMatchingCommand {
     $this->gamePackageId = $gamePackageId;
     $this->ruleId = $ruleId;
     $this->mapId = $mapId;
+    $this->isRating = $isRating;
   }
 }

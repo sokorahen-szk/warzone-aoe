@@ -38,6 +38,9 @@ class GameMatchingRequest extends FormRequest
 
             // マップID
             'map_id'                => ['required', 'integer'],
+
+            // レートゲーム有無
+            'is_rating'             => ['required', 'boolean'],
         ];
     }
 }
