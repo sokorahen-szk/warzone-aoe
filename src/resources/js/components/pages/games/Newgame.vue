@@ -138,6 +138,8 @@
                                     >
                                         プレイヤーを選択
                                     </v-card>
+                                    ※
+                                    チーム分けを行うために、8人プレイヤーが揃ってる必要があります。
                                     <v-row
                                         no-gutters
                                         justify="center"
