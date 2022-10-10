@@ -25,6 +25,7 @@ class PlayerGetProfileService implements PlayerGetProfileServiceInterface {
     if (is_null($user)) {
       return null;
     }
-	return new PlayerGetProfileData($user);
+
+    return new PlayerGetProfileData($user);
   }
 }

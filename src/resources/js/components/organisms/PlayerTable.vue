@@ -56,8 +56,7 @@ export default {
                     align: "start",
                     value: "name"
                 },
-                { text: "レート", value: "rate" },
-                { text: "ランク", value: "rank" },
+                { text: "レート", value: "mu" },
                 { text: "試合数", value: "games" },
                 { text: "勝利", value: "win" },
                 { text: "敗北", value: "defeat" },

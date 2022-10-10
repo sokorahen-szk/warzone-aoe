@@ -44,7 +44,7 @@
                             </div>
                             <div class="py-4">
                                 <v-card outlined class="pa-2" height="100">
-                                    よろしくお願いします。
+                                    コメントをここに書けるようになります。
                                 </v-card>
                             </div>
                             <div>
