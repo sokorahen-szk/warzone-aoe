@@ -47,6 +47,7 @@ class GameRecordRepository implements GameRecordRepositoryInterface
             'victory_prediction' => $victoryPrediction->getPerInt(),
             'status' => GameStatus::GAME_STATUS_MATCHING,
             'started_at' => now()->toDateTimeString(),
+            'is_rating' => $isRating->getValue(),
         ]);
 
         return new GameRecordId($gameRecord->id);

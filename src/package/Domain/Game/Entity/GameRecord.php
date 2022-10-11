@@ -140,7 +140,7 @@ class GameRecord extends Resource {
 	/**
 	 * @return IsRating|null
 	 */
-	public function getIsRating(): ?IsRating
+	public function getIsRating(): IsRating
 	{
 		return $this->isRating;
 	}
