@@ -83,6 +83,13 @@
                                     dense
                                 />
                             </v-col>
+                            <v-col cols="12">
+                                <CheckBox
+                                    label="ノーレートモード有効"
+                                    :selected="isNorateGameMode"
+                                    @update="isNorateGameMode = $event"
+                                />
+                            </v-col>
                         </v-row>
                     </v-col>
                     <v-col cols="12" sm="12" md="7" lg="8">
@@ -386,6 +393,7 @@ import Select from "@atoms/Select";
 import SelectBox from "@atoms/SelectBox";
 import Button from "@atoms/Button";
 import Modal from "@atoms/Modal";
+import CheckBox from "@atoms/CheckBox";
 import QualityBar from "@molecules/QualityBar";
 import Loading from "@atoms/Loading";
 import { playerListTemplate } from "@/config/player";
@@ -402,7 +410,8 @@ export default {
         Modal,
         QualityBar,
         Loading,
-        SelectBox
+        SelectBox,
+        CheckBox
     },
     mounted() {
         this.$store.subscribe(mutation => {
@@ -648,6 +657,7 @@ export default {
             selectedGamePackageId: 0,
             selectedMapId: 0,
             selectedRuleId: 0,
+            isNorateGameMode: false,
             gamePackages: [],
             gameMaps: [],
             gameRules: [],
