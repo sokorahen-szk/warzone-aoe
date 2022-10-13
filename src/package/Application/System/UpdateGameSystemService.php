@@ -56,11 +56,10 @@ class UpdateGameSystemService implements UpdateGameSystemServiceInterface {
             $players = $this->pluckPlayer($gameRecord->getPlayerMemories(), $winningTeam, $gameStatus);
 
             if ($gameStatus->isFinished()) {
-                $trueSkillRequestData = $this->trueSkillRequestData($gameRecord->getPlayerMemories(), $winningTeam);
-                $trueSkillResponse = $this->trueSkillClient->calcSkill($trueSkillRequestData);
+                if (!$gameRecord->getIsRating()->getValue()) {
+                    $trueSkillRequestData = $this->trueSkillRequestData($gameRecord->getPlayerMemories(), $winningTeam);
+                    $trueSkillResponse = $this->trueSkillClient->calcSkill($trueSkillRequestData);
 
-                // is_rating = true の時、プレイヤーの情報を更新
-                if ($gameRecord->getIsRating()) {
                     $players = $this->toPlayerFromCalcSkillResponse($players, $trueSkillResponse['teams']);
                 }
 

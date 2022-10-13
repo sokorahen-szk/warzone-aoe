@@ -92,7 +92,7 @@ class GameMatchingService implements GameMatchingServiceInterface
 		}
 
 		$players = $this->playerService->playerIdsToPlayerEntities($command->playerIds);
-		if (count($players) == 8) {
+		if (count($players) != 8) {
 			// TODO: 独自Exception化する
 			throw new Exception('選択プレイヤー数は8人である必要があります。');
 		}

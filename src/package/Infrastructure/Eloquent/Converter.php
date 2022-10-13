@@ -61,6 +61,7 @@ use Package\Domain\Game\ValueObject\GameRecord\GameStatus;
 use Package\Domain\Game\ValueObject\GameRecord\GameTeam;
 use Package\Domain\Game\ValueObject\GameRecord\VictoryPrediction;
 use Package\Domain\Game\ValueObject\GameRecord\GameRecordId;
+use Package\Domain\Game\ValueObject\GameRecord\IsRating;
 
 use Package\Domain\Game\ValueObject\GameMap\GameMapId;
 use Package\Domain\Game\ValueObject\GameMap\Image;
@@ -249,6 +250,7 @@ class Converter {
             'status'            => new GameStatus($gameRecord->status),
             'startedAt'         => new Datetime($gameRecord->started_at),
             'finishedAt'        => new Datetime($gameRecord->finished_at),
+            'isRating'          => new IsRating($gameRecord->is_rating),
         ]);
     }
 
