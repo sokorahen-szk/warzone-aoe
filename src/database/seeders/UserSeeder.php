@@ -66,7 +66,7 @@ class UserSeeder extends Seeder
         $faker = FakerFactory::create();
         $index = UserModel::count();
         // ここからダミーデータ
-        for ($i = 1; $i < 10; $i++) {
+        for ($i = 1; $i < 20; $i++) {
             UserModel::create([
                 'player_id'         => $index + $i,
                 'role_id'           => mt_rand(1, 3),

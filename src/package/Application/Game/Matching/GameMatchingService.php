@@ -26,6 +26,7 @@ use Package\Domain\Game\ValueObject\GamePackage\GamePackageId;
 use Package\Domain\Game\ValueObject\GameMap\GameMapId;
 use Package\Domain\Game\ValueObject\GameRule\GameRuleId;
 use Package\Domain\Game\ValueObject\GameRecord\VictoryPrediction;
+use Package\Domain\Game\ValueObject\GameRecord\IsRating;
 
 use Package\Domain\User\ValueObject\Player\PlayerId;
 use Package\Domain\Game\ValueObject\GameRecord\GameRecordId;
@@ -91,9 +92,9 @@ class GameMatchingService implements GameMatchingServiceInterface
 		}
 
 		$players = $this->playerService->playerIdsToPlayerEntities($command->playerIds);
-		if (count($players) < 2) {
+		if (count($players) != 8) {
 			// TODO: 独自Exception化する
-			throw new Exception('選択プレイヤー数は2人以上である必要があります。');
+			throw new Exception('選択プレイヤー数は8人である必要があります。');
 		}
 
 		$gamePaackageId = new GamePackageId($command->gamePackageId);
@@ -120,6 +121,8 @@ class GameMatchingService implements GameMatchingServiceInterface
 		$expiresAt = new Datetime(now());
 		$expiresAt->addHours(6); // トークンの有効期限は6時間
 
+		$isRating = new IsRating($command->isRating);
+
 		try {
 			DB::beginTransaction();
 
@@ -128,7 +131,8 @@ class GameMatchingService implements GameMatchingServiceInterface
 				$gamePaackageId,
 				$gameMapId,
 				$gameRuleId,
-				$victoryPrediction
+				$victoryPrediction,
+				$isRating
 			);
 
 			$this->createPlayerMemories($team1Players, $gameRecordId, new GameTeam(1));

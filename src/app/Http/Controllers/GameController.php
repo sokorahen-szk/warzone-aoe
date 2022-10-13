@@ -125,7 +125,8 @@ class GameController extends Controller
             $request->player_ids,
             $request->game_package_id,
             $request->rule_id,
-            $request->map_id
+            $request->map_id,
+            $request->is_rating,
         );
 
         $result = $interactor->handle($command);

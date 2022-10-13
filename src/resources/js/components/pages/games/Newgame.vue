@@ -83,6 +83,13 @@
                                     dense
                                 />
                             </v-col>
+                            <v-col cols="12">
+                                <CheckBox
+                                    label="ノーレートモード有効"
+                                    :selected="isRating"
+                                    @update="isRating = $event"
+                                />
+                            </v-col>
                         </v-row>
                     </v-col>
                     <v-col cols="12" sm="12" md="7" lg="8">
@@ -153,7 +160,7 @@
                                             width="200"
                                             height="55"
                                             :disabled="
-                                                selectedPlayers.length < 2
+                                                selectedPlayers.length != 8
                                             "
                                             @click="division"
                                         />
@@ -277,6 +284,11 @@
                                 </v-list-item>
                             </v-list>
                         </v-col>
+                        <v-col
+                            class="pa-2 red--text text-center"
+                            v-show="isRating"
+                            >ノーレートモードが有効のため、レーティング変動しません。</v-col
+                        >
                         <v-col cols="12">
                             <div class="text-center">
                                 quality：{{ teamDivisionResponse.quality }}%
@@ -386,6 +398,7 @@ import Select from "@atoms/Select";
 import SelectBox from "@atoms/SelectBox";
 import Button from "@atoms/Button";
 import Modal from "@atoms/Modal";
+import CheckBox from "@atoms/CheckBox";
 import QualityBar from "@molecules/QualityBar";
 import Loading from "@atoms/Loading";
 import { playerListTemplate } from "@/config/player";
@@ -402,7 +415,8 @@ export default {
         Modal,
         QualityBar,
         Loading,
-        SelectBox
+        SelectBox,
+        CheckBox
     },
     mounted() {
         this.$store.subscribe(mutation => {
@@ -562,7 +576,8 @@ export default {
                         playerIds: this.selectedPlayers.map(item => item.id),
                         gamePackageId: Number(this.selectedGamePackageId),
                         gameRuleId: Number(this.selectedRuleId),
-                        gameMapId: Number(this.selectedMapId)
+                        gameMapId: Number(this.selectedMapId),
+                        isRating: this.isRating
                     })
                 );
             })
@@ -648,6 +663,7 @@ export default {
             selectedGamePackageId: 0,
             selectedMapId: 0,
             selectedRuleId: 0,
+            isRating: false,
             gamePackages: [],
             gameMaps: [],
             gameRules: [],

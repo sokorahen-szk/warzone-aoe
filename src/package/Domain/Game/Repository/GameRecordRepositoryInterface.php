@@ -8,6 +8,7 @@ use Package\Domain\System\Entity\Paginator;
 use Package\Domain\Game\ValueObject\GameRecord\GameStatus;
 use Package\Domain\Game\ValueObject\GameRecord\GameRecordId;
 use Package\Domain\Game\ValueObject\GameRecord\VictoryPrediction;
+use Package\Domain\Game\ValueObject\GameRecord\IsRating;
 use Package\Domain\Game\ValueObject\GamePackage\GamePackageId;
 use Package\Domain\Game\ValueObject\GameMap\GameMapId;
 use Package\Domain\Game\ValueObject\GameRule\GameRuleId;
@@ -24,10 +25,11 @@ interface GameRecordRepositoryInterface
      * @param GameMapId $gameMapId
      * @param GameRuleId $gameRuleId
      * @param VictoryPrediction $victoryPrediction
+     * @param IsRating $isRating
      * @return GameRecordId
      */
     public function create(?UserId $userId, GamePackageId $gamePackageId, GameMapId $gameMapId,
-    GameRuleId $gameRuleId, VictoryPrediction $victoryPrediction): GameRecordId;
+    GameRuleId $gameRuleId, VictoryPrediction $victoryPrediction, IsRating $isRating): GameRecordId;
 
     /**
      * ゲームレコードを取得する
