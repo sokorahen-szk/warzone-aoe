@@ -12,6 +12,9 @@
             :key="gameRecord.gameId"
             class="mb-5"
         >
+            <div v-if="gameRecord.isRating" class="red lighten-4 text-center">
+                ノーレート
+            </div>
             <v-row no-gutters class="py-1 d-flex head-row">
                 <v-col cols="8 d-flex align-center justify-center">
                     <span>{{ gameRecord.gameStartDate }}</span
@@ -71,9 +74,14 @@
                                 }}
                             </Label>
                         </v-col>
-                        <v-col cols="4" class="py-2">{{
-                            sum(gameRecord.playerMemories[1], "mu")
-                        }}</v-col>
+                        <v-col cols="4" class="py-2"
+                            >{{ sum(gameRecord.playerMemories[1], "mu") }} ({{
+                                calc(
+                                    sum(gameRecord.playerMemories[1], "mu"),
+                                    sum(gameRecord.playerMemories[1], "afterMu")
+                                )
+                            }})</v-col
+                        >
                     </v-row>
                     <v-divider />
                 </v-col>
@@ -121,9 +129,14 @@
                                 }}
                             </Label>
                         </v-col>
-                        <v-col cols="4" class="py-2">{{
-                            sum(gameRecord.playerMemories[2], "mu")
-                        }}</v-col>
+                        <v-col cols="4" class="py-2"
+                            >{{ sum(gameRecord.playerMemories[2], "mu") }} ({{
+                                calc(
+                                    sum(gameRecord.playerMemories[2], "mu"),
+                                    sum(gameRecord.playerMemories[2], "afterMu")
+                                )
+                            }})</v-col
+                        >
                     </v-row>
                 </v-col>
             </v-row>
