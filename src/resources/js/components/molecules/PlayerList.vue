@@ -43,7 +43,8 @@ import router from "@/router/index";
 export default {
     name: "PlayerList",
     props: {
-        players: { type: Array, default: [] }
+        players: { type: Array, default: [] },
+        playerLimit: { type: Number }
     },
     methods: {
         click(player) {
@@ -57,6 +58,9 @@ export default {
                 this.selectedList.splice(index, 1);
             } else {
                 isAdded = true;
+
+                if (this.selectedList.length >= this.playerLimit) return;
+
                 this.selectedList.push(player.id);
             }
 
