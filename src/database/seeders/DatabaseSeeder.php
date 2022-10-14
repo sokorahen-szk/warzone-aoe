@@ -17,10 +17,13 @@ class DatabaseSeeder extends Seeder
         $this->call(GamePackageSeeder::class);
         $this->call(RuleSeeder::class);
         $this->call(MapSeeder::class);
-        // $this->call(PlayerSeeder::class);
-        // $this->call(UserSeeder::class);
-        // $this->call(RegisterRequestSeeder::class);
-        // $this->call(GameRecordSeeder::class);
-        // $this->call(PlayerMemorySeeder::class);
+
+        if (env("APP_DEBUG")) {
+            $this->call(UserSeeder::class);
+            $this->call(PlayerSeeder::class);
+            $this->call(RegisterRequestSeeder::class);
+            //$this->call(GameRecordSeeder::class);
+            //$this->call(PlayerMemorySeeder::class);
+        }
     }
 }

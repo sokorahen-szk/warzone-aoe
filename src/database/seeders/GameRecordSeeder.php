@@ -21,7 +21,7 @@ class GameRecordSeeder extends Seeder
         for ($i = 1; $i <= 1000; $i++) {
             $status = mt_rand(2, 4);
             GameRecordModel::create([
-                'game_package_id'       => 2,
+                'game_package_id'       => 1,
                 'user_id'               => 1,
                 'rule_id'               => mt_rand(1, 2),
                 'map_id'                => mt_rand(1, 2),

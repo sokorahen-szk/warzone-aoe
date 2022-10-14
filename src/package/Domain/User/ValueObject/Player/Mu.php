@@ -15,6 +15,11 @@ class Mu {
     return $this->value;
   }
 
+  public function getValueAsInt(): int
+  {
+    return (int) $this->value;
+  }
+
   /**
    * ランクを表示
    * 「ランク」：μの値を1/100して、小数以下を四捨五入した値

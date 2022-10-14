@@ -31,6 +31,7 @@ class GameHistoryListData extends Data {
         'playerCount'         => count($source->getPlayerMemories()),
         'winningTeam'         => $source->getWinningTeam()->getValue(),
         'victoryPrediction'   => $source->getVictoryPrediction()->getValue(),
+        'isRating'            => $source->getIsRating()->getValue(),
         'status'              => $source->getGameStatus()->getValue(),
         'startedAt'           => $source->getStartedAt()->getDatetime(),
         'finishedAt'          => $source->getFinishedAt()->getDatetime(),
@@ -57,6 +58,8 @@ class GameHistoryListData extends Data {
         'afterRate'       => $playerMemory->getAfterRate()->getValue(),
         'rank'            => $playerMemory->getMu()->getRank(),
         'afterRank'       => $playerMemory->getAfterMu()->getRank(),
+        'mu'              => $playerMemory->getMu()->getValueAsInt(),
+        'afterMu'         => $playerMemory->getAfterMu()->getValueAsInt(),
       ];
     }
     return $list;

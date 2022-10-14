@@ -36,7 +36,7 @@ class AccountGameListData extends Data {
                 'team2RateSum' => $source->getRateSum(new GameTeam(2)),
                 'status' => $source->getGameStatus()->getValue(),
                 'startedAt' => $source->getStartedAt()->getDatetime(),
-              ];
+            ];
         }
         $this->gameRecords = $response;
     }
