@@ -19,7 +19,7 @@
                         <PlayerSearchBox
                             :keyword="search"
                             :players="players"
-                            :selected-players="selectedPlayers"
+                            :selected-player-limit="selectedPlayerLimit"
                             @update="updatePlayer"
                             @input="search = $event"
                         />
@@ -511,7 +511,7 @@ export default {
         ]),
         updatePlayer(e) {
             if (!e) return;
-            if (this.selectedPlayers.length >= 8) return;
+            if (this.selectedPlayers.length > this.selectedPlayerLimit) return;
 
             if (e.isAdded) {
                 this.selectedPlayers.push(e.player);
@@ -676,6 +676,8 @@ export default {
             isGameStatusUpdateButtonDisabled: true,
             teamDivisionResponse: null,
             matchingResponse: null,
+
+            selectedPlayerLimit: 8,
 
             valid: true
         };

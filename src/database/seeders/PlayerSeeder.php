@@ -52,7 +52,7 @@ class PlayerSeeder extends Seeder
             'defeat'            => 30,
             'games'             => 55,
             'streak'            => mt_rand(-10, 10),
-            'game_packages'     => '1,2',
+            'game_packages'     => '1',
             'joined_at'         => '2019-02-10 00:00:00',
             'last_game_at'      => '2020-10-22 00:00:00',
             'enabled'           => true,
@@ -70,7 +70,7 @@ class PlayerSeeder extends Seeder
             'defeat'            => 30,
             'games'             => 55,
             'streak'            => mt_rand(-10, 10),
-            'game_packages'     => '1,2,3',
+            'game_packages'     => '1',
             'joined_at'         => '2019-02-10 00:00:00',
             'last_game_at'      => '2020-10-22 00:00:00',
             'enabled'           => true,
@@ -99,7 +99,7 @@ class PlayerSeeder extends Seeder
         $enabled = [true, false];
 
         // ここからダミーデータ
-        for ($i = 1; $i < 10; $i++) {
+        for ($i = 1; $i < 20; $i++) {
             $win = mt_rand(1, 100);
             $defeat = mt_rand(1, 100);
             $games = $win + $defeat + mt_rand(0, 10);
