@@ -44,6 +44,12 @@
                         :key="gameRecord.gameId"
                     >
                         <td class="text-center mb-3">
+                            <span
+                                v-if="gameRecord.isRating"
+                                class="red lighten-4"
+                            >
+                                ノーレート
+                            </span>
                             <div>{{ gameRecord.gameStartDate }}</div>
                             <div>{{ gameRecord.gameStartTime }}</div>
                             <div>
@@ -111,9 +117,23 @@
                                         }}
                                     </Label>
                                 </v-col>
-                                <v-col cols="3" class="py-2">{{
-                                    sum(gameRecord.playerMemories[1], "mu")
-                                }}</v-col>
+                                <v-col cols="3" class="py-2"
+                                    >{{
+                                        sum(gameRecord.playerMemories[1], "mu")
+                                    }}
+                                    ({{
+                                        calc(
+                                            sum(
+                                                gameRecord.playerMemories[1],
+                                                "mu"
+                                            ),
+                                            sum(
+                                                gameRecord.playerMemories[1],
+                                                "afterMu"
+                                            )
+                                        )
+                                    }})</v-col
+                                >
                             </v-row>
                         </td>
                         <td>
@@ -174,9 +194,23 @@
                                         }}
                                     </Label>
                                 </v-col>
-                                <v-col cols="3" class="py-2">{{
-                                    sum(gameRecord.playerMemories[2], "mu")
-                                }}</v-col>
+                                <v-col cols="3" class="py-2"
+                                    >{{
+                                        sum(gameRecord.playerMemories[2], "mu")
+                                    }}
+                                    ({{
+                                        calc(
+                                            sum(
+                                                gameRecord.playerMemories[2],
+                                                "mu"
+                                            ),
+                                            sum(
+                                                gameRecord.playerMemories[2],
+                                                "afterMu"
+                                            )
+                                        )
+                                    }})</v-col
+                                >
                             </v-row>
                         </td>
                     </tr>
