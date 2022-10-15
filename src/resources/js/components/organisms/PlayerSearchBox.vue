@@ -13,7 +13,8 @@
             <PlayerList
                 v-show="setPlayers.length > 0"
                 :players="setPlayers"
-                :playerLimit="selectedPlayerLimit"
+                :player-limit="selectedPlayerLimit"
+                :player-count="selectedPlayerCount"
                 @click="update"
             />
         </div>
@@ -40,7 +41,8 @@ export default {
     props: {
         keyword: { type: String, default: null },
         players: { type: Array, default: [] },
-        selectedPlayerLimit: { type: Number }
+        selectedPlayerLimit: { type: Number },
+        selectedPlayerCount: { type: Number }
     },
     data() {
         return {
