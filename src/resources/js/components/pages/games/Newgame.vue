@@ -20,6 +20,7 @@
                             :keyword="search"
                             :players="players"
                             :selected-player-limit="selectedPlayerLimit"
+                            :selected-player-count="selectedPlayers.length"
                             @update="updatePlayer"
                             @input="search = $event"
                         />
@@ -86,7 +87,7 @@
                             <v-col cols="12">
                                 <CheckBox
                                     label="ノーレートモード有効"
-                                    :selected="isRating"
+                                    :value="isRating"
                                     @update="isRating = $event"
                                 />
                             </v-col>
@@ -537,6 +538,7 @@ export default {
             this.selectedGamePackageId = 0;
             this.selectedMapId = 0;
             this.selectedRuleId = 0;
+            this.isRating = false;
 
             this.isGameStatusUpdateButtonDisabled = true;
             this.teamDivisionResponse = null;

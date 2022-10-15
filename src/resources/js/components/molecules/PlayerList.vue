@@ -44,7 +44,15 @@ export default {
     name: "PlayerList",
     props: {
         players: { type: Array, default: [] },
-        playerLimit: { type: Number }
+        playerLimit: { type: Number },
+        playerCount: { type: Number }
+    },
+    watch: {
+        playerCount(v) {
+            if (v != 0) return;
+
+            this.selectedList.splice(0);
+        }
     },
     methods: {
         click(player) {
