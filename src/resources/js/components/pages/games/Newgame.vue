@@ -364,6 +364,7 @@
                     </div>
                     <div v-else>
                         ゲームが開始されました。
+                        <TextArea outlined :value="teamSplitText" />
                         <v-row no-gutters>
                             <v-col cols="12">
                                 <Button
@@ -400,6 +401,7 @@ import SelectBox from "@atoms/SelectBox";
 import Button from "@atoms/Button";
 import Modal from "@atoms/Modal";
 import CheckBox from "@atoms/CheckBox";
+import TextArea from "@atoms/TextArea";
 import QualityBar from "@molecules/QualityBar";
 import Loading from "@atoms/Loading";
 import { playerListTemplate } from "@/config/player";
@@ -417,7 +419,8 @@ export default {
         QualityBar,
         Loading,
         SelectBox,
-        CheckBox
+        CheckBox,
+        TextArea
     },
     mounted() {
         this.$store.subscribe(mutation => {
@@ -561,6 +564,7 @@ export default {
             })
                 .then(res => {
                     this.teamDivisionResponse = res;
+                    this.teamDivisionData = res;
                 })
                 .catch(err => {
                     this.isTeamDivision = false;
@@ -622,6 +626,21 @@ export default {
                 .finally(() => {
                     this.isGameStatusUpdateButtonDisabled = false;
                 });
+        },
+        teamSplitToText() {
+            if (!this.teamDivisionData) return "";
+
+            let team1 = `チーム1: 【${this.teamDivisionData.team1MuSum}】 `;
+            let team2 = `チーム2: 【${this.teamDivisionData.team2MuSum}】 `;
+
+            this.teamDivisionData.team1.forEach(player => {
+                team1 += `${player.name}(${player.mu})`;
+            });
+            this.teamDivisionData.team2.forEach(player => {
+                team2 += `${player.name}(${player.mu})`;
+            });
+
+            return `${team1}${team2}`;
         }
     },
     watch: {
@@ -655,6 +674,10 @@ export default {
             if (!val) {
                 this.$set(this, "teamDivisionResponse", null);
             }
+        },
+        isMatching(val) {
+            if (!val) return;
+            this.teamSplitText = this.teamSplitToText();
         }
     },
     data() {
@@ -677,7 +700,9 @@ export default {
             isFinished: false,
             isGameStatusUpdateButtonDisabled: true,
             teamDivisionResponse: null,
+            teamDivisionData: null,
             matchingResponse: null,
+            teamSplitText: null,
 
             selectedPlayerLimit: 8,
 
