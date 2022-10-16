@@ -676,7 +676,12 @@ export default {
             }
         },
         isMatching(val) {
-            if (!val) return;
+            if (!val) {
+                if (this.isFinished) {
+                    this.clearEvent();
+                }
+                return;
+            }
             this.teamSplitText = this.teamSplitToText();
         }
     },
